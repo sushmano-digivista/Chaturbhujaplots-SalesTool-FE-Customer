@@ -9,19 +9,22 @@ export default defineConfig({
     port: 3000,
     proxy: {
       '/api/dashboard': {
-        target: 'http://localhost:8082',
+        target: 'https://chaturbhujaplots-salestool-be-dasboardservices-production.up.railway.app',
         rewrite: p => p.replace(/^\/api\/dashboard/, '/api/v1'),
         changeOrigin: true,
+        secure: true,
       },
       '/api/plots': {
-        target: 'http://localhost:8083',
+        target: 'https://chaturbhujaplots-salestool-be-plotuploadservices-production.up.railway.app',
         rewrite: p => p.replace(/^\/api\/plots/, '/api/v1/plots'),
         changeOrigin: true,
+        secure: true,
       },
       '/api/media': {
-        target: 'http://localhost:8081',
+        target: 'https://chaturbhujaplots-salestool-be-commonservices-production.up.railway.app',
         rewrite: p => p.replace(/^\/api\/media/, '/api/v1/media'),
         changeOrigin: true,
+        secure: true,
       },
     },
   },

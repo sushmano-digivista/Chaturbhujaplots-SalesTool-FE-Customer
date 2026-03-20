@@ -1,20 +1,32 @@
 import axios from 'axios'
 
-// ── Dashboard Service (content + leads) ──────────────────────────────────────
-const dashApi = axios.create({ baseURL: '/api/dashboard', timeout: 10000 })
+// ── Detect environment ────────────────────────────────────────────────────────
+const isDev = import.meta.env.DEV
 
-// ── Plot Service (summary + counts) ──────────────────────────────────────────
-const plotApi = axios.create({ baseURL: '/api/plots', timeout: 10000 })
+const DASHBOARD_URL = isDev
+  ? '/api/dashboard'
+  : 'https://chaturbhujaplots-salestool-be-dasboardservices-production.up.railway.app/api/v1'
+
+const PLOT_URL = isDev
+  ? '/api/plots'
+  : 'https://chaturbhujaplots-salestool-be-plotuploadservices-production.up.railway.app/api/v1/plots'
+
+const MEDIA_URL = isDev
+  ? '/api/media'
+  : 'https://chaturbhujaplots-salestool-be-commonservices-production.up.railway.app/api/v1/media'
+
+// ── Axios clients ─────────────────────────────────────────────────────────────
+const dashApi  = axios.create({ baseURL: DASHBOARD_URL, timeout: 15000 })
+const plotApi  = axios.create({ baseURL: PLOT_URL,      timeout: 15000 })
+const mediaApi = axios.create({ baseURL: MEDIA_URL,     timeout: 15000 })
 
 // ── Content API ───────────────────────────────────────────────────────────────
 export const contentApi = {
-  /** Fetches all project content in one shot */
   getAll: () => dashApi.get('/content').then(r => r.data),
 }
 
 // ── Plot Summary API ──────────────────────────────────────────────────────────
 export const plotSummaryApi = {
-  /** Returns category counts + plot numbers — no status, no auth */
   getSummary: () => plotApi.get('/summary').then(r => r.data),
 }
 

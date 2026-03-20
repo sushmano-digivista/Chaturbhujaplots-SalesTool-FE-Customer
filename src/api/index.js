@@ -1,24 +1,26 @@
 import axios from 'axios'
 
-// ── Detect environment ────────────────────────────────────────────────────────
+// ── Backend URLs ──────────────────────────────────────────────────────────────
+// In dev: use Vite proxy (/api/dashboard → localhost:8082)
+// In prod (Railway): call backends directly from browser
 const isDev = import.meta.env.DEV
 
-const DASHBOARD_URL = isDev
+const DASHBOARD_BASE = isDev
   ? '/api/dashboard'
   : 'https://chaturbhujaplots-salestool-be-dasboardservices-production.up.railway.app/api/v1'
 
-const PLOT_URL = isDev
+const PLOT_BASE = isDev
   ? '/api/plots'
   : 'https://chaturbhujaplots-salestool-be-plotuploadservices-production.up.railway.app/api/v1/plots'
 
-const MEDIA_URL = isDev
+const MEDIA_BASE = isDev
   ? '/api/media'
   : 'https://chaturbhujaplots-salestool-be-commonservices-production.up.railway.app/api/v1/media'
 
-// ── Axios clients ─────────────────────────────────────────────────────────────
-const dashApi  = axios.create({ baseURL: DASHBOARD_URL, timeout: 15000 })
-const plotApi  = axios.create({ baseURL: PLOT_URL,      timeout: 15000 })
-const mediaApi = axios.create({ baseURL: MEDIA_URL,     timeout: 15000 })
+// ── Axios instances ───────────────────────────────────────────────────────────
+const dashApi  = axios.create({ baseURL: DASHBOARD_BASE, timeout: 15000 })
+const plotApi  = axios.create({ baseURL: PLOT_BASE,      timeout: 15000 })
+const mediaApi = axios.create({ baseURL: MEDIA_BASE,     timeout: 15000 })
 
 // ── Content API ───────────────────────────────────────────────────────────────
 export const contentApi = {

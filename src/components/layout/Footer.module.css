@@ -1,0 +1,29 @@
+.footer { background:#0c2817; padding:52px 5% 32px; color:rgba(255,255,255,0.55); }
+.grid { display:grid; grid-template-columns:2fr 1fr 1fr; gap:48px; margin-bottom:40px; }
+.brand { font-family:'Cormorant Garamond',serif; font-size:24px; color:var(--white); margin-bottom:10px; }
+.brand em { color:var(--gold); font-style:normal; }
+.tagline { font-size:13px; color:rgba(255,255,255,0.4); line-height:1.65; margin-bottom:16px; }
+.badges { display:flex; flex-wrap:wrap; gap:7px; }
+.badge { background:rgba(201,168,76,0.15); border:1px solid rgba(201,168,76,0.25); color:var(--gold-light); padding:4px 12px; border-radius:4px; font-size:11px; font-weight:500; }
+.colTitle { color:var(--white); font-size:14px; font-weight:600; margin-bottom:14px; }
+.link { display:block; color:rgba(255,255,255,0.5); font-size:13px; margin-bottom:8px; background:none; border:none; cursor:pointer; text-align:left; padding:0; font-family:'DM Sans',sans-serif; text-decoration:none; transition:color 0.2s; }
+.link:hover { color:var(--gold-light); }
+.bottom { border-top:1px solid rgba(255,255,255,0.07); padding-top:20px; display:flex; justify-content:space-between; font-size:12px; color:rgba(255,255,255,0.3); }
+
+/* Sticky bar */
+.stickyBar { display:none; position:fixed; bottom:0; left:0; right:0; z-index:800; background:var(--green); border-top:1px solid rgba(201,168,76,0.3); grid-template-columns:1fr 1fr 1fr; height:60px; }
+.sbBtn { display:flex; flex-direction:column; align-items:center; justify-content:center; gap:3px; background:transparent; border:none; color:var(--white); cursor:pointer; font-size:10px; font-weight:500; font-family:'DM Sans',sans-serif; text-decoration:none; transition:background 0.2s; }
+.sbBtn:active { background:rgba(255,255,255,0.1); }
+.sbWa   { color:#4ade80; }
+.sbMain { background:var(--gold); color:var(--green); font-weight:700; }
+
+/* Floating WA */
+.floatWA { position:fixed; bottom:80px; right:20px; width:52px; height:52px; background:#25D366; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:22px; cursor:pointer; box-shadow:0 4px 20px rgba(37,211,102,0.4); z-index:799; border:none; transition:transform 0.2s; }
+.floatWA:hover { transform:scale(1.1); }
+
+@media (max-width:768px) {
+  .stickyBar { display:grid; }
+  .floatWA   { bottom:72px; }
+  .grid      { grid-template-columns:1fr; gap:28px; }
+  .bottom    { flex-direction:column; gap:8px; text-align:center; }
+}

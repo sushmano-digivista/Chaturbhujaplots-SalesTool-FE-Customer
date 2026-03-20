@@ -1,0 +1,104 @@
+.priceBanner {
+  display: flex; align-items: center; gap: 16px;
+  background: var(--green); color: var(--white);
+  border-radius: var(--r); padding: 14px 22px;
+  margin-bottom: 32px; flex-wrap: wrap;
+}
+.priceBannerLabel { font-size: 11px; text-transform: uppercase; letter-spacing: 1px; color: rgba(255,255,255,0.5); }
+.priceBannerValue { font-family: 'Cormorant Garamond',serif; font-size: 22px; font-weight: 700; color: var(--gold); }
+.priceBannerNote  { font-size: 12px; color: rgba(255,255,255,0.45); margin-left: auto; }
+
+/* Category cards */
+.categoryGrid {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+  gap: 16px; margin-bottom: 48px;
+}
+.catCard {
+  background: var(--white); border: 1.5px solid rgba(30,77,43,0.1);
+  border-radius: var(--rlg); overflow: hidden; transition: border-color 0.2s;
+}
+.catCard:hover { box-shadow: var(--shadow); }
+.catCardOpen   { box-shadow: var(--shadow-lg); }
+
+.catHeader {
+  display: flex; align-items: flex-start; gap: 14px;
+  padding: 20px 22px; cursor: pointer; user-select: none;
+}
+.catHeader:hover { background: rgba(30,77,43,0.02); }
+
+.catIconWrap {
+  width: 44px; height: 44px; min-width: 44px;
+  border-radius: 10px; display: flex; align-items: center;
+  justify-content: center; margin-top: 2px;
+}
+.catInfo { flex: 1; }
+.catLabel { font-size: 15px; font-weight: 600; color: var(--text-dark); margin-bottom: 3px; }
+.catDesc  { font-size: 12px; color: var(--text-light); line-height: 1.5; }
+
+.catRight { text-align: right; min-width: 60px; }
+.catCount { font-family: 'Cormorant Garamond',serif; font-size: 32px; font-weight: 700; line-height: 1; }
+.catCountLabel { font-size: 11px; color: var(--text-light); text-transform: uppercase; letter-spacing: 0.5px; }
+.catPrice { font-size: 11px; color: var(--text-light); margin-top: 4px; }
+
+.chevron { font-size: 16px; color: var(--text-light); margin-left: 8px; margin-top: 6px; transition: transform 0.2s; }
+
+/* Expanded content */
+.catExpanded { padding: 0 22px 20px; overflow: hidden; }
+.plotNumsWrap { background: var(--cream); border-radius: var(--r); padding: 16px; }
+.plotNumsTitle { font-size: 12px; font-weight: 600; color: var(--text-mid); margin-bottom: 10px; text-transform: uppercase; letter-spacing: 0.5px; }
+.plotNums { display: flex; flex-wrap: wrap; gap: 7px; }
+.plotChip {
+  display: inline-block; padding: 4px 10px;
+  background: var(--white); border: 1px solid rgba(30,77,43,0.2);
+  border-radius: 6px; font-size: 12px; font-weight: 600;
+  color: var(--text-dark); cursor: default; transition: all 0.15s;
+}
+.plotChipHover { transform: scale(1.05); }
+
+/* Dimension breakdown */
+.dimSection { margin-top: 48px; }
+.dimTitle { font-family: 'Cormorant Garamond',serif; font-size: 22px; color: var(--green); margin-bottom: 6px; }
+.dimGrid {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 16px; margin-top: 20px;
+}
+.dimCard {
+  background: var(--white); border: 1px solid rgba(30,77,43,0.1);
+  border-radius: var(--rlg); padding: 22px; text-align: center; transition: all 0.2s;
+}
+.dimNum   { font-family:'Cormorant Garamond',serif; font-size:40px; font-weight:700; color:var(--green); line-height:1; }
+.dimLabel { font-size:15px; font-weight:600; color:var(--text-dark); margin-top:4px; }
+.dimArea  { font-size:12px; color:var(--text-light); margin-top:2px; }
+.dimPrice { font-size:12px; color:var(--gold-dark); font-weight:600; margin:8px 0 12px; }
+.dimBtn   { width:100%; justify-content:center; }
+
+/* Visual grid */
+.gridSection { margin-top: 48px; }
+.gridSubtitle { font-size:14px; color:var(--text-light); margin-top:4px; margin-bottom:20px; }
+.gridWrap {
+  border: 1px solid rgba(30,77,43,0.12); border-radius: var(--rlg);
+  overflow: hidden;
+}
+.tooltip {
+  position: absolute; background: var(--green); color: var(--white);
+  border-radius: 9px; padding: 10px 14px; font-size: 12px;
+  pointer-events: none; z-index: 10; min-width: 130px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+  display: flex; flex-direction: column; gap: 3px;
+}
+.tooltip strong { font-size: 15px; font-family:'Cormorant Garamond',serif; }
+.tooltip span   { color: rgba(255,255,255,0.65); font-size:11px; }
+.gridLegend {
+  display: flex; flex-wrap: wrap; gap: 16px;
+  padding: 14px 18px; border-top: 1px solid rgba(30,77,43,0.08);
+  background: var(--white);
+}
+.legItem { display:flex; align-items:center; gap:7px; font-size:12px; color:var(--text-mid); }
+.legDot  { width:12px; height:12px; border-radius:3px; flex-shrink:0; }
+
+@media (max-width:768px) {
+  .categoryGrid { grid-template-columns: 1fr; }
+  .dimGrid { grid-template-columns: 1fr 1fr; }
+  .priceBannerNote { display:none; }
+}
+@media (max-width:480px) { .dimGrid { grid-template-columns:1fr; } }

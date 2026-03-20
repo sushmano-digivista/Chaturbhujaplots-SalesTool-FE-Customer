@@ -21,8 +21,81 @@ import {
 
 import '@/styles/globals.css'
 
+// ── Fallback content shown when backend is offline ───────────────────────────
+const FALLBACK_CONTENT = {
+  hero: {
+    headline: 'Premium Plots',
+    subheadline: 'Amaravati',
+    description: 'Secure your land just 8 km from Andhra Pradesh\'s new capital city — fully CRDA & RERA approved with world-class amenities.',
+    approvalBadges: ['CRDA Approved · LP No: 35/2025', 'AP RERA · P06060125894', 'Ready for Construction'],
+  },
+  highlights: [
+    { icon: '🛣️', title: 'Near National Highway',   description: 'Direct access to NH-16, connecting major cities.',        sortOrder: 1 },
+    { icon: '🏛️', title: '8 km from Amaravati',     description: 'Minutes from AP\'s new capital city.',                    sortOrder: 2 },
+    { icon: '🚆', title: 'Road & Rail Connectivity', description: 'Proposed express highway and railway expansion.',          sortOrder: 3 },
+    { icon: '🏭', title: 'Logistic Hub, Paritala',   description: 'Upcoming industrial and logistics corridor.',             sortOrder: 4 },
+    { icon: '🎓', title: 'Educational & Medical',    description: 'SRM, NRI Medical College within 10 km.',                  sortOrder: 5 },
+    { icon: '🏏', title: 'Mulapadu Stadium',         description: 'International-grade cricket stadium nearby.',             sortOrder: 6 },
+  ],
+  amenities: [
+    { tab: 'INFRA',     icon: '🏛️', label: 'Grand Entrance Arch',      sortOrder: 1, featured: false },
+    { tab: 'INFRA',     icon: '🛤️', label: '60ft & 40ft Roads',         sortOrder: 2, featured: false },
+    { tab: 'INFRA',     icon: '💡', label: 'Underground Electricity',   sortOrder: 3, featured: false },
+    { tab: 'INFRA',     icon: '💧', label: 'Water Pipeline',            sortOrder: 4, featured: false },
+    { tab: 'INFRA',     icon: '🅿️', label: 'Visitor Parking',           sortOrder: 5, featured: false },
+    { tab: 'INFRA',     icon: '🔒', label: 'Gated Security',            sortOrder: 6, featured: false },
+    { tab: 'INFRA',     icon: '🙏', label: 'Hanuman Temple Nearby',     sortOrder: 7, featured: true,
+      featuredDesc: 'A magnificent large Hanuman statue temple is located just minutes from Anjana Paradise.' },
+    { tab: 'LIFESTYLE', icon: '🏃', label: 'Jogging Track',             sortOrder: 1, featured: false },
+    { tab: 'LIFESTYLE', icon: '☮️', label: '100% Vaastu Compliant',     sortOrder: 2, featured: false },
+    { tab: 'LIFESTYLE', icon: '🗿', label: 'Buddha Statue',             sortOrder: 3, featured: false },
+    { tab: 'LIFESTYLE', icon: '🌸', label: 'Floral Gardens',            sortOrder: 4, featured: false },
+    { tab: 'UTILITIES', icon: '🌐', label: 'Fibre Internet Ready',      sortOrder: 1, featured: false },
+    { tab: 'UTILITIES', icon: '⚡', label: 'Solar Street Lights',       sortOrder: 2, featured: false },
+    { tab: 'UTILITIES', icon: '📡', label: 'CCTV Surveillance',         sortOrder: 3, featured: false },
+  ],
+  distances: [
+    { icon: '🏛️', name: 'Amaravati Capital',      subtitle: 'New State Capital City',  distance: '8 km',  sortOrder: 1 },
+    { icon: '🛣️', name: 'National Highway NH-16', subtitle: 'Direct connectivity',     distance: '3 km',  sortOrder: 2 },
+    { icon: '🎓', name: 'SRM University',          subtitle: 'Engineering & Medical',   distance: '6 km',  sortOrder: 3 },
+    { icon: '🏥', name: 'NRI Medical College',     subtitle: 'Healthcare hub',          distance: '7 km',  sortOrder: 4 },
+    { icon: '🏏', name: 'Mulapadu Stadium',        subtitle: 'International facility',  distance: '4 km',  sortOrder: 5 },
+    { icon: '✈️', name: 'Vijayawada Airport',      subtitle: 'Air connectivity',        distance: '22 km', sortOrder: 6 },
+  ],
+  quote: {
+    investLine1: 'Invest ₹2 Today —',
+    investLine2: 'Receive ₹20 Tomorrow',
+    quote: 'If you invest 2 rupees now, in a few years it will be 10 times your investment.',
+    stats: [
+      { value: '10×',  label: 'Expected Return' },
+      { value: '5–7',  label: 'Years Horizon'   },
+      { value: 'Safe', label: 'CRDA + RERA'     },
+    ],
+  },
+  stats: [
+    { value: '120+', label: 'Total Plots'    },
+    { value: '8 km', label: 'From Amaravati' },
+    { value: '2025', label: 'CRDA Approved'  },
+  ],
+  contact: {
+    phone:       '+91 99999 99999',
+    whatsapp:    '919999999999',
+    email:       'info@anjanaparadise.in',
+    address:     'Paritala, Krishna District, Andhra Pradesh 521180',
+    mapEmbedUrl: 'https://maps.google.com/maps?q=Paritala,Andhra+Pradesh,India&t=k&z=14&ie=UTF8&iwloc=&output=embed',
+    mapOpenUrl:  'https://maps.google.com/?q=Paritala,Krishna+District,Andhra+Pradesh',
+  },
+}
+
 const queryClient = new QueryClient({
-  defaultOptions: { queries: { retry: 1, staleTime: 60_000 } },
+  defaultOptions: {
+    queries: {
+      retry: 1,
+      staleTime: 60_000,
+      // Don't throw on error — use fallback instead
+      throwOnError: false,
+    },
+  },
 })
 
 // ── Root ──────────────────────────────────────────────────────────────────────
@@ -47,58 +120,37 @@ export default function App() {
 
 // ── Customer Site ─────────────────────────────────────────────────────────────
 function CustomerSite() {
-  const { data: content, isLoading } = useContent()
-  const [leadCtx, setLeadCtx] = useState(null)   // null = modal closed
+  const { data: content, isLoading, isError } = useContent()
+  const [leadCtx, setLeadCtx] = useState(null)
 
-  /**
-   * Universal enquiry opener — any component calls this with a context object.
-   * context = { source, label, category?, plotNumber?, type? }
-   */
-  const openEnquiry = useCallback(ctx => setLeadCtx(ctx), [])
+  const openEnquiry  = useCallback(ctx => setLeadCtx(ctx), [])
   const closeEnquiry = useCallback(() => setLeadCtx(null), [])
 
-  const contact = content?.contact || {}
+  // Use fallback content if API is down or still loading
+  const activeContent = content || FALLBACK_CONTENT
+  const contact       = activeContent?.contact || {}
 
-  if (isLoading) return <PageLoader />
+  // Only show full-screen loader for the very first load (not on error)
+  if (isLoading && !isError) return <PageLoader />
 
   return (
     <div style={{ paddingTop: 'var(--nav-h)' }}>
-      {/* ── Navigation ──────────────────────────────────────────────────── */}
       <Navbar contact={contact} onEnquire={openEnquiry} />
 
-      {/* ── Page sections ───────────────────────────────────────────────── */}
       <main>
-        {/* 1. Hero — with Enquire Now, Book Visit, Get Brochure CTAs */}
-        <Hero content={content} onEnquire={openEnquiry} />
-
-        {/* 2. Investment quote banner */}
-        <QuoteSection content={content} onEnquire={openEnquiry} />
-
-        {/* 3. Location highlights */}
-        <HighlightsSection content={content} />
-
-        {/* 4. Interactive plot grid — CORE feature */}
-        <PlotGrid onEnquire={openEnquiry} />
-
-        {/* 5. Amenities */}
-        <AmenitiesSection content={content} />
-
-        {/* 6. Location map + distances */}
-        <LocationSection content={content} />
-
-        {/* 7. Contact / lead capture */}
-        <ContactSection content={content} onEnquire={openEnquiry} />
+        <Hero              content={activeContent} onEnquire={openEnquiry} />
+        <QuoteSection      content={activeContent} onEnquire={openEnquiry} />
+        <HighlightsSection content={activeContent} />
+        <PlotGrid          onEnquire={openEnquiry} />
+        <AmenitiesSection  content={activeContent} />
+        <LocationSection   content={activeContent} />
+        <ContactSection    content={activeContent} onEnquire={openEnquiry} />
       </main>
 
-      {/* ── Layout chrome ───────────────────────────────────────────────── */}
-      <Footer content={content} />
+      <Footer    content={activeContent} />
+      <StickyBar contact={contact}       onEnquire={openEnquiry} />
+      <FloatingWA contact={contact}      onEnquire={openEnquiry} />
 
-      {/* 5 lead touchpoints: Hero CTA + Per-category + Contact form
-          + Sticky bar (below) + Floating WA (below) */}
-      <StickyBar   contact={contact} onEnquire={openEnquiry} />
-      <FloatingWA  contact={contact} onEnquire={openEnquiry} />
-
-      {/* ── Universal lead modal ────────────────────────────────────────── */}
       <LeadModal
         context={leadCtx}
         onClose={closeEnquiry}
@@ -111,16 +163,17 @@ function CustomerSite() {
 function PageLoader() {
   return (
     <div style={{
-      minHeight:'100vh', display:'flex', alignItems:'center',
-      justifyContent:'center', background:'var(--cream)',
+      minHeight: '100vh', display: 'flex', alignItems: 'center',
+      justifyContent: 'center', background: 'var(--cream)',
     }}>
       <div style={{
-        width:40, height:40, borderRadius:'50%',
-        border:'3px solid var(--green-light)',
-        borderTop:'3px solid var(--green)',
-        animation:'spin 0.8s linear infinite',
-      }}/>
-      <style>{`@keyframes spin{to{transform:rotate(360deg)}}`}</style>
+        width: 40, height: 40, borderRadius: '50%',
+        border: '3px solid var(--green-light)',
+        borderTop: '3px solid var(--green)',
+        animation: 'spin 0.8s linear infinite',
+      }} />
+      <style>{`@keyframes spin { to { transform: rotate(360deg) } }`}</style>
     </div>
   )
 }
+

@@ -1,0 +1,64 @@
+.nav {
+  position: fixed; top:0; left:0; right:0; z-index:900;
+  height: var(--nav-h);
+  background: rgba(30,77,43,0.97); backdrop-filter: blur(12px);
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 5%; border-bottom: 1px solid rgba(201,168,76,0.3);
+  transition: box-shadow 0.3s;
+}
+.scrolled { box-shadow: 0 2px 20px rgba(0,0,0,0.25); }
+
+.logo { display:flex; align-items:center; gap:10px; }
+.logoIcon {
+  width:36px; height:36px; background:var(--gold); border-radius:8px;
+  display:flex; align-items:center; justify-content:center;
+  font-family:'Cormorant Garamond',serif; font-weight:700; color:var(--green); font-size:16px;
+}
+.logoBrand { color:var(--white); font-family:'Cormorant Garamond',serif; font-size:19px; font-weight:600; line-height:1.2; }
+.logoSub   { color:var(--gold-light); font-size:10px; font-weight:300; letter-spacing:1.8px; text-transform:uppercase; }
+
+.links { display:flex; align-items:center; gap:22px; }
+.link  {
+  color:rgba(255,255,255,0.8); font-size:13px; background:none;
+  border:none; cursor:pointer; transition:color 0.2s;
+  font-family:'DM Sans',sans-serif; padding:0;
+}
+.link:hover { color:var(--gold-light); }
+
+.mobileRight { display:none; align-items:center; gap:8px; }
+.phoneBtn {
+  width:36px; height:36px; background:rgba(255,255,255,0.1);
+  border-radius:8px; display:flex; align-items:center; justify-content:center;
+  color:var(--white); transition:background 0.2s;
+}
+.phoneBtn:hover { background:rgba(255,255,255,0.18); }
+.hamburger {
+  width:36px; height:36px; background:rgba(255,255,255,0.08);
+  border:none; border-radius:8px; color:var(--white);
+  display:flex; align-items:center; justify-content:center; cursor:pointer;
+}
+
+.mobileMenu {
+  display:none; position:fixed; top:var(--nav-h); left:0; right:0;
+  background:var(--green); z-index:899;
+  flex-direction:column; border-bottom:1px solid rgba(201,168,76,0.3);
+  max-height:0; overflow:hidden; transition:max-height 0.3s ease;
+}
+.mobileMenu.open { display:flex; max-height:400px; }
+.mobileLink {
+  color:rgba(255,255,255,0.85); font-size:15px; padding:14px 5%;
+  border:none; background:none; text-align:left; cursor:pointer;
+  border-bottom:1px solid rgba(255,255,255,0.07); font-family:'DM Sans',sans-serif;
+  transition:background 0.2s;
+}
+.mobileLink:hover { background:rgba(255,255,255,0.06); }
+.mobileEnquire {
+  background:var(--gold); color:var(--green); font-weight:700;
+  font-size:15px; padding:16px 5%; border:none; text-align:left;
+  cursor:pointer; font-family:'DM Sans',sans-serif;
+}
+
+@media (max-width:900px) {
+  .links { display:none; }
+  .mobileRight { display:flex; }
+}

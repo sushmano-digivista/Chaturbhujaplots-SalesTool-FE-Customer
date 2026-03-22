@@ -17,11 +17,7 @@ import '@/styles/globals.css'
  */
 const queryClient = new QueryClient({
   defaultOptions: {
-    queries: {
-      retry: 1,
-      staleTime: 60_000,
-      throwOnError: false, // use fallback content on error instead of crashing
-    },
+    queries: { retry: 1, staleTime: 60_000, throwOnError: false },
   },
 })
 
@@ -32,12 +28,9 @@ export default function App() {
         position="bottom-center"
         toastOptions={{
           style: {
-            background: 'var(--green)',
-            color: '#fff',
+            background: 'var(--green)', color: '#fff',
             fontFamily: "'DM Sans', sans-serif",
-            fontSize: '14px',
-            borderRadius: '100px',
-            padding: '12px 22px',
+            fontSize: '14px', borderRadius: '100px', padding: '12px 22px',
           },
           success: { iconTheme: { primary: '#C9A84C', secondary: '#fff' } },
         }}
@@ -46,5 +39,3 @@ export default function App() {
     </QueryClientProvider>
   )
 }
-
-

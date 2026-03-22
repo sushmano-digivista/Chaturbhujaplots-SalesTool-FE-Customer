@@ -1,5 +1,8 @@
 export { default as Hero }               from './Hero'
 export { default as PlotGrid }           from './PlotGrid'
+export { default as PortfolioSection }   from './PortfolioSection'
+export { default as GallerySection }     from './GallerySection'
+export { default as VideosSection }      from './VideosSection'
 export { default as HighlightsSection }  from './HighlightsSection'
 export { default as AmenitiesSection }   from './AmenitiesSection'
 export { default as QuoteSection }       from './QuoteSection'

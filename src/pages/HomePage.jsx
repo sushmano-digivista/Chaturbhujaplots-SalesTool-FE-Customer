@@ -10,6 +10,9 @@ import { Navbar, Footer, StickyBar, FloatingWA } from '@/components/layout'
 import {
   Hero,
   PlotGrid,
+  PortfolioSection,
+  GallerySection,
+  VideosSection,
   HighlightsSection,
   AmenitiesSection,
   QuoteSection,
@@ -28,14 +31,14 @@ import PageLoader from '@/components/common/PageLoader'
  *
  * Composition pattern: this file imports and assembles all section components.
  * Each section is self-contained in its own JSX file and can be:
- *   - Reordered by moving a single line here
+ *   - Reordered by moving a single line inside <main>
  *   - Removed by commenting out a single line
- *   - Added elsewhere by importing the same component
+ *   - Reused elsewhere by importing the same component
  *
  * To add a new section:
- *   1. Create `src/components/sections/YourNewSection.jsx`
- *   2. Export it from `src/components/sections/index.js`
- *   3. Import it above and place <YourNewSection /> in <main> below
+ *   1. Create  src/components/sections/YourNewSection.jsx
+ *   2. Export  it from src/components/sections/index.js
+ *   3. Import + place <YourNewSection /> inside <main> below
  */
 export default function HomePage() {
   const { data: content, isLoading, isError } = useContent()
@@ -60,6 +63,9 @@ export default function HomePage() {
       {/* ── Page sections — add / remove / reorder here ───────────────── */}
       <main>
         <Hero              content={activeContent} onEnquire={openEnquiry} />
+        <PortfolioSection  content={activeContent} onEnquire={openEnquiry} />
+        <GallerySection    content={activeContent} />
+        <VideosSection     content={activeContent} />
         <QuoteSection      content={activeContent} onEnquire={openEnquiry} />
         <HighlightsSection content={activeContent} />
         <PlotGrid                                  onEnquire={openEnquiry} />

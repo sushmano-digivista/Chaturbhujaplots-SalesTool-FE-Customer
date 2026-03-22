@@ -290,6 +290,37 @@
 .barName { font-size:13px; font-weight:600; color:#fff; }
 .barAddr { font-size:11px; color:rgba(255,255,255,.5); }
 
+/* ── Venture location tabs ──────────────────────────────────────────────── */
+.ventureTabs {
+  display: flex; flex-wrap: wrap; gap: 10px;
+  margin-bottom: 20px; justify-content: center;
+}
+.ventureTab {
+  display: flex; flex-direction: column; align-items: center; gap: 3px;
+  padding: 10px 20px; border-radius: 12px; border: 2px solid rgba(30,77,43,.15);
+  background: #fff; cursor: pointer; transition: all .2s ease;
+  min-width: 140px;
+}
+.ventureTab:hover { border-color: var(--green); background: var(--green-light); }
+.ventureTabActive {
+  border-color: var(--green) !important;
+  background: var(--green) !important;
+}
+.ventureTabActive .ventureTabDot { background: #fff !important; box-shadow: 0 0 0 3px rgba(255,255,255,.3); }
+.ventureTabActive .ventureTabName { color: #fff !important; }
+.ventureTabActive .ventureTabShort { color: rgba(255,255,255,.75) !important; }
+.ventureTabDot {
+  width: 8px; height: 8px; border-radius: 50%;
+  background: var(--green); flex-shrink: 0;
+}
+.ventureTabName { font-size: 13px; font-weight: 700; color: var(--green); text-align: center; }
+.ventureTabShort { font-size: 11px; color: var(--text-light); text-align: center; }
+
+@media (max-width: 600px) {
+  .ventureTabs { gap: 8px; }
+  .ventureTab { min-width: calc(50% - 8px); padding: 10px 12px; }
+}
+
 .distGrid { display:grid; grid-template-columns:repeat(auto-fill, minmax(280px,1fr)); gap:12px; }
 .distCard {
   background:#fff; border:1px solid rgba(30,77,43,.1); border-radius:12px;

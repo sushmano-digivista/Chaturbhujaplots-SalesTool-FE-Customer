@@ -410,7 +410,8 @@
   align-items: center;
   gap: 12px;
 }
-.pbDir { font-size: 13px; color: rgba(0,0,0,.6); font-weight: 600; white-space: nowrap; }
+.pbDir { font-size: 13px; color: rgba(0,0,0,.6); font-weight: 600; white-space: nowrap; display: flex; align-items: center; gap: 6px; }
+.pbIcon { display: inline-block; width: 18px; text-align: center; flex-shrink: 0; }
 .pbRate { font-size: 13px; color: var(--green); }
 .pbRate strong { font-weight: 700; }
 .pbNote {

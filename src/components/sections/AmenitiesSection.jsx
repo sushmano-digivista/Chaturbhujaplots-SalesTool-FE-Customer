@@ -72,8 +72,8 @@ function FeaturedAmenity({ item, delay }) {
 export default function AmenitiesSection({ content }) {
   const [tab, setTab] = useState('INFRA')
 
-  // Use API data if available, otherwise static fallback
-  const all   = (content?.amenities?.length ? content.amenities : FALLBACK_AMENITIES)
+  // Always use static fallback — API amenities data is overridden by curated list
+  const all   = FALLBACK_AMENITIES
   const items = all.filter((a) => a.tab === tab).sort((a, b) => a.sortOrder - b.sortOrder)
 
   // Count per tab for the badge

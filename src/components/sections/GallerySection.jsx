@@ -12,10 +12,11 @@ import styles from './Sections.module.css'
  */
 
 // Single glob that picks up every image at every depth
-const allImageModules = import.meta.glob(
-  '../assets/gallery/chaturbhuja/**/*.{jpg,jpeg,png,webp,avif}',
-  { eager: true }
-)
+// Using /src/ absolute path - works regardless of where this file lives
+const allImageModules = {
+  ...import.meta.glob('/src/assets/gallery/chaturbhuja/*.{jpg,jpeg,png,webp,avif}', { eager: true }),
+  ...import.meta.glob('/src/assets/gallery/chaturbhuja/**/*.{jpg,jpeg,png,webp,avif}', { eager: true }),
+}
 
 // Build flat sorted list — filename without extension as label
 const ALL_IMAGES = Object.keys(allImageModules)

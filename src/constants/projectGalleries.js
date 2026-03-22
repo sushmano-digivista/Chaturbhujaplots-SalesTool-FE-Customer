@@ -18,16 +18,14 @@
  */
 
 // ── Auto-glob all images ───────────────────────────────────────────────────
-const imageModules = import.meta.glob(
-  '../assets/gallery/chaturbhuja/**/*.{jpg,jpeg,png,webp,avif}',
-  { eager: true }
-)
+const imageModules = {
+  ...import.meta.glob('/src/assets/gallery/chaturbhuja/**/*.{jpg,jpeg,png,webp,avif}', { eager: true }),
+}
 
 // ── Auto-glob all videos ───────────────────────────────────────────────────
-const videoModules = import.meta.glob(
-  '../assets/videos/chaturbhuja/**/*.{mp4,webm,mov}',
-  { eager: true }
-)
+const videoModules = {
+  ...import.meta.glob('/src/assets/videos/chaturbhuja/**/*.{mp4,webm,mov}', { eager: true }),
+}
 
 // Folder name → project ID
 const FOLDER_TO_ID = {

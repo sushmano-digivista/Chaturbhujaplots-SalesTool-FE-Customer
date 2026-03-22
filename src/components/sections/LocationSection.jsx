@@ -31,6 +31,7 @@ const VENTURES = [
       { icon: '🎬', name: 'Cine Studio',                subtitle: 'Govt. proposed, Nandigama',         distance: 'Nearby'},
       { icon: '🚉', name: 'Railway Connectivity',       subtitle: 'Govt. proposed, Amaravati–Paritala',distance: 'Proposed'},
       { icon: '🏭', name: 'Logistic Hub',               subtitle: 'Govt. proposed, Paritala',          distance: 'Proposed'},
+      { icon: '🙏', name: 'Hanuman Temple',              subtitle: 'Just minutes away',                 distance: 'Nearby'  },
     ],
   },
   {

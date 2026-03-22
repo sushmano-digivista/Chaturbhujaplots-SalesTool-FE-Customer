@@ -52,13 +52,15 @@ export default function Navbar({ contact, onEnquire }) {
     <>
       <nav className={`${styles.nav} ${scrolled ? styles.scrolled : ''}`}>
 
-        {/* Logo */}
+        {/* Logo — white pill container guarantees contrast on any bg */}
         <a href="#home" className={styles.logo} onClick={(e) => { e.preventDefault(); scrollTo('home') }}>
-          <img
-            src="/chaturbhuja-logo.webp"
-            alt="Chaturbhuja Properties & Infra"
-            className={styles.logoImg}
-          />
+          <div className={styles.logoWrap}>
+            <img
+              src="/chaturbhuja-logo.webp"
+              alt="Chaturbhuja Properties & Infra"
+              className={styles.logoImg}
+            />
+          </div>
         </a>
 
         {/* Desktop links */}

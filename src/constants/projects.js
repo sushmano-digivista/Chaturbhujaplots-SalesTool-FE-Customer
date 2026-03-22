@@ -202,7 +202,7 @@ export const ACTIVE_PROJECTS = [
     starting:    'Rs.25L',
     tag:         'Hot',
     status:      'APCRDA Proposed Layout | NH-16 Frontage',
-    facings:     { east: 38, west: 32, north: 28, south: 20, corner: 14 },
+    facings:     { east: 79, west: 53 },
     approvals:   ['APCRDA Proposed Layout', 'NH-16 Frontage', '100% Clear Title', 'Vastu Compliant'],
     highlights: [
       'Directly Adjacent to NH-16 National Highway',

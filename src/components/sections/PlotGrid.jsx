@@ -79,10 +79,34 @@ const VENTURE_PLOTS = {
       { dimension: "42'×64'",  areaLabel: '298 Sq Yd', count: 5,   priceFrom: 'Contact us' },
     ],
   },
+  varaha: {
+    label:           'Varaha Virtue',
+    short:           'Pamarru',
+    color:           '#1976D2',
+    totalPlots:      132,
+    priceRangeLabel: '₹Contact us for pricing',
+    categories: {
+      eastFacing: {
+        label: 'East-Facing', description: 'Morning sunlight — ideal for Vaastu and wellness.',
+        count: 79, priceFrom: 'Contact us',
+        plotNumbers: [1,3,5,7,9,10,11,13,15,17,19,20,21,23,25,27,29,30,31,33,35,37,39,40,41,43,45,47,49,50,51,53,55,57,59,60,61,63,65,67,69,70,71,73,75,77,79,80,81,83,85,87,89,90,91,93,95,97,99,100,101,103,105,107,109,110,111,113,115,117,119,120,121,123,125,127,129,130,131],
+      },
+      westFacing: {
+        label: 'West-Facing', description: 'Evening sunlight with open western views.',
+        count: 53, priceFrom: 'Contact us',
+        plotNumbers: [2,4,6,8,12,14,16,18,22,24,26,28,32,34,36,38,42,44,46,48,52,54,56,58,62,64,66,68,72,74,76,78,82,84,86,88,92,94,96,98,102,104,106,108,112,114,116,118,122,124,126,128,132],
+      },
+    },
+    byDimension: [
+      { dimension: "40'×56'", areaLabel: '249 Sq Yd', count: 83, priceFrom: 'Contact us' },
+      { dimension: "50'×33'", areaLabel: '183 Sq Yd', count: 38, priceFrom: 'Contact us' },
+      { dimension: 'Irregular', areaLabel: 'Varies',  count: 11, priceFrom: 'Contact us' },
+    ],
+  },
 }
 
-const VENTURE_KEYS  = ['anjana', 'aparna']
-const VENTURE_COLORS = { anjana: '#1E4D2B', aparna: '#C9A84C' }
+const VENTURE_KEYS   = ['anjana', 'aparna', 'varaha']
+const VENTURE_COLORS = { anjana: '#1E4D2B', aparna: '#C9A84C', varaha: '#1976D2' }
 
 /**
  * PlotGrid — "Explore Available Plots" section with venture switcher.

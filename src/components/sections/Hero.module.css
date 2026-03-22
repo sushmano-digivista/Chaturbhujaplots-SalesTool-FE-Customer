@@ -1,135 +1,188 @@
+/* ── Hero shell ──────────────────────────────────────────────────── */
 .hero {
-  min-height: calc(100vh - var(--nav-h));
-  background:
-    linear-gradient(160deg, rgba(11,36,21,.95) 0%, rgba(30,77,43,.88) 45%, rgba(45,110,64,.82) 100%),
-    url('https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=1600') center/cover;
-  display: grid;
-  grid-template-columns: 1fr 400px;
-  align-items: center;
-  gap: 40px;
-  padding: calc(var(--nav-h) + 60px) 5% 60px;
   position: relative; overflow: hidden;
+  min-height: 100vh;
+  background:
+    linear-gradient(160deg, rgba(8,24,14,.97) 0%, rgba(20,55,32,.94) 45%, rgba(30,77,43,.90) 100%),
+    url('https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=1600') center/cover no-repeat;
+  display: flex; align-items: center;
+  /* Tight top padding — just enough to clear the navbar */
+  padding: calc(var(--nav-h) + 28px) 5% 40px;
 }
+/* Subtle gold dot-grid texture */
 .overlay {
   position: absolute; inset: 0; pointer-events: none;
-  background: repeating-linear-gradient(45deg,rgba(201,168,76,.03) 0,rgba(201,168,76,.03) 1px,transparent 0,transparent 50%) 0 0/24px 24px;
+  background: repeating-linear-gradient(
+    45deg,rgba(201,168,76,.025) 0,rgba(201,168,76,.025) 1px,transparent 0,transparent 44px
+  );
 }
-.heroLeft { position: relative; z-index: 1; }
+/* Film-grain depth */
+.grain {
+  position: absolute; inset: 0; pointer-events: none; opacity: .4;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.08'/%3E%3C/svg%3E");
+}
 
-/* Badges */
-.badges { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 24px; }
+/* ── Centered content column ─────────────────────────────────────── */
+.inner {
+  position: relative; z-index: 1;
+  max-width: 1200px; margin: 0 auto; width: 100%;
+  display: flex; flex-direction: column; gap: 20px;
+}
+
+/* ── Top label ───────────────────────────────────────────────────── */
+.topLabel {
+  display: inline-flex; align-items: center; gap: 8px;
+  font-size: 10px; font-weight: 700; letter-spacing: 3px;
+  text-transform: uppercase; color: rgba(201,168,76,.85);
+}
+.topLabelDot {
+  width: 6px; height: 6px; border-radius: 50%; background: var(--gold);
+  box-shadow: 0 0 8px rgba(201,168,76,.6);
+  animation: pulse 2s ease-in-out infinite;
+}
+@keyframes pulse {
+  0%,100% { transform: scale(1); opacity: 1; }
+  50%      { transform: scale(1.4); opacity: .6; }
+}
+
+/* ── Headline ────────────────────────────────────────────────────── */
+.headlineWrap { max-width: 760px; }
+.headline {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(2.8rem, 5.5vw, 4.4rem);
+  font-weight: 700; color: #fff; line-height: 1.1;
+  margin-bottom: 16px;
+}
+.headline em { color: var(--gold); font-style: italic; }
+.sub {
+  font-size: 15px; color: rgba(255,255,255,.62);
+  line-height: 1.8; max-width: 580px;
+}
+
+/* ── Approval badges ─────────────────────────────────────────────── */
+.badges { display: flex; flex-wrap: wrap; gap: 8px; }
 .badge {
   display: inline-flex; align-items: center; gap: 6px;
-  background: rgba(255,255,255,.1); border: 1px solid rgba(255,255,255,.2);
-  padding: 5px 12px; border-radius: 100px; font-size: 11.5px;
-  color: rgba(255,255,255,.9); font-weight: 500;
+  background: rgba(255,255,255,.07); border: 1px solid rgba(255,255,255,.16);
+  padding: 5px 13px; border-radius: 100px; font-size: 11px;
+  color: rgba(255,255,255,.85); font-weight: 500; backdrop-filter: blur(8px);
 }
-.badgeDot { width: 6px; height: 6px; border-radius: 50%; background: var(--gold); flex-shrink: 0; }
+.badgeDot { width: 5px; height: 5px; border-radius: 50%; background: var(--gold); flex-shrink: 0; }
 
-/* Headline */
-.title {
-  font-family: 'Cormorant Garamond',serif;
-  font-size: clamp(2.4rem,4.5vw,3.6rem); font-weight: 700; color: #fff;
-  line-height: 1.15; margin-bottom: 16px;
-}
-.title em { color: var(--gold); font-style: italic; }
-.desc { font-size: 15px; color: rgba(255,255,255,.72); line-height: 1.8; max-width: 520px; margin-bottom: 28px; }
+/* ── CTA buttons ─────────────────────────────────────────────────── */
+.btns { display: flex; gap: 12px; flex-wrap: wrap; }
+.waBtn { text-decoration: none; }
 
-/* Buttons */
-.btns { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 36px; }
+/* ── Global stats strip ──────────────────────────────────────────── */
+.statsStrip {
+  display: flex; gap: 0;
+  border: 1px solid rgba(255,255,255,.1); border-radius: 14px;
+  overflow: hidden; background: rgba(255,255,255,.04);
+  max-width: 560px;
+}
+.stat {
+  flex: 1; text-align: center; padding: 16px 12px;
+  border-right: 1px solid rgba(255,255,255,.08);
+}
+.stat:last-child { border-right: none; }
+.statNum {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.7rem; font-weight: 700; color: var(--gold); line-height: 1;
+}
+.statLabel { font-size: 10px; color: rgba(255,255,255,.42); margin-top: 4px; letter-spacing: .3px; }
 
-/* Stats */
-.statsBar {
-  display: flex; gap: 40px;
-  border-top: 1px solid rgba(255,255,255,.15); padding-top: 24px;
+/* ── Projects strip ──────────────────────────────────────────────── */
+.projectsStrip {
+  border-top: 1px solid rgba(255,255,255,.1);
+  padding-top: 20px;
 }
-.stat {}
-.statNum { font-family: 'Cormorant Garamond',serif; font-size: 2rem; font-weight: 700; color: var(--gold); line-height: 1; }
-.statLabel { font-size: 11.5px; color: rgba(255,255,255,.65); margin-top: 4px; }
-
-/* ── LIMITED TIME CARD ──────────────────────────────── */
-.limitedCard {
-  background: rgba(10,28,16,.7);
-  backdrop-filter: blur(20px);
-  border: 1.5px solid rgba(201,168,76,.45);
-  border-radius: 20px; padding: 28px;
-  position: relative; z-index: 1; overflow: hidden;
+.stripLabel {
+  display: flex; align-items: center; gap: 8px;
+  font-size: 10px; font-weight: 700; letter-spacing: 2.5px;
+  text-transform: uppercase; color: rgba(255,255,255,.38);
+  margin-bottom: 14px;
 }
-.limitedCard::before {
-  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
-  background: linear-gradient(90deg,#C9A84C,#E8D5A3,#9B7B2E);
+.stripPulse {
+  width: 7px; height: 7px; border-radius: 50%; background: #F6C347;
+  animation: pulse 2s ease-in-out infinite;
 }
 
-.lcTag {
-  display: inline-flex; align-items: center; gap: 7px;
-  font-size: 10px; font-weight: 700; letter-spacing: 3px;
-  text-transform: uppercase; color: var(--gold); margin-bottom: 14px;
+/* ── 4-column project cards ──────────────────────────────────────── */
+.projectCards {
+  display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px;
 }
-.lcPulse {
-  width: 8px; height: 8px; border-radius: 50%; background: var(--gold);
-  animation: pdot 1.2s ease-in-out infinite;
+.projCard {
+  position: relative; overflow: hidden;
+  background: rgba(255,255,255,.07);
+  border: 1px solid rgba(255,255,255,.1);
+  border-radius: 14px; padding: 16px;
+  cursor: pointer;
+  display: flex; flex-direction: column; gap: 8px;
+  transition: border-color .22s, background .22s, box-shadow .22s;
 }
-@keyframes pdot { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.5;transform:scale(.7)} }
+.projCard:hover {
+  background: rgba(255,255,255,.11);
+  border-color: color-mix(in srgb, var(--pc) 55%, transparent);
+  box-shadow: 0 12px 36px rgba(0,0,0,.3),
+              0 0 0 1px color-mix(in srgb, var(--pc) 20%, transparent);
+}
+.projAccentBar {
+  position: absolute; top: 0; left: 0; right: 0; height: 2px;
+  background: var(--pc); opacity: .8;
+  transition: opacity .2s;
+}
+.projCard:hover .projAccentBar { opacity: 1; }
 
-.lcTitle {
-  font-family: 'Cormorant Garamond',serif;
-  font-size: 1.7rem; font-weight: 700; color: #fff; line-height: 1.25; margin-bottom: 10px;
+.projTop { display: flex; align-items: center; justify-content: space-between; }
+.projTag {
+  font-size: 9px; font-weight: 700; letter-spacing: 1.5px;
+  text-transform: uppercase; padding: 3px 8px; border-radius: 100px;
+  border: 1px solid;
 }
-.lcTitle em { color: var(--gold); font-style: italic; }
-.lcDesc { font-size: 13px; color: rgba(255,255,255,.65); line-height: 1.7; margin-bottom: 20px; }
-
-/* Project status row */
-.lcStatus {
-  display: flex; align-items: center; gap: 0;
-  background: rgba(0,0,0,.2); border-radius: 12px; overflow: hidden;
-  margin-bottom: 20px;
+.projAvail {
+  font-size: 9px; font-weight: 600; color: #F6C347;
+  background: rgba(246,195,71,.12); padding: 3px 8px;
+  border-radius: 100px; border: 1px solid rgba(246,195,71,.25);
 }
-.lcStatusCard { flex: 1; text-align: center; padding: 14px 10px; }
-.lcStatusDiv { width: 1px; background: rgba(255,255,255,.12); height: 60px; flex-shrink: 0; }
-.lcStatusIcon { font-size: 18px; margin-bottom: 3px; }
-.lcStatusNum {
-  font-family: 'Cormorant Garamond',serif;
-  font-size: 1.55rem; font-weight: 700; color: var(--gold); line-height: 1;
+
+.projName {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.05rem; font-weight: 700; color: #fff; line-height: 1.2;
 }
-.lcStatusLabel { font-size: 10px; color: rgba(255,255,255,.6); margin-top: 3px; line-height: 1.4; }
-.lcStatusLabel span { color: rgba(255,255,255,.4); }
-
-/* Progress */
-.lcBar { height: 6px; border-radius: 100px; background: rgba(255,255,255,.1); margin-bottom: 8px; overflow: hidden; }
-.lcBarFill { height: 100%; border-radius: 100px; background: linear-gradient(90deg,#C9A84C,#4CAF74); }
-.lcBarLabels { display: flex; justify-content: space-between; font-size: 11px; color: rgba(255,255,255,.55); margin-bottom: 16px; }
-
-/* Mini stats */
-.lcStats { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-bottom: 20px; }
-.lcs { text-align: center; background: rgba(255,255,255,.07); border-radius: 10px; padding: 12px 8px; }
-.lcsNum { font-family: 'Cormorant Garamond',serif; font-size: 1.5rem; font-weight: 700; color: var(--gold); line-height: 1; }
-.lcsLabel { font-size: 10px; color: rgba(255,255,255,.55); margin-top: 3px; }
-
-/* CTA buttons */
-.lcBtns { display: flex; gap: 8px; }
-.lcBtnGold {
-  flex: 1; padding: 12px; border-radius: 10px;
-  background: linear-gradient(135deg,#C9A84C,#E8D5A3);
-  color: var(--green); font-weight: 700; font-size: 13px; text-align: center;
-  border: none; cursor: pointer; transition: all .2s;
+.projLoc {
+  display: flex; align-items: center; gap: 4px;
+  font-size: 10.5px; color: rgba(255,255,255,.42);
 }
-.lcBtnGold:hover { transform: translateY(-1px); box-shadow: 0 4px 16px rgba(201,168,76,.4); }
-.lcBtnWA {
-  padding: 12px 14px; border-radius: 10px;
-  border: 1.5px solid rgba(37,211,102,.4);
-  color: #25D366; font-size: 20px;
+.projFooter {
+  display: flex; align-items: center; justify-content: space-between;
+  padding-top: 8px; border-top: 1px solid rgba(255,255,255,.08);
+  margin-top: auto;
+}
+.projPriceLabel { font-size: 9px; color: rgba(255,255,255,.3); display: block; }
+.projPriceVal { font-family: 'Cormorant Garamond', serif; font-size: 1rem; font-weight: 700; }
+.projArrow {
+  width: 26px; height: 26px; border-radius: 50%;
+  background: rgba(255,255,255,.07); border: 1px solid rgba(255,255,255,.12);
   display: flex; align-items: center; justify-content: center;
-  transition: all .2s;
+  color: rgba(255,255,255,.5);
+  transition: background .2s, color .2s, transform .2s;
 }
-.lcBtnWA:hover { background: rgba(37,211,102,.15); }
+.projCard:hover .projArrow {
+  background: var(--pc); color: #fff; border-color: var(--pc);
+  transform: translateX(2px);
+}
 
-/* Responsive */
-@media (max-width: 900px) {
-  .hero { grid-template-columns: 1fr; padding: 100px 5% 52px; }
-  .limitedCard { margin-top: 8px; }
+/* ── Responsive ──────────────────────────────────────────────────── */
+@media (max-width: 1024px) {
+  .projectCards { grid-template-columns: repeat(2, 1fr); }
 }
-@media (max-width: 768px) {
+@media (max-width: 640px) {
+  .hero { padding: calc(var(--nav-h) + 16px) 5% 32px; }
   .btns { flex-direction: column; }
   .btns .btn { width: 100%; justify-content: center; }
-  .statsBar { gap: 24px; }
+  .projectCards { grid-template-columns: repeat(2, 1fr); }
+  .statsStrip { max-width: 100%; }
+}
+@media (max-width: 480px) {
+  .projectCards { grid-template-columns: 1fr 1fr; }
 }

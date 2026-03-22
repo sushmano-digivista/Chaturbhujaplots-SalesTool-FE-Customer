@@ -150,16 +150,16 @@ export default function Hero({ content, onEnquire }) {
 
         <div className={styles.lcStats}>
           <div className={styles.lcs}>
-            <div className={styles.lcsNum}>{plotsLeft}</div>
-            <div className={styles.lcsLabel}>Plots Left</div>
+            <div className={styles.lcsNum}>25+</div>
+            <div className={styles.lcsLabel}>Years of Trust</div>
           </div>
           <div className={styles.lcs}>
-            <div className={styles.lcsNum}>{soldThisMonth}</div>
-            <div className={styles.lcsLabel}>Sold This Month</div>
+            <div className={styles.lcsNum}>100%</div>
+            <div className={styles.lcsLabel}>Clear Title</div>
           </div>
           <div className={styles.lcs}>
-            <div className={styles.lcsNum}>↑{priceRisePct}%</div>
-            <div className={styles.lcsLabel}>Price Next Qtr</div>
+            <div className={styles.lcsNum}>RERA</div>
+            <div className={styles.lcsLabel}>Registered</div>
           </div>
         </div>
 

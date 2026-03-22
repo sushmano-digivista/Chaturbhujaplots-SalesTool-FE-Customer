@@ -227,7 +227,15 @@ function GalleryTab({ proj }) {
   if (!items.length) return (
     <div className={styles.tabContent}>
       <h2 className={styles.tabTitle}>Gallery</h2>
-      <p style={{ color: 'rgba(0,0,0,0.4)', marginTop: 24 }}>Gallery coming soon.</p>
+      <div style={{ textAlign:'center', padding:'60px 0' }}>
+        <div style={{ fontSize:'3rem', marginBottom:12 }}>📷</div>
+        <div style={{ fontSize:'1.2rem', fontFamily:"'Cormorant Garamond',serif", color:'rgba(0,0,0,0.5)' }}>
+          Gallery <em style={{ color:'var(--gold-dark)' }}>Coming Soon</em>
+        </div>
+        <p style={{ fontSize:13, color:'rgba(0,0,0,0.35)', marginTop:8 }}>
+          Photos will be added shortly.
+        </p>
+      </div>
     </div>
   )
 
@@ -257,10 +265,13 @@ function GalleryTab({ proj }) {
             <div className={styles.lbPanel}>
               <button className={styles.lbClose} onClick={close}><X size={16} /></button>
               {items[lightbox]?.src
-                ? <img src={items[lightbox].src} alt={items[lightbox].label} className={styles.lbFullImg} />
+                ? <img src={items[lightbox].src} alt={items[lightbox]?.label || ''} className={styles.lbFullImg} />
                 : <div className={styles.lbIcon}>{items[lightbox]?.icon}</div>
               }
-              <div className={styles.lbLabel}>{items[lightbox]?.label}</div>
+              {items[lightbox]?.label && items[lightbox].label !== `Photo ${lightbox + 1}`
+                ? <div className={styles.lbLabel}>{items[lightbox].label}</div>
+                : null
+              }
               <div className={styles.lbCount}>{lightbox + 1} / {items.length}</div>
               <div className={styles.lbNav}>
                 <button className={styles.lbBtn}

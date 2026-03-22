@@ -7,37 +7,65 @@ import styles from './Sections.module.css'
 /**
  * GallerySection
  * ─────────────────────────────────────────────────────────────────────────────
- * Images are automatically picked up from /public/gallery/chaturbhuja/
- * via Vite's import.meta.glob — no manifest needed.
+ * Images are loaded from /public/gallery/chaturbhuja/*.*
  *
- * To add/remove images: simply add or remove files from that folder.
- * Supported formats: .jpg  .jpeg  .png  .webp  .avif
+ * To add images: drop any .jpg / .jpeg / .png / .webp file into
+ *   public/gallery/chaturbhuja/
+ *
+ * GALLERY_IMAGES below is the manifest — add an entry for each file you place
+ * in that folder. The path must match the filename exactly.
  */
+const GALLERY_IMAGES = [
+  { src: '/gallery/chaturbhuja/01_entrance_arch.jpg',      label: 'Grand Entrance Arch'       },
+  { src: '/gallery/chaturbhuja/02_avenue_roads.jpg',       label: 'Avenue Lined Roads'        },
+  { src: '/gallery/chaturbhuja/03_park.jpg',               label: 'Green Parks & Gardens'     },
+  { src: '/gallery/chaturbhuja/04_plot_layout.jpg',        label: 'Plot Layout Overview'      },
+  { src: '/gallery/chaturbhuja/05_water_tank.jpg',         label: 'Overhead Tank & Pipeline'  },
+  { src: '/gallery/chaturbhuja/06_street_lights.jpg',      label: 'LED Street Lights'         },
+  { src: '/gallery/chaturbhuja/07_children_play.jpg',      label: "Children's Play Area"      },
+  { src: '/gallery/chaturbhuja/08_jogging_track.jpg',      label: 'Jogging Track'             },
+  { src: '/gallery/chaturbhuja/09_security_gate.jpg',      label: 'Security Gate & Arch'      },
+  { src: '/gallery/chaturbhuja/10_aerial_view.jpg',        label: 'Aerial Layout View'        },
+  { src: '/gallery/chaturbhuja/11_compound_wall.jpg',      label: 'Compound Wall'             },
+  { src: '/gallery/chaturbhuja/12_house_render.jpg',       label: 'House Construction Render' },
+]
 
-// Dynamically import all images from /src/gallery/chaturbhuja/
-// We use eager:true so they are resolved at build time (no lazy chunks)
-const globModules = import.meta.glob(
-  '/public/gallery/chaturbhuja/*.{jpg,jpeg,png,webp,avif}',
-  { eager: true, as: 'url' }
-)
+// Fallback placeholder when an image hasn't been added yet
+function ImgCell({ item, featured, onClick, index }) {
+  const [loaded, setLoaded] = useState(false)
+  const [error,  setError]  = useState(false)
 
-// Sort by filename and build item list
-const GALLERY_IMAGES = Object.keys(globModules)
-  .sort() // alphabetical / numeric order (01_, 02_, ...)
-  .map((path) => ({
-    src:   globModules[path],
-    label: path
-      .split('/').pop()           // get filename
-      .replace(/^\d+_/, '')       // strip leading number prefix (01_, 02_…)
-      .replace(/\.[^.]+$/, '')    // strip extension
-      .replace(/_/g, ' ')         // underscores → spaces
-      .replace(/\b\w/g, (c) => c.toUpperCase()), // Title Case
-  }))
+  return (
+    <motion.div
+      className={`${styles.gCell} ${featured ? styles.gCellFeatured : ''}`}
+      onClick={onClick}
+      whileHover={{ scale: 1.02 }}
+      transition={{ duration: 0.2 }}
+    >
+      {!error ? (
+        <img
+          src={item.src}
+          alt={item.label}
+          className={styles.gImg}
+          style={{ opacity: loaded ? 1 : 0, transition: 'opacity 0.4s' }}
+          onLoad={()  => setLoaded(true)}
+          onError={() => setError(true)}
+        />
+      ) : (
+        /* Placeholder shown until real image is placed in the folder */
+        <div className={styles.gPlaceholder}>
+          <span className={styles.gPlaceholderIcon}>🏞</span>
+        </div>
+      )}
+      <div className={styles.gOverlay}><span className={styles.gOverlayLabel}>{item.label}</span></div>
+    </motion.div>
+  )
+}
 
 export default function GallerySection({ content }) {
   const [lightbox, setLightbox] = useState(null)
 
-  // API gallery takes priority; fall back to local folder images
+  // Prefer API-supplied gallery; fall back to local image manifest
   const apiGallery = content?.gallery || []
   const items = apiGallery.length > 0
     ? apiGallery.map((g) => ({ src: g.thumbnailUrl || g.src, label: g.label }))
@@ -59,8 +87,6 @@ export default function GallerySection({ content }) {
     return () => window.removeEventListener('keydown', fn)
   }, [lightbox])
 
-  if (items.length === 0) return null
-
   return (
     <section className={`section ${styles.galSec}`} id="gallery">
       <div className="sec-hdr">
@@ -71,27 +97,20 @@ export default function GallerySection({ content }) {
         </p>
       </div>
 
+      {/* Masonry grid — first item spans 2 rows (featured) */}
       <div className={styles.galGrid}>
         {items.map((item, idx) => (
-          <motion.div
+          <ImgCell
             key={idx}
-            className={`${styles.gCell} ${idx === 0 ? styles.gCellFeatured : ''}`}
+            item={item}
+            featured={idx === 0}
+            index={idx}
             onClick={() => open(idx)}
-            whileHover={{ scale: 1.02 }}
-            transition={{ duration: 0.2 }}
-          >
-            <img
-              src={item.src}
-              alt={item.label}
-              className={styles.gImg}
-              loading="lazy"
-            />
-            <div className={styles.gOverlay}>{item.label}</div>
-          </motion.div>
+          />
         ))}
       </div>
 
-      {/* Lightbox */}
+      {/* Lightbox portal */}
       {lightbox && createPortal(
         <motion.div
           className={styles.lbOverlay}
@@ -114,7 +133,7 @@ export default function GallerySection({ content }) {
                 initial={{ opacity: 0, scale: 0.96 }}
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0, scale: 0.96 }}
-                transition={{ duration: 0.22 }}
+                transition={{ duration: 0.25 }}
               />
             </AnimatePresence>
             <div className={styles.lbCaption}>

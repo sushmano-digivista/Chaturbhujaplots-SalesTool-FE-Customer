@@ -1,160 +1,155 @@
-import { useNavigate } from 'react-router-dom'
-import { motion }      from 'framer-motion'
-import CountUp         from 'react-countup'
-import { useInView }   from 'react-intersection-observer'
-import { MapPin, ArrowRight } from 'lucide-react'
+import { motion } from 'framer-motion'
+import CountUp from 'react-countup'
+import { useInView } from 'react-intersection-observer'
 import { usePlotSummary } from '@/hooks/useData'
-import { ACTIVE_PROJECTS } from '@/constants/projects'
 import styles from './Hero.module.css'
 
-const ACCENT_COLORS = {
-  accentGold:   '#C9A84C',
-  accentGreen:  '#4CAF74',
-  accentBlue:   '#64B5F6',
-  accentOrange: '#FFB74D',
-}
-
 export default function Hero({ content, onEnquire }) {
-  const { data: summary }     = usePlotSummary()
-  const { ref, inView }       = useInView({ triggerOnce: true, threshold: 0.1 })
-  const navigate              = useNavigate()
-
+  const { data: summary }   = usePlotSummary()
+  const { ref, inView }     = useInView({ triggerOnce: true, threshold: 0.2 })
   const hero    = content?.hero    || {}
   const contact = content?.contact || {}
+  const urgency = content?.urgency || {}
+
   const scrollTo = id => document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' })
 
-  const globalStats = [
-    { value: 10,   suffix: '+',   label: 'Projects'     },
-    { value: 1000, suffix: '+',   label: 'Families'     },
-    { value: 15,   suffix: '+',   label: 'Years Trust'  },
-    { value: 100,  suffix: '%',   label: 'CRDA / RERA'  },
-  ]
-
   return (
-    <section className={styles.hero} id="home" ref={ref}>
+    <section className={styles.hero} id="home">
       <div className={styles.overlay} />
-      <div className={styles.grain} />
 
-      <div className={styles.inner}>
+      {/* LEFT — headline + CTAs */}
+      <motion.div
+        className={styles.heroLeft}
+        ref={ref}
+        initial={{ opacity: 0, y: 24 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.7, ease: [0.4, 0, 0.2, 1] }}>
 
-        {/* ── Top label ──────────────────────────────────────────── */}
-        <motion.div className={styles.topLabel}
-          initial={{ opacity: 0, y: -12 }} animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}>
-          <span className={styles.topLabelDot} />
-          Premium Plot Developments · Andhra Pradesh
-        </motion.div>
-
-        {/* ── Main headline ──────────────────────────────────────── */}
-        <motion.div className={styles.headlineWrap}
-          initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.65, delay: 0.1 }}>
-          <h1 className={styles.headline}>
-            {hero.headline || 'Premium Plots'}<br />
-            Near <em>{hero.subheadline || 'Amaravati'}</em>
-          </h1>
-          <p className={styles.sub}>
-            {hero.description ||
-              "Own a piece of Andhra Pradesh's fastest-growing capital corridor. CRDA approved, RERA registered, clear title — ready for construction today."}
-          </p>
-        </motion.div>
-
-        {/* ── Approval badges ────────────────────────────────────── */}
-        <motion.div className={styles.badges}
-          initial={{ opacity: 0 }} animate={{ opacity: 1 }}
-          transition={{ duration: 0.5, delay: 0.25 }}>
-          {(hero.approvalBadges || ['CRDA Approved · LP No: 35/2025', 'AP RERA · P06060125894', 'Ready for Construction'])
+        <div className={styles.badges}>
+          {(hero.approvalBadges || ['CRDA Approved · LP No: 35/2025','AP RERA · P06060125894','Ready for Construction'])
             .map(b => (
               <span key={b} className={styles.badge}>
-                <span className={styles.badgeDot} />{b}
+                <span className={styles.badgeDot} />
+                {b}
               </span>
             ))}
-        </motion.div>
+        </div>
 
-        {/* ── CTA buttons ────────────────────────────────────────── */}
-        <motion.div className={styles.btns}
-          initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.3 }}>
-          <button className="btn btn-gold" onClick={() => scrollTo('portfolio')}>
-            Explore All Projects
+        <h1 className={styles.title}>
+          {hero.headline || 'Premium Plots Near'}<br />
+          <em>{hero.subheadline || 'Amaravati'}</em>
+        </h1>
+
+        <p className={styles.desc}>
+          {hero.description || "Own a piece of Andhra Pradesh's fastest-growing capital corridor. CRDA Proposed Layout with 100% Clear Title in Paritala — just 8 km from Amaravati, the New State Capital. Avenue-lined roads, 24/7 water, overhead electricity & ready for immediate construction."}
+        </p>
+
+        <div className={styles.btns}>
+          <button className="btn btn-gold" onClick={() => scrollTo('plots')}>
+            View Available Plots
           </button>
           <button className="btn btn-ghost"
             onClick={() => onEnquire({ source: 'HERO_CTA', label: 'Book Site Visit', type: 'SITE_VISIT' })}>
             Book Site Visit
           </button>
-          {contact.whatsapp && (
-            <a href={`https://wa.me/${contact.whatsapp}?text=${encodeURIComponent('Hi, I am interested in your plots near Amaravati. Please share details.')}`}
-              target="_blank" rel="noreferrer" className={`btn btn-ghost ${styles.waBtn}`}>
-              💬 WhatsApp
-            </a>
-          )}
-        </motion.div>
+          <button className="btn btn-ghost"
+            onClick={() => onEnquire({ source: 'HERO_CTA', label: 'Download Brochure', type: 'BROCHURE' })}>
+            Get Brochure
+          </button>
+        </div>
 
-        {/* ── Global stats strip ─────────────────────────────────── */}
-        <motion.div className={styles.statsStrip}
-          initial={{ opacity: 0 }} animate={{ opacity: 1 }}
-          transition={{ duration: 0.5, delay: 0.4 }}>
-          {globalStats.map((s, i) => (
+        <div className={styles.statsBar}>
+          {[
+            { value: summary?.totalPlots || 242, suffix: '',    label: 'Total Plots'    },
+            { value: 8,                           suffix: ' km', label: 'From Amaravati' },
+            { value: summary?.eastFacing?.count || 0, suffix: '', label: 'East-Facing'  },
+          ].map((s, i) => (
             <div key={i} className={styles.stat}>
               <div className={styles.statNum}>
-                {inView
-                  ? <CountUp end={s.value} duration={2} delay={0.4 + i * 0.1} suffix={s.suffix} />
-                  : `0${s.suffix}`}
+                {inView ? <CountUp end={s.value} duration={1.8} suffix={s.suffix} /> : `0${s.suffix}`}
               </div>
               <div className={styles.statLabel}>{s.label}</div>
             </div>
           ))}
-        </motion.div>
+        </div>
+      </motion.div>
 
-        {/* ── Project cards strip ────────────────────────────────── */}
-        <div className={styles.projectsStrip}>
-          <div className={styles.stripLabel}>
-            <span className={styles.stripPulse} />
-            Open for Booking — {ACTIVE_PROJECTS.length} Projects
+      {/* RIGHT — Limited Time card */}
+      <motion.div
+        className={styles.limitedCard}
+        initial={{ opacity: 0, x: 24 }}
+        animate={{ opacity: 1, x: 0 }}
+        transition={{ duration: 0.7, delay: 0.2, ease: [0.4, 0, 0.2, 1] }}>
+
+        <div className={styles.lcTag}>
+          <span className={styles.lcPulse} />
+          Limited Time Offer
+        </div>
+
+        <h3 className={styles.lcTitle}>
+          Plots Closing <em>Fast!</em><br />Lock In Current Rates
+        </h3>
+        <p className={styles.lcDesc}>
+          Prices are set to rise next quarter. Secure your plot today before the revision hits.
+        </p>
+
+        <div className={styles.lcStatus}>
+          <div className={styles.lcStatusCard} style={{ background: 'rgba(201,168,76,.12)' }}>
+            <div className={styles.lcStatusIcon}>🟡</div>
+            <div className={styles.lcStatusNum}>{urgency.openProjects || 4}</div>
+            <div className={styles.lcStatusLabel}>Projects Open<br /><span>For Booking</span></div>
           </div>
-
-          <div className={styles.projectCards}>
-            {ACTIVE_PROJECTS.map((proj, i) => {
-              const accentColor = ACCENT_COLORS[proj.accentClass] || '#C9A84C'
-              return (
-                <motion.div
-                  key={proj.id}
-                  className={styles.projCard}
-                  style={{ '--pc': accentColor }}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.45, delay: 0.5 + i * 0.08 }}
-                  whileHover={{ y: -4 }}
-                  onClick={() => navigate(`/project/${proj.id}`)}
-                >
-                  <div className={styles.projAccentBar} />
-                  <div className={styles.projTop}>
-                    <span className={styles.projTag} style={{ color: accentColor, borderColor: accentColor + '55', background: accentColor + '18' }}>
-                      {proj.tag}
-                    </span>
-                    <span className={styles.projAvail}>Filling Fast</span>
-                  </div>
-                  <div className={styles.projName}>{proj.name}</div>
-                  <div className={styles.projLoc}>
-                    <MapPin size={10} />
-                    {proj.loc}
-                  </div>
-                  <div className={styles.projFooter}>
-                    <div className={styles.projPrice}>
-                      <span className={styles.projPriceLabel}>From</span>
-                      <span className={styles.projPriceVal} style={{ color: accentColor }}>{proj.starting}</span>
-                    </div>
-                    <div className={styles.projArrow}>
-                      <ArrowRight size={13} />
-                    </div>
-                  </div>
-                </motion.div>
-              )
-            })}
+          <div className={styles.lcStatusDiv} />
+          <div className={styles.lcStatusCard} style={{ background: 'rgba(76,175,116,.1)' }}>
+            <div className={styles.lcStatusIcon}>✅</div>
+            <div className={styles.lcStatusNum}>{urgency.completedProjects || 6}</div>
+            <div className={styles.lcStatusLabel}>Projects<br /><span>Completed</span></div>
+          </div>
+          <div className={styles.lcStatusDiv} />
+          <div className={styles.lcStatusCard} style={{ background: 'rgba(100,181,246,.08)' }}>
+            <div className={styles.lcStatusIcon}>🏗️</div>
+            <div className={styles.lcStatusNum}>{urgency.happyFamilies || '1000+'}</div>
+            <div className={styles.lcStatusLabel}>Happy<br /><span>Families</span></div>
           </div>
         </div>
 
-      </div>
+        <div className={styles.lcBar}>
+          <div className={styles.lcBarFill} style={{ width: '42%' }} />
+        </div>
+        <div className={styles.lcBarLabels}>
+          <span>🟡 4 Open for Booking</span>
+          <span>✅ 6 Completed &amp; Sold Out</span>
+        </div>
+
+        <div className={styles.lcStats}>
+          <div className={styles.lcs}>
+            <div className={styles.lcsNum}>{urgency.plotsLeft || 14}</div>
+            <div className={styles.lcsLabel}>Plots Left</div>
+          </div>
+          <div className={styles.lcs}>
+            <div className={styles.lcsNum}>{urgency.soldThisMonth || 6}</div>
+            <div className={styles.lcsLabel}>Sold This Month</div>
+          </div>
+          <div className={styles.lcs}>
+            <div className={styles.lcsNum}>↑{urgency.priceRisePercent || 18}%</div>
+            <div className={styles.lcsLabel}>Price Next Qtr</div>
+          </div>
+        </div>
+
+        <div className={styles.lcBtns}>
+          <button className={styles.lcBtnGold} onClick={() => scrollTo('plots')}>
+            Grab Available Plots →
+          </button>
+          {contact.whatsapp && (
+            <a
+              href={`https://wa.me/${contact.whatsapp}?text=${encodeURIComponent('Hi, I am interested in Anjana Paradise plots near Amaravati. Please share details.')}`}
+              target="_blank" rel="noreferrer"
+              className={styles.lcBtnWA}>
+              💬
+            </a>
+          )}
+        </div>
+      </motion.div>
     </section>
   )
 }

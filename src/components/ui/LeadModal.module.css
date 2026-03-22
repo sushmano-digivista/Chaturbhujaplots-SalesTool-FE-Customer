@@ -117,3 +117,27 @@
   padding: 6px 10px; background: rgba(201,168,76,0.08);
   border-radius: 6px; border-left: 3px solid var(--gold);
 }
+
+/* ── Plot enquiry card ────────────────────────────────────────────── */
+.plotCard {
+  background: linear-gradient(135deg, rgba(30,77,43,0.06) 0%, rgba(201,168,76,0.08) 100%);
+  border: 1px solid rgba(30,77,43,0.15);
+  border-left: 4px solid var(--gold);
+  border-radius: 12px; padding: 16px 18px;
+  margin-bottom: 20px; display: flex; flex-direction: column; gap: 8px;
+}
+.plotCardRow { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+.plotDim {
+  font-family: 'Cormorant Garamond', serif; font-size: 1.6rem;
+  font-weight: 700; color: var(--green); line-height: 1;
+}
+.plotPrice {
+  font-size: 1.1rem; font-weight: 800; color: var(--gold-dark);
+  background: rgba(201,168,76,0.12); padding: 4px 12px;
+  border-radius: 20px; border: 1px solid rgba(201,168,76,0.3);
+}
+.plotArea { font-size: 13px; color: rgba(0,0,0,0.45); font-weight: 500; }
+.plotVenture {
+  font-size: 11px; font-weight: 700; letter-spacing: 0.8px;
+  text-transform: uppercase; color: var(--green); opacity: 0.7;
+}

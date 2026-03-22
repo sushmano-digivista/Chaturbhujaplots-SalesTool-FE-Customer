@@ -16,11 +16,13 @@ const ALL_BROCHURE_URLS = [
   { project: 'Trimbak Oaks',    url: BROCHURES.trimbak },
 ].filter(b => b.url)
 
-const isSiteVisit = ctx => ctx?.type === 'SITE_VISIT'
+const isSiteVisit  = ctx => ctx?.type === 'SITE_VISIT'
+const isPlotEnquiry = ctx => ctx?.type === 'PLOT_ENQUIRY'
 
 export default function LeadModal({ context, onClose, whatsapp }) {
   const isOpen    = !!context
   const isSV      = isSiteVisit(context)
+  const isPE      = isPlotEnquiry(context)
   const { register, handleSubmit, reset, watch, formState: { errors } } = useForm()
   const submitLead  = useSubmitLead()
   const [submitted, setSubmitted]  = useState(false)
@@ -224,6 +226,8 @@ export default function LeadModal({ context, onClose, whatsapp }) {
               <p className={styles.subtitle}>
                 {isSV
                   ? 'Book your free site visit — our executive will welcome you on the day and help you choose the right plot.'
+                  : isPE
+                  ? 'Share your details and our team will call you back with pricing, availability and plot options.'
                   : 'Fill in your details — we\'ll call you back and send the brochure directly.'}
               </p>
             </div>
@@ -245,6 +249,66 @@ export default function LeadModal({ context, onClose, whatsapp }) {
                 )}
                 <button className="btn btn-green btn-full" onClick={onClose} style={{ marginTop:8 }}>Close</button>
               </div>
+
+            ) : isPE ? (
+              /* ══ PLOT ENQUIRY FORM ══ */
+              <form onSubmit={handleSubmit(onBrochureSubmit)} noValidate className={styles.form}>
+
+                {/* Plot summary card */}
+                <div className={styles.plotCard}>
+                  <div className={styles.plotCardRow}>
+                    <div className={styles.plotDim}>{context?.plotSize || context?.category}</div>
+                    <div className={styles.plotPrice}>{context?.priceFrom}</div>
+                  </div>
+                  <div className={styles.plotCardRow}>
+                    <span className={styles.plotArea}>{context?.plotArea}</span>
+                    {context?.venture && <span className={styles.plotVenture}>{context.venture}</span>}
+                  </div>
+                </div>
+
+                <div className="form-group">
+                  <label className="form-label">Your Name *</label>
+                  <input className={`form-input ${errors.name ? 'error' : ''}`}
+                    placeholder="Full name" autoComplete="name"
+                    {...register('name', { required: 'Name is required' })} />
+                  {errors.name && <span className="form-error">{errors.name.message}</span>}
+                </div>
+
+                <div className="form-group">
+                  <label className="form-label">Mobile Number *</label>
+                  <input className={`form-input ${errors.phone ? 'error' : ''}`}
+                    placeholder="+91 XXXXX XXXXX" inputMode="tel" autoComplete="tel"
+                    {...register('phone', {
+                      required: 'Phone number is required',
+                      pattern:  { value:/^[6-9]\d{9}$/, message:'Enter valid 10-digit Indian number' },
+                    })} />
+                  {errors.phone && <span className="form-error">{errors.phone.message}</span>}
+                </div>
+
+                <div className="form-group">
+                  <label className="form-label">Email <span style={{color:'rgba(0,0,0,0.4)',fontWeight:400}}>(optional)</span></label>
+                  <input className="form-input" placeholder="you@example.com"
+                    inputMode="email" autoComplete="email"
+                    {...register('email', {
+                      pattern: { value:/^[^\s@]+@[^\s@]+\.[^\s@]+$/, message:'Enter valid email' },
+                    })} />
+                </div>
+
+                <div className={styles.actions}>
+                  <button type="submit" className="btn btn-green btn-full"
+                    disabled={submitLead.isPending}>
+                    {submitLead.isPending ? 'Sending…' : 'Request Callback'}
+                  </button>
+                  <button type="button" className={styles.waBtn} style={{marginTop:0}}
+                    onClick={() => {
+                      const num = whatsapp || '918977262683'
+                      const txt = `Hi, I am interested in a ${context?.plotSize || context?.category} plot (${context?.plotArea}) in ${context?.venture || 'Chaturbhuja Properties'}. Price: ${context?.priceFrom}. Please share details.`
+                      window.open(\`https://wa.me/\${num}?text=\${encodeURIComponent(txt)}\`, '_blank')
+                    }}>
+                    <MessageCircle size={15} /> WhatsApp Us
+                  </button>
+                </div>
+              </form>
 
             ) : isSV ? (
               /* ══ SITE VISIT FORM ══ */

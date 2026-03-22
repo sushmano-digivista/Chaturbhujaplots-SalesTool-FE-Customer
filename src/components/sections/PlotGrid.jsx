@@ -192,7 +192,7 @@ export default function PlotGrid({ onEnquire }) {
                 <div className={styles.dimPrice} style={{ color }}>{d.priceFrom}</div>
                 <button
                   className={`btn btn-green btn-sm ${styles.dimBtn}`}
-                  onClick={() => onEnquire({ category: d.dimension, source: 'DIMENSION_ENQUIRY', venture: venture.label })}
+                  onClick={() => onEnquire({ source: 'DIMENSION_ENQUIRY', label: 'Enquire About Plot', type: 'PLOT_ENQUIRY', category: d.dimension, plotSize: d.dimension, plotArea: d.areaLabel, priceFrom: d.priceFrom, venture: venture.label })}
                 >
                   Enquire
                 </button>

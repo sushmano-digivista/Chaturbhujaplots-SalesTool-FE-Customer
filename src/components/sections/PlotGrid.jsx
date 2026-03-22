@@ -179,6 +179,7 @@ function PlotVisualGrid({ summary, onEnquire }) {
     if (!summary || !svgRef.current) return
     const svg  = svgRef.current
     // Build a flat map of plotNumber → category color
+    // We normalise keys to uppercase trimmed strings so minor format differences don't matter
     const colorMap = {}
     const meta = {
       eastFacing:  '#C9A84C',
@@ -189,21 +190,33 @@ function PlotVisualGrid({ summary, onEnquire }) {
     }
     ;['eastFacing','westFacing','northFacing','southFacing','cornerPlots'].forEach(key => {
       const cat = summary[key]
-      if (cat?.plotNumbers) cat.plotNumbers.forEach(num => { colorMap[num] = meta[key] })
+      if (cat?.plotNumbers) cat.plotNumbers.forEach(num => {
+        colorMap[String(num).trim().toUpperCase()] = meta[key]
+      })
     })
+
+    // Collect ALL real plot numbers from every category so the grid reflects actual data
+    const allPlotNumbers = []
+    ;['eastFacing','westFacing','northFacing','southFacing','cornerPlots'].forEach(key => {
+      const cat = summary[key]
+      if (cat?.plotNumbers) cat.plotNumbers.forEach(num => allPlotNumbers.push(String(num).trim()))
+    })
+    // De-duplicate while preserving order
+    const uniquePlots = [...new Set(allPlotNumbers)]
+    const total = uniquePlots.length || summary.totalPlots || 24
 
     const cols=6, pw=118, ph=80, gx=8, gy=8, ox=30, oy=28
     let html = '<rect width="900" height="500" fill="#EAF3DE" rx="8"/>'
     html += '<rect x="20" y="210" width="860" height="52" fill="#D4C5A9" opacity="0.5" rx="4"/>'
     html += '<text x="450" y="241" text-anchor="middle" fill="#8a7a5a" font-size="11" font-family="DM Sans,sans-serif" font-weight="500">Main Road — 60ft Wide</text>'
 
-    const total = summary.totalPlots || 24
     for (let i = 0; i < Math.min(total, 24); i++) {
       const c = i % cols, r = Math.floor(i / cols)
       const x = ox + c * (pw + gx)
       const y = r < 2 ? oy + r * (ph + gy) : oy + r * (ph + gy) + 54
-      const num  = `P-${String(i + 1).padStart(3,'0')}`
-      const fill = colorMap[num] || 'rgba(30,77,43,0.25)'
+      // Use actual plot number if available, otherwise fall back to generated label
+      const num  = uniquePlots[i] || `P-${String(i + 1).padStart(3,'0')}`
+      const fill = colorMap[num.toUpperCase()] || 'rgba(30,77,43,0.25)'
       html += `<g class="vp" data-num="${num}" style="cursor:pointer">
         <rect x="${x}" y="${y}" width="${pw}" height="${ph}" fill="${fill}" opacity="0.85" rx="6" stroke="white" stroke-width="1.5"/>
         <text x="${x+pw/2}" y="${y+ph/2}" text-anchor="middle" dominant-baseline="middle" fill="white" font-size="11" font-weight="600" font-family="DM Sans,sans-serif">${num}</text>
@@ -216,10 +229,9 @@ function PlotVisualGrid({ summary, onEnquire }) {
     svg.querySelectorAll('.vp').forEach(el => {
       const num = el.dataset.num
       el.addEventListener('mouseenter', e => {
-        // find which category this plot belongs to
         let catLabel = ''
         ;['eastFacing','westFacing','northFacing','southFacing','cornerPlots'].forEach(k => {
-          if (summary[k]?.plotNumbers?.includes(num)) catLabel = summary[k].label
+          if (summary[k]?.plotNumbers?.map(n => String(n).trim().toUpperCase()).includes(num.toUpperCase())) catLabel = summary[k].label
         })
         const r = svg.getBoundingClientRect()
         setTip({ x: e.clientX - r.left + 12, y: e.clientY - r.top - 20, num, catLabel })
@@ -232,7 +244,7 @@ function PlotVisualGrid({ summary, onEnquire }) {
       el.addEventListener('click', () => {
         let catLabel = ''
         ;['eastFacing','westFacing','northFacing','southFacing','cornerPlots'].forEach(k => {
-          if (summary[k]?.plotNumbers?.includes(num)) catLabel = summary[k].label
+          if (summary[k]?.plotNumbers?.map(n => String(n).trim().toUpperCase()).includes(num.toUpperCase())) catLabel = summary[k].label
         })
         onEnquire({ plotNumber: num, category: catLabel, source:'CATEGORY_ENQUIRY' })
       })

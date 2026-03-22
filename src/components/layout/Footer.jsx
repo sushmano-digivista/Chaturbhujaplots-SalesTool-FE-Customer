@@ -26,7 +26,7 @@ export function Footer({ content }) {
         {/* Quick links */}
         <div>
           <h5 className={styles.colTitle}>Quick Links</h5>
-          {[['Explore Plots','plots'],['Amenities','amenities'],['Gallery','gallery'],['Location','location'],['Contact','contact']].map(([l,id]) => (
+          {[['Explore Plots','plots'],['Amenities','amenities'],['Location','location'],['Contact','contact']].map(([l,id]) => (
             <button key={id} className={styles.link} onClick={() => scrollTo(id)}>{l}</button>
           ))}
         </div>
@@ -42,7 +42,7 @@ export function Footer({ content }) {
       </div>
 
       <div className={styles.bottom}>
-        <span>© 2025 Chaturbhuja Properties &amp; Infra. All rights reserved.</span>
+        <span>© {new Date().getFullYear()} Chaturbhuja Properties &amp; Infra. All rights reserved.</span>
         <span>RERA Registered · CRDA Approved</span>
       </div>
     </footer>
@@ -73,12 +73,10 @@ export function StickyBar({ contact, onEnquire }) {
 }
 
 // ── Floating WhatsApp button ───────────────────────────────────────────────────
-export function FloatingWA({ contact, onEnquire }) {
+export function FloatingWA({ contact }) {
   const openWA = () => {
     const num = contact?.whatsapp || '919999999999'
     window.open(`https://wa.me/${num}?text=${encodeURIComponent('Hi, I am interested in Anjana Paradise plots near Amaravati.')}`, '_blank')
-    // also track as a lead
-    onEnquire({ source:'FLOATING_BUTTON', label:'WhatsApp Float' })
   }
 
   return (

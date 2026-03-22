@@ -2,28 +2,41 @@ import { createPortal }         from 'react-dom'
 import { useEffect, useState }  from 'react'
 import { useForm }               from 'react-hook-form'
 import { motion, AnimatePresence } from 'framer-motion'
-import { X, MessageCircle, Download, Mail, Loader2 } from 'lucide-react'
+import { X, MessageCircle, Download, Mail, Loader2, AlertCircle } from 'lucide-react'
 import { useSubmitLead }         from '@/hooks/useData'
 import { ACTIVE_PROJECTS }       from '@/constants/projects'
 import { BROCHURES }             from '@/constants/brochures'
 import { brochureApi }           from '@/api'
 import styles from './LeadModal.module.css'
 
+// All brochure PDFs for "Any / Not Sure" download
+const ALL_BROCHURE_URLS = [
+  { project: 'Anjana Paradise',  url: BROCHURES.anjana  },
+  { project: 'Aparna Legacy',    url: BROCHURES.aparna  },
+  { project: 'Varaha Virtue',    url: BROCHURES.varaha  },
+  { project: 'Trimbak Oaks',     url: BROCHURES.trimbak },
+].filter(b => b.url)
+
 export default function LeadModal({ context, onClose, whatsapp }) {
   const isOpen    = !!context
   const { register, handleSubmit, reset, watch, formState: { errors } } = useForm()
-  const submitLead   = useSubmitLead()
-  const [submitted,  setSubmitted]  = useState(false)
-  const [emailSent,  setEmailSent]  = useState(false)
-  const [waSent,     setWaSent]     = useState(false)
-  const [sending,    setSending]    = useState(null) // 'email' | 'wa' | null
+  const submitLead  = useSubmitLead()
+  const [submitted, setSubmitted]  = useState(false)
+  const [emailSent, setEmailSent]  = useState(false)
+  const [waSent,    setWaSent]     = useState(false)
+  const [sending,   setSending]    = useState(null) // 'email'|'wa'|null
+  const [ctaErrors, setCtaErrors]  = useState({})   // per-button validation msgs
 
-  const selectedProject  = watch('project') || ''
-  const enteredEmail     = watch('email')    || ''
-  const enteredPhone     = watch('phone')    || ''
-  const enteredName      = watch('name')     || ''
-  const selectedProjObj  = ACTIVE_PROJECTS.find(p => p.name === selectedProject)
-  const brochureUrl      = BROCHURES[selectedProjObj?.id] || BROCHURES[context?.projectId] || BROCHURES.general || null
+  const selectedProject = watch('project')  || ''
+  const enteredEmail    = watch('email')     || ''
+  const enteredPhone    = watch('phone')     || ''
+  const enteredName     = watch('name')      || ''
+
+  const selectedProjObj = ACTIVE_PROJECTS.find(p => p.name === selectedProject)
+  const isAny           = selectedProject === 'Any Project'
+  const brochureUrl     = isAny ? null : (BROCHURES[selectedProjObj?.id] || BROCHURES[context?.projectId] || null)
+
+  const clearCtaError = (key) => setCtaErrors(e => ({ ...e, [key]: '' }))
 
   useEffect(() => {
     document.body.style.overflow = isOpen ? 'hidden' : ''
@@ -37,7 +50,7 @@ export default function LeadModal({ context, onClose, whatsapp }) {
   }, [isOpen, onClose])
 
   useEffect(() => {
-    if (!isOpen) { setSubmitted(false); setEmailSent(false); setWaSent(false); reset() }
+    if (!isOpen) { setSubmitted(false); setEmailSent(false); setWaSent(false); setCtaErrors({}); reset() }
   }, [isOpen])
 
   const onSubmit = async data => {
@@ -55,9 +68,15 @@ export default function LeadModal({ context, onClose, whatsapp }) {
     } catch { reset() }
   }
 
+  // ── Email: requires Name + Email ──────────────────────────────────────────
   const handleEmail = async () => {
-    if (!enteredEmail || sending) return
+    const errs = {}
+    if (!enteredName)  errs.email = 'Please enter your name before sending.'
+    if (!enteredEmail) errs.email = (errs.email ? errs.email + ' ' : '') + 'Please enter your email address.'
+    if (Object.keys(errs).length) { setCtaErrors(errs); return }
+
     setSending('email')
+    clearCtaError('email')
     try {
       await brochureApi.sendEmail({
         email:       enteredEmail,
@@ -66,13 +85,20 @@ export default function LeadModal({ context, onClose, whatsapp }) {
         projectName: selectedProject || context?.category,
       })
       setEmailSent(true)
-    } catch { /* toast shown by axios interceptor */ }
-    finally { setSending(null) }
+    } catch (err) {
+      setCtaErrors(e => ({ ...e, email: err?.response?.data?.message || 'Failed to send email. Please try again.' }))
+    } finally { setSending(null) }
   }
 
+  // ── WhatsApp: requires Name + Mobile ─────────────────────────────────────
   const handleWhatsApp = async () => {
-    if (!enteredPhone || sending) return
+    const errs = {}
+    if (!enteredName)  errs.wa = 'Please enter your name before sending.'
+    if (!enteredPhone) errs.wa = (errs.wa ? errs.wa + ' ' : '') + 'Please enter your mobile number.'
+    if (Object.keys(errs).length) { setCtaErrors(errs); return }
+
     setSending('wa')
+    clearCtaError('wa')
     try {
       const res = await brochureApi.sendWhatsApp({
         phone:       enteredPhone,
@@ -80,17 +106,39 @@ export default function LeadModal({ context, onClose, whatsapp }) {
         projectId:   selectedProjObj?.id || context?.projectId,
         projectName: selectedProject || context?.category,
       })
-      if (res.method === 'deeplink' && res.deepLink) {
-        window.open(res.deepLink, '_blank')
-      }
+      if (res.method === 'deeplink' && res.deepLink) window.open(res.deepLink, '_blank')
       setWaSent(true)
     } catch {
-      // fallback: open wa.me directly
       const num  = whatsapp || '918977262683'
       const text = `Hi, I am interested in ${selectedProject || 'Chaturbhuja Properties'} plots. Please share details.`
       window.open(`https://wa.me/${num}?text=${encodeURIComponent(text)}`, '_blank')
+      setWaSent(true)
+    } finally { setSending(null) }
+  }
+
+  // ── Download: requires Project Interest selected ──────────────────────────
+  const handleDownload = () => {
+    if (!selectedProject) {
+      setCtaErrors(e => ({ ...e, download: 'Please select a project to download its brochure.' }))
+      return
     }
-    finally { setSending(null) }
+    clearCtaError('download')
+    if (isAny) {
+      // Download all available brochures
+      ALL_BROCHURE_URLS.forEach(({ url }, i) => {
+        setTimeout(() => {
+          const a = document.createElement('a')
+          a.href = url; a.download = ''; a.target = '_blank'
+          document.body.appendChild(a); a.click(); document.body.removeChild(a)
+        }, i * 600)
+      })
+    } else if (brochureUrl) {
+      const a = document.createElement('a')
+      a.href = brochureUrl; a.download = ''; a.target = '_blank'
+      document.body.appendChild(a); a.click(); document.body.removeChild(a)
+    } else {
+      setCtaErrors(e => ({ ...e, download: 'Brochure for this project is coming soon.' }))
+    }
   }
 
   return createPortal(
@@ -109,7 +157,6 @@ export default function LeadModal({ context, onClose, whatsapp }) {
               <X size={18} />
             </button>
 
-            {/* Header */}
             <div className={styles.modalHeader}>
               <h3 className={styles.title}>{context?.label || 'Get In Touch'}</h3>
               {context?.category && <span className={styles.catTag}>{context.category}</span>}
@@ -118,17 +165,16 @@ export default function LeadModal({ context, onClose, whatsapp }) {
               </p>
             </div>
 
-            {/* Success state */}
+            {/* ── Success ── */}
             {submitted ? (
               <div className={styles.successBox}>
                 <div className={styles.successIcon}>✅</div>
                 <div className={styles.successTitle}>Thank you!</div>
                 <p className={styles.successMsg}>Our team will call you within 30 minutes.</p>
-                {brochureUrl && (
-                  <a href={brochureUrl} download target="_blank" rel="noreferrer"
-                    className={styles.downloadBtn}>
-                    <Download size={15} /> Download Brochure
-                  </a>
+                {(brochureUrl || isAny) && (
+                  <button type="button" className={styles.downloadBtn} onClick={handleDownload}>
+                    <Download size={15} /> {isAny ? 'Download All Brochures' : 'Download Brochure'}
+                  </button>
                 )}
                 <button className="btn btn-green btn-full" onClick={onClose} style={{ marginTop:8 }}>
                   Close
@@ -157,7 +203,7 @@ export default function LeadModal({ context, onClose, whatsapp }) {
                 </div>
 
                 <div className="form-group">
-                  <label className="form-label">Email (optional — to receive brochure)</label>
+                  <label className="form-label">Email <span style={{color:'rgba(0,0,0,0.4)',fontWeight:400}}>(required for Email Brochure)</span></label>
                   <input className="form-input" placeholder="you@example.com"
                     inputMode="email" autoComplete="email"
                     {...register('email', {
@@ -167,14 +213,20 @@ export default function LeadModal({ context, onClose, whatsapp }) {
                 </div>
 
                 <div className="form-group">
-                  <label className="form-label">Project Interest</label>
-                  <select className="form-input" {...register('project')}>
+                  <label className="form-label">Project Interest <span style={{color:'rgba(0,0,0,0.4)',fontWeight:400}}>(required for Download)</span></label>
+                  <select className="form-input" {...register('project')}
+                    onChange={e => { clearCtaError('download'); register('project').onChange(e) }}>
                     <option value="">Select a project</option>
                     {ACTIVE_PROJECTS.map(p => (
                       <option key={p.id} value={p.name}>{p.name} — {p.loc}</option>
                     ))}
-                    <option value="Any Project">Any / Not Sure Yet</option>
+                    <option value="Any Project">Any / Not Sure Yet — Download All</option>
                   </select>
+                  {isAny && (
+                    <p className={styles.allBrochuresNote}>
+                      📦 {ALL_BROCHURE_URLS.length} brochures will be downloaded
+                    </p>
+                  )}
                 </div>
 
                 {!context?.category && (
@@ -182,14 +234,10 @@ export default function LeadModal({ context, onClose, whatsapp }) {
                     <label className="form-label">Plot Interest</label>
                     <select className="form-input" {...register('category')}>
                       <option value="">Select preference</option>
-                      <option>East-Facing</option>
-                      <option>West-Facing</option>
-                      <option>North-Facing</option>
-                      <option>South-Facing</option>
-                      <option>Corner Plots</option>
-                      <option>30×40 ft</option>
-                      <option>33×50 ft</option>
-                      <option>40×60 ft</option>
+                      <option>East-Facing</option><option>West-Facing</option>
+                      <option>North-Facing</option><option>South-Facing</option>
+                      <option>Corner Plots</option><option>30×40 ft</option>
+                      <option>33×50 ft</option><option>40×60 ft</option>
                       <option>Other</option>
                     </select>
                   </div>
@@ -198,48 +246,50 @@ export default function LeadModal({ context, onClose, whatsapp }) {
                 {/* ── CTAs ── */}
                 <div className={styles.actions}>
 
-                  {/* 1. Email */}
-                  <button type="button" className={styles.emailBtn}
-                    onClick={handleEmail}
-                    disabled={!enteredEmail || sending === 'email' || emailSent}
-                    title={!enteredEmail ? 'Enter your email above to receive brochure' : ''}>
-                    {sending === 'email'
-                      ? <Loader2 size={15} className={styles.spin} />
-                      : <Mail size={15} />}
-                    {emailSent ? 'Brochure Sent ✓' : 'Email Brochure'}
-                  </button>
+                  {/* 1. Email Brochure */}
+                  <div className={styles.ctaGroup}>
+                    <button type="button" className={styles.emailBtn}
+                      onClick={handleEmail} disabled={sending === 'email' || emailSent}>
+                      {sending === 'email' ? <Loader2 size={15} className={styles.spin} /> : <Mail size={15} />}
+                      {emailSent ? 'Brochure Sent ✓' : 'Email Brochure'}
+                    </button>
+                    {ctaErrors.email && (
+                      <p className={styles.ctaError}><AlertCircle size={12} /> {ctaErrors.email}</p>
+                    )}
+                  </div>
 
-                  {/* 2. WhatsApp */}
-                  <button type="button" className={styles.waBtn}
-                    onClick={handleWhatsApp}
-                    disabled={!enteredPhone || sending === 'wa' || waSent}>
-                    {sending === 'wa'
-                      ? <Loader2 size={15} className={styles.spin} />
-                      : <MessageCircle size={15} />}
-                    {waSent ? 'Sent on WhatsApp ✓' : 'WhatsApp Brochure'}
-                  </button>
+                  {/* 2. WhatsApp Brochure */}
+                  <div className={styles.ctaGroup}>
+                    <button type="button" className={styles.waBtn}
+                      onClick={handleWhatsApp} disabled={sending === 'wa' || waSent}>
+                      {sending === 'wa' ? <Loader2 size={15} className={styles.spin} /> : <MessageCircle size={15} />}
+                      {waSent ? 'Sent on WhatsApp ✓' : 'WhatsApp Brochure'}
+                    </button>
+                    {ctaErrors.wa && (
+                      <p className={styles.ctaError}><AlertCircle size={12} /> {ctaErrors.wa}</p>
+                    )}
+                  </div>
 
-                  {/* 3. Download */}
-                  {brochureUrl
-                    ? <a href={brochureUrl} download target="_blank" rel="noreferrer"
-                        className={styles.downloadBtn}>
-                        <Download size={15} /> Download Brochure
-                      </a>
-                    : <button type="button" className={`${styles.downloadBtn} ${styles.disabled}`} disabled>
-                        <Download size={15} /> Download Brochure
-                      </button>
-                  }
+                  {/* 3. Download Brochure */}
+                  <div className={styles.ctaGroup}>
+                    <button type="button" className={styles.downloadBtn} onClick={handleDownload}>
+                      <Download size={15} />
+                      {isAny ? 'Download All Brochures' : 'Download Brochure'}
+                    </button>
+                    {ctaErrors.download && (
+                      <p className={styles.ctaError}><AlertCircle size={12} /> {ctaErrors.download}</p>
+                    )}
+                  </div>
 
-                  {/* Divider */}
                   <div className={styles.divider}><span>or</span></div>
 
-                  {/* 4. Request Callback (primary) */}
+                  {/* 4. Request Callback */}
                   <button type="submit" className="btn btn-green btn-full"
                     disabled={submitLead.isPending}>
                     {submitLead.isPending ? 'Sending…' : 'Request Callback'}
                   </button>
-                </div>
 
+                </div>
               </form>
             )}
           </motion.div>

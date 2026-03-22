@@ -18,11 +18,13 @@ const ALL_BROCHURE_URLS = [
 
 const isSiteVisit  = ctx => ctx?.type === 'SITE_VISIT'
 const isPlotEnquiry = ctx => ctx?.type === 'PLOT_ENQUIRY'
+const isCallback    = ctx => ctx?.type === 'CALLBACK'
 
 export default function LeadModal({ context, onClose, whatsapp }) {
   const isOpen    = !!context
   const isSV      = isSiteVisit(context)
   const isPE      = isPlotEnquiry(context)
+  const isCB      = isCallback(context)
   const { register, handleSubmit, reset, watch, formState: { errors } } = useForm()
   const submitLead  = useSubmitLead()
   const [submitted, setSubmitted]  = useState(false)
@@ -228,6 +230,8 @@ export default function LeadModal({ context, onClose, whatsapp }) {
                   ? 'Book your free site visit — our executive will welcome you on the day and help you choose the right plot.'
                   : isPE
                   ? 'Share your details and our team will call you back with pricing, availability and plot options.'
+                  : isCB
+                  ? 'Leave your number and preferred time — our property advisor will call you back within 30 minutes.'
                   : 'Fill in your details — we\'ll call you back and send the brochure directly.'}
               </p>
             </div>
@@ -240,6 +244,8 @@ export default function LeadModal({ context, onClose, whatsapp }) {
                 <p className={styles.successMsg}>
                   {isSV
                     ? 'Confirmation sent to your phone/email. Our team will call you a day before to confirm the time.'
+                    : isCB
+                    ? 'Our property advisor will call you within 30 minutes during business hours (9am–7pm).'
                     : 'Our team will call you within 30 minutes.'}
                 </p>
                 {!isSV && (brochureUrl || isAny) && (
@@ -249,6 +255,71 @@ export default function LeadModal({ context, onClose, whatsapp }) {
                 )}
                 <button className="btn btn-green btn-full" onClick={onClose} style={{ marginTop:8 }}>Close</button>
               </div>
+
+            ) : isCB ? (
+              /* ══ CALLBACK FORM ══ */
+              <form onSubmit={handleSubmit(onBrochureSubmit)} noValidate className={styles.form}>
+                <div className="form-group">
+                  <label className="form-label">Your Name *</label>
+                  <input className={`form-input ${errors.name ? 'error' : ''}`}
+                    placeholder="Full name" autoComplete="name"
+                    {...register('name', { required: 'Name is required' })} />
+                  {errors.name && <span className="form-error">{errors.name.message}</span>}
+                </div>
+
+                <div className="form-group">
+                  <label className="form-label">Mobile Number *</label>
+                  <input className={`form-input ${errors.phone ? 'error' : ''}`}
+                    placeholder="+91 XXXXX XXXXX" inputMode="tel" autoComplete="tel"
+                    {...register('phone', {
+                      required: 'Phone number is required',
+                      pattern:  { value:/^[6-9]\d{9}$/, message:'Enter valid 10-digit Indian number' },
+                    })} />
+                  {errors.phone && <span className="form-error">{errors.phone.message}</span>}
+                </div>
+
+                <div className="form-group">
+                  <label className="form-label">Best Time to Call</label>
+                  <select className="form-input" {...register('callTime')}>
+                    <option value="">Anytime during business hours</option>
+                    <option value="Morning (9am–12pm)">Morning (9am–12pm)</option>
+                    <option value="Afternoon (12pm–4pm)">Afternoon (12pm–4pm)</option>
+                    <option value="Evening (4pm–7pm)">Evening (4pm–7pm)</option>
+                  </select>
+                </div>
+
+                <div className="form-group">
+                  <label className="form-label">Project Interest</label>
+                  <select className="form-input" {...register('project')}>
+                    <option value="">Select a project (optional)</option>
+                    {ACTIVE_PROJECTS.map(p => (
+                      <option key={p.id} value={p.name}>{p.name} — {p.loc}</option>
+                    ))}
+                    <option value="Any Project">Any / Not Sure Yet</option>
+                  </select>
+                </div>
+
+                <div className={styles.callbackNote}>
+                  <span>📞</span>
+                  <span>Our property advisor will call you within <strong>30 minutes</strong> during business hours (9am–7pm).</span>
+                </div>
+
+                <div className={styles.actions}>
+                  <button type="submit" className="btn btn-green btn-full"
+                    disabled={submitLead.isPending}>
+                    {submitLead.isPending ? 'Requesting…' : '📞 Call Me Back'}
+                  </button>
+                  <button type="button" className={styles.waBtn}
+                    onClick={() => {
+                      const num = whatsapp || '918977262683'
+                      const proj = watch('project') ? ` I am interested in ${watch('project')}.` : ''
+                      const time = watch('callTime') ? ` Best time to reach me: ${watch('callTime')}.` : ''
+                      window.open(`https://wa.me/${num}?text=${encodeURIComponent(`Hi, I would like a callback from Chaturbhuja Properties.${proj}${time} My name is ${watch('name') || ''}.`)}`, '_blank')
+                    }}>
+                    <MessageCircle size={15} /> WhatsApp Instead
+                  </button>
+                </div>
+              </form>
 
             ) : isPE ? (
               /* ══ PLOT ENQUIRY FORM ══ */

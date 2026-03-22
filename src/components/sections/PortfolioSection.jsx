@@ -157,9 +157,9 @@ function ProjectPopup({ proj, onClose, onNavigate }) {
         {/* Stats row */}
         <div className={styles.popupStats}>
           {[
-            { val: proj.starting,  lab: 'Starting From' },
-            { val: proj.total,     lab: 'Total Plots'  },
-            { val: proj.starting,  lab: 'Starting From' },
+            { val: proj.upcoming ? 'Coming Soon' : proj.starting, lab: 'Starting From'  },
+            { val: proj.upcoming ? 'Coming Soon' : proj.total,    lab: 'Total Plots'    },
+            { val: proj.upcoming ? 'Coming Soon' : proj.starting, lab: 'Starting From'  },
           ].map((s, i) => (
             <div key={i} className={styles.pStat}>
               <div className={styles.pStatVal} style={{ color: ac.color }}>{s.val}</div>

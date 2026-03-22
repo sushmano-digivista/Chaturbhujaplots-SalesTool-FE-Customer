@@ -47,12 +47,12 @@ function HomeTab({ proj, onEnquire }) {
         {/* Quick stats */}
         <div className={styles.heroStats}>
           <div className={styles.heroStat}>
-            <div className={styles.hsNum}>{proj.total}</div>
+            <div className={styles.hsNum}>{proj.upcoming ? 'Coming Soon' : proj.total}</div>
             <div className={styles.hsLabel}>Total Plots</div>
           </div>
           <div className={styles.hsDivider} />
           <div className={styles.heroStat}>
-            <div className={styles.hsNum}>{proj.starting}</div>
+            <div className={styles.hsNum}>{proj.upcoming ? 'Coming Soon' : proj.starting}</div>
             <div className={styles.hsLabel}>Starting From</div>
           </div>
         </div>

@@ -17,7 +17,7 @@ export default function HighlightsSection({ content }) {
           Location <em>Advantages</em>
         </h2>
         <p className="sec-sub" style={{ color: 'rgba(255,255,255,0.55)' }}>
-          Strategically situated on one of AP's most promising growth corridors.
+          Four premium ventures across the Krishna–NTR–Guntur corridor — each APCRDA approved, RERA registered, 100% clear title.
         </p>
       </div>
 

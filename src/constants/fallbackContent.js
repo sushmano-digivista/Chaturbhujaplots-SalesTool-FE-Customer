@@ -57,12 +57,15 @@ const FALLBACK_CONTENT = {
   ],
 
   highlights: [
-    { icon: '🛣️', title: 'Adjacent to NH-16',         description: 'Direct frontage to National Highway 16.',                    sortOrder: 1 },
-    { icon: '🏛️', title: '8–12 km from Amaravati',    description: 'Minutes from AP\'s new capital city.',                       sortOrder: 2 },
-    { icon: '🚆', title: 'Railway Connectivity',       description: 'Govt. proposed railway from Amaravati to Paritala.',         sortOrder: 3 },
-    { icon: '🏭', title: 'Paritala Logistic Hub',      description: 'Upcoming Govt. proposed industrial & logistics corridor.',   sortOrder: 4 },
-    { icon: '🎓', title: 'Educational Institutions',   description: 'Amrita Sai, MVR, NRI Medical College within 10 km.',        sortOrder: 5 },
-    { icon: '🏏', title: 'Mulapadu Stadium',           description: 'International-grade cricket stadium nearby.',               sortOrder: 6 },
+    { icon: '🛣', title: 'NH-16 Frontage',              description: 'Anjana Paradise & Varaha Virtue sit directly on NH-16 — excellent road connectivity across AP.', sortOrder: 1 },
+    { icon: '🏛', title: '8–12 km from Amaravati',      description: 'Anjana Paradise (8 km) and Aparna Legacy (12 km) are minutes from AP new capital city — high appreciation potential.', sortOrder: 2 },
+    { icon: '🚆', title: 'Proposed Railway Line',        description: 'Govt. proposed railway from Amaravati to Paritala — directly benefiting Anjana Paradise investors.', sortOrder: 3 },
+    { icon: '🏭', title: 'Logistics & Industrial Hub',  description: 'Proposed Govt. Logistics Hub at Paritala and industrial corridor near Pamarru — rising land values.', sortOrder: 4 },
+    { icon: '🎓', title: 'Educational Hub',             description: 'Amrita Sai, MVR, MIC, NRI Medical College all within 10 km of our ventures — high residential demand.', sortOrder: 5 },
+    { icon: '🏏', title: 'Mulapadu Stadium',            description: 'International-grade cricket stadium near Paritala — a major infrastructure draw for the region.', sortOrder: 6 },
+    { icon: '🚢', title: 'Bandar Port Proximity',       description: 'Varaha Virtue at Pamarru is just 20 km from Bandar Port — strategic for commerce and employment.', sortOrder: 7 },
+    { icon: '💎', title: '100% APCRDA & RERA',          description: 'All four ventures — Anjana Paradise, Trimbak Oaks, Aparna Legacy & Varaha Virtue — are fully APCRDA and RERA approved.', sortOrder: 8 },
+    { icon: '🏠', title: '1200+ Families Settled',      description: '25 years of trust. 15+ delivered projects. Mr. Donepudi Durga Prasad leads Chaturbhuja with integrity and proven results.', sortOrder: 9 },
   ],
 
   amenities: [

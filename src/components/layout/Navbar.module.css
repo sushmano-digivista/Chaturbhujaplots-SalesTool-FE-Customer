@@ -1,129 +1,80 @@
 /* ═══════════════════════════════════════════════════════════════════
-   Navbar — Rich charcoal backdrop · white logo card · gold CTA
+   Navbar — warm parchment mid-tone · logo native · sharp CTAs
    ═══════════════════════════════════════════════════════════════════ */
 
 /* ── Base nav ─────────────────────────────────────────────────────── */
 .nav {
   position: fixed; top: 0; left: 0; right: 0; z-index: 900;
-  height: 68px;
-  display: flex; align-items: center; justify-content: space-between;
-  padding: 0 4%;
-  /* Rich dark charcoal — logo's teal+gold pop against this */
-  background: linear-gradient(180deg, #16202a 0%, #111820 100%);
+  height: var(--nav-h);
+  /* Warm stone-parchment — dark logo colours read clearly at this lightness */
+  background: linear-gradient(180deg, #f4ede0 0%, #ede5d4 100%);
   backdrop-filter: blur(20px);
-  /* Glowing gold bottom accent */
-  border-bottom: 1px solid rgba(201,168,76,0.28);
-  box-shadow:
-    0 1px 0 rgba(201,168,76,0.08),
-    0 8px 32px rgba(0,0,0,0.4),
-    inset 0 1px 0 rgba(255,255,255,0.04);
-  transition: all 0.3s ease;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 5%;
+  /* Warm sage-green bottom rule */
+  border-bottom: 2px solid rgba(30,77,43,0.18);
+  box-shadow: 0 2px 20px rgba(30,77,43,0.08), 0 1px 4px rgba(0,0,0,0.06);
+  transition: box-shadow 0.3s, background 0.3s;
 }
 .scrolled {
-  height: 62px;
-  background: linear-gradient(180deg, #111820 0%, #0e1520 100%);
-  box-shadow:
-    0 1px 0 rgba(201,168,76,0.35),
-    0 12px 48px rgba(0,0,0,0.55),
-    inset 0 1px 0 rgba(255,255,255,0.04);
+  background: linear-gradient(180deg, #efe8da 0%, #e8e0cf 100%);
+  box-shadow: 0 4px 28px rgba(30,77,43,0.12), 0 1px 6px rgba(0,0,0,0.08);
 }
 
-/* ── Logo anchor + white pill container ───────────────────────────── */
+/* ── Logo — direct, no wrapper ────────────────────────────────────── */
 .logo {
   display: flex; align-items: center;
   text-decoration: none; flex-shrink: 0;
+  transition: opacity 0.2s, transform 0.2s;
 }
-/* White frosted card — guarantees the dark-teal+gold logo always pops */
-.logoWrap {
-  display: flex; align-items: center;
-  background: #ffffff;
-  border-radius: 10px;
-  padding: 5px 14px 5px 10px;
-  border: 1px solid rgba(201,168,76,0.25);
-  box-shadow:
-    0 2px 12px rgba(0,0,0,0.25),
-    0 0 0 1px rgba(255,255,255,0.06),
-    0 1px 0 rgba(201,168,76,0.15) inset;
-  transition: box-shadow 0.25s, transform 0.2s;
-  position: relative; overflow: hidden;
-}
-/* Subtle shimmer sweep on the logo card */
-.logoWrap::after {
-  content: '';
-  position: absolute; top: -50%; left: -80%;
-  width: 45%; height: 200%;
-  background: linear-gradient(105deg, transparent 40%, rgba(255,255,255,0.5) 50%, transparent 60%);
-  transform: skewX(-15deg);
-  animation: logoShine 5s ease-in-out infinite;
-}
-@keyframes logoShine {
-  0%,40% { left: -80%; opacity: 0; }
-  42%    { opacity: 1; }
-  65%    { left: 130%; opacity: 0; }
-  100%   { left: 130%; opacity: 0; }
-}
-.logo:hover .logoWrap {
-  box-shadow:
-    0 4px 20px rgba(201,168,76,0.35),
-    0 0 0 1px rgba(201,168,76,0.2),
-    0 1px 0 rgba(201,168,76,0.2) inset;
-  transform: translateY(-1px);
-}
+.logo:hover { opacity: 0.88; transform: translateY(-1px); }
 .logoImg {
-  height: 36px; width: auto; object-fit: contain; display: block;
-  position: relative; z-index: 1;
+  height: 40px; width: auto;
+  object-fit: contain; display: block;
 }
 
-/* ── Desktop links container ──────────────────────────────────────── */
-.links {
-  display: flex; align-items: center; gap: 0;
-}
+/* ── Desktop links ────────────────────────────────────────────────── */
+.links { display: flex; align-items: center; gap: 0; }
 
-/* ── Individual nav link ─────────────────────────────────────────── */
 .link {
   position: relative;
-  color: rgba(255,255,255,0.65);
-  font-size: 13px; background: none; border: none; cursor: pointer;
+  color: rgba(30,77,43,0.72);
+  font-size: 13.5px; background: none; border: none; cursor: pointer;
   padding: 8px 13px;
   font-family: 'DM Sans', sans-serif; font-weight: 500; white-space: nowrap;
   display: flex; align-items: center; gap: 4px;
-  letter-spacing: 0.25px;
+  letter-spacing: 0.2px;
   transition: color 0.2s;
 }
-/* Gold underline sweep */
+/* Forest green underline sweep */
 .link::after {
   content: '';
   position: absolute; bottom: 2px; left: 13px; right: 13px;
-  height: 1.5px;
-  background: linear-gradient(90deg, #C9A84C, #f0d070);
+  height: 2px;
+  background: var(--green);
   border-radius: 2px;
   transform: scaleX(0); transform-origin: left;
   transition: transform 0.28s cubic-bezier(0.4, 0, 0.2, 1);
 }
-.link:hover { color: #fff; }
+.link:hover { color: var(--green); }
 .link:hover::after { transform: scaleX(1); }
-.linkActive { color: #f0c94a !important; }
+.linkActive { color: var(--green) !important; font-weight: 600; }
 .linkActive::after { transform: scaleX(1); }
 
 /* ── Portfolio dropdown trigger ───────────────────────────────────── */
 .dropTrigger {}
-.chevron {
-  transition: transform 0.22s ease;
-  color: rgba(255,255,255,0.3);
-}
-.chevronOpen { transform: rotate(180deg); color: #f0c94a; }
+.chevron { transition: transform 0.22s ease; color: rgba(30,77,43,0.35); }
+.chevronOpen { transform: rotate(180deg); color: var(--green); }
 
 /* ── Dropdown panel ───────────────────────────────────────────────── */
 .dropdown { position: relative; }
 .dropMenu {
   position: absolute; top: calc(100% + 12px); left: 50%;
   transform: translateX(-40%);
-  background: linear-gradient(160deg, #192535 0%, #131e2c 100%);
+  background: linear-gradient(160deg, #0e2416 0%, #0b1c12 100%);
   border: 1px solid rgba(201,168,76,0.22);
   border-radius: 18px; padding: 18px; width: 390px;
-  box-shadow:
-    0 32px 72px rgba(0,0,0,0.65),
-    inset 0 1px 0 rgba(255,255,255,0.07);
+  box-shadow: 0 32px 72px rgba(0,0,0,0.55), inset 0 1px 0 rgba(255,255,255,0.06);
   z-index: 200;
   animation: dropIn 0.2s cubic-bezier(0.22, 1, 0.36, 1);
 }
@@ -135,7 +86,7 @@
 .dropLabel {
   display: flex; align-items: center; gap: 7px;
   font-size: 9.5px; font-weight: 700; letter-spacing: 2.5px;
-  text-transform: uppercase; color: rgba(255,255,255,0.3);
+  text-transform: uppercase; color: rgba(255,255,255,0.32);
   padding: 0 2px 10px; margin-top: 4px;
 }
 .dropLabelDot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
@@ -183,79 +134,76 @@
 .dropViewAll {
   display: block; width: 100%; text-align: center;
   padding: 11px; border-radius: 10px;
-  background: rgba(201,168,76,0.08);
-  color: #d4a93c; font-size: 12px; font-weight: 700; letter-spacing: 0.5px;
+  background: rgba(201,168,76,0.1); color: #d4a93c;
+  font-size: 12px; font-weight: 700; letter-spacing: 0.5px;
   cursor: pointer; font-family: 'DM Sans', sans-serif;
   border: 1px solid rgba(201,168,76,0.2);
   transition: background 0.18s, box-shadow 0.18s;
 }
 .dropViewAll:hover {
-  background: rgba(201,168,76,0.16);
+  background: rgba(201,168,76,0.18);
   box-shadow: 0 0 24px rgba(201,168,76,0.15);
   color: #f0c94a;
 }
 
 /* ══════════════════════════════════════════════════════════════════
-   ENQUIRE NOW — Shiny metallic gold CTA
+   ENQUIRE NOW — Premium forest-green button with gold shimmer
    ══════════════════════════════════════════════════════════════════ */
 .enquireBtn {
   position: relative; overflow: hidden;
-  display: inline-flex; align-items: center; gap: 7px;
-  margin-left: 16px; padding: 10px 20px;
-  /* Metallic gold gradient */
-  background: linear-gradient(135deg, #b8922a 0%, #e4ba52 30%, #f5d470 55%, #e0b040 80%, #b8922a 100%);
-  background-size: 250% 100%;
-  color: #1a0e00;
-  font-size: 13px; font-weight: 800; letter-spacing: 0.6px;
+  display: inline-flex; align-items: center; gap: 8px;
+  margin-left: 16px; padding: 10px 22px;
+  /* Deep forest green base */
+  background: linear-gradient(135deg, #1a5c2e 0%, #2a7a42 45%, #1e6633 100%);
+  background-size: 200% 100%;
+  color: #fff;
+  font-size: 13px; font-weight: 700; letter-spacing: 0.4px;
   border: none; border-radius: 10px; cursor: pointer;
   font-family: 'DM Sans', sans-serif;
-  /* 3-D depth */
   box-shadow:
-    0 1px 0 rgba(255,255,255,0.35) inset,
-    0 -2px 0 rgba(0,0,0,0.3) inset,
-    0 0 0 1px rgba(184,146,42,0.6),
-    0 4px 18px rgba(201,168,76,0.45);
-  transition: transform 0.2s, box-shadow 0.2s, background-position 0.4s;
-  animation: goldPulse 4s ease-in-out infinite;
+    0 1px 0 rgba(255,255,255,0.15) inset,
+    0 -2px 0 rgba(0,0,0,0.2) inset,
+    0 3px 14px rgba(30,77,43,0.4);
+  transition: transform 0.2s, box-shadow 0.25s, background-position 0.4s;
 }
-@keyframes goldPulse {
-  0%,100% { background-position: 0% 50%;   box-shadow: 0 1px 0 rgba(255,255,255,0.35) inset, 0 -2px 0 rgba(0,0,0,0.3) inset, 0 0 0 1px rgba(184,146,42,0.6), 0 4px 18px rgba(201,168,76,0.45); }
-  50%     { background-position: 100% 50%; box-shadow: 0 1px 0 rgba(255,255,255,0.35) inset, 0 -2px 0 rgba(0,0,0,0.3) inset, 0 0 0 1px rgba(184,146,42,0.6), 0 6px 28px rgba(201,168,76,0.65); }
-}
-/* Travelling shine sweep */
+/* Gold shimmer sweep — signature luxury detail */
 .enquireBtn::before {
   content: '';
   position: absolute; top: -50%; left: -80%;
-  width: 40%; height: 200%;
-  background: linear-gradient(105deg, transparent 30%, rgba(255,255,255,0.55) 50%, transparent 70%);
+  width: 45%; height: 200%;
+  background: linear-gradient(105deg, transparent 30%, rgba(201,168,76,0.55) 50%, transparent 70%);
   transform: skewX(-15deg);
   animation: enquireSweep 3.5s ease-in-out infinite;
 }
 @keyframes enquireSweep {
-  0%,30%  { left: -80%; opacity: 0; }
-  32%     { opacity: 1; }
-  60%     { left: 130%; opacity: 0.9; }
-  61%,100% { left: 130%; opacity: 0; }
+  0%,35%  { left: -80%; opacity: 0; }
+  37%     { opacity: 1; }
+  62%     { left: 130%; opacity: 0.8; }
+  63%,100% { left: 130%; opacity: 0; }
+}
+/* Gold bottom accent line on button */
+.enquireBtn::after {
+  content: '';
+  position: absolute; bottom: 0; left: 15%; right: 15%;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, rgba(201,168,76,0.8), transparent);
+  border-radius: 0 0 10px 10px;
 }
 .enquireBtn:hover {
-  transform: translateY(-3px) scale(1.02);
-  box-shadow:
-    0 1px 0 rgba(255,255,255,0.4) inset,
-    0 -2px 0 rgba(0,0,0,0.3) inset,
-    0 0 0 1px rgba(225,185,60,0.8),
-    0 8px 36px rgba(201,168,76,0.7);
+  transform: translateY(-2px);
   background-position: 100% 50%;
+  box-shadow:
+    0 1px 0 rgba(255,255,255,0.18) inset,
+    0 -2px 0 rgba(0,0,0,0.2) inset,
+    0 8px 28px rgba(30,77,43,0.5),
+    0 0 0 1px rgba(30,77,43,0.3);
 }
 .enquireBtn:active {
-  transform: translateY(0) scale(1);
-  box-shadow:
-    0 1px 0 rgba(255,255,255,0.2) inset,
-    0 -1px 0 rgba(0,0,0,0.4) inset,
-    0 0 0 1px rgba(184,146,42,0.5),
-    0 2px 8px rgba(201,168,76,0.3);
+  transform: translateY(0);
+  box-shadow: 0 2px 8px rgba(30,77,43,0.3);
 }
 .enquireArrow {
-  display: inline-block; font-size: 16px;
+  display: inline-block;
   transition: transform 0.22s cubic-bezier(0.4, 0, 0.2, 1);
 }
 .enquireBtn:hover .enquireArrow { transform: translateX(5px); }
@@ -264,42 +212,41 @@
 .mobileRight { display: none; align-items: center; gap: 8px; }
 .phoneBtn {
   width: 36px; height: 36px;
-  background: rgba(255,255,255,0.07); border-radius: 9px;
+  background: rgba(30,77,43,0.1); border-radius: 9px;
   display: flex; align-items: center; justify-content: center;
-  color: rgba(255,255,255,0.75); border: 1px solid rgba(255,255,255,0.1);
+  color: var(--green); border: 1px solid rgba(30,77,43,0.15);
   transition: background 0.2s; text-decoration: none;
 }
-.phoneBtn:hover { background: rgba(255,255,255,0.13); color: #fff; }
+.phoneBtn:hover { background: rgba(30,77,43,0.18); }
 .hamburger {
   width: 36px; height: 36px;
-  background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.1);
-  border-radius: 9px; color: rgba(255,255,255,0.75);
+  background: rgba(30,77,43,0.1); border: 1px solid rgba(30,77,43,0.15);
+  border-radius: 9px; color: var(--green);
   display: flex; align-items: center; justify-content: center; cursor: pointer;
   transition: background 0.2s;
 }
-.hamburger:hover { background: rgba(255,255,255,0.13); color: #fff; }
+.hamburger:hover { background: rgba(30,77,43,0.18); }
 
 /* Mobile slide-out */
 .mobileMenu {
   display: none; position: fixed; top: var(--nav-h); left: 0; right: 0;
-  background: #131e2c;
-  z-index: 899; flex-direction: column;
-  border-bottom: 1px solid rgba(201,168,76,0.2);
+  background: var(--green); z-index: 899; flex-direction: column;
+  border-bottom: 1px solid rgba(201,168,76,0.25);
   max-height: 0; overflow: hidden; transition: max-height 0.3s ease;
 }
 .mobileMenu.open { display: flex; max-height: 520px; }
 .mobileLink {
-  color: rgba(255,255,255,0.78); font-size: 15px; padding: 15px 5%;
+  color: rgba(255,255,255,0.82); font-size: 15px; padding: 15px 5%;
   border: none; background: none; text-align: left; cursor: pointer;
-  border-bottom: 1px solid rgba(255,255,255,0.05);
+  border-bottom: 1px solid rgba(255,255,255,0.06);
   font-family: 'DM Sans', sans-serif; transition: all 0.15s;
 }
-.mobileLink:hover { background: rgba(255,255,255,0.04); color: #fff; padding-left: calc(5% + 6px); }
+.mobileLink:hover { background: rgba(255,255,255,0.05); color: #fff; padding-left: calc(5% + 6px); }
 .mobileEnquire {
-  background: linear-gradient(135deg, #b8922a, #e4ba52, #f5d470);
-  color: #1a0e00; font-weight: 800;
+  background: linear-gradient(135deg, #1a5c2e, #2a7a42);
+  color: #fff; font-weight: 700;
   font-size: 15px; padding: 16px 5%; border: none; text-align: left;
-  cursor: pointer; font-family: 'DM Sans', sans-serif; letter-spacing: 0.3px;
+  cursor: pointer; font-family: 'DM Sans', sans-serif;
 }
 
 @media (max-width: 900px) {

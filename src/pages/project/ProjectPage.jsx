@@ -3,7 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import { ArrowLeft, Phone, MessageCircle, X, Play, Navigation, Menu } from 'lucide-react'
 import { getFacingRows } from '@/constants/facingMap'
-import { PROJECT_GALLERIES } from '@/constants/projectGalleries'
+import { getProjectGallery, getProjectVideos } from '@/constants/projectGalleries'
 import { ACTIVE_PROJECTS } from '@/constants/projects'
 import { useSubmitLead }   from '@/hooks/useData'
 import LeadModal           from '@/components/ui/LeadModal'
@@ -209,7 +209,7 @@ function AmenitiesTab({ proj }) {
 function GalleryTab({ proj }) {
   const [lightbox, setLightbox] = useState(null)
   // Use project-specific real images; fall back to proj.gallery metadata
-  const localImages = PROJECT_GALLERIES[proj.id] || []
+  const localImages = getProjectGallery(proj.id)
   const items = localImages.length > 0 ? localImages : (proj.gallery || [])
   const hasRealImages = localImages.length > 0
   const close = () => setLightbox(null)
@@ -291,7 +291,13 @@ function GalleryTab({ proj }) {
 // ── Videos tab ────────────────────────────────────────────────────────────────
 function VideosTab({ proj }) {
   const [active, setActive] = useState(null)
-  const videos = proj.videos || []
+
+  // Local video files take priority; fall back to proj.videos (YouTube IDs etc.)
+  const localVids  = getProjectVideos(proj.id)
+  const youtubeVids = (proj.videos || []).filter(v => v.type === 'youtube' && v.id && !v.id.includes('dQw4w9WgXcY'))
+  const videos = localVids.length > 0
+    ? localVids.map((v, i) => ({ type: 'local', src: v.src, title: v.label || `Video ${i + 1}`, subtitle: proj.name }))
+    : youtubeVids
 
   useEffect(() => {
     if (!active) return
@@ -299,6 +305,19 @@ function VideosTab({ proj }) {
     window.addEventListener('keydown', h)
     return () => window.removeEventListener('keydown', h)
   }, [active])
+
+  if (!videos.length) return (
+    <div className={styles.tabContent}>
+      <h2 className={styles.tabTitle}>Videos</h2>
+      <div style={{ textAlign:'center', padding:'60px 0' }}>
+        <div style={{ fontSize:'3rem', marginBottom:12 }}>🎬</div>
+        <div style={{ fontSize:'1.2rem', fontFamily:"'Cormorant Garamond',serif", color:'rgba(0,0,0,0.5)' }}>
+          Videos <em style={{ color:'var(--gold-dark)' }}>Coming Soon</em>
+        </div>
+        <p style={{ fontSize:13, color:'rgba(0,0,0,0.35)', marginTop:8 }}>Project videos will be added shortly.</p>
+      </div>
+    </div>
+  )
 
   return (
     <div className={styles.tabContent}>
@@ -308,7 +327,10 @@ function VideosTab({ proj }) {
           <motion.div key={i} className={styles.vidCard}
             whileHover={{ y: -4 }} onClick={() => setActive(v)}>
             <div className={styles.vidThumb}>
-              <div className={styles.vidPlaceholder}><span>🎬</span></div>
+              {v.type === 'youtube'
+                ? <img src={`https://img.youtube.com/vi/${v.id}/hqdefault.jpg`} alt={v.title} className={styles.vidThumbnailImg} />
+                : <div className={styles.vidPlaceholder}><span>🎬</span></div>
+              }
               <div className={styles.vidPlayWrap}>
                 <Play size={22} fill="var(--green)" color="var(--green)" />
               </div>
@@ -334,7 +356,7 @@ function VideosTab({ proj }) {
                   frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                   allowFullScreen title={active.title} />
               ) : (
-                <video src={active.id} controls autoPlay playsInline />
+                <video src={active.src} controls autoPlay playsInline style={{ width:'100%', borderRadius:8 }} />
               )}
             </div>
           </motion.div>

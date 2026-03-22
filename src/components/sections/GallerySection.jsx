@@ -2,79 +2,16 @@ import { useState, useEffect } from 'react'
 import { createPortal } from 'react-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import { X, ChevronLeft, ChevronRight } from 'lucide-react'
+import { PROJECT_GALLERIES } from '@/constants/projectGalleries'
 import styles from './Sections.module.css'
 
-// ── Paritala (Anjana Paradise) ────────────────────────────────────────────────
-import p01 from '@/assets/gallery/chaturbhuja/paritala/001.jpeg'
-import p02 from '@/assets/gallery/chaturbhuja/paritala/002.jpeg'
-import p03 from '@/assets/gallery/chaturbhuja/paritala/003.jpeg'
-import p04 from '@/assets/gallery/chaturbhuja/paritala/004.jpeg'
-import p05 from '@/assets/gallery/chaturbhuja/paritala/005.jpeg'
-import p06 from '@/assets/gallery/chaturbhuja/paritala/006.jpeg'
-import p07 from '@/assets/gallery/chaturbhuja/paritala/007.jpeg'
-import p08 from '@/assets/gallery/chaturbhuja/paritala/008.jpeg'
-import p09 from '@/assets/gallery/chaturbhuja/paritala/009.jpeg'
+/**
+ * Home page gallery — shows all images from all project folders combined.
+ * Drop any image into src/assets/gallery/chaturbhuja/<project>/ to auto-add.
+ */
 
-// ── Chevitikallu (Aparna Legacy) ─────────────────────────────────────────────
-import c01 from '@/assets/gallery/chaturbhuja/chevitikallu/001.jpeg'
-import c02 from '@/assets/gallery/chaturbhuja/chevitikallu/002.jpeg'
-import c03 from '@/assets/gallery/chaturbhuja/chevitikallu/003.jpeg'
-import c04 from '@/assets/gallery/chaturbhuja/chevitikallu/004.jpeg'
-import c05 from '@/assets/gallery/chaturbhuja/chevitikallu/005.jpeg'
-
-// ── Varaha (Varaha Virtue) ────────────────────────────────────────────────────
-import v01 from '@/assets/gallery/chaturbhuja/varaha/001.jpeg'
-import v02 from '@/assets/gallery/chaturbhuja/varaha/002.jpeg'
-import v03 from '@/assets/gallery/chaturbhuja/varaha/003.jpeg'
-import v04 from '@/assets/gallery/chaturbhuja/varaha/004.jpeg'
-import v05 from '@/assets/gallery/chaturbhuja/varaha/005.jpeg'
-import v06 from '@/assets/gallery/chaturbhuja/varaha/006.jpeg'
-import v07 from '@/assets/gallery/chaturbhuja/varaha/007.jpeg'
-import v08 from '@/assets/gallery/chaturbhuja/varaha/008.jpeg'
-import v09 from '@/assets/gallery/chaturbhuja/varaha/009.jpeg'
-import v10 from '@/assets/gallery/chaturbhuja/varaha/010.jpeg'
-import v11 from '@/assets/gallery/chaturbhuja/varaha/011.jpeg'
-import v12 from '@/assets/gallery/chaturbhuja/varaha/012.jpeg'
-import v13 from '@/assets/gallery/chaturbhuja/varaha/013.jpeg'
-import v14 from '@/assets/gallery/chaturbhuja/varaha/014.jpeg'
-import v15 from '@/assets/gallery/chaturbhuja/varaha/015.jpeg'
-import v16 from '@/assets/gallery/chaturbhuja/varaha/016.jpeg'
-
-const GALLERY_IMAGES = [
-  // Paritala
-  { src: p01, label: 'Anjana Paradise — Paritala' },
-  { src: p02, label: 'Anjana Paradise — Paritala' },
-  { src: p03, label: 'Anjana Paradise — Paritala' },
-  { src: p04, label: 'Anjana Paradise — Paritala' },
-  { src: p05, label: 'Anjana Paradise — Paritala' },
-  { src: p06, label: 'Anjana Paradise — Paritala' },
-  { src: p07, label: 'Anjana Paradise — Paritala' },
-  { src: p08, label: 'Anjana Paradise — Paritala' },
-  { src: p09, label: 'Anjana Paradise — Paritala' },
-  // Chevitikallu
-  { src: c01, label: 'Aparna Legacy — Chevitikallu' },
-  { src: c02, label: 'Aparna Legacy — Chevitikallu' },
-  { src: c03, label: 'Aparna Legacy — Chevitikallu' },
-  { src: c04, label: 'Aparna Legacy — Chevitikallu' },
-  { src: c05, label: 'Aparna Legacy — Chevitikallu' },
-  // Varaha
-  { src: v01, label: 'Varaha Virtue — Pamarru' },
-  { src: v02, label: 'Varaha Virtue — Pamarru' },
-  { src: v03, label: 'Varaha Virtue — Pamarru' },
-  { src: v04, label: 'Varaha Virtue — Pamarru' },
-  { src: v05, label: 'Varaha Virtue — Pamarru' },
-  { src: v06, label: 'Varaha Virtue — Pamarru' },
-  { src: v07, label: 'Varaha Virtue — Pamarru' },
-  { src: v08, label: 'Varaha Virtue — Pamarru' },
-  { src: v09, label: 'Varaha Virtue — Pamarru' },
-  { src: v10, label: 'Varaha Virtue — Pamarru' },
-  { src: v11, label: 'Varaha Virtue — Pamarru' },
-  { src: v12, label: 'Varaha Virtue — Pamarru' },
-  { src: v13, label: 'Varaha Virtue — Pamarru' },
-  { src: v14, label: 'Varaha Virtue — Pamarru' },
-  { src: v15, label: 'Varaha Virtue — Pamarru' },
-  { src: v16, label: 'Varaha Virtue — Pamarru' },
-]
+// Combine all project images into one flat list for the home gallery
+const ALL_IMAGES = Object.values(PROJECT_GALLERIES).flat()
 
 export default function GallerySection({ content }) {
   const [lightbox, setLightbox] = useState(null)
@@ -82,7 +19,7 @@ export default function GallerySection({ content }) {
   const apiGallery = content?.gallery || []
   const items = apiGallery.length > 0
     ? apiGallery.map((g) => ({ src: g.thumbnailUrl || g.src, label: g.label }))
-    : GALLERY_IMAGES
+    : ALL_IMAGES
 
   const open  = (idx) => setLightbox({ idx })
   const close = () => setLightbox(null)
@@ -107,7 +44,6 @@ export default function GallerySection({ content }) {
       <div className="sec-hdr">
         <div className="sec-tag" style={{ color: 'var(--gold-dark)' }}>Visual Tour</div>
         <h2 className="sec-title light">Project <em>Gallery</em></h2>
-
       </div>
 
       <div className={styles.galGrid}>

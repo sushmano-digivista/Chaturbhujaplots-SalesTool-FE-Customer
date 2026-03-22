@@ -1,5 +1,5 @@
 import { motion, AnimatePresence } from 'framer-motion'
-import styles from './PlotGrid.module.css'
+import styles from '../sections/PlotGrid.module.css'
 
 /**
  * CategoryCard — expandable card showing a plot category count.

@@ -66,6 +66,7 @@ export const ACTIVE_PROJECTS = [
       { icon: '🏥', name: 'Nimra Medical College',  subtitle: 'Healthcare hub',               distance: '7 km'  },
       { icon: '🏏', name: 'Mulapadu Stadium',       subtitle: 'International Cricket',        distance: '6 km'  },
       { icon: '✈', name: 'Vijayawada Airport',      subtitle: 'Air connectivity',             distance: '22 km' },
+      { icon: '🙏', name: 'Hanuman Temple',         subtitle: 'Shri Paritala Hanuman Temple', distance: '1 km'  },
     ],
     mapEmbedUrl: 'https://maps.google.com/maps?q=Paritala,Andhra+Pradesh,India&t=k&z=14&ie=UTF8&iwloc=&output=embed',
     mapOpenUrl:  'https://maps.google.com/?q=Paritala,Krishna+District,Andhra+Pradesh',

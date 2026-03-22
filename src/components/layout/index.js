@@ -1,0 +1,4 @@
+export { default as Navbar }     from './Navbar'
+export { default as Footer }     from './Footer'
+export { default as StickyBar }  from './StickyBar'
+export { default as FloatingWA } from './FloatingWA'

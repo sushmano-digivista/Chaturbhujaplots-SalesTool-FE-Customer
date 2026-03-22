@@ -72,6 +72,7 @@ export const FACING_META = {
   south:     { label: 'South Facing',      icon: '▼',  color: '#E24B4A' },
   southEast: { label: 'South-East Facing', icon: '↘',  color: '#FFA726' },
   southWest: { label: 'South-West Facing', icon: '↙',  color: '#EF5350' },
+  unverified:{ label: 'To Be Verified',    icon: '?',  color: '#9E9E9E' },
 }
 
 /**

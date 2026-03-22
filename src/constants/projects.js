@@ -137,7 +137,7 @@ export const ACTIVE_PROJECTS = [
     starting:    'Rs.26L',
     tag:         'Limited',
     status:      'APCRDA Proposed Layout',
-    facings:     { east: 88, west: 62, north: 58, south: 45, corner: 20 },
+    facings:     { east: 96, west: 122, north: 16, unverified: 39 },
     approvals:   ['APCRDA Proposed Layout', '100% Vastu Compliant', 'Clear Title', 'RERA Registered'],
     highlights: [
       'Near ORR — excellent AP Capital connectivity',

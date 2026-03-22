@@ -4,10 +4,23 @@ import { useInView } from 'react-intersection-observer'
 import { usePlotSummary } from '@/hooks/useData'
 import styles from './Hero.module.css'
 
+// ── Hardcoded brand constants — never pulled from API ─────────────────────────
+const HEADLINE    = 'Premium Plots in'
+const SUBHEADLINE = 'Andhra Pradesh'
+const DESCRIPTION = "A name rooted in integrity — Chaturbhuja Properties & Infra has been shaping Andhra Pradesh's real estate landscape for 25 years. Under the leadership of Mr. Donepudi Durga Prasad, we have placed 1200+ families in homes they are proud of, across 15+ APCRDA & RERA approved ventures in the Krishna–NTR–Guntur corridor."
+const BADGES      = [
+  'APCRDA Proposed Layout · LP No: 35/2025',
+  'AP RERA · P06060125894',
+  'Ready for Construction',
+]
+const STATS = [
+  { value: 25,   suffix: '+', label: 'Years in Industry'  },
+  { value: 15,   suffix: '+', label: 'Projects Delivered' },
+  { value: 1200, suffix: '+', label: 'Happy Customers'    },
+]
+
 export default function Hero({ content, onEnquire }) {
-  const { data: summary }   = usePlotSummary()
-  const { ref, inView }     = useInView({ triggerOnce: true, threshold: 0.2 })
-  const hero    = content?.hero    || {}
+  const { ref, inView } = useInView({ triggerOnce: true, threshold: 0.2 })
   const contact = content?.contact || {}
   const urgency = content?.urgency || {}
 
@@ -25,24 +38,23 @@ export default function Hero({ content, onEnquire }) {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.7, ease: [0.4, 0, 0.2, 1] }}>
 
+        {/* Approval badges */}
         <div className={styles.badges}>
-          {(hero.approvalBadges || ['APCRDA Proposed Layout · LP No: 35/2025','AP RERA · P06060125894','Ready for Construction'])
-            .map(b => (
-              <span key={b} className={styles.badge}>
-                <span className={styles.badgeDot} />
-                {b}
-              </span>
-            ))}
+          {BADGES.map(b => (
+            <span key={b} className={styles.badge}>
+              <span className={styles.badgeDot} />{b}
+            </span>
+          ))}
         </div>
 
+        {/* Headline — always hardcoded */}
         <h1 className={styles.title}>
-          {hero.headline || 'Premium Plots in'}<br />
-          <em>{hero.subheadline || 'Andhra Pradesh'}</em>
+          {HEADLINE}<br />
+          <em>{SUBHEADLINE}</em>
         </h1>
 
-        <p className={styles.desc}>
-          {hero.description || "A name rooted in integrity — Chaturbhuja Properties & Infra has been shaping Andhra Pradesh's real estate landscape for 25 years. Under the leadership of Mr. Donepudi Durga Prasad, we have placed 1200+ families in homes they are proud of, across 15+ APCRDA & RERA approved ventures in the Krishna–NTR–Guntur corridor."}
-        </p>
+        {/* Description — always hardcoded */}
+        <p className={styles.desc}>{DESCRIPTION}</p>
 
         <div className={styles.btns}>
           <button className="btn btn-gold" onClick={() => scrollTo('plots')}>
@@ -58,15 +70,14 @@ export default function Hero({ content, onEnquire }) {
           </button>
         </div>
 
+        {/* Stats — always hardcoded */}
         <div className={styles.statsBar}>
-          {[
-            { value: 25,   suffix: '+',   label: 'Years in Industry'  },
-            { value: 15,   suffix: '+',   label: 'Projects Delivered' },
-            { value: 1200, suffix: '+',   label: 'Happy Customers'    },
-          ].map((s, i) => (
+          {STATS.map((s, i) => (
             <div key={i} className={styles.stat}>
               <div className={styles.statNum}>
-                {inView ? <CountUp end={s.value} duration={1.8} suffix={s.suffix} /> : `0${s.suffix}`}
+                {inView
+                  ? <CountUp end={s.value} duration={1.8} suffix={s.suffix} />
+                  : `0${s.suffix}`}
               </div>
               <div className={styles.statLabel}>{s.label}</div>
             </div>
@@ -107,27 +118,27 @@ export default function Hero({ content, onEnquire }) {
           </div>
           <div className={styles.lcStatusDiv} />
           <div className={styles.lcStatusCard} style={{ background: 'rgba(100,181,246,.08)' }}>
-            <div className={styles.lcStatusIcon}>🏗️</div>
+            <div className={styles.lcStatusIcon}>🏠</div>
             <div className={styles.lcStatusNum}>{urgency.happyFamilies || '1200+'}</div>
             <div className={styles.lcStatusLabel}>Happy<br /><span>Families</span></div>
           </div>
         </div>
 
         <div className={styles.lcBar}>
-          <div className={styles.lcBarFill} style={{ width: '42%' }} />
+          <div className={styles.lcBarFill} style={{ width: '27%' }} />
         </div>
         <div className={styles.lcBarLabels}>
           <span>🟡 4 Open for Booking</span>
-          <span>✅ 11 Completed &amp; Sold Out</span>
+          <span>✅ 11 Completed &amp; Sold</span>
         </div>
 
         <div className={styles.lcStats}>
           <div className={styles.lcs}>
-            <div className={styles.lcsNum}>{urgency.plotsLeft || 14}</div>
+            <div className={styles.lcsNum}>{urgency.plotsLeft || 68}</div>
             <div className={styles.lcsLabel}>Plots Left</div>
           </div>
           <div className={styles.lcs}>
-            <div className={styles.lcsNum}>{urgency.soldThisMonth || 6}</div>
+            <div className={styles.lcsNum}>{urgency.soldThisMonth || 8}</div>
             <div className={styles.lcsLabel}>Sold This Month</div>
           </div>
           <div className={styles.lcs}>
@@ -137,17 +148,15 @@ export default function Hero({ content, onEnquire }) {
         </div>
 
         <div className={styles.lcBtns}>
-          <button className={styles.lcBtnGold} onClick={() => scrollTo('plots')}>
-            Grab Available Plots →
+          <button className={styles.lcBtnGold} onClick={() => scrollTo('portfolio')}>
+            Explore All Projects →
           </button>
-          {contact.whatsapp && (
-            <a
-              href={`https://wa.me/${contact.whatsapp}?text=${encodeURIComponent('Hi, I am interested in Anjana Paradise plots near Amaravati. Please share details.')}`}
-              target="_blank" rel="noreferrer"
-              className={styles.lcBtnWA}>
-              💬
-            </a>
-          )}
+          <a
+            href={`https://wa.me/${contact.whatsapp || '918977262683'}?text=${encodeURIComponent('Hi, I am interested in Chaturbhuja plots. Please share details.')}`}
+            target="_blank" rel="noreferrer"
+            className={styles.lcBtnWA}>
+            💬
+          </a>
         </div>
       </motion.div>
     </section>

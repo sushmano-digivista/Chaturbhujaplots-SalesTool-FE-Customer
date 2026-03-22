@@ -29,18 +29,62 @@
 }
 
 /* ── Desktop links ────────────────────────────────────────────────── */
-.links { display: flex; align-items: center; gap: 2px; }
+.links { display: flex; align-items: center; gap: 0; }
 
 .link {
-  color: #2a2a2a;
-  font-size: 13.5px; background: none; border: none; cursor: pointer;
-  padding: 7px 12px; border-radius: 8px;
+  position: relative;
+  color: #3a3a3a;
+  font-size: 13px; background: none; border: none; cursor: pointer;
+  padding: 8px 14px;
   font-family: 'DM Sans', sans-serif; font-weight: 500; white-space: nowrap;
-  transition: color 0.15s, background 0.15s;
-  display: flex; align-items: center; gap: 4px; letter-spacing: 0.1px;
+  transition: color 0.22s;
+  display: flex; align-items: center; gap: 4px;
+  letter-spacing: 0.2px;
 }
-.link:hover  { color: var(--green); background: rgba(30,77,43,0.06); }
-.linkActive  { color: var(--green); background: rgba(30,77,43,0.07); }
+/* Animated underline sweep */
+.link::after {
+  content: '';
+  position: absolute; bottom: 2px; left: 14px; right: 14px;
+  height: 2px; background: var(--green);
+  border-radius: 2px;
+  transform: scaleX(0); transform-origin: left;
+  transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.link:hover  { color: var(--green); }
+.link:hover::after  { transform: scaleX(1); }
+.linkActive  { color: var(--green); }
+.linkActive::after  { transform: scaleX(1); }
+
+/* ── Enquire CTA override ─────────────────────────────────────────── */
+.enquireBtn {
+  display: inline-flex; align-items: center; gap: 8px;
+  margin-left: 14px; padding: 9px 20px;
+  background: var(--green);
+  color: #fff;
+  font-size: 13px; font-weight: 700; letter-spacing: 0.3px;
+  border: none; border-radius: 10px; cursor: pointer;
+  font-family: 'DM Sans', sans-serif;
+  position: relative; overflow: hidden;
+  transition: box-shadow 0.25s, transform 0.2s;
+  box-shadow: 0 2px 10px rgba(30,77,43,0.25);
+}
+.enquireBtn::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: linear-gradient(135deg, rgba(255,255,255,0.12) 0%, transparent 60%);
+  opacity: 0; transition: opacity 0.25s;
+}
+.enquireBtn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 22px rgba(30,77,43,0.35);
+}
+.enquireBtn:hover::before { opacity: 1; }
+.enquireBtn:active { transform: translateY(0); }
+.enquireArrow {
+  display: inline-block;
+  transition: transform 0.2s cubic-bezier(0.4,0,0.2,1);
+}
+.enquireBtn:hover .enquireArrow { transform: translateX(4px); }
 
 /* ── Portfolio dropdown trigger ───────────────────────────────────── */
 .dropTrigger { position: relative; }

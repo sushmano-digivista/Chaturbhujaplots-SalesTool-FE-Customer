@@ -130,10 +130,10 @@ export default function Navbar({ contact, onEnquire }) {
           ))}
 
           <button
-            className="btn btn-gold btn-sm"
+            className={styles.enquireBtn}
             onClick={() => onEnquire({ source: 'HERO_CTA', label: 'Enquire Now' })}
           >
-            Enquire Now →
+            Enquire Now <span className={styles.enquireArrow}>→</span>
           </button>
         </div>
 

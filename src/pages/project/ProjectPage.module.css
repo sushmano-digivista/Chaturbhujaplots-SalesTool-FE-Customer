@@ -94,7 +94,10 @@
 .homeTab { display: flex; flex-direction: column; gap: 28px; }
 .heroBanner {
   border-radius: 20px; padding: 40px 36px 36px;
-  background: var(--green); color: #fff; overflow: hidden; position: relative;
+  background: var(--hero-img, var(--green));
+  background-size: cover;
+  background-position: center;
+  color: #fff; overflow: hidden; position: relative;
 }
 .accentGold   .heroBanner,   .heroBanner.accentGold   { border-top: 4px solid #C9A84C; }
 .accentGreen  .heroBanner,   .heroBanner.accentGreen  { border-top: 4px solid #4CAF74; }

@@ -2,36 +2,47 @@ import { useState, useEffect } from 'react'
 import { createPortal } from 'react-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import { X, ChevronLeft, ChevronRight } from 'lucide-react'
-import { PROJECT_GALLERIES } from '@/constants/projectGalleries'
 import styles from './Sections.module.css'
 
 /**
- * Home page gallery — shows all images from all project folders combined.
- * Drop any image into src/assets/gallery/chaturbhuja/<project>/ to auto-add.
+ * Home page gallery — ALL images from ALL subfolders under
+ * src/assets/gallery/chaturbhuja/ (root level + every subfolder).
+ *
+ * Drop any image anywhere in that tree → auto-appears. No code changes needed.
  */
 
-// Combine all project images — filter to image files only (not videos)
+// Single glob that picks up every image at every depth
+const allImageModules = import.meta.glob(
+  '../assets/gallery/chaturbhuja/**/*.{jpg,jpeg,png,webp,avif,JPG,JPEG,PNG,WEBP}',
+  { eager: true }
+)
+
+// Build flat sorted list — filename without extension as label
 const IMAGE_EXTS = /\.(jpg|jpeg|png|webp|avif)$/i
-const ALL_IMAGES = Object.values(PROJECT_GALLERIES)
-  .flat()
-  .filter(item => item.src && IMAGE_EXTS.test(item.src))
+const ALL_IMAGES = Object.keys(allImageModules)
+  .filter(path => IMAGE_EXTS.test(path))
+  .sort()
+  .map(path => ({
+    src:   allImageModules[path].default,
+    label: path.split('/').pop().replace(/\.\w+$/, '').replace(/[-_]/g, ' ').replace(/^\d+\s*/, '').trim() || path.split('/').pop(),
+  }))
 
 export default function GallerySection({ content }) {
   const [lightbox, setLightbox] = useState(null)
 
   const apiGallery = content?.gallery || []
   const items = apiGallery.length > 0
-    ? apiGallery.map((g) => ({ src: g.thumbnailUrl || g.src, label: g.label }))
+    ? apiGallery.map(g => ({ src: g.thumbnailUrl || g.src, label: g.label }))
     : ALL_IMAGES
 
-  const open  = (idx) => setLightbox({ idx })
+  const open  = idx => setLightbox({ idx })
   const close = () => setLightbox(null)
-  const prev  = () => setLightbox((l) => ({ idx: (l.idx - 1 + items.length) % items.length }))
-  const next  = () => setLightbox((l) => ({ idx: (l.idx + 1) % items.length }))
+  const prev  = () => setLightbox(l => ({ idx: (l.idx - 1 + items.length) % items.length }))
+  const next  = () => setLightbox(l => ({ idx: (l.idx + 1) % items.length }))
 
   useEffect(() => {
     if (!lightbox) return
-    const fn = (e) => {
+    const fn = e => {
       if (e.key === 'ArrowLeft')  prev()
       if (e.key === 'ArrowRight') next()
       if (e.key === 'Escape')     close()
@@ -70,7 +81,7 @@ export default function GallerySection({ content }) {
         <motion.div
           className={styles.lbOverlay}
           initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
-          onClick={(e) => { if (e.target === e.currentTarget) close() }}
+          onClick={e => { if (e.target === e.currentTarget) close() }}
         >
           <button className={styles.lbClose} onClick={close}><X size={18} /></button>
           <button className={`${styles.lbNavBtn} ${styles.lbNavLeft}`} onClick={prev}>

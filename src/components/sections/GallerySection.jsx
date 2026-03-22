@@ -10,8 +10,11 @@ import styles from './Sections.module.css'
  * Drop any image into src/assets/gallery/chaturbhuja/<project>/ to auto-add.
  */
 
-// Combine all project images into one flat list for the home gallery
-const ALL_IMAGES = Object.values(PROJECT_GALLERIES).flat()
+// Combine all project images — filter to image files only (not videos)
+const IMAGE_EXTS = /\.(jpg|jpeg|png|webp|avif)$/i
+const ALL_IMAGES = Object.values(PROJECT_GALLERIES)
+  .flat()
+  .filter(item => item.src && IMAGE_EXTS.test(item.src))
 
 export default function GallerySection({ content }) {
   const [lightbox, setLightbox] = useState(null)

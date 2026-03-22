@@ -4,6 +4,7 @@ import { createPortal }  from 'react-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import { X } from 'lucide-react'
 import { ACTIVE_PROJECTS, COMPLETED_PROJECTS } from '@/constants/projects'
+import { getFacingRows } from '@/constants/facingMap'
 import styles from './PortfolioSection.module.css'
 
 const STATS = [
@@ -112,14 +113,7 @@ function ProjectCard({ proj, index, onClick }) {
 function ProjectPopup({ proj, onClose, onNavigate }) {
   const ac = ACCENT[proj.accentClass] || ACCENT.accentGold
 
-  const facings = proj.facings || {}
-  const facingRows = [
-    { label: 'East Facing',  value: facings.east,   color: '#C9A84C' },
-    { label: 'West Facing',  value: facings.west,   color: '#64B5F6' },
-    { label: 'North Facing', value: facings.north,  color: '#4CAF74' },
-    { label: 'South Facing', value: facings.south,  color: '#E24B4A' },
-    { label: 'Corner Plots', value: facings.corner, color: '#9B7B2E' },
-  ].filter((r) => r.value > 0)
+  const facingRows = getFacingRows(proj.facings || {})
   const totalFacing = facingRows.reduce((s, r) => s + r.value, 0)
 
   return createPortal(

@@ -38,3 +38,8 @@ export const brochureApi = {
   sendEmail:    (data) => mediaApi.post('/brochure/email',    data).then(r => r.data),
   sendWhatsApp: (data) => mediaApi.post('/brochure/whatsapp', data).then(r => r.data),
 }
+
+// ── Site Visit API ────────────────────────────────────────────────────────────
+export const siteVisitApi = {
+  book: (data) => mediaApi.post('/site-visit', data).then(r => r.data),
+}

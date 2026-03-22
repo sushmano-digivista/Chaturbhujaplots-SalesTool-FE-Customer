@@ -2,41 +2,47 @@ import { createPortal }         from 'react-dom'
 import { useEffect, useState }  from 'react'
 import { useForm }               from 'react-hook-form'
 import { motion, AnimatePresence } from 'framer-motion'
-import { X, MessageCircle, Download, Mail, Loader2, AlertCircle } from 'lucide-react'
+import { X, MessageCircle, Download, Mail, Loader2, AlertCircle, Calendar } from 'lucide-react'
 import { useSubmitLead }         from '@/hooks/useData'
 import { ACTIVE_PROJECTS }       from '@/constants/projects'
 import { BROCHURES }             from '@/constants/brochures'
-import { brochureApi }           from '@/api'
+import { brochureApi, siteVisitApi } from '@/api'
 import styles from './LeadModal.module.css'
 
-// All brochure PDFs for "Any / Not Sure" download
 const ALL_BROCHURE_URLS = [
-  { project: 'Anjana Paradise',  url: BROCHURES.anjana  },
-  { project: 'Aparna Legacy',    url: BROCHURES.aparna  },
-  { project: 'Varaha Virtue',    url: BROCHURES.varaha  },
-  { project: 'Trimbak Oaks',     url: BROCHURES.trimbak },
+  { project: 'Anjana Paradise', url: BROCHURES.anjana  },
+  { project: 'Aparna Legacy',   url: BROCHURES.aparna  },
+  { project: 'Varaha Virtue',   url: BROCHURES.varaha  },
+  { project: 'Trimbak Oaks',    url: BROCHURES.trimbak },
 ].filter(b => b.url)
+
+const isSiteVisit = ctx => ctx?.type === 'SITE_VISIT'
 
 export default function LeadModal({ context, onClose, whatsapp }) {
   const isOpen    = !!context
+  const isSV      = isSiteVisit(context)
   const { register, handleSubmit, reset, watch, formState: { errors } } = useForm()
   const submitLead  = useSubmitLead()
   const [submitted, setSubmitted]  = useState(false)
   const [emailSent, setEmailSent]  = useState(false)
   const [waSent,    setWaSent]     = useState(false)
-  const [sending,   setSending]    = useState(null) // 'email'|'wa'|null
-  const [ctaErrors, setCtaErrors]  = useState({})   // per-button validation msgs
+  const [sending,   setSending]    = useState(null)
+  const [ctaErrors, setCtaErrors]  = useState({})
 
   const selectedProject = watch('project')  || ''
   const enteredEmail    = watch('email')     || ''
   const enteredPhone    = watch('phone')     || ''
   const enteredName     = watch('name')      || ''
+  const enteredDate     = watch('date')      || ''
 
   const selectedProjObj = ACTIVE_PROJECTS.find(p => p.name === selectedProject)
   const isAny           = selectedProject === 'Any Project'
   const brochureUrl     = isAny ? null : (BROCHURES[selectedProjObj?.id] || BROCHURES[context?.projectId] || null)
 
-  const clearCtaError = (key) => setCtaErrors(e => ({ ...e, [key]: '' }))
+  const clearCtaError = key => setCtaErrors(e => ({ ...e, [key]: '' }))
+
+  // Today's date as min for date picker
+  const todayStr = new Date().toISOString().split('T')[0]
 
   useEffect(() => {
     document.body.style.overflow = isOpen ? 'hidden' : ''
@@ -53,13 +59,34 @@ export default function LeadModal({ context, onClose, whatsapp }) {
     if (!isOpen) { setSubmitted(false); setEmailSent(false); setWaSent(false); setCtaErrors({}); reset() }
   }, [isOpen])
 
-  const onSubmit = async data => {
+  // ── Site Visit submit ────────────────────────────────────────────────────
+  const onSiteVisitSubmit = async data => {
+    try {
+      await siteVisitApi.book({
+        name:    data.name,
+        phone:   data.phone,
+        email:   data.email || undefined,
+        project: data.project || context?.category || undefined,
+        date:    data.date,
+      })
+      // Also save lead to DB
+      await submitLead.mutateAsync({
+        name: data.name, phone: data.phone, email: data.email || undefined,
+        source: 'SITE_VISIT_SCHEDULED', categoryInterest: data.project || context?.category || undefined,
+      }).catch(() => {})
+      setSubmitted(true)
+      reset()
+    } catch (err) {
+      setCtaErrors({ submit: err?.response?.data?.message || 'Booking failed. Please try again.' })
+    }
+  }
+
+  // ── Brochure: Request Callback submit ────────────────────────────────────
+  const onBrochureSubmit = async data => {
     try {
       await submitLead.mutateAsync({
-        name:             data.name,
-        phone:            data.phone,
-        email:            data.email || undefined,
-        source:           context?.source || 'CONTACT_FORM',
+        name: data.name, phone: data.phone, email: data.email || undefined,
+        source: context?.source || 'CONTACT_FORM',
         categoryInterest: context?.category || data.category || undefined,
         projectInterest:  data.project || undefined,
       })
@@ -68,44 +95,34 @@ export default function LeadModal({ context, onClose, whatsapp }) {
     } catch { reset() }
   }
 
-  // ── Email: requires Name + Email ──────────────────────────────────────────
+  // ── Email Brochure ───────────────────────────────────────────────────────
   const handleEmail = async () => {
     const errs = {}
-    if (!enteredName)  errs.email = 'Please enter your name before sending.'
+    if (!enteredName)  errs.email = 'Please enter your name.'
     if (!enteredEmail) errs.email = (errs.email ? errs.email + ' ' : '') + 'Please enter your email address.'
     if (Object.keys(errs).length) { setCtaErrors(errs); return }
-
-    setSending('email')
-    clearCtaError('email')
+    setSending('email'); clearCtaError('email')
     try {
-      await brochureApi.sendEmail({
-        email:       enteredEmail,
-        name:        enteredName,
-        projectId:   selectedProjObj?.id || context?.projectId,
-        projectName: selectedProject || context?.category,
-      })
+      await brochureApi.sendEmail({ email: enteredEmail, name: enteredName,
+        projectId: selectedProjObj?.id || context?.projectId,
+        projectName: selectedProject || context?.category })
       setEmailSent(true)
     } catch (err) {
-      setCtaErrors(e => ({ ...e, email: err?.response?.data?.message || 'Failed to send email. Please try again.' }))
+      setCtaErrors(e => ({ ...e, email: err?.response?.data?.message || 'Failed to send email.' }))
     } finally { setSending(null) }
   }
 
-  // ── WhatsApp: requires Name + Mobile ─────────────────────────────────────
+  // ── WhatsApp Brochure ────────────────────────────────────────────────────
   const handleWhatsApp = async () => {
     const errs = {}
-    if (!enteredName)  errs.wa = 'Please enter your name before sending.'
+    if (!enteredName)  errs.wa = 'Please enter your name.'
     if (!enteredPhone) errs.wa = (errs.wa ? errs.wa + ' ' : '') + 'Please enter your mobile number.'
     if (Object.keys(errs).length) { setCtaErrors(errs); return }
-
-    setSending('wa')
-    clearCtaError('wa')
+    setSending('wa'); clearCtaError('wa')
     try {
-      const res = await brochureApi.sendWhatsApp({
-        phone:       enteredPhone,
-        name:        enteredName,
-        projectId:   selectedProjObj?.id || context?.projectId,
-        projectName: selectedProject || context?.category,
-      })
+      const res = await brochureApi.sendWhatsApp({ phone: enteredPhone, name: enteredName,
+        projectId: selectedProjObj?.id || context?.projectId,
+        projectName: selectedProject || context?.category })
       if (res.method === 'deeplink' && res.deepLink) window.open(res.deepLink, '_blank')
       setWaSent(true)
     } catch {
@@ -116,30 +133,74 @@ export default function LeadModal({ context, onClose, whatsapp }) {
     } finally { setSending(null) }
   }
 
-  // ── Download: requires Project Interest selected ──────────────────────────
+  // ── Download Brochure ────────────────────────────────────────────────────
   const handleDownload = () => {
     if (!selectedProject) {
-      setCtaErrors(e => ({ ...e, download: 'Please select a project to download its brochure.' }))
-      return
+      setCtaErrors(e => ({ ...e, download: 'Please select a project first.' })); return
     }
     clearCtaError('download')
-    if (isAny) {
-      // Download all available brochures
-      ALL_BROCHURE_URLS.forEach(({ url }, i) => {
-        setTimeout(() => {
-          const a = document.createElement('a')
-          a.href = url; a.download = ''; a.target = '_blank'
-          document.body.appendChild(a); a.click(); document.body.removeChild(a)
-        }, i * 600)
-      })
-    } else if (brochureUrl) {
+    const urls = isAny ? ALL_BROCHURE_URLS.map(b => b.url) : (brochureUrl ? [brochureUrl] : [])
+    if (!urls.length) { setCtaErrors(e => ({ ...e, download: 'Brochure coming soon.' })); return }
+    urls.forEach((url, i) => setTimeout(() => {
       const a = document.createElement('a')
-      a.href = brochureUrl; a.download = ''; a.target = '_blank'
+      a.href = url; a.download = ''; a.target = '_blank'
       document.body.appendChild(a); a.click(); document.body.removeChild(a)
-    } else {
-      setCtaErrors(e => ({ ...e, download: 'Brochure for this project is coming soon.' }))
-    }
+    }, i * 600))
   }
+
+  // ── Shared form fields ───────────────────────────────────────────────────
+  const renderCommonFields = () => (
+    <>
+      <div className="form-group">
+        <label className="form-label">Your Name *</label>
+        <input className={`form-input ${errors.name ? 'error' : ''}`}
+          placeholder="Full name" autoComplete="name"
+          {...register('name', { required: 'Name is required' })} />
+        {errors.name && <span className="form-error">{errors.name.message}</span>}
+      </div>
+      <div className="form-group">
+        <label className="form-label">Mobile Number *</label>
+        <input className={`form-input ${errors.phone ? 'error' : ''}`}
+          placeholder="+91 XXXXX XXXXX" inputMode="tel" autoComplete="tel"
+          {...register('phone', {
+            required: 'Phone number is required',
+            pattern:  { value:/^[6-9]\d{9}$/, message:'Enter valid 10-digit Indian number' },
+          })} />
+        {errors.phone && <span className="form-error">{errors.phone.message}</span>}
+      </div>
+      <div className="form-group">
+        <label className="form-label">
+          Email
+          <span style={{ color:'rgba(0,0,0,0.4)', fontWeight:400, marginLeft:6 }}>
+            {isSV ? '(optional — confirmation will be sent)' : '(required for Email Brochure)'}
+          </span>
+        </label>
+        <input className="form-input" placeholder="you@example.com"
+          inputMode="email" autoComplete="email"
+          {...register('email', {
+            pattern: { value:/^[^\s@]+@[^\s@]+\.[^\s@]+$/, message:'Enter valid email' },
+          })} />
+        {errors.email && <span className="form-error">{errors.email.message}</span>}
+      </div>
+      <div className="form-group">
+        <label className="form-label">
+          Project Interest
+          {!isSV && <span style={{ color:'rgba(0,0,0,0.4)', fontWeight:400, marginLeft:6 }}>(required for Download)</span>}
+        </label>
+        <select className="form-input" {...register('project')}
+          onChange={e => { clearCtaError('download'); register('project').onChange(e) }}>
+          <option value="">Select a project</option>
+          {ACTIVE_PROJECTS.map(p => (
+            <option key={p.id} value={p.name}>{p.name} — {p.loc}</option>
+          ))}
+          <option value="Any Project">{isSV ? 'Any / Not Sure Yet' : 'Any / Not Sure Yet — Download All'}</option>
+        </select>
+        {!isSV && isAny && (
+          <p className={styles.allBrochuresNote}>📦 {ALL_BROCHURE_URLS.length} brochures will be downloaded</p>
+        )}
+      </div>
+    </>
+  )
 
   return createPortal(
     <AnimatePresence>
@@ -161,73 +222,68 @@ export default function LeadModal({ context, onClose, whatsapp }) {
               <h3 className={styles.title}>{context?.label || 'Get In Touch'}</h3>
               {context?.category && <span className={styles.catTag}>{context.category}</span>}
               <p className={styles.subtitle}>
-                Fill in your details — we'll call you back and send the brochure directly.
+                {isSV
+                  ? 'Book your free site visit — our executive will welcome you on the day and help you choose the right plot.'
+                  : 'Fill in your details — we\'ll call you back and send the brochure directly.'}
               </p>
             </div>
 
             {/* ── Success ── */}
             {submitted ? (
               <div className={styles.successBox}>
-                <div className={styles.successIcon}>✅</div>
-                <div className={styles.successTitle}>Thank you!</div>
-                <p className={styles.successMsg}>Our team will call you within 30 minutes.</p>
-                {(brochureUrl || isAny) && (
+                <div className={styles.successIcon}>{isSV ? '🏠' : '✅'}</div>
+                <div className={styles.successTitle}>{isSV ? 'Visit Confirmed!' : 'Thank you!'}</div>
+                <p className={styles.successMsg}>
+                  {isSV
+                    ? 'Confirmation sent to your phone/email. Our team will call you a day before to confirm the time.'
+                    : 'Our team will call you within 30 minutes.'}
+                </p>
+                {!isSV && (brochureUrl || isAny) && (
                   <button type="button" className={styles.downloadBtn} onClick={handleDownload}>
                     <Download size={15} /> {isAny ? 'Download All Brochures' : 'Download Brochure'}
                   </button>
                 )}
-                <button className="btn btn-green btn-full" onClick={onClose} style={{ marginTop:8 }}>
-                  Close
-                </button>
+                <button className="btn btn-green btn-full" onClick={onClose} style={{ marginTop:8 }}>Close</button>
               </div>
+
+            ) : isSV ? (
+              /* ══ SITE VISIT FORM ══ */
+              <form onSubmit={handleSubmit(onSiteVisitSubmit)} noValidate className={styles.form}>
+                {renderCommonFields()}
+
+                {/* Preferred Date */}
+                <div className="form-group">
+                  <label className="form-label">
+                    <Calendar size={14} style={{ marginRight:5, verticalAlign:'middle' }} />
+                    Preferred Date *
+                  </label>
+                  <input
+                    type="date"
+                    className={`form-input ${errors.date ? 'error' : ''}`}
+                    min={todayStr}
+                    {...register('date', { required: 'Please select a preferred date' })}
+                  />
+                  {errors.date && <span className="form-error">{errors.date.message}</span>}
+                </div>
+
+                {ctaErrors.submit && (
+                  <p className={styles.ctaError} style={{ marginBottom:8 }}>
+                    <AlertCircle size={12} /> {ctaErrors.submit}
+                  </p>
+                )}
+
+                <div className={styles.actions}>
+                  <button type="submit" className="btn btn-green btn-full"
+                    disabled={submitLead.isPending}>
+                    {submitLead.isPending ? 'Booking…' : 'Confirm Visit'}
+                  </button>
+                </div>
+              </form>
+
             ) : (
-              <form onSubmit={handleSubmit(onSubmit)} noValidate className={styles.form}>
-
-                <div className="form-group">
-                  <label className="form-label">Your Name *</label>
-                  <input className={`form-input ${errors.name ? 'error' : ''}`}
-                    placeholder="Full name" autoComplete="name"
-                    {...register('name', { required: 'Name is required' })} />
-                  {errors.name && <span className="form-error">{errors.name.message}</span>}
-                </div>
-
-                <div className="form-group">
-                  <label className="form-label">Mobile Number *</label>
-                  <input className={`form-input ${errors.phone ? 'error' : ''}`}
-                    placeholder="+91 XXXXX XXXXX" inputMode="tel" autoComplete="tel"
-                    {...register('phone', {
-                      required: 'Phone number is required',
-                      pattern:  { value:/^[6-9]\d{9}$/, message:'Enter valid 10-digit Indian number' },
-                    })} />
-                  {errors.phone && <span className="form-error">{errors.phone.message}</span>}
-                </div>
-
-                <div className="form-group">
-                  <label className="form-label">Email <span style={{color:'rgba(0,0,0,0.4)',fontWeight:400}}>(required for Email Brochure)</span></label>
-                  <input className="form-input" placeholder="you@example.com"
-                    inputMode="email" autoComplete="email"
-                    {...register('email', {
-                      pattern: { value:/^[^\s@]+@[^\s@]+\.[^\s@]+$/, message:'Enter valid email' },
-                    })} />
-                  {errors.email && <span className="form-error">{errors.email.message}</span>}
-                </div>
-
-                <div className="form-group">
-                  <label className="form-label">Project Interest <span style={{color:'rgba(0,0,0,0.4)',fontWeight:400}}>(required for Download)</span></label>
-                  <select className="form-input" {...register('project')}
-                    onChange={e => { clearCtaError('download'); register('project').onChange(e) }}>
-                    <option value="">Select a project</option>
-                    {ACTIVE_PROJECTS.map(p => (
-                      <option key={p.id} value={p.name}>{p.name} — {p.loc}</option>
-                    ))}
-                    <option value="Any Project">Any / Not Sure Yet — Download All</option>
-                  </select>
-                  {isAny && (
-                    <p className={styles.allBrochuresNote}>
-                      📦 {ALL_BROCHURE_URLS.length} brochures will be downloaded
-                    </p>
-                  )}
-                </div>
+              /* ══ BROCHURE / ENQUIRY FORM ══ */
+              <form onSubmit={handleSubmit(onBrochureSubmit)} noValidate className={styles.form}>
+                {renderCommonFields()}
 
                 {!context?.category && (
                   <div className="form-group">
@@ -243,55 +299,42 @@ export default function LeadModal({ context, onClose, whatsapp }) {
                   </div>
                 )}
 
-                {/* ── CTAs ── */}
                 <div className={styles.actions}>
-
-                  {/* 1. Email Brochure */}
                   <div className={styles.ctaGroup}>
                     <button type="button" className={styles.emailBtn}
                       onClick={handleEmail} disabled={sending === 'email' || emailSent}>
                       {sending === 'email' ? <Loader2 size={15} className={styles.spin} /> : <Mail size={15} />}
                       {emailSent ? 'Brochure Sent ✓' : 'Email Brochure'}
                     </button>
-                    {ctaErrors.email && (
-                      <p className={styles.ctaError}><AlertCircle size={12} /> {ctaErrors.email}</p>
-                    )}
+                    {ctaErrors.email && <p className={styles.ctaError}><AlertCircle size={12} /> {ctaErrors.email}</p>}
                   </div>
 
-                  {/* 2. WhatsApp Brochure */}
                   <div className={styles.ctaGroup}>
                     <button type="button" className={styles.waBtn}
                       onClick={handleWhatsApp} disabled={sending === 'wa' || waSent}>
                       {sending === 'wa' ? <Loader2 size={15} className={styles.spin} /> : <MessageCircle size={15} />}
                       {waSent ? 'Sent on WhatsApp ✓' : 'WhatsApp Brochure'}
                     </button>
-                    {ctaErrors.wa && (
-                      <p className={styles.ctaError}><AlertCircle size={12} /> {ctaErrors.wa}</p>
-                    )}
+                    {ctaErrors.wa && <p className={styles.ctaError}><AlertCircle size={12} /> {ctaErrors.wa}</p>}
                   </div>
 
-                  {/* 3. Download Brochure */}
                   <div className={styles.ctaGroup}>
                     <button type="button" className={styles.downloadBtn} onClick={handleDownload}>
                       <Download size={15} />
                       {isAny ? 'Download All Brochures' : 'Download Brochure'}
                     </button>
-                    {ctaErrors.download && (
-                      <p className={styles.ctaError}><AlertCircle size={12} /> {ctaErrors.download}</p>
-                    )}
+                    {ctaErrors.download && <p className={styles.ctaError}><AlertCircle size={12} /> {ctaErrors.download}</p>}
                   </div>
 
                   <div className={styles.divider}><span>or</span></div>
 
-                  {/* 4. Request Callback */}
-                  <button type="submit" className="btn btn-green btn-full"
-                    disabled={submitLead.isPending}>
+                  <button type="submit" className="btn btn-green btn-full" disabled={submitLead.isPending}>
                     {submitLead.isPending ? 'Sending…' : 'Request Callback'}
                   </button>
-
                 </div>
               </form>
             )}
+
           </motion.div>
         </motion.div>
       )}

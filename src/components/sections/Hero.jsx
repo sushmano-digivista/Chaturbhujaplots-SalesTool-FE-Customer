@@ -36,8 +36,8 @@ export default function Hero({ content, onEnquire }) {
         </div>
 
         <h1 className={styles.title}>
-          {hero.headline || 'Premium Plots Near'}<br />
-          <em>{hero.subheadline || 'Amaravati'}</em>
+          {hero.headline || 'Premium Plots in'}<br />
+          <em>{hero.subheadline || 'Andhra Pradesh'}</em>
         </h1>
 
         <p className={styles.desc}>

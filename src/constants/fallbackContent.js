@@ -4,8 +4,8 @@
  */
 const FALLBACK_CONTENT = {
   hero: {
-    headline:       'Premium Plots Near',
-    subheadline:    'Amaravati',
+    headline:       'Premium Plots in',
+    subheadline:    'Andhra Pradesh',
     description:    "A name rooted in integrity — Chaturbhuja Properties & Infra has been shaping Andhra Pradesh's real estate landscape for 25 years. Under the leadership of Mr. Donepudi Durga Prasad, we have placed 1200+ families in homes they are proud of, across 15+ APCRDA & RERA approved ventures in the Krishna–NTR–Guntur corridor.",
     approvalBadges: [
       'APCRDA Proposed Layouts',

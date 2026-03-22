@@ -12,11 +12,17 @@ export const ACTIVE_PROJECTS = [
     accentClass: 'accentGold',
     heroImage:   '/Anjana_Paradise_Paritala_Home.png',
     available:   14,
-    total:       278,
+    total:       242,      // confirmed from Paritala layout plan (242 plots)
     starting:    'Rs.23.9L',
     tag:         'Featured',
     status:      'APCRDA LP No: 35/2025 | AP RERA P06060125894',
-    facings:     { east: 82, west: 64, north: 58, south: 60, corner: 14 },
+    facings:     {
+      east:   115,   // East (112) + East corner (1) + East/North corner (1) + South/East corner (1)
+      west:   127,   // West (122) + South/West corner (2) + West/North corner (1) + East/West double (2)
+      north:    0,
+      south:    0,
+      corner:   0,
+    },
     approvals:   ['CRDA Proposed Layout', 'AP RERA Registered', '100% Clear Title', '100% Vaastu'],
     highlights: [
       'Adjacent to National Highway (NH-16)',

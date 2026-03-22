@@ -28,7 +28,6 @@ const FALLBACK_AMENITIES = [
   { tab: 'LIFESTYLE', icon: '🛝',  label: "Children's Play Area",     sortOrder:  3, featured: false },
   { tab: 'LIFESTYLE', icon: '🕉️',  label: '100% Vastu Compliance',   sortOrder:  4, featured: false },
   { tab: 'LIFESTYLE', icon: '🌿',  label: 'Green Landscaping',        sortOrder:  5, featured: false },
-]
 
   // ── UTILITIES ──────────────────────────────────────────────────────────────
   { tab: 'UTILITIES', icon: '💧',  label: 'Pure Drinking Water',      sortOrder:  1, featured: false },

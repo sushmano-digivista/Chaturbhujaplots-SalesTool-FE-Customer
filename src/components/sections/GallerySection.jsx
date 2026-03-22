@@ -57,7 +57,7 @@ function ImgCell({ item, featured, onClick, index }) {
           <span className={styles.gPlaceholderIcon}>🏞</span>
         </div>
       )}
-      <div className={styles.gOverlay}>{item.label}</div>
+      <div className={styles.gOverlay}><span className={styles.gOverlayLabel}>{item.label}</span></div>
     </motion.div>
   )
 }

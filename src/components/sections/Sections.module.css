@@ -72,36 +72,34 @@
 
 /* ── Gallery ────────────────────────────────────────── */
 .galSec { background: var(--dark); }
-.galGrid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  grid-template-rows: 200px 200px;
-  gap: 12px;
-}
+.galGrid { columns: 3; column-gap: 12px; }
 .gCell {
+  break-inside: avoid;
+  display: block; position: relative; cursor: pointer;
   border-radius: 14px; overflow: hidden;
-  position: relative; cursor: pointer;
-  background: rgba(255,255,255,.06);
   border: 1px solid rgba(201,168,76,.15);
-  transition: border-color .2s;
+  margin-bottom: 12px;
+  transition: border-color .2s, transform .2s;
 }
-.gCell:hover { border-color: rgba(201,168,76,.45); }
-.gCellFeatured { grid-column: span 2; grid-row: span 2; }
-.gIcon {
-  width: 100%; height: 100%;
-  display: flex; align-items: center; justify-content: center;
-  opacity: .35; transition: opacity .2s;
+.gCell:hover {
+  border-color: rgba(201,168,76,.5);
+  transform: translateY(-3px);
+  box-shadow: 0 10px 32px rgba(0,0,0,.35);
 }
-.gCell:hover .gIcon { opacity: .55; }
+.gCellFeatured { column-span: all; }
+.gImg { width: 100%; height: auto; display: block; transition: transform .35s ease; }
+.gCell:hover .gImg { transform: scale(1.03); }
 .gOverlay {
   position: absolute; inset: 0;
-  background: rgba(30,77,43,.65); opacity: 0;
-  transition: opacity .2s;
-  display: flex; align-items: center; justify-content: center;
-  color: var(--gold-light); font-size: 13px; font-weight: 500;
-  padding: 12px; text-align: center;
+  background: rgba(10,28,16,.6); opacity: 0;
+  transition: opacity .2s; display: flex;
+  align-items: flex-end; padding: 16px;
 }
 .gCell:hover .gOverlay { opacity: 1; }
+.gOverlayLabel {
+  color: var(--gold-light); font-size: 13px; font-weight: 600;
+  text-shadow: 0 1px 4px rgba(0,0,0,.6);
+}
 
 /* Lightbox */
 .lbOverlay {
@@ -125,8 +123,8 @@
 .lbBtnGold { background:rgba(201,168,76,.3); border-color:rgba(201,168,76,.5); color:var(--gold-light); }
 
 @media (max-width:768px) {
-  .galGrid { grid-template-columns:repeat(2,1fr); grid-template-rows:160px 160px 160px; }
-  .gCellFeatured { grid-column:span 2; grid-row:span 1; }
+  .galGrid { columns: 2; }
+  .gCellFeatured { column-span: all; }
 }
 
 /* ── Videos ─────────────────────────────────────────── */

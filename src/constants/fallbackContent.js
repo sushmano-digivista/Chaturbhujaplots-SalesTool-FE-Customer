@@ -2,8 +2,6 @@
  * fallbackContent.js — Shown when the backend API is offline.
  * All data sourced from official project brochures.
  */
-import { ACTIVE_PROJECTS, COMPLETED_PROJECTS, COMPANY_CONTACT } from './projects'
-
 const FALLBACK_CONTENT = {
   hero: {
     headline:       'Premium Plots Near',
@@ -38,8 +36,8 @@ const FALLBACK_CONTENT = {
       { value: '15+',   label: 'Years of Trust',      icon: '🏆' },
       { value: '100%',  label: 'CRDA / RERA',         icon: '✅' },
     ],
-    active:    ACTIVE_PROJECTS,
-    completed: COMPLETED_PROJECTS,
+    active: [], // loaded from projects.js at runtime
+    completed: [],
   },
 
   gallery: [
@@ -108,10 +106,10 @@ const FALLBACK_CONTENT = {
   },
 
   contact: {
-    phone:       COMPANY_CONTACT.phone,
-    whatsapp:    COMPANY_CONTACT.whatsapp,
-    email:       COMPANY_CONTACT.email,
-    address:     COMPANY_CONTACT.registeredOffice,
+    phone:       '+91 99 666 96 993',
+    whatsapp:    '919966696993',
+    email:       'chaturbhuja2024@gmail.com',
+    address:     'Flat No. 101, Venkat Meadows, Patamata, Vijayawada – 520007',
     mapEmbedUrl: 'https://maps.google.com/maps?q=Paritala,Andhra+Pradesh,India&t=k&z=14&ie=UTF8&iwloc=&output=embed',
     mapOpenUrl:  'https://maps.google.com/?q=Paritala,Krishna+District,Andhra+Pradesh',
   },

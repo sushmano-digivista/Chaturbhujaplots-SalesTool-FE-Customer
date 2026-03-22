@@ -14,7 +14,7 @@ input, select, textarea { font-family:'DM Sans',sans-serif; }
   --shadow:      0 4px 24px rgba(30,77,43,0.10);
   --shadow-lg:   0 8px 40px rgba(30,77,43,0.16);
   --r:   12px; --rlg: 20px; --rxl: 28px;
-  --nav-h: 64px;
+  --nav-h: 72px;
 }
 
 /* Typography */

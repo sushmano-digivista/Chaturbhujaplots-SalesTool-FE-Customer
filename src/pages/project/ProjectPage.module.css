@@ -405,14 +405,13 @@
 }
 .pbRows { display: flex; flex-direction: column; gap: 8px; }
 .pbRow {
-  display: grid;
-  grid-template-columns: 140px 1fr;
-  align-items: center;
+  display: flex; align-items: center;
+  justify-content: space-between;
   gap: 12px;
 }
-.pbDir { font-size: 13px; color: rgba(0,0,0,.6); font-weight: 600; white-space: nowrap; display: flex; align-items: center; gap: 6px; }
+.pbDir { font-size: 13px; color: rgba(0,0,0,.6); font-weight: 600; white-space: nowrap; display: flex; align-items: center; gap: 6px; flex-shrink: 0; }
 .pbIcon { display: inline-block; width: 18px; text-align: center; flex-shrink: 0; }
-.pbRate { font-size: 13px; color: var(--green); }
+.pbRate { font-size: 13px; color: var(--green); text-align: right; }
 .pbRate strong { font-weight: 700; }
 .pbNote {
   font-size: 11px; color: rgba(0,0,0,.4); margin-top: 4px; font-style: italic;

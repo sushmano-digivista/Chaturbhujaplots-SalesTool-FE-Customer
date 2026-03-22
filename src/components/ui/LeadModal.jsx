@@ -303,7 +303,7 @@ export default function LeadModal({ context, onClose, whatsapp }) {
                     onClick={() => {
                       const num = whatsapp || '918977262683'
                       const txt = `Hi, I am interested in a ${context?.plotSize || context?.category} plot (${context?.plotArea}) in ${context?.venture || 'Chaturbhuja Properties'}. Price: ${context?.priceFrom}. Please share details.`
-                      window.open(\`https://wa.me/\${num}?text=\${encodeURIComponent(txt)}\`, '_blank')
+                      window.open(`https://wa.me/${num}?text=${encodeURIComponent(txt)}`, '_blank')
                     }}>
                     <MessageCircle size={15} /> WhatsApp Us
                   </button>

@@ -1,0 +1,185 @@
+/**
+ * projects.js — canonical project data used by:
+ *   - Navbar dropdown
+ *   - PortfolioSection cards
+ *   - ProjectPage (detail page)
+ *   - fallbackContent.js portfolio.active
+ */
+
+export const ACTIVE_PROJECTS = [
+  {
+    id: 'anjana',
+    name: 'Anjana Paradise',
+    loc: 'Paritala, Near Amaravati',
+    accentClass: 'accentGold',
+    available: 14,
+    total: 242,
+    starting: 'Rs.23.9L',
+    tag: 'Featured',
+    // Facing breakdown — replaces "sold" count
+    facings: { east: 68, west: 52, north: 48, south: 46, corner: 14 },
+    approvals: ['CRDA Proposed', 'AP RERA', 'Clear Title', 'Vaasthu'],
+    highlights: ['Adjacent to NH-16', '8 km from Amaravati', 'Ready to Build', 'Avenue Lined Roads'],
+    description:
+      "Premium plots in AP's fastest-growing capital corridor — avenue-lined roads, 24/7 utilities, ready for immediate construction.",
+    // Detail page data
+    amenities: [
+      { tab: 'INFRA',     icon: '🏛️', label: 'Grand Entrance Arch'      },
+      { tab: 'INFRA',     icon: '🛤️', label: '60ft & 40ft Roads'         },
+      { tab: 'INFRA',     icon: '💡', label: 'Underground Electricity'   },
+      { tab: 'INFRA',     icon: '💧', label: 'Water Pipeline'            },
+      { tab: 'INFRA',     icon: '🅿️', label: 'Visitor Parking'           },
+      { tab: 'INFRA',     icon: '🔒', label: 'Gated Security'            },
+      { tab: 'INFRA',     icon: '🙏', label: 'Hanuman Temple Nearby',     featured: true, featuredDesc: 'A magnificent large Hanuman statue temple is located just minutes from Anjana Paradise.' },
+      { tab: 'LIFESTYLE', icon: '🏃', label: 'Jogging Track'             },
+      { tab: 'LIFESTYLE', icon: '☮️', label: '100% Vaastu Compliant'     },
+      { tab: 'LIFESTYLE', icon: '🗿', label: 'Buddha Statue'             },
+      { tab: 'LIFESTYLE', icon: '🌸', label: 'Floral Gardens'            },
+      { tab: 'UTILITIES', icon: '🌐', label: 'Fibre Internet Ready'      },
+      { tab: 'UTILITIES', icon: '⚡', label: 'Solar Street Lights'       },
+      { tab: 'UTILITIES', icon: '📡', label: 'CCTV Surveillance'         },
+    ],
+    gallery: [
+      { label: 'Grand Entrance Arch',   icon: '🏛️' },
+      { label: 'Avenue Lined Roads',    icon: '🛣️' },
+      { label: 'Green Parks & Gardens', icon: '🌿' },
+      { label: 'Plot Layout View',      icon: '🏞️' },
+      { label: 'Tree Avenue',           icon: '🌴' },
+      { label: 'Floral Gardens',        icon: '🌺' },
+    ],
+    videos: [
+      { id: 'dQw4w9WgXcY', type: 'youtube', title: 'Anjana Paradise — Project Overview',    subtitle: 'Full property walkthrough & amenities' },
+      { id: 'dQw4w9WgXcY', type: 'youtube', title: 'Location & Connectivity',               subtitle: 'Paritala to Amaravati route explained'  },
+    ],
+    distances: [
+      { icon: '🏛️', name: 'Amaravati Capital',      subtitle: 'New State Capital',    distance: '8 km'  },
+      { icon: '🛣️', name: 'NH-16 Highway',          subtitle: 'Direct access',        distance: '3 km'  },
+      { icon: '🎓', name: 'SRM University',          subtitle: 'Engineering campus',   distance: '6 km'  },
+      { icon: '🏥', name: 'NRI Medical College',     subtitle: 'Healthcare hub',       distance: '7 km'  },
+      { icon: '✈️', name: 'Vijayawada Airport',      subtitle: 'Air connectivity',     distance: '22 km' },
+    ],
+    mapEmbedUrl: 'https://maps.google.com/maps?q=Paritala,Andhra+Pradesh,India&t=k&z=14&ie=UTF8&iwloc=&output=embed',
+    mapOpenUrl:  'https://maps.google.com/?q=Paritala,Krishna+District,Andhra+Pradesh',
+    contact: { phone: '+91 99999 99999', whatsapp: '919999999999', email: 'info@anjanaparadise.in', address: 'Paritala, Krishna District, AP 521180' },
+  },
+  {
+    id: 'trimbak',
+    name: 'Trimbak Oaks',
+    loc: 'Penamaluru, Near Vijayawada',
+    accentClass: 'accentGreen',
+    available: 18,
+    total: 48,
+    starting: 'Rs.28L',
+    tag: 'New Launch',
+    facings: { east: 14, west: 10, north: 8, south: 8, corner: 8 },
+    approvals: ['CRDA Approved', 'RERA Registered', 'Clear Title'],
+    highlights: ['5 km from Vijayawada', 'NH-16 Access', 'Gated Security', 'Water & Electricity'],
+    description: 'Gated community plots offering excellent connectivity to Vijayawada city with all modern amenities.',
+    amenities: [
+      { tab: 'INFRA',     icon: '🏛️', label: 'Gated Entrance'            },
+      { tab: 'INFRA',     icon: '🛤️', label: '40ft Internal Roads'        },
+      { tab: 'INFRA',     icon: '💡', label: 'Overhead Electricity'       },
+      { tab: 'INFRA',     icon: '💧', label: 'Borewell Water'             },
+      { tab: 'LIFESTYLE', icon: '🌳', label: 'Tree-Lined Avenues'         },
+      { tab: 'LIFESTYLE', icon: '☮️', label: 'Vaastu Compliant'           },
+      { tab: 'UTILITIES', icon: '📡', label: 'CCTV Surveillance'          },
+    ],
+    gallery: [
+      { label: 'Main Entrance Gate',   icon: '🏛️' },
+      { label: 'Internal Roads',       icon: '🛣️' },
+      { label: 'Plot Overview',        icon: '🏞️' },
+    ],
+    videos: [
+      { id: 'dQw4w9WgXcY', type: 'youtube', title: 'Trimbak Oaks — Overview', subtitle: 'Project walkthrough' },
+    ],
+    distances: [
+      { icon: '🏙️', name: 'Vijayawada City',   subtitle: 'Business hub',       distance: '5 km'  },
+      { icon: '🛣️', name: 'NH-16 Highway',     subtitle: 'Direct access',      distance: '2 km'  },
+      { icon: '✈️', name: 'Vijayawada Airport', subtitle: 'Air connectivity',   distance: '12 km' },
+    ],
+    mapEmbedUrl: 'https://maps.google.com/maps?q=Penamaluru,Andhra+Pradesh,India&t=k&z=14&ie=UTF8&iwloc=&output=embed',
+    mapOpenUrl:  'https://maps.google.com/?q=Penamaluru,Andhra+Pradesh',
+    contact: { phone: '+91 99999 99999', whatsapp: '919999999999', email: 'info@trimbakoaks.in', address: 'Penamaluru, Krishna District, AP' },
+  },
+  {
+    id: 'aparna',
+    name: 'Aparna Legacy',
+    loc: 'Chevitikallu',
+    accentClass: 'accentBlue',
+    available: 16,
+    total: 28,
+    starting: 'Rs.26L',
+    tag: 'Limited',
+    facings: { east: 12, west: 6, north: 4, south: 2, corner: 4 },
+    approvals: ['CRDA Approved', 'Vaastu Compliant', 'East-Facing'],
+    highlights: ['East-Facing Plots', 'Park Facing Options', 'Corner Plots Available', 'Water & Electricity'],
+    description: 'Vastu-compliant east-facing plots with park-facing options — perfect for families seeking a serene lifestyle.',
+    amenities: [
+      { tab: 'INFRA',     icon: '🌳', label: 'Park-Facing Plots'         },
+      { tab: 'INFRA',     icon: '💧', label: 'Municipal Water'           },
+      { tab: 'INFRA',     icon: '💡', label: 'EB Connection'             },
+      { tab: 'LIFESTYLE', icon: '☮️', label: '100% East-Facing'          },
+      { tab: 'LIFESTYLE', icon: '🌸', label: 'Floral Gardens'            },
+    ],
+    gallery: [
+      { label: 'Plot Layout',    icon: '🏞️' },
+      { label: 'Park Area',      icon: '🌳' },
+      { label: 'Corner Plots',   icon: '📐' },
+    ],
+    videos: [
+      { id: 'dQw4w9WgXcY', type: 'youtube', title: 'Aparna Legacy — Overview', subtitle: 'East-facing plots walkthrough' },
+    ],
+    distances: [
+      { icon: '🏙️', name: 'Vijayawada',    subtitle: 'Nearest city',    distance: '18 km' },
+      { icon: '🛣️', name: 'NH-16',         subtitle: 'Highway access',  distance: '8 km'  },
+    ],
+    mapEmbedUrl: 'https://maps.google.com/maps?q=Chevitikallu,Andhra+Pradesh,India&t=k&z=14&ie=UTF8&iwloc=&output=embed',
+    mapOpenUrl:  'https://maps.google.com/?q=Chevitikallu,Andhra+Pradesh',
+    contact: { phone: '+91 99999 99999', whatsapp: '919999999999', email: 'info@aparnaplots.in', address: 'Chevitikallu, Krishna District, AP' },
+  },
+  {
+    id: 'varaha',
+    name: 'Varaha Virtue',
+    loc: 'Pamarru, Near NH-16',
+    accentClass: 'accentOrange',
+    available: 20,
+    total: 32,
+    starting: 'Rs.25L',
+    tag: 'Hot',
+    facings: { east: 10, west: 8, north: 6, south: 4, corner: 4 },
+    approvals: ['CRDA Approved', 'NH-16 Access', 'Industrial Corridor'],
+    highlights: ['Direct NH-16 Access', 'Industrial Corridor Zone', 'Gated Security 24/7', 'Jogging Track'],
+    description: 'Strategic investment opportunity on the NH-16 industrial corridor — high appreciation potential.',
+    amenities: [
+      { tab: 'INFRA',     icon: '🏛️', label: 'Grand Entrance'           },
+      { tab: 'INFRA',     icon: '🛣️', label: 'Wide Internal Roads'       },
+      { tab: 'INFRA',     icon: '🔒', label: '24/7 Gated Security'       },
+      { tab: 'LIFESTYLE', icon: '🏃', label: 'Jogging Track'             },
+      { tab: 'UTILITIES', icon: '⚡', label: 'Solar Street Lights'       },
+    ],
+    gallery: [
+      { label: 'NH-16 Frontage',    icon: '🛣️' },
+      { label: 'Security Gate',     icon: '🔒' },
+      { label: 'Jogging Track',     icon: '🏃' },
+    ],
+    videos: [
+      { id: 'dQw4w9WgXcY', type: 'youtube', title: 'Varaha Virtue — Overview', subtitle: 'NH-16 corridor investment' },
+    ],
+    distances: [
+      { icon: '🛣️', name: 'NH-16 Highway',    subtitle: 'Direct frontage',  distance: '0.5 km' },
+      { icon: '🏙️', name: 'Vijayawada',       subtitle: 'Nearest city',     distance: '20 km'  },
+    ],
+    mapEmbedUrl: 'https://maps.google.com/maps?q=Pamarru,Andhra+Pradesh,India&t=k&z=14&ie=UTF8&iwloc=&output=embed',
+    mapOpenUrl:  'https://maps.google.com/?q=Pamarru,Andhra+Pradesh',
+    contact: { phone: '+91 99999 99999', whatsapp: '919999999999', email: 'info@varahaplots.in', address: 'Pamarru, Krishna District, AP' },
+  },
+]
+
+export const COMPLETED_PROJECTS = [
+  { name: 'Nandana Vihar', loc: 'Kanumuru',   year: '2022', plots: 64 },
+  { name: 'County',        loc: 'Edupugallu',  year: '2021', plots: 48 },
+  { name: 'Pearl',         loc: 'Kankipadu',   year: '2020', plots: 36 },
+  { name: 'Empire',        loc: 'Penamaluru',  year: '2019', plots: 72 },
+  { name: 'Pride',         loc: 'Nepalli',     year: '2018', plots: 42 },
+  { name: 'Prime',         loc: 'Kankipadu',   year: '2017', plots: 55 },
+]

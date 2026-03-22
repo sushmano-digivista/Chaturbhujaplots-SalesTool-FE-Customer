@@ -106,6 +106,15 @@
   padding: 2px 8px; border-radius: 100px;
 }
 
+/* Single-line completed text (clickable) */
+.dropCompletedLine {
+  display: block; width: 100%; text-align: left;
+  font-size: 12px; color: rgba(255,255,255,0.4); line-height: 1.7;
+  padding: 5px 4px; background: none; border: none; cursor: pointer;
+  font-family: 'DM Sans', sans-serif; transition: color 0.15s;
+}
+.dropCompletedLine:hover { color: rgba(255,255,255,0.65); }
+
 .dropDivider { height: 1px; background: rgba(255,255,255,0.08); margin: 12px 0; }
 
 /* ── Drop footer ──────────────────────────────────────────────────────────── */

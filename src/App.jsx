@@ -1,20 +1,11 @@
+import { Routes, Route } from 'react-router-dom'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { Toaster } from 'react-hot-toast'
 
-import HomePage from '@/pages/HomePage'
+import HomePage    from '@/pages/HomePage'
+import ProjectPage from '@/pages/project/ProjectPage'
 import '@/styles/globals.css'
 
-/**
- * App.jsx — application root.
- *
- * Responsibilities (and ONLY these):
- *   1. Provide the React Query client to the whole tree
- *   2. Mount the global toast notification layer
- *   3. Render the top-level page(s)
- *
- * All page-level composition (sections, layout) lives in:
- *   → src/pages/HomePage.jsx
- */
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: { retry: 1, staleTime: 60_000, throwOnError: false },
@@ -35,7 +26,11 @@ export default function App() {
           success: { iconTheme: { primary: '#C9A84C', secondary: '#fff' } },
         }}
       />
-      <HomePage />
+      <Routes>
+        <Route path="/"                  element={<HomePage />} />
+        <Route path="/project/:id"       element={<ProjectPage />} />
+        <Route path="/project/:id/:tab"  element={<ProjectPage />} />
+      </Routes>
     </QueryClientProvider>
   )
 }

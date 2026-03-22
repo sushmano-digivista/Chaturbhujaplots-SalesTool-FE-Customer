@@ -98,24 +98,18 @@ export default function Navbar({ contact, onEnquire }) {
 
                 <div className={styles.dropDivider} />
 
-                {/* Completed */}
+                {/* Completed — single line like before */}
                 <div className={styles.dropSection}>
                   <span className={styles.dropLabel}>
                     <span className={styles.dropLabelDot} style={{ background: '#4CAF74' }} />
                     Completed &amp; Sold Out
                   </span>
-                  <div className={styles.dropChips}>
-                    {NAV_COMPLETED.map((name) => (
-                      <button
-                        key={name}
-                        className={styles.dropChip}
-                        onClick={() => scrollTo('portfolio')}
-                      >
-                        <span className={styles.chipName}>{name}</span>
-                        <span className={styles.chipDone}>✓</span>
-                      </button>
-                    ))}
-                  </div>
+                  <button
+                    className={styles.dropCompletedLine}
+                    onClick={() => scrollTo('portfolio')}
+                  >
+                    {NAV_COMPLETED.join(' · ')}
+                  </button>
                 </div>
 
                 {/* Footer CTA */}

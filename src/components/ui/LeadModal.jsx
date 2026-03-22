@@ -4,6 +4,7 @@ import { useForm }      from 'react-hook-form'
 import { motion, AnimatePresence } from 'framer-motion'
 import { X, MessageCircle } from 'lucide-react'
 import { useSubmitLead } from '@/hooks/useData'
+import { ACTIVE_PROJECTS } from '@/constants/projects'
 import styles from './LeadModal.module.css'
 
 /**
@@ -36,6 +37,7 @@ export default function LeadModal({ context, onClose, whatsapp }) {
         email:            data.email || undefined,
         source:           context?.source || 'CONTACT_FORM',
         categoryInterest: context?.category || data.category || undefined,
+        projectInterest:  data.project || undefined,
       })
       reset()
       onClose()
@@ -134,7 +136,19 @@ export default function LeadModal({ context, onClose, whatsapp }) {
                 {errors.email && <span className="form-error">{errors.email.message}</span>}
               </div>
 
-              {/* Show category picker only for generic enquiries */}
+              {/* Project selection — always shown */}
+              <div className="form-group">
+                <label className="form-label">Project Interest</label>
+                <select className="form-input" {...register('project')}>
+                  <option value="">Select a project</option>
+                  {ACTIVE_PROJECTS.map(p => (
+                    <option key={p.id} value={p.name}>{p.name} — {p.loc}</option>
+                  ))}
+                  <option value="Any Project">Any / Not Sure Yet</option>
+                </select>
+              </div>
+
+              {/* Plot Interest — shown for generic enquiries */}
               {!context?.category && (
                 <div className="form-group">
                   <label className="form-label">Plot Interest</label>
@@ -148,6 +162,7 @@ export default function LeadModal({ context, onClose, whatsapp }) {
                     <option value="30×40 ft">30×40 ft</option>
                     <option value="33×50 ft">33×50 ft</option>
                     <option value="40×60 ft">40×60 ft</option>
+                    <option value="Other">Other</option>
                   </select>
                 </div>
               )}

@@ -1,63 +1,62 @@
-/* ── Base nav ─────────────────────────────────────────────────────────────── */
+/* ═══════════════════════════════════════════════════════════════════
+   Navbar — Premium two-tone design
+   White body · deep forest green accent strip at top
+   ═══════════════════════════════════════════════════════════════════ */
+
+/* ── Base nav ─────────────────────────────────────────────────────── */
 .nav {
   position: fixed; top: 0; left: 0; right: 0; z-index: 900;
   height: var(--nav-h);
-  /* Warm deep forest green — matches the logo's dominant hue */
-  background: rgba(253, 250, 244, 0.97);
+  background: #ffffff;
   backdrop-filter: blur(20px);
   display: flex; align-items: center; justify-content: space-between;
   padding: 0 5%;
-  /* Richer gold accent bottom border */
-  border-bottom: 1px solid rgba(201,168,76,0.35);
-  /* Subtle warm inner glow from the bottom */
-  box-shadow: 0 1px 0 rgba(201,168,76,0.12), inset 0 -1px 0 rgba(201,168,76,0.08);
-  transition: box-shadow 0.3s, background 0.3s;
+  border-bottom: 3px solid var(--green);
+  box-shadow: 0 2px 20px rgba(30, 77, 43, 0.10), 0 1px 4px rgba(0,0,0,0.06);
+  transition: box-shadow 0.3s;
 }
 .scrolled {
-  background: rgba(253, 250, 244, 0.99);
-  box-shadow: 0 4px 32px rgba(30, 77, 43, 0.14);
+  box-shadow: 0 4px 32px rgba(30, 77, 43, 0.15), 0 2px 8px rgba(0,0,0,0.08);
 }
 
-/* ── Logo ─────────────────────────────────────────────────────────────────── */
+/* ── Logo ─────────────────────────────────────────────────────────── */
 .logo { display: flex; align-items: center; text-decoration: none; }
 .logoImg {
-  height: 44px;
+  height: 42px;
   width: auto;
   object-fit: contain;
   display: block;
-  filter: brightness(1.05);
 }
 
-/* ── Desktop links ────────────────────────────────────────────────────────── */
+/* ── Desktop links ────────────────────────────────────────────────── */
 .links { display: flex; align-items: center; gap: 2px; }
 
 .link {
-  color: rgba(30, 77, 43, 0.78); font-size: 13.5px; background: none;
-  border: none; cursor: pointer; padding: 7px 11px; border-radius: 8px;
+  color: #2a2a2a;
+  font-size: 13.5px; background: none; border: none; cursor: pointer;
+  padding: 7px 12px; border-radius: 8px;
   font-family: 'DM Sans', sans-serif; font-weight: 500; white-space: nowrap;
   transition: color 0.15s, background 0.15s;
-  display: flex; align-items: center; gap: 4px;
+  display: flex; align-items: center; gap: 4px; letter-spacing: 0.1px;
 }
-.link:hover, .linkActive { color: var(--green); background: rgba(30,77,43,0.08); }
+.link:hover  { color: var(--green); background: rgba(30,77,43,0.06); }
+.linkActive  { color: var(--green); background: rgba(30,77,43,0.07); }
 
-/* ── Portfolio dropdown trigger ───────────────────────────────────────────── */
+/* ── Portfolio dropdown trigger ───────────────────────────────────── */
 .dropTrigger { position: relative; }
-.chevron {
-  transition: transform 0.2s ease;
-  color: rgba(30, 77, 43, 0.45);
-}
-.chevronOpen { transform: rotate(180deg); color: var(--gold-dark); }
+.chevron { transition: transform 0.2s ease; color: #aaa; }
+.chevronOpen { transform: rotate(180deg); color: var(--green); }
 
-/* ── Dropdown panel ───────────────────────────────────────────────────────── */
+/* ── Dropdown panel ───────────────────────────────────────────────── */
 .dropdown { position: relative; }
 
 .dropMenu {
-  position: absolute; top: calc(100% + 10px); left: 50%;
+  position: absolute; top: calc(100% + 12px); left: 50%;
   transform: translateX(-40%);
   background: #0f2415;
   border: 1px solid rgba(201,168,76,0.22);
   border-radius: 16px; padding: 18px; width: 380px;
-  box-shadow: 0 24px 64px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,255,255,0.04);
+  box-shadow: 0 24px 64px rgba(0,0,0,0.55), 0 0 0 1px rgba(255,255,255,0.04);
   z-index: 200;
   animation: dropIn 0.18s ease;
 }
@@ -71,14 +70,13 @@
 .dropLabel {
   display: flex; align-items: center; gap: 7px;
   font-size: 10px; font-weight: 700; letter-spacing: 2px;
-  text-transform: uppercase; color: rgba(255,255,255,0.45);
+  text-transform: uppercase; color: rgba(255,255,255,0.4);
   padding: 0 2px 10px; margin-top: 4px;
 }
 .dropLabelDot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
 
-/* ── Chip grid ────────────────────────────────────────────────────────────── */
+/* Chip rows */
 .dropChips { display: flex; flex-direction: column; gap: 4px; }
-
 .dropChip {
   display: flex; align-items: center; justify-content: space-between;
   width: 100%; padding: 9px 12px; border-radius: 9px;
@@ -94,8 +92,6 @@
   border-color: rgba(201,168,76,0.3);
   color: #fff;
 }
-.dropChipActive .chipAvail { color: #6ED096; }
-
 .chipName { font-weight: 500; }
 .chipAvail {
   font-size: 11px; font-weight: 600; color: #4CAF74;
@@ -109,18 +105,18 @@
   padding: 2px 8px; border-radius: 100px;
 }
 
-/* Single-line completed text (clickable) */
+/* Completed single-line */
 .dropCompletedLine {
   display: block; width: 100%; text-align: left;
-  font-size: 12px; color: rgba(255,255,255,0.4); line-height: 1.7;
+  font-size: 12px; color: rgba(255,255,255,0.38); line-height: 1.7;
   padding: 5px 4px; background: none; border: none; cursor: pointer;
   font-family: 'DM Sans', sans-serif; transition: color 0.15s;
 }
-.dropCompletedLine:hover { color: rgba(255,255,255,0.65); }
+.dropCompletedLine:hover { color: rgba(255,255,255,0.62); }
 
 .dropDivider { height: 1px; background: rgba(255,255,255,0.08); margin: 12px 0; }
 
-/* ── Drop footer ──────────────────────────────────────────────────────────── */
+/* Drop footer */
 .dropFooter { margin-top: 12px; }
 .dropViewAll {
   display: block; width: 100%; text-align: center;
@@ -132,24 +128,26 @@
 }
 .dropViewAll:hover { background: rgba(201,168,76,0.22); }
 
-/* ── Mobile ───────────────────────────────────────────────────────────────── */
+/* ── Mobile ───────────────────────────────────────────────────────── */
 .mobileRight { display: none; align-items: center; gap: 8px; }
 .phoneBtn {
-  width: 36px; height: 36px; background: rgba(30,77,43,0.08);
-  border-radius: 9px; display: flex; align-items: center;
-  justify-content: center; color: var(--green); transition: background 0.2s;
+  width: 36px; height: 36px;
+  background: rgba(30,77,43,0.07); border-radius: 9px;
+  display: flex; align-items: center; justify-content: center;
+  color: var(--green); transition: background 0.2s;
 }
-.phoneBtn:hover { background: rgba(30,77,43,0.15); }
+.phoneBtn:hover { background: rgba(30,77,43,0.14); }
 .hamburger {
-  width: 36px; height: 36px; background: rgba(30,77,43,0.08);
+  width: 36px; height: 36px; background: rgba(30,77,43,0.07);
   border: none; border-radius: 9px; color: var(--green);
   display: flex; align-items: center; justify-content: center; cursor: pointer;
 }
 
+/* Mobile slide-out menu */
 .mobileMenu {
   display: none; position: fixed; top: var(--nav-h); left: 0; right: 0;
   background: var(--green); z-index: 899; flex-direction: column;
-  border-bottom: 1px solid rgba(201,168,76,0.2);
+  border-bottom: 1px solid rgba(201,168,76,0.25);
   max-height: 0; overflow: hidden; transition: max-height 0.3s ease;
 }
 .mobileMenu.open { display: flex; max-height: 520px; }
@@ -159,7 +157,7 @@
   border-bottom: 1px solid rgba(255,255,255,0.06);
   font-family: 'DM Sans', sans-serif; transition: background 0.15s;
 }
-.mobileLink:hover { background: rgba(255,255,255,0.05); }
+.mobileLink:hover { background: rgba(255,255,255,0.06); }
 .mobileEnquire {
   background: var(--gold); color: var(--green); font-weight: 700;
   font-size: 15px; padding: 16px 5%; border: none; text-align: left;
@@ -167,6 +165,6 @@
 }
 
 @media (max-width: 900px) {
-  .links { display: none; }
+  .links      { display: none; }
   .mobileRight { display: flex; }
 }

@@ -13,7 +13,7 @@ export const ACTIVE_PROJECTS = [
     heroImage:   '/Anjana_Paradise_Paritala_Home.png',
     available:   14,
     total:       242,      // confirmed from Paritala layout plan (242 plots)
-    starting:    'Rs.23.9L',
+    starting:    'Rs.24.8L',    // West 183 sq yd × Rs.13,500/sq yd
     tag:         'Featured',
     status:      'APCRDA LP No: 35/2025 | AP RERA P06060125894',
     // Source: paritala_plot_dimensions.xlsx (Paritala Plan-22.pdf, 242 plots)

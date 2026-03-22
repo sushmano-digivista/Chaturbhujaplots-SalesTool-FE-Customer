@@ -49,13 +49,6 @@ export default function Footer({ content }) {
               Krishna–NTR–Guntur corridor.
             </p>
 
-            {/* Mission / Vision / Trust pills */}
-            <div className={styles.pillRow}>
-              <span className={styles.pill}>Our Mission</span>
-              <span className={styles.pill}>Our Vision</span>
-              <span className={styles.pill}>Our Trust</span>
-            </div>
-
             {/* Approval badges */}
             <div className={styles.badges}>
               <span className={styles.badge}>APCRDA Approved</span>
@@ -121,21 +114,6 @@ export default function Footer({ content }) {
               <span>www.chaturbhuja.in</span>
             </a>
 
-            {/* Social / stat chips */}
-            <div className={styles.statChips}>
-              <div className={styles.statChip}>
-                <div className={styles.statChipNum}>25+</div>
-                <div className={styles.statChipLabel}>Years</div>
-              </div>
-              <div className={styles.statChip}>
-                <div className={styles.statChipNum}>15+</div>
-                <div className={styles.statChipLabel}>Projects</div>
-              </div>
-              <div className={styles.statChip}>
-                <div className={styles.statChipNum}>1200+</div>
-                <div className={styles.statChipLabel}>Families</div>
-              </div>
-            </div>
           </div>
 
         </div>

@@ -1,10 +1,311 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useInView }   from 'react-intersection-observer'
-import { Navigation }  from 'lucide-react'
+import { Navigation, Play, X }  from 'lucide-react'
+import { createPortal } from 'react-dom'
 import styles from './Sections.module.css'
 
-// ── Highlights / Why Paritala ─────────────────────────────────────────────────
+// ── Portfolio ─────────────────────────────────────────────────
+const ACTIVE_PROJECTS = [
+  {
+    id: 'anjana', name: 'Anjana Paradise', loc: 'Paritala, Near Amaravati',
+    color: 'c1', available: 14, total: 242, starting: 'Rs.23.9L',
+    approvals: ['CRDA Proposed', 'AP RERA', 'Clear Title', 'Vaasthu'],
+    highlights: ['Adjacent to NH-16', '8km from Amaravati', 'Ready to Build', 'Avenue Lined Roads'],
+  },
+  {
+    id: 'trimbak', name: 'Trimbak Oaks', loc: 'Penamaluru, Near Vijayawada',
+    color: 'c2', available: 18, total: 48, starting: 'Rs.28L',
+    approvals: ['CRDA Approved', 'RERA Registered', 'Clear Title'],
+    highlights: ['5km from Vijayawada', 'NH-16 Access', 'Gated Security', 'Water & Electricity'],
+  },
+  {
+    id: 'aparna', name: 'Aparna Legacy', loc: 'Chevitikallu',
+    color: 'c3', available: 16, total: 28, starting: 'Rs.26L',
+    approvals: ['CRDA Approved', 'Vaastu Compliant', 'East-Facing'],
+    highlights: ['East-Facing Plots', 'Park Facing Options', 'Corner Plots Available', 'Water & Electricity'],
+  },
+  {
+    id: 'varaha', name: 'Varaha Virtue', loc: 'Pamarru, Near NH-16',
+    color: 'c4', available: 20, total: 32, starting: 'Rs.25L',
+    approvals: ['CRDA Approved', 'NH-16 Access', 'Industrial Corridor'],
+    highlights: ['Direct NH-16 Access', 'Industrial Corridor Zone', 'Gated Security 24/7', 'Jogging Track'],
+  },
+]
+const COMPLETED_PROJECTS = [
+  { name: 'Nandana Vihar', loc: 'Kanumuru' },
+  { name: 'County',        loc: 'Edupugallu' },
+  { name: 'Pearl',         loc: 'Kankipadu' },
+  { name: 'Empire',        loc: 'Penamaluru' },
+  { name: 'Pride',         loc: 'Nepalli' },
+  { name: 'Prime',         loc: 'Kankipadu' },
+]
+
+export function PortfolioSection({ content, onEnquire }) {
+  const [tab, setTab] = useState('booking')
+  const portfolioStats = content?.portfolio?.stats || [
+    { value: '10+',   label: 'Projects'  },
+    { value: '1000+', label: 'Families'  },
+    { value: '15+',   label: 'Years'     },
+    { value: '100%',  label: 'Approved'  },
+  ]
+  const active    = content?.portfolio?.active    || ACTIVE_PROJECTS
+  const completed = content?.portfolio?.completed || COMPLETED_PROJECTS
+
+  return (
+    <section className={`section ${styles.portSec}`} id="portfolio">
+      <div className="sec-hdr">
+        <div className="sec-tag" style={{ color: 'var(--gold-dark)' }}>Our Projects</div>
+        <h2 className="sec-title light">A Legacy of <em>Excellence</em></h2>
+        <p className="sec-sub" style={{ color: 'rgba(255,255,255,.65)' }}>
+          10+ projects delivered across the Krishna–Guntur corridor, with 1000+ families settled and 100% CRDA/RERA approved.
+        </p>
+      </div>
+
+      {/* Stats bar */}
+      <div className={styles.portStats}>
+        {portfolioStats.map(s => (
+          <div key={s.label} className={styles.ps}>
+            <div className={styles.psNum}>{s.value}</div>
+            <div className={styles.psLabel}>{s.label}</div>
+          </div>
+        ))}
+      </div>
+
+      {/* Tabs */}
+      <div className={styles.portTabs}>
+        <button className={`${styles.portTab} ${tab === 'booking' ? styles.portTabActive : ''}`}
+          onClick={() => setTab('booking')}>🟡 Open for Booking (4)</button>
+        <button className={`${styles.portTab} ${tab === 'done' ? styles.portTabActive : ''}`}
+          onClick={() => setTab('done')}>✅ Completed (6)</button>
+      </div>
+
+      <AnimatePresence mode="wait">
+        {tab === 'booking' ? (
+          <motion.div key="booking" className={styles.portGrid}
+            initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}
+            transition={{ duration: 0.2 }}>
+            {active.map((proj, i) => (
+              <ProjectCard key={proj.id} proj={proj} delay={i * 0.07} onEnquire={onEnquire} />
+            ))}
+          </motion.div>
+        ) : (
+          <motion.div key="done" className={styles.compGrid}
+            initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}
+            transition={{ duration: 0.2 }}>
+            {completed.map(p => (
+              <div key={p.name} className={styles.compCard}>
+                <div className={styles.compName}>{p.name}</div>
+                <div className={styles.compLoc}>📍 {p.loc}</div>
+                <span className={styles.compBadge}>✓ Completed · Fully Sold</span>
+              </div>
+            ))}
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </section>
+  )
+}
+
+function ProjectCard({ proj, delay, onEnquire }) {
+  return (
+    <motion.div
+      className={`${styles.portCard} ${styles[proj.color]}`}
+      initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }} transition={{ delay }}
+      whileHover={{ translateY: -4 }}>
+      <div className={styles.pcHeader}>
+        <div>
+          <div className={styles.pcName}>{proj.name}</div>
+          <div className={styles.pcLoc}>📍 {proj.loc}</div>
+        </div>
+        <div className={styles.pcBadge}>
+          <span className={styles.pcDot} /> {proj.available} Available
+        </div>
+      </div>
+      <div className={styles.pcApprovals}>
+        {proj.approvals.map(a => <span key={a} className={styles.pcTag}>{a}</span>)}
+      </div>
+      <div className={styles.pcHighlights}>
+        {proj.highlights.map(h => <div key={h} className={styles.pcHl}>{h}</div>)}
+      </div>
+      <div className={styles.pcPrice}>Starting from <strong>{proj.starting}</strong></div>
+      <button className={styles.pcViewBtn}
+        onClick={() => onEnquire({ source: 'PORTFOLIO_CARD', label: `Enquire — ${proj.name}`, category: proj.name })}>
+        View Project & Enquire →
+      </button>
+    </motion.div>
+  )
+}
+
+
+// ── Gallery ───────────────────────────────────────────────────
+const HOME_GALLERY = [
+  { label: 'Grand Entrance Arch',   icon: '🏛️' },
+  { label: 'Avenue Lined Roads',    icon: '🛣️' },
+  { label: 'Green Parks & Gardens', icon: '🌿' },
+  { label: 'Plot Layout View',      icon: '🏞️' },
+  { label: 'Tree Avenue',           icon: '🌴' },
+  { label: 'Floral Gardens',        icon: '🌺' },
+  { label: 'Security Gate',         icon: '🔒' },
+]
+
+export function GallerySection({ content }) {
+  const [lightbox, setLightbox] = useState(null) // { idx }
+  const items = content?.gallery || HOME_GALLERY
+
+  const openLightbox = idx => setLightbox({ idx })
+  const closeLightbox = () => setLightbox(null)
+  const prev = () => setLightbox(l => ({ idx: (l.idx - 1 + items.length) % items.length }))
+  const next = () => setLightbox(l => ({ idx: (l.idx + 1) % items.length }))
+
+  useEffect(() => {
+    if (!lightbox) return
+    const handler = e => {
+      if (e.key === 'ArrowLeft')  prev()
+      if (e.key === 'ArrowRight') next()
+      if (e.key === 'Escape')     closeLightbox()
+    }
+    window.addEventListener('keydown', handler)
+    return () => window.removeEventListener('keydown', handler)
+  }, [lightbox])
+
+  return (
+    <section className={`section ${styles.galSec}`} id="gallery">
+      <div className="sec-hdr">
+        <div className="sec-tag" style={{ color: 'var(--gold-dark)' }}>Visual Tour</div>
+        <h2 className="sec-title light">Project <em>Gallery</em></h2>
+        <p className="sec-sub" style={{ color: 'rgba(255,255,255,.6)' }}>
+          Glimpses from our open-plot projects — lush landscapes, infrastructure and modern amenities.
+        </p>
+      </div>
+
+      <div className={styles.galGrid}>
+        {items.slice(0, 7).map((item, idx) => (
+          <motion.div
+            key={idx}
+            className={`${styles.gCell} ${idx === 0 ? styles.gCellFeatured : ''}`}
+            onClick={() => openLightbox(idx)}
+            whileHover={{ scale: 1.02 }}
+            transition={{ duration: 0.2 }}>
+            <div className={styles.gIcon} style={{ fontSize: idx === 0 ? '5rem' : '3rem' }}>
+              {item.icon || '🏞️'}
+            </div>
+            <div className={styles.gOverlay}>{item.label}</div>
+          </motion.div>
+        ))}
+      </div>
+
+      {/* Lightbox */}
+      {lightbox && createPortal(
+        <motion.div className={styles.lbOverlay}
+          initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+          onClick={e => { if (e.target === e.currentTarget) closeLightbox() }}>
+          <div className={styles.lbInner}>
+            <button className={styles.lbClose} onClick={closeLightbox}><X size={18} /></button>
+            <div className={styles.lbIcon}>{items[lightbox.idx]?.icon || '🏞️'}</div>
+            <div className={styles.lbLabel}>{items[lightbox.idx]?.label}</div>
+            <div className={styles.lbCount}>{lightbox.idx + 1} of {items.length}</div>
+            <div className={styles.lbNav}>
+              <button className={styles.lbBtn} onClick={prev}>← Prev</button>
+              <button className={`${styles.lbBtn} ${styles.lbBtnGold}`} onClick={next}>Next →</button>
+            </div>
+          </div>
+        </motion.div>,
+        document.body
+      )}
+    </section>
+  )
+}
+
+
+// ── Videos ────────────────────────────────────────────────────
+const DEFAULT_VIDEOS = [
+  { id: 'dQw4w9WgXcY', type: 'youtube', title: 'Anjana Paradise — Project Overview',    subtitle: 'Full property walkthrough & amenities' },
+  { id: 'dQw4w9WgXcY', type: 'youtube', title: 'Location & Connectivity',              subtitle: 'Paritala to Amaravati route explained' },
+  { id: 'dQw4w9WgXcY', type: 'youtube', title: 'Amenities Showcase',                   subtitle: 'Infrastructure, parks & lifestyle features' },
+]
+
+export function VideosSection({ content }) {
+  const [activeVideo, setActiveVideo] = useState(null)
+  const videos = content?.videos || DEFAULT_VIDEOS
+
+  useEffect(() => {
+    if (!activeVideo) return
+    const handler = e => { if (e.key === 'Escape') setActiveVideo(null) }
+    window.addEventListener('keydown', handler)
+    return () => window.removeEventListener('keydown', handler)
+  }, [activeVideo])
+
+  return (
+    <section className={`section ${styles.vidSec}`} id="videos">
+      <div className="sec-hdr">
+        <div className="sec-tag" style={{ color: 'var(--gold-dark)' }}>Watch &amp; Explore</div>
+        <h2 className="sec-title light">Project <em>Videos</em></h2>
+        <p className="sec-sub" style={{ color: 'rgba(255,255,255,.6)' }}>
+          Take a virtual tour of our open-plot projects from the comfort of your home.
+        </p>
+      </div>
+
+      <div className={styles.vidGrid}>
+        {videos.map((v, i) => (
+          <motion.div key={i} className={styles.vidCard}
+            whileHover={{ translateY: -4, boxShadow: '0 12px 40px rgba(0,0,0,.4)' }}
+            onClick={() => setActiveVideo(v)}>
+            <div className={styles.vidThumb}>
+              {v.thumbnailUrl
+                ? <img src={v.thumbnailUrl} alt={v.title} />
+                : (
+                  <div className={styles.vidThumbPlaceholder}>
+                    <span>🎬</span>
+                  </div>
+                )
+              }
+              <div className={styles.vidPlayWrap}>
+                <div className={styles.vidPlay}>
+                  <Play size={24} fill="var(--green)" color="var(--green)" />
+                </div>
+              </div>
+            </div>
+            <div className={styles.vidInfo}>
+              <div className={styles.vidTitle}>{v.title}</div>
+              <div className={styles.vidSub}>{v.subtitle}</div>
+            </div>
+          </motion.div>
+        ))}
+      </div>
+
+      {/* Video modal */}
+      {activeVideo && createPortal(
+        <motion.div className={styles.vidModal}
+          initial={{ opacity: 0 }} animate={{ opacity: 1 }}
+          onClick={e => { if (e.target === e.currentTarget) setActiveVideo(null) }}>
+          <div className={styles.vidModalInner}>
+            <button className={styles.vidModalClose} onClick={() => setActiveVideo(null)}>
+              <X size={18} />
+            </button>
+            <div className={styles.vidModalTitle}>{activeVideo.title}</div>
+            {activeVideo.type === 'youtube' ? (
+              <iframe
+                src={`https://www.youtube.com/embed/${activeVideo.id}?autoplay=1&rel=0`}
+                frameBorder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowFullScreen
+                title={activeVideo.title}
+              />
+            ) : (
+              <video src={activeVideo.id} controls autoPlay playsInline />
+            )}
+          </div>
+        </motion.div>,
+        document.body
+      )}
+    </section>
+  )
+}
+
+
+// ── Highlights / Why Paritala ─────────────────────────────────
 export function HighlightsSection({ content }) {
   const highlights = (content?.highlights || []).sort((a,b) => a.sortOrder - b.sortOrder)
   return (
@@ -34,7 +335,7 @@ export function HighlightsSection({ content }) {
   )
 }
 
-// ── Amenities ─────────────────────────────────────────────────────────────────
+// ── Amenities ─────────────────────────────────────────────────
 export function AmenitiesSection({ content }) {
   const [tab, setTab] = useState('INFRA')
   const all       = content?.amenities || []
@@ -93,7 +394,7 @@ function FeaturedAmenity({ item, delay }) {
   )
 }
 
-// ── Quote / Investment Banner ──────────────────────────────────────────────────
+// ── Quote / Investment Banner ──────────────────────────────────
 export function QuoteSection({ content, onEnquire }) {
   const q = content?.quote || {}
   return (
@@ -122,7 +423,7 @@ export function QuoteSection({ content, onEnquire }) {
   )
 }
 
-// ── Location ──────────────────────────────────────────────────────────────────
+// ── Location ──────────────────────────────────────────────────
 export function LocationSection({ content }) {
   const distances = (content?.distances || []).sort((a,b) => a.sortOrder - b.sortOrder)
   const contact   = content?.contact || {}
@@ -136,15 +437,12 @@ export function LocationSection({ content }) {
         <p className="sec-sub">8 km from Amaravati with excellent road, rail and air access.</p>
       </div>
 
-      {/* Map */}
       <div className={styles.mapWrap} ref={ref}>
         {contact.mapEmbedUrl && (
           <iframe src={contact.mapEmbedUrl} className={styles.iframe}
             allowFullScreen loading="lazy" referrerPolicy="no-referrer-when-downgrade"
             title="Anjana Paradise Location" />
         )}
-
-        {/* Popup pin */}
         <motion.div className={styles.popup}
           initial={{opacity:0, scale:0.5}} animate={inView ? {opacity:1, scale:1} : {}}
           transition={{delay:0.4, duration:0.5, ease:[0.34,1.56,0.64,1]}}>
@@ -160,8 +458,6 @@ export function LocationSection({ content }) {
           </button>
           <div className={styles.popupArrow} />
         </motion.div>
-
-        {/* Bottom bar */}
         <div className={styles.mapBar}>
           <div className={styles.barLeft}>
             <div className={styles.liveDot} />
@@ -177,7 +473,6 @@ export function LocationSection({ content }) {
         </div>
       </div>
 
-      {/* Distance grid */}
       <div className={styles.distGrid}>
         {distances.map((d, i) => (
           <motion.div key={d.name} className={styles.distCard}
@@ -196,7 +491,7 @@ export function LocationSection({ content }) {
   )
 }
 
-// ── Contact / Lead Capture Section ────────────────────────────────────────────
+// ── Contact ───────────────────────────────────────────────────
 export function ContactSection({ content, onEnquire }) {
   const contact = content?.contact || {}
   const openWA  = () => {

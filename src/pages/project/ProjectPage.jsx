@@ -139,11 +139,11 @@ function OverviewTab({ proj, onEnquire }) {
           <div className={styles.pbTitle}>Plot Pricing (per Sq. Yard)</div>
           <div className={styles.pbRows}>
             <div className={styles.pbRow}>
-              <span className={styles.pbDir}>☀ East Facing</span>
+              <span className={styles.pbDir}><span className={styles.pbIcon}>☀</span> East Facing</span>
               <span className={styles.pbRate}>Rs.13,000 + Rs.1,000 = <strong>Rs.14,000 /sq.yd</strong></span>
             </div>
             <div className={styles.pbRow}>
-              <span className={styles.pbDir}>🌙 West Facing</span>
+              <span className={styles.pbDir}><span className={styles.pbIcon}>🌙</span> West Facing</span>
               <span className={styles.pbRate}>Rs.12,500 + Rs.1,000 = <strong>Rs.13,500 /sq.yd</strong></span>
             </div>
             <div className={styles.pbNote}>* Corner charges extra &nbsp;|&nbsp; Prices subject to revision</div>

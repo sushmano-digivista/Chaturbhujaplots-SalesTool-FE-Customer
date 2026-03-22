@@ -32,17 +32,6 @@ const VENTURES = [
       { icon: '🚉', name: 'Railway Connectivity',       subtitle: 'Govt. proposed, Amaravati–Paritala',distance: 'Proposed'},
       { icon: '🏭', name: 'Logistic Hub',               subtitle: 'Govt. proposed, Paritala',          distance: 'Proposed'},
     ],
-    highlights: [
-      'The property is strategically located adjacent to National Highway ensuring excellent connectivity.',
-      'Venture located within an 8 km radius of A.P. Capital, Amaravati.',
-      'Govt. proposed road connectivity to A.P. Capital, Amaravati.',
-      'Govt. proposed railway connectivity from Amaravati to Paritala.',
-      'Govt. proposed Logistic Hub in Paritala.',
-      'Our venture located in close proximity to renowned Engineering Colleges such as Amrita Sai, MVR College and MIC College.',
-      'This venture located in close proximity to Nimra Medical College.',
-      'Our venture located close to Mulapadu Cricket Stadium.',
-      'The Government proposed Cine Studio near to Nandigama.',
-    ],
   },
   {
     id:      'aparna',
@@ -61,16 +50,6 @@ const VENTURES = [
       { icon: '🏏', name: 'Mulapadu Cricket Stadium',    subtitle: 'International Cricket',             distance: 'Nearby' },
       { icon: '🎬', name: 'Cine Studio',                 subtitle: 'Govt. proposed, Nandigama',         distance: 'Proposed'},
       { icon: '🚉', name: 'Railway Connectivity',        subtitle: 'Govt. proposed, from Amaravati',    distance: 'Proposed'},
-    ],
-    highlights: [
-      'The property is strategically located very near to ORR ensuring excellent connectivity to A.P. Capital, Amaravati.',
-      'Venture located within 12 km radius of A.P. Capital, Amaravati.',
-      'Govt. proposed railway connectivity from Amaravati.',
-      'Our venture located in close proximity to renowned Engineering Colleges such as Amrita Sai, MVR College and MIC College.',
-      'Govt. proposed Logistic Hub in Paritala.',
-      'This venture located in close proximity to Nimra Medical College.',
-      'Our venture located close to Mulapadu Cricket Stadium.',
-      'The Government proposed Cine Studio near to Nandigama.',
     ],
   },
   {
@@ -91,16 +70,6 @@ const VENTURES = [
       { icon: '💃', name: 'Bharatanatyam Institution',  subtitle: 'World renowned dance school',       distance: '6 km'   },
       { icon: '🏠', name: 'Housing Project',            subtitle: 'Ready to build',                    distance: 'Ready'  },
     ],
-    highlights: [
-      'Adjacent to National Highway.',
-      '15 km from Kathipudi - Ongole Highway.',
-      '5 km to BEL Company.',
-      'Ready to build housing project.',
-      '20 km to Bandar Port.',
-      'Adjacent to proposed 6 Lane Vijayawada - Machilipatnam Road.',
-      'Near proximity to Engineering Colleges.',
-      '6 km to world renowned Bharatanatyam Institution.',
-    ],
   },
   {
     id:      'trimbak',
@@ -117,16 +86,6 @@ const VENTURES = [
       { icon: '🏥', name: 'Manipal Hospital',      subtitle: 'Penamaluru healthcare',     distance: '3 km'  },
       { icon: '🚂', name: 'Vijayawada Junction',   subtitle: 'Major railway hub',          distance: '10 km' },
       { icon: '✈️', name: 'Vijayawada Airport',   subtitle: 'Air connectivity',            distance: '12 km' },
-    ],
-    highlights: [
-      'Adjacent to National Highway.',
-      '15 km from Kathipudi - Ongole Highway.',
-      '5 km to BEL Company.',
-      'Ready to build housing project.',
-      '20 km to Bandar Port.',
-      'Adjacent to proposed 6 Lane Vijayawada - Machilipatnam Road.',
-      'Near proximity to Engineering Colleges.',
-      '6 km to world renowned Bharatanatyam Institution.',
     ],
   },
 ]
@@ -231,59 +190,35 @@ export default function LocationSection({ content }) {
         </motion.div>
       </AnimatePresence>
 
-      {/* ── Distance cards + Location Highlights — both switch per venture ─ */}
+      {/* ── Distance cards — switch per venture ─────────────────────────── */}
       <AnimatePresence mode="wait">
         <motion.div
-          key={`info-${venture.id}`}
+          key={`dist-${venture.id}`}
+          className={styles.distGrid}
           initial={{ opacity: 0, y: 8 }}
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: -8 }}
           transition={{ duration: 0.25 }}
         >
-          {/* Distance cards */}
-          <div className={styles.distGrid}>
-            {venture.distances.map((d, i) => (
-              <motion.div
-                key={d.name}
-                className={styles.distCard}
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: i * 0.06 }}
-                whileHover={{ y: -2, boxShadow: 'var(--shadow)' }}
-              >
-                <div className={styles.distIcon} style={{ background: palette.light }}>{d.icon}</div>
-                <div className={styles.distBody}>
-                  <div className={styles.distName}>{d.name}</div>
-                  <div className={styles.distSub}>{d.subtitle}</div>
-                </div>
-                <div className={styles.distBadge}
-                  style={{ background: palette.light, color: palette.text }}>
-                  {d.distance}
-                </div>
-              </motion.div>
-            ))}
-          </div>
-
-          {/* Location Highlights */}
-          <div className={styles.highlightsBox} style={{ borderColor: `${palette.color}33`, background: palette.light }}>
-            <div className={styles.highlightsTitle} style={{ color: palette.color }}>
-              📌 Location Highlights
-            </div>
-            <ul className={styles.highlightsList}>
-              {venture.highlights.map((h, i) => (
-                <motion.li
-                  key={i}
-                  className={styles.highlightItem}
-                  initial={{ opacity: 0, x: -8 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: i * 0.05 }}
-                >
-                  <span className={styles.highlightDot} style={{ background: palette.color }} />
-                  {h}
-                </motion.li>
-              ))}
-            </ul>
-          </div>
+          {venture.distances.map((d, i) => (
+            <motion.div
+              key={d.name}
+              className={styles.distCard}
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: i * 0.06 }}
+              whileHover={{ y: -2, boxShadow: 'var(--shadow)' }}
+            >
+              <div className={styles.distIcon} style={{ background: palette.light }}>{d.icon}</div>
+              <div className={styles.distBody}>
+                <div className={styles.distName}>{d.name}</div>
+                <div className={styles.distSub}>{d.subtitle}</div>
+              </div>
+              <div className={styles.distBadge} style={{ background: palette.light, color: palette.text }}>
+                {d.distance}
+              </div>
+            </motion.div>
+          ))}
         </motion.div>
       </AnimatePresence>
     </section>

@@ -2,26 +2,78 @@ import { useState, useEffect } from 'react'
 import { createPortal } from 'react-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import { X, ChevronLeft, ChevronRight } from 'lucide-react'
-
-// ── Direct imports — Vite resolves these to hashed URLs at build time ─────────
-import imgAllReady  from '@/assets/gallery/chaturbhuja/All_Ready_To_Buy_Ventures.png'
-import imgAnjana    from '@/assets/gallery/chaturbhuja/Anjana_Paradise_Paritala_Home.png'
-import imgAparna    from '@/assets/gallery/chaturbhuja/Aparna_Legacy_Chevitikallu_Home.png'
-import imgVaraha    from '@/assets/gallery/chaturbhuja/Varaha_Virtue_Pamarru_Home.png'
-
 import styles from './Sections.module.css'
 
-/**
- * To add more images:
- *   1. Drop the file into src/assets/gallery/chaturbhuja/
- *   2. Add an import line above
- *   3. Add an entry to GALLERY_IMAGES below
- */
+// ── Paritala (Anjana Paradise) ────────────────────────────────────────────────
+import p01 from '@/assets/gallery/chaturbhuja/paritala/001.jpeg'
+import p02 from '@/assets/gallery/chaturbhuja/paritala/002.jpeg'
+import p03 from '@/assets/gallery/chaturbhuja/paritala/003.jpeg'
+import p04 from '@/assets/gallery/chaturbhuja/paritala/004.jpeg'
+import p05 from '@/assets/gallery/chaturbhuja/paritala/005.jpeg'
+import p06 from '@/assets/gallery/chaturbhuja/paritala/006.jpeg'
+import p07 from '@/assets/gallery/chaturbhuja/paritala/007.jpeg'
+import p08 from '@/assets/gallery/chaturbhuja/paritala/008.jpeg'
+import p09 from '@/assets/gallery/chaturbhuja/paritala/009.jpeg'
+
+// ── Chevitikallu (Aparna Legacy) ─────────────────────────────────────────────
+import c01 from '@/assets/gallery/chaturbhuja/chevitikallu/001.jpeg'
+import c02 from '@/assets/gallery/chaturbhuja/chevitikallu/002.jpeg'
+import c03 from '@/assets/gallery/chaturbhuja/chevitikallu/003.jpeg'
+import c04 from '@/assets/gallery/chaturbhuja/chevitikallu/004.jpeg'
+import c05 from '@/assets/gallery/chaturbhuja/chevitikallu/005.jpeg'
+
+// ── Varaha (Varaha Virtue) ────────────────────────────────────────────────────
+import v01 from '@/assets/gallery/chaturbhuja/varaha/001.jpeg'
+import v02 from '@/assets/gallery/chaturbhuja/varaha/002.jpeg'
+import v03 from '@/assets/gallery/chaturbhuja/varaha/003.jpeg'
+import v04 from '@/assets/gallery/chaturbhuja/varaha/004.jpeg'
+import v05 from '@/assets/gallery/chaturbhuja/varaha/005.jpeg'
+import v06 from '@/assets/gallery/chaturbhuja/varaha/006.jpeg'
+import v07 from '@/assets/gallery/chaturbhuja/varaha/007.jpeg'
+import v08 from '@/assets/gallery/chaturbhuja/varaha/008.jpeg'
+import v09 from '@/assets/gallery/chaturbhuja/varaha/009.jpeg'
+import v10 from '@/assets/gallery/chaturbhuja/varaha/010.jpeg'
+import v11 from '@/assets/gallery/chaturbhuja/varaha/011.jpeg'
+import v12 from '@/assets/gallery/chaturbhuja/varaha/012.jpeg'
+import v13 from '@/assets/gallery/chaturbhuja/varaha/013.jpeg'
+import v14 from '@/assets/gallery/chaturbhuja/varaha/014.jpeg'
+import v15 from '@/assets/gallery/chaturbhuja/varaha/015.jpeg'
+import v16 from '@/assets/gallery/chaturbhuja/varaha/016.jpeg'
+
 const GALLERY_IMAGES = [
-  { src: imgAllReady, label: 'All Ready To Buy Ventures'       },
-  { src: imgAnjana,   label: 'Anjana Paradise — Paritala'      },
-  { src: imgAparna,   label: 'Aparna Legacy — Chevitikallu'    },
-  { src: imgVaraha,   label: 'Varaha Virtue — Pamarru'         },
+  // Paritala
+  { src: p01, label: 'Anjana Paradise — Paritala' },
+  { src: p02, label: 'Anjana Paradise — Paritala' },
+  { src: p03, label: 'Anjana Paradise — Paritala' },
+  { src: p04, label: 'Anjana Paradise — Paritala' },
+  { src: p05, label: 'Anjana Paradise — Paritala' },
+  { src: p06, label: 'Anjana Paradise — Paritala' },
+  { src: p07, label: 'Anjana Paradise — Paritala' },
+  { src: p08, label: 'Anjana Paradise — Paritala' },
+  { src: p09, label: 'Anjana Paradise — Paritala' },
+  // Chevitikallu
+  { src: c01, label: 'Aparna Legacy — Chevitikallu' },
+  { src: c02, label: 'Aparna Legacy — Chevitikallu' },
+  { src: c03, label: 'Aparna Legacy — Chevitikallu' },
+  { src: c04, label: 'Aparna Legacy — Chevitikallu' },
+  { src: c05, label: 'Aparna Legacy — Chevitikallu' },
+  // Varaha
+  { src: v01, label: 'Varaha Virtue — Pamarru' },
+  { src: v02, label: 'Varaha Virtue — Pamarru' },
+  { src: v03, label: 'Varaha Virtue — Pamarru' },
+  { src: v04, label: 'Varaha Virtue — Pamarru' },
+  { src: v05, label: 'Varaha Virtue — Pamarru' },
+  { src: v06, label: 'Varaha Virtue — Pamarru' },
+  { src: v07, label: 'Varaha Virtue — Pamarru' },
+  { src: v08, label: 'Varaha Virtue — Pamarru' },
+  { src: v09, label: 'Varaha Virtue — Pamarru' },
+  { src: v10, label: 'Varaha Virtue — Pamarru' },
+  { src: v11, label: 'Varaha Virtue — Pamarru' },
+  { src: v12, label: 'Varaha Virtue — Pamarru' },
+  { src: v13, label: 'Varaha Virtue — Pamarru' },
+  { src: v14, label: 'Varaha Virtue — Pamarru' },
+  { src: v15, label: 'Varaha Virtue — Pamarru' },
+  { src: v16, label: 'Varaha Virtue — Pamarru' },
 ]
 
 export default function GallerySection({ content }) {
@@ -69,12 +121,7 @@ export default function GallerySection({ content }) {
             whileHover={{ scale: 1.02 }}
             transition={{ duration: 0.2 }}
           >
-            <img
-              src={item.src}
-              alt={item.label}
-              className={styles.gImg}
-              loading="lazy"
-            />
+            <img src={item.src} alt={item.label} className={styles.gImg} loading="lazy" />
             <div className={styles.gOverlay}>
               <span className={styles.gOverlayLabel}>{item.label}</span>
             </div>
@@ -82,7 +129,6 @@ export default function GallerySection({ content }) {
         ))}
       </div>
 
-      {/* Lightbox */}
       {lightbox && createPortal(
         <motion.div
           className={styles.lbOverlay}

@@ -23,7 +23,7 @@ const VENTURES = [
     short:   'Paritala',
     address: 'Paritala Village, Kanchikacherla Mandal, N.T.R District, AP',
     badges:  ['CRDA Approved', 'RERA Registered'],
-    mapUrl:  'https://maps.google.com/maps?q=Paritala+Village+Kanchikacherla+Mandal+NTR+District+Andhra+Pradesh&output=embed&z=14',
+    mapUrl:  'https://maps.google.com/maps?q=Paritala+Village+Kanchikacherla+Mandal+NTR+District+Andhra+Pradesh&output=embed&z=14&iwloc=B',
     openUrl: 'https://maps.google.com/?q=Paritala+Village,Kanchikacherla+Mandal,NTR+District,Andhra+Pradesh',
     distances: [
       { icon: '🏛️', name: 'Amaravati Capital',    subtitle: 'New AP State Capital',       distance: '8 km'  },
@@ -40,7 +40,7 @@ const VENTURES = [
     short:   'Chevitikallu',
     address: 'Chevitikallu Village, Kanchikacherla Mandal, N.T.R District, AP',
     badges:  ['CRDA Approved', 'RERA Registered'],
-    mapUrl:  'https://maps.google.com/maps?q=Chevitikallu+Village+Kanchikacherla+Mandal+NTR+District+Andhra+Pradesh&output=embed&z=14',
+    mapUrl:  'https://maps.google.com/maps?q=Chevitikallu+Village+Kanchikacherla+Mandal+NTR+District+Andhra+Pradesh&output=embed&z=14&iwloc=B',
     openUrl: 'https://maps.google.com/?q=Chevitikallu+Village,Kanchikacherla+Mandal,NTR+District,Andhra+Pradesh',
     distances: [
       { icon: '🏛️', name: 'Amaravati Capital',    subtitle: 'New AP State Capital',       distance: '10 km' },
@@ -57,7 +57,7 @@ const VENTURES = [
     short:   'Pamarru',
     address: 'Pamarru Village & Mandal, Krishna District, AP',
     badges:  ['RERA Registered'],
-    mapUrl:  'https://maps.google.com/maps?q=Pamarru+Village+Krishna+District+Andhra+Pradesh&output=embed&z=14',
+    mapUrl:  'https://maps.google.com/maps?q=Pamarru+Village+Krishna+District+Andhra+Pradesh&output=embed&z=14&iwloc=B',
     openUrl: 'https://maps.google.com/?q=Pamarru+Village,Krishna+District,Andhra+Pradesh',
     distances: [
       { icon: '🏙️', name: 'Vijayawada City',       subtitle: 'Commercial capital of AP',   distance: '18 km' },
@@ -74,7 +74,7 @@ const VENTURES = [
     short:   'Penamaluru',
     address: 'Penamaluru, Vijayawada, Andhra Pradesh',
     badges:  ['RERA Registered'],
-    mapUrl:  'https://maps.google.com/maps?q=Penamaluru+Vijayawada+Andhra+Pradesh&output=embed&z=14',
+    mapUrl:  'https://maps.google.com/maps?q=Penamaluru+Vijayawada+Andhra+Pradesh&output=embed&z=14&iwloc=B',
     openUrl: 'https://maps.google.com/?q=Penamaluru,Vijayawada,Andhra+Pradesh',
     distances: [
       { icon: '🏙️', name: 'Vijayawada Centre',     subtitle: 'City core — 15 min drive',   distance: '8 km'  },

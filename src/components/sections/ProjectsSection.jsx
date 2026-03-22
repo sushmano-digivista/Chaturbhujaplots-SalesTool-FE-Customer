@@ -122,7 +122,7 @@ export default function ProjectsSection({ onEnquire, contact }) {
             <span className={styles.titleHighlight}>Chaturbhuja Properties</span>
           </h2>
           <p className={styles.subtitle}>
-            Trusted by 1000+ families across Krishna District with premium plotted developments.
+            Trusted by 1200+ families across Krishna District with premium plotted developments.
           </p>
         </div>
 
@@ -130,7 +130,7 @@ export default function ProjectsSection({ onEnquire, contact }) {
         <div className={styles.statsBar}>
           {[
             { value: '10+', label: 'Projects Delivered' },
-            { value: '1000+', label: 'Happy Families' },
+            { value: '1200+', label: 'Happy Families' },
             { value: '15+', label: 'Years Experience' },
             { value: '100%', label: 'DTCP / CRDA Approved' },
           ].map(s => (

@@ -82,7 +82,7 @@ export default function Navbar({ contact, onEnquire }) {
                 {/* Header */}
                 <div className={styles.dropHeader}>
                   <div className={styles.dropHeaderTitle}>Our Portfolio</div>
-                  <div className={styles.dropHeaderSub}>10+ projects · 1000+ families settled</div>
+                  <div className={styles.dropHeaderSub}>10+ projects · 1200+ families settled</div>
                 </div>
 
                 {/* Open for booking — rich project cards */}

@@ -9,7 +9,7 @@ import styles from './PortfolioSection.module.css'
 
 const STATS = [
   { value: '10+',   label: 'Projects Delivered', icon: '🏗️' },
-  { value: '1000+', label: 'Happy Families',      icon: '🏠' },
+  { value: '1200+', label: 'Happy Families',      icon: '🏠' },
   { value: '15+',   label: 'Years of Trust',      icon: '🏆' },
   { value: '100%',  label: 'CRDA / RERA',         icon: '✅' },
 ]
@@ -283,7 +283,7 @@ export default function PortfolioSection({ content }) {
           <div className={styles.secTag}>Our Portfolio</div>
           <h2 className={styles.secTitle}>A Legacy of <em>Excellence</em></h2>
           <p className={styles.secSub}>
-            10+ projects across the Krishna–Guntur corridor — 1000+ families settled,
+            10+ projects across the Krishna–Guntur corridor — 1200+ families settled,
             100% CRDA &amp; RERA approved.
           </p>
         </motion.div>

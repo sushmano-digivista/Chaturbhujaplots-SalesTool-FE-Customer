@@ -71,7 +71,7 @@
 }
 
 /* ── Gallery ────────────────────────────────────────── */
-.galSec { background: var(--dark); }
+.galSec { background: var(--dark); padding-top: 48px; padding-bottom: 48px; }
 .galGrid { columns: 3; column-gap: 12px; }
 .gCell {
   break-inside: avoid;
@@ -128,7 +128,7 @@
 }
 
 /* ── Videos ─────────────────────────────────────────── */
-.vidSec { background: var(--dark); }
+.vidSec { background: var(--dark); padding-top: 48px; padding-bottom: 48px; }
 .vidGrid { display: grid; grid-template-columns: repeat(3,1fr); gap: 24px; }
 .vidCard {
   border-radius: 16px; overflow: hidden;
@@ -327,4 +327,10 @@
   .portStats { flex-wrap:wrap; }
   .ps { min-width:50%; border-bottom:1px solid rgba(255,255,255,.12); }
   .quoteStats { gap:20px; }
+}
+
+/* Tighter header margin inside gallery / video */
+.galSec .sec-hdr,
+.vidSec .sec-hdr {
+  margin-bottom: 24px;
 }

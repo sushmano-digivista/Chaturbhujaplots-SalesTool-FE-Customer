@@ -41,7 +41,7 @@ export default function Hero({ content, onEnquire }) {
         </h1>
 
         <p className={styles.desc}>
-          {hero.description || "Own a piece of Andhra Pradesh's fastest-growing capital corridor. CRDA Proposed Layout with 100% Clear Title in Paritala — just 8 km from Amaravati, the New State Capital. Avenue-lined roads, 24/7 water, overhead electricity & ready for immediate construction."}
+          {hero.description || "A name rooted in integrity — Chaturbhuja Properties & Infra has been shaping Andhra Pradesh's real estate landscape for 25 years. Under the leadership of Mr. Donepudi Durga Prasad, we have placed 1200+ families in homes they are proud of, across 15+ APCRDA & RERA approved ventures in the Krishna–NTR–Guntur corridor."}
         </p>
 
         <div className={styles.btns}>

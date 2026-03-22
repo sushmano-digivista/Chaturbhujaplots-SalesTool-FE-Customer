@@ -4,9 +4,9 @@
  */
 const FALLBACK_CONTENT = {
   hero: {
-    headline:       'Welcome to',
-    subheadline:    'Chaturbhuja',
-    description:    "25 years of trust in Andhra Pradesh's real estate sector. Founded by Mr. Donepudi Durga Prasad, Chaturbhuja Properties & Infra has delivered 15+ successful ventures — open plots, houses and apartments — across the Krishna–NTR–Guntur corridor. APCRDA approved, RERA registered, 100% clear title.",
+    headline:       'Premium Plots Near',
+    subheadline:    'Amaravati',
+    description:    "A name rooted in integrity — Chaturbhuja Properties & Infra has been shaping Andhra Pradesh's real estate landscape for 25 years. Under the leadership of Mr. Donepudi Durga Prasad, we have placed 1200+ families in homes they are proud of, across 15+ APCRDA & RERA approved ventures in the Krishna–NTR–Guntur corridor.",
     approvalBadges: [
       'APCRDA Proposed Layouts',
       'AP RERA Registered',

@@ -122,15 +122,30 @@
   border: 1px solid color-mix(in srgb, var(--ac) 35%, transparent);
 }
 
-/* Ring */
-.ring { position: relative; flex-shrink: 0; }
-.ring svg { position: absolute; inset: 0; transform: rotate(-90deg); }
-.ringInner {
-  position: absolute; inset: 0;
-  display: flex; flex-direction: column; align-items: center; justify-content: center;
+/* ── Availability badge ──────────────────────────────────────────── */
+.availBadge {
+  display: inline-flex; align-items: center; gap: 7px;
+  padding: 6px 13px; border-radius: 100px;
+  background: rgba(255,255,255,0.07);
+  border: 1px solid rgba(255,255,255,0.12);
+  flex-shrink: 0;
 }
-.ringNum { font-family: 'Cormorant Garamond', serif; font-weight: 700; line-height: 1; }
-.ringLabel { font-size: 9px; color: rgba(255,255,255,0.38); margin-top: 2px; }
+.availBadgeLg {
+  padding: 9px 18px;
+}
+.availDot {
+  width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0;
+  animation: availPulse 2s ease-in-out infinite;
+}
+@keyframes availPulse {
+  0%,100% { transform: scale(1); opacity: 1; }
+  50%      { transform: scale(1.35); opacity: 0.7; }
+}
+.availLabel {
+  font-size: 11px; font-weight: 600; color: rgba(255,255,255,0.75);
+  white-space: nowrap; letter-spacing: 0.2px;
+}
+.availBadgeLg .availLabel { font-size: 13px; }
 
 /* ── Card identity ─────────────────────────────────────────────── */
 .cardIdentity { display: flex; flex-direction: column; gap: 5px; }

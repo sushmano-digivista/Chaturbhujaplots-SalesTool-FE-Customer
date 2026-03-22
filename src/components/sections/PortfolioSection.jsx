@@ -20,27 +20,19 @@ const ACCENT = {
   accentOrange: { color: '#FFB74D', bar: 'linear-gradient(90deg,#FFB74D,#F57C00)' },
 }
 
-// ── Availability ring ─────────────────────────────────────────────────────────
-function AvailRing({ available, total, color, size = 68 }) {
-  const r = size * 0.41, circ = 2 * Math.PI * r
-  const dash = (available / total) * circ
+// ── Availability status badge (count not disclosed) ──────────────────────────
+function AvailBadge({ available, total, color, large = false }) {
+  const pct  = available / total
+  const tier = pct <= 0.15
+    ? { label: 'Almost Full',  dot: '#E24B4A' }
+    : pct <= 0.40
+    ? { label: 'Filling Fast', dot: '#FFB74D' }
+    : { label: 'Available',    dot: '#4CAF74' }
   return (
-    <div className={styles.ring} style={{ width: size, height: size }}>
-      <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`}>
-        <circle cx={size/2} cy={size/2} r={r} fill="none"
-          stroke="rgba(255,255,255,0.08)" strokeWidth="5" />
-        <circle cx={size/2} cy={size/2} r={r} fill="none"
-          stroke={color} strokeWidth="5"
-          strokeDasharray={`${dash} ${circ - dash}`}
-          strokeDashoffset={circ * 0.25}
-          strokeLinecap="round" />
-      </svg>
-      <div className={styles.ringInner}>
-        <div className={styles.ringNum} style={{ color, fontSize: size > 60 ? '1.3rem' : '1rem' }}>
-          {available}
-        </div>
-        <div className={styles.ringLabel}>left</div>
-      </div>
+    <div className={`${styles.availBadge} ${large ? styles.availBadgeLg : ''}`}
+      style={{ '--ac': color }}>
+      <span className={styles.availDot} style={{ background: tier.dot }} />
+      <span className={styles.availLabel}>{tier.label}</span>
     </div>
   )
 }
@@ -85,7 +77,7 @@ function ProjectCard({ proj, index, onClick }) {
       {/* Tag + ring */}
       <div className={styles.cardHead}>
         <span className={styles.cardTag}>{proj.tag}</span>
-        <AvailRing available={proj.available} total={proj.total} color={ac.color} size={64} />
+        <AvailBadge available={proj.available} total={proj.total} color={ac.color} />
       </div>
 
       {/* Name + location */}
@@ -162,7 +154,7 @@ function ProjectPopup({ proj, onClose, onNavigate }) {
             <h2 className={styles.popupName}>{proj.name}</h2>
             <p className={styles.popupLoc}>📍 {proj.loc}</p>
           </div>
-          <AvailRing available={proj.available} total={proj.total} color={ac.color} size={80} />
+          <AvailBadge available={proj.available} total={proj.total} color={ac.color} large />
         </div>
 
         {/* Description */}
@@ -171,7 +163,6 @@ function ProjectPopup({ proj, onClose, onNavigate }) {
         {/* Stats row */}
         <div className={styles.popupStats}>
           {[
-            { val: proj.available, lab: 'Available'    },
             { val: proj.total,     lab: 'Total Plots'  },
             { val: proj.starting,  lab: 'Starting From' },
           ].map((s, i) => (

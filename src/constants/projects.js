@@ -45,6 +45,7 @@ export const ACTIVE_PROJECTS = [
       { tab: 'UTILITIES', icon: '🚰', label: 'Ample Water Availability Round the Clock'     },
       { tab: 'UTILITIES', icon: '⚡', label: 'Designed LED Street Lights'                   },
       { tab: 'UTILITIES', icon: '🏊', label: 'Drainage System'                              },
+      { tab: 'LIFESTYLE', icon: '🙏', label: 'Hanuman Temple — Just Minutes Away'           },
     ],
     gallery: [
       { label: 'Grand Entrance Arch',      icon: '🏛' },

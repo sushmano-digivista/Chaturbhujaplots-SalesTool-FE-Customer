@@ -8,7 +8,13 @@ import '@/styles/globals.css'
 
 const queryClient = new QueryClient({
   defaultOptions: {
-    queries: { retry: 1, staleTime: 60_000, throwOnError: false },
+    queries: {
+      retry:          1,
+      staleTime:      0,          // always fetch fresh — DB changes show immediately
+      gcTime:         5 * 60_000, // keep cache in memory 5 min (was: default 5 min)
+      throwOnError:   false,
+      refetchOnWindowFocus: true, // refetch when user switches back to the tab
+    },
   },
 })
 

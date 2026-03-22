@@ -6,7 +6,7 @@ export function useContent() {
   return useQuery({
     queryKey: ['content'],
     queryFn:  contentApi.getAll,
-    staleTime: 5 * 60_000,        // 5 min — content changes rarely
+    // staleTime inherited from QueryClient default (0) — always fetch fresh DB data
   })
 }
 

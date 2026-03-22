@@ -80,81 +80,140 @@
 /* ── Dropdown ─────────────────────────────────────────────────────── */
 .dropdown { position: relative; }
 .dropMenu {
-  position: absolute; top: calc(100% + 8px); left: 50%;
+  position: absolute; top: calc(100% + 10px); left: 50%;
   transform: translateX(-42%);
-  background: #fff;
-  border: 1px solid rgba(30,77,43,0.12);
-  border-top: 3px solid #1E4D2B;
-  border-radius: 0 0 16px 16px;
-  padding: 20px; width: 400px;
-  box-shadow: 0 24px 60px rgba(0,0,0,0.12), 0 4px 16px rgba(0,0,0,0.06);
+  width: 420px;
+  background: #0d2116;
+  border: 1px solid rgba(201,168,76,0.2);
+  border-top: 2px solid #C9A84C;
+  border-radius: 0 0 18px 18px;
+  padding: 0;
+  box-shadow: 0 32px 72px rgba(0,0,0,0.4), 0 8px 24px rgba(0,0,0,0.2),
+              inset 0 1px 0 rgba(255,255,255,0.05);
   z-index: 200;
-  animation: dropIn 0.18s ease;
+  overflow: hidden;
+  animation: dropIn 0.2s cubic-bezier(0.22,1,0.36,1);
 }
 @keyframes dropIn {
-  from { opacity: 0; transform: translateX(-42%) translateY(-6px); }
-  to   { opacity: 1; transform: translateX(-42%) translateY(0); }
+  from { opacity: 0; transform: translateX(-42%) translateY(-8px) scale(0.97); }
+  to   { opacity: 1; transform: translateX(-42%) translateY(0) scale(1); }
 }
-.dropSection { margin-bottom: 4px; }
-.dropLabel {
+
+/* ── Dropdown header ──────────────────────────────────────────────── */
+.dropHeader {
+  padding: 16px 20px 14px;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+  background: rgba(255,255,255,0.03);
+}
+.dropHeaderTitle {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.1rem; font-weight: 700; color: #fff;
+  letter-spacing: 0.3px; margin-bottom: 3px;
+}
+.dropHeaderSub {
+  font-size: 10.5px; color: rgba(255,255,255,0.35);
+  letter-spacing: 0.3px;
+}
+
+/* ── Section labels ───────────────────────────────────────────────── */
+.dropSectionLabel {
   display: flex; align-items: center; gap: 8px;
   font-size: 9px; font-weight: 700; letter-spacing: 2.5px;
-  text-transform: uppercase; color: rgba(0,0,0,0.35);
-  padding: 0 4px 10px;
+  text-transform: uppercase; color: rgba(255,255,255,0.3);
+  padding: 14px 20px 8px;
   font-family: 'DM Sans', sans-serif;
 }
-.dropLabelDot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
-.dropChips { display: flex; flex-direction: column; gap: 3px; }
-.dropChip {
-  display: flex; align-items: center; justify-content: space-between;
-  width: 100%; padding: 10px 14px; border-radius: 8px;
-  border: 1px solid rgba(30,77,43,0.08);
-  background: transparent;
-  color: #2c2c2c; font-size: 13px;
+.dropPulse {
+  width: 7px; height: 7px; border-radius: 50%;
+  background: #F6C347; flex-shrink: 0;
+  animation: dpulse 2s ease-in-out infinite;
+}
+@keyframes dpulse {
+  0%,100% { box-shadow: 0 0 0 0 rgba(246,195,71,0.5); }
+  50%      { box-shadow: 0 0 0 5px rgba(246,195,71,0); }
+}
+.dropCheckDot {
+  width: 7px; height: 7px; border-radius: 50%;
+  background: #4CAF74; flex-shrink: 0;
+}
+
+/* ── Project cards grid ───────────────────────────────────────────── */
+.dropCards {
+  display: flex; flex-direction: column; gap: 0;
+  padding: 0 12px 4px;
+}
+.dropCard {
+  position: relative; overflow: hidden;
+  display: flex; align-items: center; gap: 12px;
+  width: 100%; padding: 12px 14px;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.07);
+  border-radius: 10px; margin-bottom: 5px;
   cursor: pointer; text-align: left;
-  font-family: 'DM Sans', sans-serif; font-weight: 500;
-  transition: all 0.15s;
+  font-family: 'DM Sans', sans-serif;
+  transition: all 0.18s;
 }
-.dropChip:hover {
-  background: #f0f7f2;
-  border-color: rgba(30,77,43,0.2);
-  color: #1E4D2B; padding-left: 18px;
+.dropCard:last-child { margin-bottom: 0; }
+/* Accent left bar */
+.dropCardBar {
+  position: absolute; left: 0; top: 0; bottom: 0; width: 3px;
+  background: var(--dc);
+  border-radius: 0; opacity: 0.7;
+  transition: opacity 0.18s;
 }
-.chipName { font-weight: 500; }
-.chipAvail {
-  font-size: 10.5px; font-weight: 700; color: #1E7A40;
-  background: rgba(30,77,43,0.08); padding: 2px 9px;
-  border-radius: 100px; border: 1px solid rgba(30,77,43,0.15);
+.dropCard:hover { 
+  background: rgba(255,255,255,0.08);
+  border-color: color-mix(in srgb, var(--dc) 35%, transparent);
+  padding-left: 18px;
+  transform: translateX(2px);
 }
-.chipDone {
-  font-size: 10.5px; color: rgba(0,0,0,0.3);
-  background: rgba(0,0,0,0.04); padding: 2px 9px; border-radius: 100px;
+.dropCard:hover .dropCardBar { opacity: 1; }
+.dropCardContent { flex: 1; min-width: 0; }
+.dropCardName {
+  font-size: 13.5px; font-weight: 600; color: #fff;
+  margin-bottom: 3px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
 }
+.dropCardSub { font-size: 11px; color: rgba(255,255,255,0.4); }
+.dropCardArrow {
+  font-size: 20px; color: rgba(255,255,255,0.2);
+  line-height: 1; flex-shrink: 0;
+  transition: color 0.18s, transform 0.18s;
+}
+.dropCard:hover .dropCardArrow { color: var(--dc); transform: translateX(3px); }
+
+/* ── Divider ──────────────────────────────────────────────────────── */
+.dropDivider {
+  height: 1px; margin: 4px 20px;
+  background: linear-gradient(90deg, transparent, rgba(201,168,76,0.2), transparent);
+}
+
+/* ── Completed single line ────────────────────────────────────────── */
 .dropCompletedLine {
   display: block; width: 100%; text-align: left;
-  font-size: 12px; color: rgba(0,0,0,0.38); line-height: 1.8;
-  padding: 4px 4px; background: none; border: none; cursor: pointer;
+  font-size: 11.5px; color: rgba(255,255,255,0.3); line-height: 1.8;
+  padding: 4px 20px 12px; background: none; border: none; cursor: pointer;
   font-family: 'DM Sans', sans-serif; transition: color 0.15s;
 }
-.dropCompletedLine:hover { color: #1E4D2B; }
-.dropDivider {
-  height: 1px; background: rgba(30,77,43,0.08); margin: 14px 0;
-}
-.dropFooter { margin-top: 14px; }
+.dropCompletedLine:hover { color: rgba(255,255,255,0.55); }
+
+/* ── Footer CTA ───────────────────────────────────────────────────── */
 .dropViewAll {
-  display: flex; align-items: center; justify-content: center; gap: 6px;
-  width: 100%; padding: 11px; border-radius: 8px;
-  background: #f0f7f2; color: #1E4D2B;
+  display: flex; align-items: center; justify-content: space-between;
+  width: 100%; padding: 14px 20px;
+  background: rgba(201,168,76,0.08);
+  border: none; border-top: 1px solid rgba(201,168,76,0.15);
+  color: #C9A84C;
   font-size: 11px; font-weight: 700; letter-spacing: 1px;
   text-transform: uppercase; cursor: pointer;
   font-family: 'DM Sans', sans-serif;
-  border: 1px solid rgba(30,77,43,0.15);
-  transition: background 0.2s, border-color 0.2s;
+  transition: background 0.2s;
 }
-.dropViewAll:hover {
-  background: rgba(30,77,43,0.1);
-  border-color: rgba(30,77,43,0.28);
+.dropViewAll:hover { background: rgba(201,168,76,0.14); }
+.dropViewAllArrow {
+  font-size: 16px;
+  transition: transform 0.2s;
 }
+.dropViewAll:hover .dropViewAllArrow { transform: translateX(4px); }
 
 /* ══════════════════════════════════════════════════════════════════
    ENQUIRE NOW — Signature gold button

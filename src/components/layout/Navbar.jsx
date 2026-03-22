@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { Menu, X, Phone, ChevronDown } from 'lucide-react'
 import styles from './Navbar.module.css'
 
@@ -22,6 +23,7 @@ const NAV_LINKS = [
 ]
 
 export default function Navbar({ contact, onEnquire }) {
+  const navigate = useNavigate()
   const [scrolled,  setScrolled]  = useState(false)
   const [menuOpen,  setMenuOpen]  = useState(false)
   const [portOpen,  setPortOpen]  = useState(false)
@@ -76,48 +78,56 @@ export default function Navbar({ contact, onEnquire }) {
 
             {portOpen && (
               <div className={styles.dropMenu}>
-                {/* Open for booking */}
-                <div className={styles.dropSection}>
-                  <span className={styles.dropLabel}>
-                    <span className={styles.dropLabelDot} style={{ background: '#F6C347' }} />
-                    Open for Booking
-                  </span>
-                  <div className={styles.dropChips}>
-                    {NAV_PROJECTS.map((p) => (
+
+                {/* Header */}
+                <div className={styles.dropHeader}>
+                  <div className={styles.dropHeaderTitle}>Our Portfolio</div>
+                  <div className={styles.dropHeaderSub}>10+ projects · 1000+ families settled</div>
+                </div>
+
+                {/* Open for booking — rich project cards */}
+                <div className={styles.dropSectionLabel}>
+                  <span className={styles.dropPulse} />
+                  Open for Booking
+                </div>
+                <div className={styles.dropCards}>
+                  {NAV_PROJECTS.map((p, i) => {
+                    const colors = ['#C9A84C','#4CAF74','#64B5F6','#FFB74D']
+                    const color  = colors[i] || '#C9A84C'
+                    return (
                       <button
                         key={p.id}
-                        className={`${styles.dropChip} ${styles.dropChipActive}`}
-                        onClick={() => scrollTo('portfolio')}
+                        className={styles.dropCard}
+                        style={{ '--dc': color }}
+                        onClick={() => { setPortOpen(false); navigate(`/project/${p.id}`) }}
                       >
-                        <span className={styles.chipName}>{p.name}</span>
-                        <span className={styles.chipAvail}>{p.available} left</span>
+                        <div className={styles.dropCardBar} />
+                        <div className={styles.dropCardContent}>
+                          <div className={styles.dropCardName}>{p.name}</div>
+                          <div className={styles.dropCardSub}>📍 {p.sub}</div>
+                        </div>
+                        <div className={styles.dropCardArrow}>›</div>
                       </button>
-                    ))}
-                  </div>
+                    )
+                  })}
                 </div>
 
                 <div className={styles.dropDivider} />
 
-                {/* Completed — single line like before */}
-                <div className={styles.dropSection}>
-                  <span className={styles.dropLabel}>
-                    <span className={styles.dropLabelDot} style={{ background: '#4CAF74' }} />
-                    Completed &amp; Sold Out
-                  </span>
-                  <button
-                    className={styles.dropCompletedLine}
-                    onClick={() => scrollTo('portfolio')}
-                  >
-                    {NAV_COMPLETED.join(' · ')}
-                  </button>
+                {/* Completed */}
+                <div className={styles.dropSectionLabel}>
+                  <span className={styles.dropCheckDot} />
+                  Completed &amp; Sold Out
                 </div>
+                <button className={styles.dropCompletedLine} onClick={() => scrollTo('portfolio')}>
+                  {NAV_COMPLETED.join(' · ')}
+                </button>
 
                 {/* Footer CTA */}
-                <div className={styles.dropFooter}>
-                  <button className={styles.dropViewAll} onClick={() => scrollTo('portfolio')}>
-                    View all projects overview →
-                  </button>
-                </div>
+                <button className={styles.dropViewAll} onClick={() => scrollTo('portfolio')}>
+                  <span>View all projects overview</span>
+                  <span className={styles.dropViewAllArrow}>→</span>
+                </button>
               </div>
             )}
           </div>

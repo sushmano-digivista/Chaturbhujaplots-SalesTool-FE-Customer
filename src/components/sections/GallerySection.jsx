@@ -107,9 +107,7 @@ export default function GallerySection({ content }) {
       <div className="sec-hdr">
         <div className="sec-tag" style={{ color: 'var(--gold-dark)' }}>Visual Tour</div>
         <h2 className="sec-title light">Project <em>Gallery</em></h2>
-        <p className="sec-sub" style={{ color: 'rgba(255,255,255,.6)' }}>
-          Glimpses from our open-plot projects — lush landscapes, infrastructure and modern amenities.
-        </p>
+
       </div>
 
       <div className={styles.galGrid}>

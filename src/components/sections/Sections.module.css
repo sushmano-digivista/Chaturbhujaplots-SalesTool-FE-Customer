@@ -332,5 +332,5 @@
 /* Tighter header margin inside gallery / video */
 .galSec .sec-hdr,
 .vidSec .sec-hdr {
-  margin-bottom: 24px;
+  margin-bottom: 12px;
 }

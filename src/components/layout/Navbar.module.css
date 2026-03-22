@@ -11,19 +11,14 @@
 .scrolled { box-shadow: 0 4px 40px rgba(0,0,0,0.45); }
 
 /* ── Logo ─────────────────────────────────────────────────────────────────── */
-.logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
-.logoIcon {
-  width: 38px; height: 38px; background: var(--gold); border-radius: 9px;
-  display: flex; align-items: center; justify-content: center;
-  font-family: 'Cormorant Garamond', serif; font-weight: 700;
-  color: var(--green); font-size: 15px; flex-shrink: 0;
-  box-shadow: 0 2px 12px rgba(201,168,76,0.35);
+.logo { display: flex; align-items: center; text-decoration: none; }
+.logoImg {
+  height: 44px;
+  width: auto;
+  object-fit: contain;
+  display: block;
+  filter: brightness(1.05);
 }
-.logoBrand {
-  color: var(--white); font-family: 'Cormorant Garamond', serif;
-  font-size: 17px; font-weight: 600; line-height: 1.2;
-}
-.logoSub { color: rgba(255,255,255,0.38); font-size: 10px; letter-spacing: 1.5px; }
 
 /* ── Desktop links ────────────────────────────────────────────────────────── */
 .links { display: flex; align-items: center; gap: 2px; }

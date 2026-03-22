@@ -54,11 +54,11 @@ export default function Navbar({ contact, onEnquire }) {
 
         {/* Logo */}
         <a href="#home" className={styles.logo} onClick={(e) => { e.preventDefault(); scrollTo('home') }}>
-          <div className={styles.logoIcon}>CP</div>
-          <div>
-            <div className={styles.logoBrand}>Chaturbhuja Properties</div>
-            <div className={styles.logoSub}>& Infra · Premium Plots</div>
-          </div>
+          <img
+            src="/chaturbhuja-logo.webp"
+            alt="Chaturbhuja Properties & Infra"
+            className={styles.logoImg}
+          />
         </a>
 
         {/* Desktop links */}

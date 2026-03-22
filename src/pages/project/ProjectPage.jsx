@@ -268,6 +268,7 @@ function GalleryTab({ proj }) {
               </div>
             </div>
             <button className={`${styles.lbNavBtn} ${styles.lbNavRight}`} onClick={next}>›</button>
+          </motion.div>
         )}
       </AnimatePresence>
     </div>

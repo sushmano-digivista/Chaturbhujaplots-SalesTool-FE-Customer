@@ -78,7 +78,7 @@ function ProjectCard({ proj, index, onClick }) {
       {/* Tag + ring */}
       <div className={styles.cardHead}>
         <span className={styles.cardTag}>{proj.tag}</span>
-        <AvailBadge available={proj.available} total={proj.total} color={ac.color} />
+        
       </div>
 
       {/* Name + location */}
@@ -148,7 +148,7 @@ function ProjectPopup({ proj, onClose, onNavigate }) {
             <h2 className={styles.popupName}>{proj.name}</h2>
             <p className={styles.popupLoc}>📍 {proj.loc}</p>
           </div>
-          <AvailBadge available={proj.available} total={proj.total} color={ac.color} large />
+          
         </div>
 
         {/* Description */}
@@ -157,6 +157,7 @@ function ProjectPopup({ proj, onClose, onNavigate }) {
         {/* Stats row */}
         <div className={styles.popupStats}>
           {[
+            { val: proj.starting,  lab: 'Starting From' },
             { val: proj.total,     lab: 'Total Plots'  },
             { val: proj.starting,  lab: 'Starting From' },
           ].map((s, i) => (
@@ -305,7 +306,7 @@ export default function PortfolioSection({ content }) {
           <div className={styles.blockHead}>
             <div className={styles.blockPulse} />
             <h3 className={styles.blockTitle}>Open for Booking</h3>
-            <span className={styles.blockPill}>{active.length} projects available</span>
+            <span className={styles.blockPill}>{active.length} projects</span>
           </div>
 
           <div className={styles.cardsGrid}>

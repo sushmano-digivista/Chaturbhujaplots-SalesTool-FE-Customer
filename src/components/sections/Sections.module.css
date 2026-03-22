@@ -288,7 +288,7 @@
 .liveDot { width:10px; height:10px; border-radius:50%; background:#4CAF74; box-shadow:0 0 0 3px rgba(76,175,116,.3); animation:pulse 1.8s ease-in-out infinite; }
 @keyframes pulse { 0%,100%{box-shadow:0 0 0 3px rgba(76,175,116,.3)} 50%{box-shadow:0 0 0 6px rgba(76,175,116,.1)} }
 .barName { font-size:13px; font-weight:600; color:#fff; }
-.barAddr { font-size:11px; color:rgba(255,255,255,.5); }
+.barAddr { font-size:11px; color:rgba(255,255,255,.85); }
 
 /* ── Venture location tabs ──────────────────────────────────────────────── */
 .ventureTabs {

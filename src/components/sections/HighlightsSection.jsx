@@ -2,7 +2,7 @@ import { motion } from 'framer-motion'
 import styles from './Sections.module.css'
 
 /**
- * HighlightsSection — "Why Paritala" location advantages grid.
+ * HighlightsSection — "Why Chaturbhuja" location advantages grid.
  * Props:
  *   content  { highlights: Array<{ icon, title, description, sortOrder }> }
  */
@@ -12,7 +12,7 @@ export default function HighlightsSection({ content }) {
   return (
     <section className={`section ${styles.hlSec}`} id="highlights">
       <div className="sec-hdr">
-        <div className="sec-tag" style={{ color: 'var(--gold-light)' }}>Why Paritala</div>
+        <div className="sec-tag" style={{ color: 'var(--gold-light)' }}>Why Chaturbhuja</div>
         <h2 className="sec-title" style={{ color: '#fff' }}>
           Location <em>Advantages</em>
         </h2>

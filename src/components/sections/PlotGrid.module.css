@@ -66,7 +66,16 @@
 .catCountLabel { font-size: 11px; color: var(--text-light); text-transform: uppercase; letter-spacing: 0.5px; }
 .catPrice { font-size: 11px; color: var(--text-light); margin-top: 4px; }
 
-.chevron { font-size: 16px; color: var(--text-light); margin-left: 8px; margin-top: 6px; transition: transform 0.2s; }
+.chevronBtn {
+  width: 34px; height: 34px; border-radius: 50%;
+  border: none; cursor: pointer; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 16px; font-weight: 700;
+  transition: background 0.2s, color 0.2s, box-shadow 0.2s;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  outline: none;
+}
+.chevronBtn:focus-visible { box-shadow: 0 0 0 3px rgba(30,77,43,0.3); }
 
 /* Expanded content */
 .catExpanded { padding: 0 22px 20px; overflow: hidden; }

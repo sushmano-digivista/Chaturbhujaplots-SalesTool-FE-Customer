@@ -1,95 +1,160 @@
+/* ── Base nav ─────────────────────────────────────────────────────────────── */
 .nav {
-  position: fixed; top:0; left:0; right:0; z-index:900;
+  position: fixed; top: 0; left: 0; right: 0; z-index: 900;
   height: var(--nav-h);
-  background: rgba(12,28,17,0.96); backdrop-filter: blur(16px);
+  background: rgba(10, 24, 14, 0.97); backdrop-filter: blur(20px);
   display: flex; align-items: center; justify-content: space-between;
-  padding: 0 5%; border-bottom: 1.5px solid rgba(201,168,76,0.25);
+  padding: 0 5%;
+  border-bottom: 1px solid rgba(201,168,76,0.2);
   transition: box-shadow 0.3s;
 }
-.scrolled { box-shadow: 0 4px 32px rgba(0,0,0,0.35); }
+.scrolled { box-shadow: 0 4px 40px rgba(0,0,0,0.45); }
 
-.logo { display:flex; align-items:center; gap:10px; }
+/* ── Logo ─────────────────────────────────────────────────────────────────── */
+.logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
 .logoIcon {
-  width:38px; height:38px; background:var(--gold); border-radius:8px;
-  display:flex; align-items:center; justify-content:center;
-  font-family:'Cormorant Garamond',serif; font-weight:700; color:var(--green); font-size:15px;
+  width: 38px; height: 38px; background: var(--gold); border-radius: 9px;
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Cormorant Garamond', serif; font-weight: 700;
+  color: var(--green); font-size: 15px; flex-shrink: 0;
+  box-shadow: 0 2px 12px rgba(201,168,76,0.35);
 }
-.logoBrand { color:var(--white); font-family:'Cormorant Garamond',serif; font-size:18px; font-weight:600; line-height:1.2; }
-.logoSub   { color:rgba(255,255,255,0.45); font-size:10px; font-weight:300; letter-spacing:1.5px; }
+.logoBrand {
+  color: var(--white); font-family: 'Cormorant Garamond', serif;
+  font-size: 17px; font-weight: 600; line-height: 1.2;
+}
+.logoSub { color: rgba(255,255,255,0.38); font-size: 10px; letter-spacing: 1.5px; }
 
-.links { display:flex; align-items:center; gap:4px; }
+/* ── Desktop links ────────────────────────────────────────────────────────── */
+.links { display: flex; align-items: center; gap: 2px; }
+
 .link {
-  color:rgba(255,255,255,0.82); font-size:13.5px; background:none;
-  border:none; cursor:pointer; transition:all 0.2s; padding:8px 12px;
-  border-radius:8px; font-family:'DM Sans',sans-serif; font-weight:500;
-  white-space:nowrap;
+  color: rgba(255,255,255,0.75); font-size: 13.5px; background: none;
+  border: none; cursor: pointer; padding: 7px 11px; border-radius: 8px;
+  font-family: 'DM Sans', sans-serif; font-weight: 500; white-space: nowrap;
+  transition: color 0.15s, background 0.15s;
+  display: flex; align-items: center; gap: 4px;
 }
-.link:hover { color:#fff; background:rgba(255,255,255,0.08); }
-.dropTrigger { display:flex; align-items:center; gap:4px; }
+.link:hover, .linkActive { color: #fff; background: rgba(255,255,255,0.09); }
 
-/* Dropdown */
-.dropdown { position:relative; }
+/* ── Portfolio dropdown trigger ───────────────────────────────────────────── */
+.dropTrigger { position: relative; }
+.chevron {
+  transition: transform 0.2s ease;
+  color: rgba(255,255,255,0.45);
+}
+.chevronOpen { transform: rotate(180deg); color: var(--gold); }
+
+/* ── Dropdown panel ───────────────────────────────────────────────────────── */
+.dropdown { position: relative; }
+
 .dropMenu {
-  position:absolute; top:calc(100% + 8px); left:0;
-  background:#0f2312; border:1px solid rgba(201,168,76,0.2);
-  border-radius:14px; padding:12px; min-width:300px;
-  box-shadow:0 20px 60px rgba(0,0,0,0.5); z-index:200;
+  position: absolute; top: calc(100% + 10px); left: 50%;
+  transform: translateX(-40%);
+  background: #0c1f10;
+  border: 1px solid rgba(201,168,76,0.22);
+  border-radius: 16px; padding: 18px; width: 380px;
+  box-shadow: 0 24px 64px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,255,255,0.04);
+  z-index: 200;
+  animation: dropIn 0.18s ease;
 }
-.dropMenuWide { min-width:340px; }
-.dropLabel {
-  display:block; font-size:10px; font-weight:700; letter-spacing:2px;
-  text-transform:uppercase; color:var(--gold-dark); padding:4px 10px 8px;
+@keyframes dropIn {
+  from { opacity: 0; transform: translateX(-40%) translateY(-6px); }
+  to   { opacity: 1; transform: translateX(-40%) translateY(0); }
 }
-.dropItem {
-  display:flex; align-items:center; gap:10px; width:100%;
-  padding:9px 10px; border-radius:8px; border:none; background:none;
-  color:rgba(255,255,255,0.8); font-size:13px; cursor:pointer;
-  transition:background 0.15s; font-family:'DM Sans',sans-serif;
-  text-align:left;
-}
-.dropItem:hover { background:rgba(255,255,255,0.07); color:#fff; }
-.dropDot { width:8px; height:8px; border-radius:50%; background:var(--gold); flex-shrink:0; animation:pdot 1.8s ease-in-out infinite; }
-@keyframes pdot { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.5;transform:scale(.7)} }
-.dropItemText { flex:1; display:flex; flex-direction:column; gap:2px; }
-.dropSub { font-size:11px; color:rgba(255,255,255,0.45); display:block; }
-.dropAvail { font-size:11px; color:#4CAF74; font-weight:600; white-space:nowrap; margin-left:auto; }
-.dropDivider { height:1px; background:rgba(255,255,255,0.1); margin:8px 0; }
-.dropCompleted { font-size:12px; color:rgba(255,255,255,0.4); padding:6px 10px; line-height:1.6; }
 
-.mobileRight { display:none; align-items:center; gap:8px; }
-.phoneBtn {
-  width:36px; height:36px; background:rgba(255,255,255,0.1);
-  border-radius:8px; display:flex; align-items:center; justify-content:center;
-  color:var(--white); transition:background 0.2s;
+.dropSection { margin-bottom: 4px; }
+
+.dropLabel {
+  display: flex; align-items: center; gap: 7px;
+  font-size: 10px; font-weight: 700; letter-spacing: 2px;
+  text-transform: uppercase; color: rgba(255,255,255,0.45);
+  padding: 0 2px 10px; margin-top: 4px;
 }
-.phoneBtn:hover { background:rgba(255,255,255,0.18); }
+.dropLabelDot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
+
+/* ── Chip grid ────────────────────────────────────────────────────────────── */
+.dropChips { display: flex; flex-direction: column; gap: 4px; }
+
+.dropChip {
+  display: flex; align-items: center; justify-content: space-between;
+  width: 100%; padding: 9px 12px; border-radius: 9px;
+  border: 1px solid rgba(255,255,255,0.07);
+  background: rgba(255,255,255,0.04);
+  color: rgba(255,255,255,0.8); font-size: 13px;
+  cursor: pointer; text-align: left;
+  font-family: 'DM Sans', sans-serif; font-weight: 500;
+  transition: all 0.15s;
+}
+.dropChip:hover {
+  background: rgba(201,168,76,0.12);
+  border-color: rgba(201,168,76,0.3);
+  color: #fff;
+}
+.dropChipActive .chipAvail { color: #6ED096; }
+
+.chipName { font-weight: 500; }
+.chipAvail {
+  font-size: 11px; font-weight: 600; color: #4CAF74;
+  background: rgba(76,175,116,0.12);
+  padding: 2px 8px; border-radius: 100px;
+  border: 1px solid rgba(76,175,116,0.2);
+}
+.chipDone {
+  font-size: 11px; font-weight: 700; color: rgba(255,255,255,0.35);
+  background: rgba(255,255,255,0.07);
+  padding: 2px 8px; border-radius: 100px;
+}
+
+.dropDivider { height: 1px; background: rgba(255,255,255,0.08); margin: 12px 0; }
+
+/* ── Drop footer ──────────────────────────────────────────────────────────── */
+.dropFooter { margin-top: 12px; }
+.dropViewAll {
+  display: block; width: 100%; text-align: center;
+  padding: 10px; border-radius: 9px; border: none;
+  background: rgba(201,168,76,0.12); color: var(--gold);
+  font-size: 12px; font-weight: 600; letter-spacing: 0.3px;
+  cursor: pointer; font-family: 'DM Sans', sans-serif;
+  transition: background 0.15s;
+}
+.dropViewAll:hover { background: rgba(201,168,76,0.22); }
+
+/* ── Mobile ───────────────────────────────────────────────────────────────── */
+.mobileRight { display: none; align-items: center; gap: 8px; }
+.phoneBtn {
+  width: 36px; height: 36px; background: rgba(255,255,255,0.09);
+  border-radius: 9px; display: flex; align-items: center;
+  justify-content: center; color: var(--white); transition: background 0.2s;
+}
+.phoneBtn:hover { background: rgba(255,255,255,0.16); }
 .hamburger {
-  width:36px; height:36px; background:rgba(255,255,255,0.08);
-  border:none; border-radius:8px; color:var(--white);
-  display:flex; align-items:center; justify-content:center; cursor:pointer;
+  width: 36px; height: 36px; background: rgba(255,255,255,0.07);
+  border: none; border-radius: 9px; color: var(--white);
+  display: flex; align-items: center; justify-content: center; cursor: pointer;
 }
 
 .mobileMenu {
-  display:none; position:fixed; top:var(--nav-h); left:0; right:0;
-  background:var(--green); z-index:899; flex-direction:column;
-  border-bottom:1px solid rgba(201,168,76,0.3);
-  max-height:0; overflow:hidden; transition:max-height 0.3s ease;
+  display: none; position: fixed; top: var(--nav-h); left: 0; right: 0;
+  background: #0c1f10; z-index: 899; flex-direction: column;
+  border-bottom: 1px solid rgba(201,168,76,0.2);
+  max-height: 0; overflow: hidden; transition: max-height 0.3s ease;
 }
-.mobileMenu.open { display:flex; max-height:500px; }
+.mobileMenu.open { display: flex; max-height: 520px; }
 .mobileLink {
-  color:rgba(255,255,255,0.85); font-size:15px; padding:14px 5%;
-  border:none; background:none; text-align:left; cursor:pointer;
-  border-bottom:1px solid rgba(255,255,255,0.07); font-family:'DM Sans',sans-serif;
-  transition:background 0.2s;
+  color: rgba(255,255,255,0.82); font-size: 15px; padding: 15px 5%;
+  border: none; background: none; text-align: left; cursor: pointer;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+  font-family: 'DM Sans', sans-serif; transition: background 0.15s;
 }
-.mobileLink:hover { background:rgba(255,255,255,0.06); }
+.mobileLink:hover { background: rgba(255,255,255,0.05); }
 .mobileEnquire {
-  background:var(--gold); color:var(--green); font-weight:700;
-  font-size:15px; padding:16px 5%; border:none; text-align:left;
-  cursor:pointer; font-family:'DM Sans',sans-serif;
+  background: var(--gold); color: var(--green); font-weight: 700;
+  font-size: 15px; padding: 16px 5%; border: none; text-align: left;
+  cursor: pointer; font-family: 'DM Sans', sans-serif;
 }
 
-@media (max-width:900px) {
-  .links { display:none; }
-  .mobileRight { display:flex; }
+@media (max-width: 900px) {
+  .links { display: none; }
+  .mobileRight { display: flex; }
 }

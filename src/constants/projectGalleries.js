@@ -37,26 +37,37 @@ const FOLDER_TO_ID = {
   trimbak:      'trimbak',
 }
 
+// Human-readable project labels per folder
+const FOLDER_LABELS = {
+  paritala:     'Anjana Paradise @ Paritala',
+  varaha:       'Varaha Virtue @ Pamarru',
+  chevitikallu: 'Aparna Legacy @ Chevitikallu',
+  trimbak:      'Trimbak Oaks @ Penamaluru',
+}
+
 function buildMap(modules) {
   const result = {}
 
   Object.keys(modules).sort().forEach((path) => {
-    // Extract folder name from path: ../assets/gallery/chaturbhuja/paritala/001.jpeg
-    const parts  = path.split('/')
-    const folder = parts[parts.length - 2]   // e.g. 'paritala'
-    const projId = FOLDER_TO_ID[folder]
-    if (!projId) return                        // skip root-level files
+    const parts     = path.split('/')
+    const folder    = parts[parts.length - 2]
+    const projId    = FOLDER_TO_ID[folder]
+    if (!projId) return
 
-    const url    = modules[path].default       // Vite resolves to hashed URL
-    const name   = parts[parts.length - 1]     // e.g. '001.jpeg'
-    const label  = name
-      .replace(/\.\w+$/, '')                   // strip extension
-      .replace(/^\d+[-_]?/, '')                // strip leading number
-      .replace(/[-_]/g, ' ')                   // hyphens/underscores → spaces
-      .trim() || name.replace(/\.\w+$/, '')    // fallback: filename without ext
+    const url    = modules[path].default
+    const name   = parts[parts.length - 1]
+    // File label: clean filename (strip number prefix + extension)
+    const fileLabel = name
+      .replace(/\.\w+$/, '')
+      .replace(/^\d+[-_]?/, '')
+      .replace(/[-_]/g, ' ')
+      .trim()
+    // Title shown to user: cleaned filename OR project location label
+    const title   = fileLabel || FOLDER_LABELS[folder] || name
+    const subtitle = FOLDER_LABELS[folder] || ''
 
     if (!result[projId]) result[projId] = []
-    result[projId].push({ src: url, label, name })
+    result[projId].push({ src: url, label: title, subtitle, name })
   })
 
   return result

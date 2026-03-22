@@ -70,8 +70,10 @@ export default function VideosSection({ content }) {
               </div>
             </div>
             <div className={styles.vidInfo}>
+              <div className={styles.vidSub} style={{ color:'var(--gold-dark)', fontSize:'11px', fontWeight:700, letterSpacing:'1px', textTransform:'uppercase', marginBottom:4 }}>
+                {v.subtitle}
+              </div>
               <div className={styles.vidTitle}>{v.title || v.name}</div>
-              {v.subtitle && <div className={styles.vidSub}>{v.subtitle}</div>}
             </div>
           </motion.div>
         ))}

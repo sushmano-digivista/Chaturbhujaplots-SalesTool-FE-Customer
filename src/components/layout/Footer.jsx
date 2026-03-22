@@ -1,14 +1,22 @@
-import { Phone, MessageCircle, Map } from 'lucide-react'
 import styles from './Footer.module.css'
 
-// ── Footer ────────────────────────────────────────────────────────────────────
-export function Footer({ content }) {
+/**
+ * Footer — site-wide footer with brand info, quick links and contact details.
+ * Props:
+ *   content  { contact, ... }
+ *
+ * Related layout components (split into their own files):
+ *   StickyBar  → ./StickyBar.jsx
+ *   FloatingWA → ./FloatingWA.jsx
+ */
+export default function Footer({ content }) {
   const contact = content?.contact || {}
-  const scrollTo = id => document.getElementById(id)?.scrollIntoView({ behavior:'smooth' })
+  const scrollTo = (id) => document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' })
 
   return (
     <footer className={styles.footer}>
       <div className={styles.grid}>
+
         {/* Brand */}
         <div>
           <div className={styles.brand}>Anjana <em>Paradise</em></div>
@@ -26,17 +34,24 @@ export function Footer({ content }) {
         {/* Quick links */}
         <div>
           <h5 className={styles.colTitle}>Quick Links</h5>
-          {[['Explore Plots','plots'],['Amenities','amenities'],['Location','location'],['Contact','contact']].map(([l,id]) => (
-            <button key={id} className={styles.link} onClick={() => scrollTo(id)}>{l}</button>
+          {[
+            ['Explore Plots', 'plots'],
+            ['Amenities',     'amenities'],
+            ['Location',      'location'],
+            ['Contact',       'contact'],
+          ].map(([label, id]) => (
+            <button key={id} className={styles.link} onClick={() => scrollTo(id)}>
+              {label}
+            </button>
           ))}
         </div>
 
         {/* Contact */}
         <div>
           <h5 className={styles.colTitle}>Contact</h5>
-          {contact.phone    && <a href={`tel:${contact.phone}`}         className={styles.link}>📞 {contact.phone}</a>}
+          {contact.phone    && <a href={`tel:${contact.phone}`}                              className={styles.link}>📞 {contact.phone}</a>}
           {contact.whatsapp && <a href={`https://wa.me/${contact.whatsapp}`} target="_blank" rel="noreferrer" className={styles.link}>💬 WhatsApp</a>}
-          {contact.email    && <a href={`mailto:${contact.email}`}      className={styles.link}>✉️ {contact.email}</a>}
+          {contact.email    && <a href={`mailto:${contact.email}`}                           className={styles.link}>✉️ {contact.email}</a>}
           {contact.address  && <span className={styles.link}>📍 {contact.address}</span>}
         </div>
       </div>
@@ -46,42 +61,5 @@ export function Footer({ content }) {
         <span>RERA Registered · CRDA Approved</span>
       </div>
     </footer>
-  )
-}
-
-// ── Sticky Bottom Bar (mobile) ─────────────────────────────────────────────────
-export function StickyBar({ contact, onEnquire }) {
-  const openWA = () => {
-    const num = contact?.whatsapp || '919999999999'
-    window.open(`https://wa.me/${num}?text=${encodeURIComponent('Hi, I am interested in Anjana Paradise plots.')}`, '_blank')
-  }
-
-  return (
-    <div className={styles.stickyBar}>
-      <a href={`tel:${contact?.phone || '+919999999999'}`} className={styles.sbBtn}>
-        <Phone size={20} /><span>Call</span>
-      </a>
-      <button className={`${styles.sbBtn} ${styles.sbWa}`} onClick={openWA}>
-        <MessageCircle size={20} /><span>WhatsApp</span>
-      </button>
-      <button className={`${styles.sbBtn} ${styles.sbMain}`}
-        onClick={() => onEnquire({ source:'STICKY_BAR', label:'Enquire Now' })}>
-        <Map size={20} /><span>Enquire</span>
-      </button>
-    </div>
-  )
-}
-
-// ── Floating WhatsApp button ───────────────────────────────────────────────────
-export function FloatingWA({ contact }) {
-  const openWA = () => {
-    const num = contact?.whatsapp || '919999999999'
-    window.open(`https://wa.me/${num}?text=${encodeURIComponent('Hi, I am interested in Anjana Paradise plots near Amaravati.')}`, '_blank')
-  }
-
-  return (
-    <button className={styles.floatWA} onClick={openWA} title="Chat on WhatsApp">
-      💬
-    </button>
   )
 }

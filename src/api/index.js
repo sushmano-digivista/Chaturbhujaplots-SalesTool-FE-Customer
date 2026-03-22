@@ -14,9 +14,12 @@ const MEDIA_BASE = isDev
   ? '/api/media'
   : 'https://chaturbhujaplots-sales-tool-be-common-services-p78gvop5a.vercel.app/api/v1/media'
 
-const dashApi  = axios.create({ baseURL: DASHBOARD_BASE, timeout: 15000 })
-const plotApi  = axios.create({ baseURL: PLOT_BASE,      timeout: 15000 })
-const mediaApi = axios.create({ baseURL: MEDIA_BASE,     timeout: 15000 })
+// Force fresh responses — prevents 304 Not Modified from serving stale DB data
+const noCacheHeaders = { 'Cache-Control': 'no-cache', 'Pragma': 'no-cache' }
+
+const dashApi  = axios.create({ baseURL: DASHBOARD_BASE, timeout: 15000, headers: noCacheHeaders })
+const plotApi  = axios.create({ baseURL: PLOT_BASE,      timeout: 15000, headers: noCacheHeaders })
+const mediaApi = axios.create({ baseURL: MEDIA_BASE,     timeout: 15000, headers: noCacheHeaders })
 
 export const contentApi = {
   getAll: () => dashApi.get('/content').then(r => r.data),

@@ -4,27 +4,43 @@ import { useInView } from 'react-intersection-observer'
 import { usePlotSummary } from '@/hooks/useData'
 import styles from './Hero.module.css'
 
-// ── Hardcoded brand constants — never pulled from API ─────────────────────────
-const HEADLINE    = 'Premium Plots in'
-const SUBHEADLINE = 'Andhra Pradesh'
-const DESCRIPTION = "A name rooted in integrity — Chaturbhuja Properties & Infra has been shaping Andhra Pradesh's real estate landscape for 25 years. Under the leadership of Mr. Donepudi Durga Prasad, we have placed 1200+ families in homes they are proud of, across 15+ APCRDA & RERA approved ventures in the Krishna–NTR–Guntur corridor."
-const BADGES      = [
-  'APCRDA Proposed Layout · LP No: 35/2025',
-  'AP RERA · P06060125894',
-  'Ready for Construction',
-]
-const STATS = [
-  { value: 25,   suffix: '+', label: 'Years in Industry'  },
-  { value: 15,   suffix: '+', label: 'Projects Delivered' },
-  { value: 1200, suffix: '+', label: 'Happy Customers'    },
-]
+// ── Fallback values — used only when API is unavailable ───────────────────────
+const FB = {
+  headline:    'Premium Plots in',
+  subheadline: 'Andhra Pradesh',
+  description: "A name rooted in integrity — Chaturbhuja Properties & Infra has been shaping Andhra Pradesh's real estate landscape for 25 years. Under the leadership of Mr. Donepudi Durga Prasad, we have placed 1200+ families in homes they are proud of, across 15+ APCRDA & RERA approved ventures in the Krishna–NTR–Guntur corridor.",
+  badges: [
+    'APCRDA Proposed Layout · LP No: 35/2025',
+    'AP RERA · P06060125894',
+    'Ready for Construction',
+  ],
+  urgency: { openProjects: 4, completedProjects: 11, happyFamilies: '1200+', plotsLeft: 68, soldThisMonth: 8, priceRisePercent: 18 },
+}
 
 export default function Hero({ content, onEnquire }) {
   const { ref, inView } = useInView({ triggerOnce: true, threshold: 0.2 })
+
+  // Live data from API; fall back to FB constants when API is down / returns nothing
+  const hero    = content?.hero    || {}
   const contact = content?.contact || {}
   const urgency = content?.urgency || {}
 
+  const headline    = hero.headline    || FB.headline
+  const subheadline = hero.subheadline || FB.subheadline
+  const description = hero.description || FB.description
+  const badges      = hero.approvalBadges?.length ? hero.approvalBadges : FB.badges
+
+  const openProjects      = urgency.openProjects      || FB.urgency.openProjects
+  const completedProjects = urgency.completedProjects  || FB.urgency.completedProjects
+  const happyFamilies     = urgency.happyFamilies      || FB.urgency.happyFamilies
+  const plotsLeft         = urgency.plotsLeft          || FB.urgency.plotsLeft
+  const soldThisMonth     = urgency.soldThisMonth      || FB.urgency.soldThisMonth
+  const priceRisePct      = urgency.priceRisePercent   || FB.urgency.priceRisePercent
+  const whatsapp          = contact.whatsapp           || '918977262683'
+
   const scrollTo = id => document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' })
+
+  const barWidth = `${Math.round((openProjects / (openProjects + completedProjects)) * 100)}%`
 
   return (
     <section className={styles.hero} id="home">
@@ -38,23 +54,20 @@ export default function Hero({ content, onEnquire }) {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.7, ease: [0.4, 0, 0.2, 1] }}>
 
-        {/* Approval badges */}
         <div className={styles.badges}>
-          {BADGES.map(b => (
+          {badges.map(b => (
             <span key={b} className={styles.badge}>
               <span className={styles.badgeDot} />{b}
             </span>
           ))}
         </div>
 
-        {/* Headline — always hardcoded */}
         <h1 className={styles.title}>
-          {HEADLINE}<br />
-          <em>{SUBHEADLINE}</em>
+          {headline}<br />
+          <em>{subheadline}</em>
         </h1>
 
-        {/* Description — always hardcoded */}
-        <p className={styles.desc}>{DESCRIPTION}</p>
+        <p className={styles.desc}>{description}</p>
 
         <div className={styles.btns}>
           <button className="btn btn-gold" onClick={() => scrollTo('plots')}>
@@ -70,9 +83,12 @@ export default function Hero({ content, onEnquire }) {
           </button>
         </div>
 
-        {/* Stats — always hardcoded */}
         <div className={styles.statsBar}>
-          {STATS.map((s, i) => (
+          {[
+            { value: 25,   suffix: '+', label: 'Years in Industry'  },
+            { value: 15,   suffix: '+', label: 'Projects Delivered' },
+            { value: 1200, suffix: '+', label: 'Happy Customers'    },
+          ].map((s, i) => (
             <div key={i} className={styles.stat}>
               <div className={styles.statNum}>
                 {inView
@@ -107,42 +123,42 @@ export default function Hero({ content, onEnquire }) {
         <div className={styles.lcStatus}>
           <div className={styles.lcStatusCard} style={{ background: 'rgba(201,168,76,.12)' }}>
             <div className={styles.lcStatusIcon}>🟡</div>
-            <div className={styles.lcStatusNum}>{urgency.openProjects || 4}</div>
+            <div className={styles.lcStatusNum}>{openProjects}</div>
             <div className={styles.lcStatusLabel}>Projects Open<br /><span>For Booking</span></div>
           </div>
           <div className={styles.lcStatusDiv} />
           <div className={styles.lcStatusCard} style={{ background: 'rgba(76,175,116,.1)' }}>
             <div className={styles.lcStatusIcon}>✅</div>
-            <div className={styles.lcStatusNum}>{urgency.completedProjects || 11}</div>
+            <div className={styles.lcStatusNum}>{completedProjects}</div>
             <div className={styles.lcStatusLabel}>Projects<br /><span>Completed</span></div>
           </div>
           <div className={styles.lcStatusDiv} />
           <div className={styles.lcStatusCard} style={{ background: 'rgba(100,181,246,.08)' }}>
             <div className={styles.lcStatusIcon}>🏠</div>
-            <div className={styles.lcStatusNum}>{urgency.happyFamilies || '1200+'}</div>
+            <div className={styles.lcStatusNum}>{happyFamilies}</div>
             <div className={styles.lcStatusLabel}>Happy<br /><span>Families</span></div>
           </div>
         </div>
 
         <div className={styles.lcBar}>
-          <div className={styles.lcBarFill} style={{ width: '27%' }} />
+          <div className={styles.lcBarFill} style={{ width: barWidth }} />
         </div>
         <div className={styles.lcBarLabels}>
-          <span>🟡 4 Open for Booking</span>
-          <span>✅ 11 Completed &amp; Sold</span>
+          <span>🟡 {openProjects} Open for Booking</span>
+          <span>✅ {completedProjects} Completed &amp; Sold</span>
         </div>
 
         <div className={styles.lcStats}>
           <div className={styles.lcs}>
-            <div className={styles.lcsNum}>{urgency.plotsLeft || 68}</div>
+            <div className={styles.lcsNum}>{plotsLeft}</div>
             <div className={styles.lcsLabel}>Plots Left</div>
           </div>
           <div className={styles.lcs}>
-            <div className={styles.lcsNum}>{urgency.soldThisMonth || 8}</div>
+            <div className={styles.lcsNum}>{soldThisMonth}</div>
             <div className={styles.lcsLabel}>Sold This Month</div>
           </div>
           <div className={styles.lcs}>
-            <div className={styles.lcsNum}>↑{urgency.priceRisePercent || 18}%</div>
+            <div className={styles.lcsNum}>↑{priceRisePct}%</div>
             <div className={styles.lcsLabel}>Price Next Qtr</div>
           </div>
         </div>
@@ -152,7 +168,7 @@ export default function Hero({ content, onEnquire }) {
             Explore All Projects →
           </button>
           <a
-            href={`https://wa.me/${contact.whatsapp || '918977262683'}?text=${encodeURIComponent('Hi, I am interested in Chaturbhuja plots. Please share details.')}`}
+            href={`https://wa.me/${whatsapp}?text=${encodeURIComponent('Hi, I am interested in Chaturbhuja plots. Please share details.')}`}
             target="_blank" rel="noreferrer"
             className={styles.lcBtnWA}>
             💬

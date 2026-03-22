@@ -16,13 +16,8 @@ export const ACTIVE_PROJECTS = [
     starting:    'Rs.23.9L',
     tag:         'Featured',
     status:      'APCRDA LP No: 35/2025 | AP RERA P06060125894',
-    facings:     {
-      east:   115,   // East (112) + East corner (1) + East/North corner (1) + South/East corner (1)
-      west:   127,   // West (122) + South/West corner (2) + West/North corner (1) + East/West double (2)
-      north:    0,
-      south:    0,
-      corner:   0,
-    },
+    // Source: paritala_plot_dimensions.xlsx (Paritala Plan-22.pdf, 242 plots)
+    facings: { east: 113, eastNorth: 1, eastWest: 2, west: 122, westNorth: 1, southEast: 1, southWest: 2 },
     approvals:   ['CRDA Proposed Layout', 'AP RERA Registered', '100% Clear Title', '100% Vaastu'],
     highlights: [
       'Adjacent to National Highway (NH-16)',

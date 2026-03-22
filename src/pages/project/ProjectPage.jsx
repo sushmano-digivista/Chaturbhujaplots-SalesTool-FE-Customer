@@ -85,14 +85,7 @@ function HomeTab({ proj, onEnquire }) {
 
 // ── Overview tab ──────────────────────────────────────────────────────────────
 function OverviewTab({ proj, onEnquire }) {
-  const f = proj.facings || {}
-  const facingRows = [
-    { label: 'East Facing',  value: f.east,   color: '#C9A84C' },
-    { label: 'West Facing',  value: f.west,   color: '#4A90D9' },
-    { label: 'North Facing', value: f.north,  color: '#4CAF74' },
-    { label: 'South Facing', value: f.south,  color: '#E24B4A' },
-    { label: 'Corner Plots', value: f.corner, color: '#9B7B2E' },
-  ].filter((r) => r.value > 0)
+  const facingRows = getFacingRows(proj.facings || {})
 
   const totalFacing = facingRows.reduce((s, r) => s + r.value, 0)
 
@@ -110,6 +103,7 @@ function OverviewTab({ proj, onEnquire }) {
           {facingRows.map((row) => (
             <div key={row.label} className={styles.facingRow}>
               <div className={styles.facingLabel}>
+                <span style={{ marginRight: 4 }}>{row.icon}</span>
                 <div className={styles.facingDot} style={{ background: row.color }} />
                 {row.label}
               </div>

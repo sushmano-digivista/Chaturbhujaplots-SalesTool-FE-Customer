@@ -64,7 +64,7 @@ export default function Hero({ content, onEnquire }) {
           {[
             { value: summary?.totalPlots || 120, suffix: '+', label: 'Total Plots' },
             { value: 8,  suffix: ' km', label: 'From Amaravati' },
-            { value: summary?.available || 0, suffix: '',  label: 'East-Facing' },
+            { value: summary?.eastFacing?.count || 0, suffix: '',  label: 'East-Facing' },
           ].map((s, i) => (
             <div key={i} className={styles.stat}>
               <div className={styles.statNum}>

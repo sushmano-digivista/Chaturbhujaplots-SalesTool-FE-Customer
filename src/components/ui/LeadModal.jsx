@@ -29,15 +29,20 @@ export default function LeadModal({ context, onClose, whatsapp }) {
   }, [isOpen, onClose])
 
   const onSubmit = async data => {
-    await submitLead.mutateAsync({
-      name:             data.name,
-      phone:            data.phone,
-      email:            data.email || undefined,
-      source:           context?.source || 'CONTACT_FORM',
-      categoryInterest: context?.category || data.category || undefined,
-    })
-    reset()
-    onClose()
+    try {
+      await submitLead.mutateAsync({
+        name:             data.name,
+        phone:            data.phone,
+        email:            data.email || undefined,
+        source:           context?.source || 'CONTACT_FORM',
+        categoryInterest: context?.category || data.category || undefined,
+      })
+      reset()
+      onClose()
+    } catch {
+      // toast is already shown by useSubmitLead's onError — just reset the form
+      reset()
+    }
   }
 
   const openWA = () => {
@@ -110,6 +115,23 @@ export default function LeadModal({ context, onClose, whatsapp }) {
                   })}
                 />
                 {errors.phone && <span className="form-error">{errors.phone.message}</span>}
+              </div>
+
+              <div className="form-group">
+                <label className="form-label">Email (optional)</label>
+                <input
+                  className="form-input"
+                  placeholder="you@example.com"
+                  inputMode="email"
+                  autoComplete="email"
+                  {...register('email', {
+                    pattern: {
+                      value:   /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+                      message: 'Enter a valid email address',
+                    },
+                  })}
+                />
+                {errors.email && <span className="form-error">{errors.email.message}</span>}
               </div>
 
               {/* Show category picker only for generic enquiries */}

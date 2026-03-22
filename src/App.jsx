@@ -149,7 +149,7 @@ function CustomerSite() {
 
       <Footer    content={activeContent} />
       <StickyBar contact={contact}       onEnquire={openEnquiry} />
-      <FloatingWA contact={contact}      onEnquire={openEnquiry} />
+      <FloatingWA contact={contact}      />
 
       <LeadModal
         context={leadCtx}

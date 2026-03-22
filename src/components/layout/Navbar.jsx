@@ -5,7 +5,6 @@ import styles from './Navbar.module.css'
 const NAV_LINKS = [
   { label: 'Plots',      id: 'plots'      },
   { label: 'Amenities',  id: 'amenities'  },
-  { label: 'Gallery',    id: 'gallery'    },
   { label: 'Location',   id: 'location'   },
   { label: 'Contact',    id: 'contact'    },
 ]

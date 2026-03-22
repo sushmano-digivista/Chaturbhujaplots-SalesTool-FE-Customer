@@ -37,7 +37,7 @@ export default function VideosSection({ content }) {
   if (!videos.length) return null
 
   return (
-    <section className={`section ${styles.vidSec}`} id="videos" style={{ paddingTop: '30px' }}>
+    <section className={`section ${styles.vidSec}`} id="videos">
       <div className="sec-hdr">
         <div className="sec-tag" style={{ color: 'var(--gold-dark)' }}>Watch &amp; Explore</div>
         <h2 className="sec-title light">Project <em>Videos</em></h2>

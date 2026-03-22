@@ -99,7 +99,7 @@ export default function LocationSection({ content }) {
   const palette = PALETTE[active]
 
   return (
-    <section className="section section-cream" id="location" style={{ paddingTop: '40px' }}>
+    <section className="section section-cream" id="location">
       <div className="sec-hdr">
         <div className="sec-tag">Find Us</div>
         <h2 className="sec-title">Location & <em>Connectivity</em></h2>

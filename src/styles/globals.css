@@ -91,7 +91,7 @@ input, select, textarea { font-family:'DM Sans',sans-serif; }
 .form-error { font-size:11px; color:#e24b4a; }
 
 /* Sections */
-.section       { padding:80px 5%; }
+.section       { padding:48px 5%; }
 .section-green { background:var(--green); }
 .section-cream { background:var(--cream); }
 .section-white { background:var(--white); }
@@ -105,4 +105,4 @@ input, select, textarea { font-family:'DM Sans',sans-serif; }
 @keyframes fadeInUp { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:translateY(0)} }
 @keyframes pulse    { 0%,100%{box-shadow:0 0 0 3px rgba(76,175,116,0.3)} 50%{box-shadow:0 0 0 6px rgba(76,175,116,0.1)} }
 
-@media (max-width:768px) { .section { padding:52px 5%; } .hide-mobile{display:none!important;} }
+@media (max-width:768px) { .section { padding:36px 5%; } .hide-mobile{display:none!important;} }

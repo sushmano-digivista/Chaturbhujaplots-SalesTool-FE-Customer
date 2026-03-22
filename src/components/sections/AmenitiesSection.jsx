@@ -81,7 +81,7 @@ export default function AmenitiesSection({ content }) {
   }, {})
 
   return (
-    <section className="section section-cream" id="amenities" style={{ paddingTop: '40px' }}>
+    <section className="section section-cream" id="amenities">
       <div className="sec-hdr">
         <div className="sec-tag">What We Offer</div>
         <h2 className="sec-title">World-Class <em>Amenities</em></h2>

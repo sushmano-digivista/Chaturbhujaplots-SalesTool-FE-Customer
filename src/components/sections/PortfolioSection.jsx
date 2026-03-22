@@ -1,6 +1,8 @@
 import { useState }      from 'react'
 import { useNavigate }   from 'react-router-dom'
+import { createPortal }  from 'react-dom'
 import { motion, AnimatePresence } from 'framer-motion'
+import { X } from 'lucide-react'
 import { ACTIVE_PROJECTS, COMPLETED_PROJECTS } from '@/constants/projects'
 import styles from './PortfolioSection.module.css'
 
@@ -12,35 +14,38 @@ const STATS = [
 ]
 
 const ACCENT = {
-  accentGold:   { color: '#C9A84C', glow: 'rgba(201,168,76,0.25)',  bar: 'linear-gradient(90deg,#C9A84C,#E8D5A3)' },
-  accentGreen:  { color: '#4CAF74', glow: 'rgba(76,175,116,0.25)',  bar: 'linear-gradient(90deg,#4CAF74,#2D8C4E)' },
-  accentBlue:   { color: '#64B5F6', glow: 'rgba(100,181,246,0.25)', bar: 'linear-gradient(90deg,#64B5F6,#1976D2)' },
-  accentOrange: { color: '#FFB74D', glow: 'rgba(255,183,77,0.25)',  bar: 'linear-gradient(90deg,#FFB74D,#F57C00)' },
+  accentGold:   { color: '#C9A84C', bar: 'linear-gradient(90deg,#C9A84C,#E8D5A3)' },
+  accentGreen:  { color: '#4CAF74', bar: 'linear-gradient(90deg,#4CAF74,#2D8C4E)' },
+  accentBlue:   { color: '#64B5F6', bar: 'linear-gradient(90deg,#64B5F6,#1976D2)' },
+  accentOrange: { color: '#FFB74D', bar: 'linear-gradient(90deg,#FFB74D,#F57C00)' },
 }
 
-// ── Animated availability ring ────────────────────────────────────────────────
-function AvailRing({ available, total, color }) {
-  const r = 28, circ = 2 * Math.PI * r
+// ── Availability ring ─────────────────────────────────────────────────────────
+function AvailRing({ available, total, color, size = 68 }) {
+  const r = size * 0.41, circ = 2 * Math.PI * r
   const dash = (available / total) * circ
   return (
-    <div className={styles.ring}>
-      <svg width="68" height="68" viewBox="0 0 68 68">
-        <circle cx="34" cy="34" r={r} fill="none" stroke="rgba(255,255,255,0.08)" strokeWidth="5" />
-        <circle cx="34" cy="34" r={r} fill="none"
+    <div className={styles.ring} style={{ width: size, height: size }}>
+      <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`}>
+        <circle cx={size/2} cy={size/2} r={r} fill="none"
+          stroke="rgba(255,255,255,0.08)" strokeWidth="5" />
+        <circle cx={size/2} cy={size/2} r={r} fill="none"
           stroke={color} strokeWidth="5"
           strokeDasharray={`${dash} ${circ - dash}`}
           strokeDashoffset={circ * 0.25}
           strokeLinecap="round" />
       </svg>
       <div className={styles.ringInner}>
-        <div className={styles.ringNum} style={{ color }}>{available}</div>
+        <div className={styles.ringNum} style={{ color, fontSize: size > 60 ? '1.3rem' : '1rem' }}>
+          {available}
+        </div>
         <div className={styles.ringLabel}>left</div>
       </div>
     </div>
   )
 }
 
-// ── Facing breakdown pills ────────────────────────────────────────────────────
+// ── Facing pills (card) ───────────────────────────────────────────────────────
 function FacingPills({ facings }) {
   if (!facings) return null
   const pills = [
@@ -60,34 +65,30 @@ function FacingPills({ facings }) {
   )
 }
 
-// ── Active project card ───────────────────────────────────────────────────────
-function ActiveCard({ proj, index, isSelected, onSelect }) {
-  const navigate = useNavigate()
+// ── Project card (2×2 grid) ───────────────────────────────────────────────────
+function ProjectCard({ proj, index, onClick }) {
   const ac = ACCENT[proj.accentClass] || ACCENT.accentGold
-
   return (
     <motion.div
-      layout
-      className={`${styles.card} ${isSelected ? styles.cardSelected : ''}`}
-      style={{ '--ac': ac.color, '--ag': ac.glow, '--ab': ac.bar }}
+      className={styles.card}
+      style={{ '--ac': ac.color, '--ab': ac.bar }}
       initial={{ opacity: 0, y: 28 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
-      transition={{ delay: index * 0.09, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-      onClick={() => onSelect(proj.id)}
+      transition={{ delay: index * 0.09, duration: 0.48, ease: [0.22, 1, 0.36, 1] }}
+      whileHover={{ y: -6 }}
+      onClick={() => onClick(proj)}
     >
-      {/* Top colour bar */}
+      {/* Accent top bar */}
       <div className={styles.cardBar} />
 
-      {/* Header row */}
+      {/* Tag + ring */}
       <div className={styles.cardHead}>
-        <div className={styles.cardTagWrap}>
-          <span className={styles.cardTag}>{proj.tag}</span>
-        </div>
-        <AvailRing available={proj.available} total={proj.total} color={ac.color} />
+        <span className={styles.cardTag}>{proj.tag}</span>
+        <AvailRing available={proj.available} total={proj.total} color={ac.color} size={64} />
       </div>
 
-      {/* Identity */}
+      {/* Name + location */}
       <div className={styles.cardIdentity}>
         <h3 className={styles.cardName}>{proj.name}</h3>
         <p className={styles.cardLoc}>📍 {proj.loc}</p>
@@ -96,7 +97,7 @@ function ActiveCard({ proj, index, isSelected, onSelect }) {
       {/* Facing pills */}
       <FacingPills facings={proj.facings} />
 
-      {/* Approval tags */}
+      {/* Approvals */}
       <div className={styles.cardApprovals}>
         {proj.approvals.slice(0, 3).map((a) => (
           <span key={a} className={styles.approval}>{a}</span>
@@ -109,23 +110,16 @@ function ActiveCard({ proj, index, isSelected, onSelect }) {
           <div className={styles.priceLabel}>Starting from</div>
           <div className={styles.price}>{proj.starting}</div>
         </div>
-        <button
-          className={styles.viewBtn}
-          onClick={(e) => { e.stopPropagation(); navigate(`/project/${proj.id}`) }}
-        >
-          View Details <span className={styles.arrow}>→</span>
-        </button>
+        <div className={styles.viewHint}>Tap for details →</div>
       </div>
-
-      {/* Selected highlight ring */}
-      {isSelected && <div className={styles.selectedRing} />}
     </motion.div>
   )
 }
 
-// ── Selected project detail panel ─────────────────────────────────────────────
-function DetailPanel({ proj, onNavigate }) {
+// ── Project detail popup (portal) ─────────────────────────────────────────────
+function ProjectPopup({ proj, onClose, onNavigate }) {
   const ac = ACCENT[proj.accentClass] || ACCENT.accentGold
+
   const facings = proj.facings || {}
   const facingRows = [
     { label: 'East Facing',  value: facings.east,   color: '#C9A84C' },
@@ -136,96 +130,129 @@ function DetailPanel({ proj, onNavigate }) {
   ].filter((r) => r.value > 0)
   const totalFacing = facingRows.reduce((s, r) => s + r.value, 0)
 
-  return (
+  return createPortal(
     <motion.div
-      className={styles.detailPanel}
-      style={{ '--ac': ac.color }}
-      initial={{ opacity: 0, x: 24 }}
-      animate={{ opacity: 1, x: 0 }}
-      exit={{ opacity: 0, x: 16 }}
-      transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
-      layout
+      className={styles.popupOverlay}
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.2 }}
+      onClick={(e) => { if (e.target === e.currentTarget) onClose() }}
     >
-      <div className={styles.detailAccentLine} />
+      <motion.div
+        className={styles.popup}
+        style={{ '--ac': ac.color, '--ab': ac.bar }}
+        initial={{ opacity: 0, scale: 0.92, y: 32 }}
+        animate={{ opacity: 1, scale: 1, y: 0 }}
+        exit={{ opacity: 0, scale: 0.94, y: 16 }}
+        transition={{ type: 'spring', damping: 26, stiffness: 300 }}
+      >
+        {/* Accent top bar */}
+        <div className={styles.popupBar} />
 
-      <div className={styles.detailHeader}>
-        <div>
-          <div className={styles.detailTag}>{proj.tag}</div>
-          <h3 className={styles.detailName}>{proj.name}</h3>
-          <p className={styles.detailLoc}>📍 {proj.loc}</p>
-        </div>
-        <AvailRing available={proj.available} total={proj.total} color={ac.color} />
-      </div>
+        {/* Close button */}
+        <button className={styles.popupClose} onClick={onClose} aria-label="Close">
+          <X size={16} />
+        </button>
 
-      <p className={styles.detailDesc}>{proj.description}</p>
+        {/* Header */}
+        <div className={styles.popupHead}>
+          <div className={styles.popupLeft}>
+            <div className={styles.popupTag}>{proj.tag}</div>
+            <h2 className={styles.popupName}>{proj.name}</h2>
+            <p className={styles.popupLoc}>📍 {proj.loc}</p>
+          </div>
+          <AvailRing available={proj.available} total={proj.total} color={ac.color} size={80} />
+        </div>
 
-      {/* Stats row */}
-      <div className={styles.detailStats}>
-        <div className={styles.dStat}>
-          <div className={styles.dStatVal} style={{ color: ac.color }}>{proj.available}</div>
-          <div className={styles.dStatLab}>Available</div>
-        </div>
-        <div className={styles.dStatDiv} />
-        <div className={styles.dStat}>
-          <div className={styles.dStatVal} style={{ color: ac.color }}>{proj.total}</div>
-          <div className={styles.dStatLab}>Total</div>
-        </div>
-        <div className={styles.dStatDiv} />
-        <div className={styles.dStat}>
-          <div className={styles.dStatVal} style={{ color: ac.color }}>{proj.starting}</div>
-          <div className={styles.dStatLab}>From</div>
-        </div>
-      </div>
+        {/* Description */}
+        <p className={styles.popupDesc}>{proj.description}</p>
 
-      {/* Facing breakdown */}
-      <div className={styles.detailSection}>
-        <div className={styles.detailSectionLabel}>Plot Distribution</div>
-        <div className={styles.detailFacings}>
-          {facingRows.map((row) => (
-            <div key={row.label} className={styles.dFacingRow}>
-              <div className={styles.dFacingLabel}>
-                <div className={styles.dFacingDot} style={{ background: row.color }} />
-                {row.label}
-              </div>
-              <div className={styles.dFacingBar}>
-                <motion.div
-                  className={styles.dFacingFill}
-                  style={{ background: row.color }}
-                  initial={{ width: 0 }}
-                  animate={{ width: `${(row.value / totalFacing) * 100}%` }}
-                  transition={{ duration: 0.7, ease: 'easeOut' }}
-                />
-              </div>
-              <span className={styles.dFacingCount}>{row.value}</span>
+        {/* Stats row */}
+        <div className={styles.popupStats}>
+          {[
+            { val: proj.available, lab: 'Available'    },
+            { val: proj.total,     lab: 'Total Plots'  },
+            { val: proj.starting,  lab: 'Starting From' },
+          ].map((s, i) => (
+            <div key={i} className={styles.pStat}>
+              <div className={styles.pStatVal} style={{ color: ac.color }}>{s.val}</div>
+              <div className={styles.pStatLab}>{s.lab}</div>
             </div>
           ))}
         </div>
-      </div>
 
-      {/* Highlights */}
-      <div className={styles.detailSection}>
-        <div className={styles.detailSectionLabel}>Highlights</div>
-        <div className={styles.detailHls}>
-          {proj.highlights.map((h) => (
-            <div key={h} className={styles.detailHl}>
-              <span style={{ color: ac.color }}>✓</span> {h}
+        {/* Body — two columns */}
+        <div className={styles.popupBody}>
+
+          {/* Plot distribution */}
+          <div className={styles.popupSection}>
+            <div className={styles.popupSectionLabel}>Plot Distribution</div>
+            <div className={styles.popupFacings}>
+              {facingRows.map((row) => (
+                <div key={row.label} className={styles.pfRow}>
+                  <div className={styles.pfLabel}>
+                    <div className={styles.pfDot} style={{ background: row.color }} />
+                    {row.label}
+                  </div>
+                  <div className={styles.pfBar}>
+                    <motion.div
+                      className={styles.pfFill}
+                      style={{ background: row.color }}
+                      initial={{ width: 0 }}
+                      animate={{ width: `${(row.value / totalFacing) * 100}%` }}
+                      transition={{ duration: 0.7, delay: 0.15, ease: 'easeOut' }}
+                    />
+                  </div>
+                  <span className={styles.pfCount}>{row.value}</span>
+                </div>
+              ))}
             </div>
-          ))}
-        </div>
-      </div>
+          </div>
 
-      {/* CTAs */}
-      <div className={styles.detailActions}>
-        <button className={styles.detailCta} style={{ background: ac.color }}
-          onClick={onNavigate}>
-          Explore Full Details →
-        </button>
-        <button className={styles.detailWa}
-          onClick={() => window.open(`https://wa.me/919999999999?text=${encodeURIComponent(`Hi, I'm interested in ${proj.name} at ${proj.loc}.`)}`, '_blank')}>
-          💬 WhatsApp
-        </button>
-      </div>
-    </motion.div>
+          {/* Highlights */}
+          <div className={styles.popupSection}>
+            <div className={styles.popupSectionLabel}>Key Highlights</div>
+            <div className={styles.popupHls}>
+              {proj.highlights.map((h) => (
+                <div key={h} className={styles.popupHl}>
+                  <span className={styles.popupHlCheck} style={{ color: ac.color }}>✓</span>
+                  {h}
+                </div>
+              ))}
+            </div>
+
+            <div className={styles.popupSectionLabel} style={{ marginTop: 20 }}>Approvals</div>
+            <div className={styles.popupApprovals}>
+              {proj.approvals.map((a) => (
+                <span key={a} className={styles.popupApproval}>{a}</span>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        {/* CTAs */}
+        <div className={styles.popupActions}>
+          <button
+            className={styles.popupCta}
+            style={{ background: ac.color }}
+            onClick={onNavigate}
+          >
+            Explore Full Project →
+          </button>
+          <button
+            className={styles.popupWa}
+            onClick={() => window.open(
+              `https://wa.me/919999999999?text=${encodeURIComponent(`Hi, I'm interested in ${proj.name} at ${proj.loc}. Please share details.`)}`,
+              '_blank'
+            )}
+          >
+            💬 WhatsApp
+          </button>
+        </div>
+      </motion.div>
+    </motion.div>,
+    document.body
   )
 }
 
@@ -250,8 +277,8 @@ function CompletedCard({ proj, index }) {
 
 // ── Main ──────────────────────────────────────────────────────────────────────
 export default function PortfolioSection({ content }) {
-  const navigate        = useNavigate()
-  const [selectedId, setSelectedId] = useState(null)
+  const navigate = useNavigate()
+  const [activeProj, setActiveProj] = useState(null)
 
   const portfolioStats = content?.portfolio?.stats || STATS
   const active    = content?.portfolio?.active    || ACTIVE_PROJECTS
@@ -259,28 +286,23 @@ export default function PortfolioSection({ content }) {
     ? content.portfolio.completed.map((p, i) => ({ year: '2022', plots: 48 - i * 6, ...p }))
     : COMPLETED_PROJECTS
 
-  const selectedProj = active.find((p) => p.id === selectedId) || null
-  const handleSelect = (id) => setSelectedId((prev) => (prev === id ? null : id))
-
   return (
     <section className={styles.portSec} id="portfolio">
       <div className={styles.inner}>
 
-        {/* ── Section header ─────────────────────────────────────── */}
-        <div className={styles.secHead}>
-          <motion.div
-            initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }} transition={{ duration: 0.5 }}>
-            <div className={styles.secTag}>Our Portfolio</div>
-            <h2 className={styles.secTitle}>A Legacy of <em>Excellence</em></h2>
-            <p className={styles.secSub}>
-              10+ projects across the Krishna–Guntur corridor — 1000+ families settled,
-              100% CRDA &amp; RERA approved.
-            </p>
-          </motion.div>
-        </div>
+        {/* ── Section header ──────────────────────────────────────── */}
+        <motion.div className={styles.secHead}
+          initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }} transition={{ duration: 0.5 }}>
+          <div className={styles.secTag}>Our Portfolio</div>
+          <h2 className={styles.secTitle}>A Legacy of <em>Excellence</em></h2>
+          <p className={styles.secSub}>
+            10+ projects across the Krishna–Guntur corridor — 1000+ families settled,
+            100% CRDA &amp; RERA approved.
+          </p>
+        </motion.div>
 
-        {/* ── Stats bar ──────────────────────────────────────────── */}
+        {/* ── Stats bar ───────────────────────────────────────────── */}
         <div className={styles.statsBar}>
           {portfolioStats.map((s, i) => (
             <motion.div key={s.label} className={styles.statItem}
@@ -293,7 +315,7 @@ export default function PortfolioSection({ content }) {
           ))}
         </div>
 
-        {/* ── Open for Booking ───────────────────────────────────── */}
+        {/* ── Open for Booking — 2×2 grid ─────────────────────────── */}
         <div className={styles.block}>
           <div className={styles.blockHead}>
             <div className={styles.blockPulse} />
@@ -301,44 +323,19 @@ export default function PortfolioSection({ content }) {
             <span className={styles.blockPill}>{active.length} projects available</span>
           </div>
 
-          {/* Two-column layout: cards left, detail right */}
-          <div className={styles.bookingLayout}>
-            <div className={styles.cardsCol}>
-              {active.map((proj, i) => (
-                <ActiveCard
-                  key={proj.id}
-                  proj={proj}
-                  index={i}
-                  isSelected={selectedId === proj.id}
-                  onSelect={handleSelect}
-                />
-              ))}
-            </div>
-
-            {/* Detail panel (animates in when a card is selected) */}
-            <div className={styles.detailCol}>
-              <AnimatePresence mode="wait">
-                {selectedProj ? (
-                  <DetailPanel
-                    key={selectedProj.id}
-                    proj={selectedProj}
-                    onNavigate={() => navigate(`/project/${selectedProj.id}`)}
-                  />
-                ) : (
-                  <motion.div
-                    key="placeholder"
-                    className={styles.detailPlaceholder}
-                    initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
-                    <div className={styles.phIcon}>🏘️</div>
-                    <div className={styles.phText}>Select a project to see details</div>
-                  </motion.div>
-                )}
-              </AnimatePresence>
-            </div>
+          <div className={styles.cardsGrid}>
+            {active.map((proj, i) => (
+              <ProjectCard
+                key={proj.id}
+                proj={proj}
+                index={i}
+                onClick={setActiveProj}
+              />
+            ))}
           </div>
         </div>
 
-        {/* ── Completed ──────────────────────────────────────────── */}
+        {/* ── Completed ───────────────────────────────────────────── */}
         <div className={styles.block}>
           <div className={styles.blockHead}>
             <div className={styles.blockCheckDot} />
@@ -355,6 +352,18 @@ export default function PortfolioSection({ content }) {
         </div>
 
       </div>
+
+      {/* ── Project detail popup ─────────────────────────────────── */}
+      <AnimatePresence>
+        {activeProj && (
+          <ProjectPopup
+            key={activeProj.id}
+            proj={activeProj}
+            onClose={() => setActiveProj(null)}
+            onNavigate={() => { navigate(`/project/${activeProj.id}`); setActiveProj(null) }}
+          />
+        )}
+      </AnimatePresence>
     </section>
   )
 }

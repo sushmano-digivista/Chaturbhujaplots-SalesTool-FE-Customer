@@ -79,10 +79,40 @@ const VENTURE_PLOTS = {
       { dimension: "42'×64'",  areaLabel: '298 Sq Yd', count: 5,   priceFrom: 'Contact us' },
     ],
   },
+  varaha: {
+    label:           'Varaha Virtue',
+    short:           'Pamarru',
+    color:           '#1976D2',
+    totalPlots:      132,
+    priceRangeLabel: '₹Contact us for pricing',
+    categories: {
+      eastFacing: {
+        label: 'East-Facing', description: 'Morning sunlight — ideal for Vaastu and wellness.',
+        count: 79, priceFrom: 'Contact us',
+        plotNumbers: [1,3,5,7,9,10,11,13,15,17,19,20,21,23,25,27,29,30,31,33,35,37,39,40,41,43,45,47,49,50,51,53,55,57,59,60,61,63,65,67,69,70,71,73,75,77,79,80,81,83,85,87,89,90,91,93,95,97,99,100,101,103,105,107,109,110,111,113,115,117,119,120,121,123,125,127,129,130,131],
+      },
+      westFacing: {
+        label: 'West-Facing', description: 'Evening sunlight with open western views.',
+        count: 53, priceFrom: 'Contact us',
+        plotNumbers: [2,4,6,8,12,14,16,18,22,24,26,28,32,34,36,38,42,44,46,48,52,54,56,58,62,64,66,68,72,74,76,78,82,84,86,88,92,94,96,98,102,104,106,108,112,114,116,118,122,124,126,128,132],
+      },
+    },
+    byDimension: [
+      { dimension: "40'×56'", areaLabel: '249 Sq Yd', count: 83, priceFrom: 'Contact us' },
+      { dimension: "50'×33'", areaLabel: '183 Sq Yd', count: 38, priceFrom: 'Contact us' },
+      { dimension: 'Irregular', areaLabel: 'Varies',  count: 11, priceFrom: 'Contact us' },
+    ],
+  },
+  trimbak: {
+    label:    'Trimbak Oaks',
+    short:    'Penamaluru',
+    color:    '#C0522A',
+    upcoming: true,
+  },
 }
 
-const VENTURE_KEYS  = ['anjana', 'aparna']
-const VENTURE_COLORS = { anjana: '#1E4D2B', aparna: '#C9A84C' }
+const VENTURE_KEYS   = ['anjana', 'aparna', 'varaha', 'trimbak']
+const VENTURE_COLORS = { anjana: '#1E4D2B', aparna: '#C9A84C', varaha: '#1976D2', trimbak: '#C0522A' }
 
 /**
  * PlotGrid — "Explore Available Plots" section with venture switcher.
@@ -93,10 +123,9 @@ export default function PlotGrid({ onEnquire }) {
   const [activeCategory, setActiveCategory] = useState(null)
   const [hoveredPlot,    setHoveredPlot]    = useState(null)
 
-  const venture = VENTURE_PLOTS[ventureKey]
-  const color   = VENTURE_COLORS[ventureKey]
-
-  const categories = Object.entries(venture.categories).map(([key, data]) => ({ key, data }))
+  const venture    = VENTURE_PLOTS[ventureKey]
+  const color      = VENTURE_COLORS[ventureKey]
+  const categories = venture.upcoming ? [] : Object.entries(venture.categories).map(([key, data]) => ({ key, data }))
 
   return (
     <section className="section section-cream" id="plots">
@@ -104,8 +133,9 @@ export default function PlotGrid({ onEnquire }) {
         <div className="sec-tag">Plot Categories</div>
         <h2 className="sec-title">Explore <em>Available Plots</em></h2>
         <p className="sec-sub">
-          {venture.totalPlots} plots across {categories.length} categories.
-          Click any category to see plot numbers and enquire directly.
+          {venture.upcoming
+            ? 'Details coming soon — register your interest to be notified first.'
+            : `${venture.totalPlots} plots across ${categories.length} categories. Click any category to see plot numbers and enquire directly.`}
         </p>
       </div>
 
@@ -124,83 +154,110 @@ export default function PlotGrid({ onEnquire }) {
               <span className={styles.ventureBtnName} style={{ color: isActive ? '#fff' : VENTURE_COLORS[k] }}>{v.label}</span>
               <span className={styles.ventureBtnSub}  style={{ color: isActive ? 'rgba(255,255,255,.75)' : 'var(--text-light)' }}>{v.short}</span>
               <span className={styles.ventureBtnCount} style={isActive ? { background: 'rgba(255,255,255,.2)', color: '#fff' } : { background: `${VENTURE_COLORS[k]}22`, color: VENTURE_COLORS[k] }}>
-                {v.totalPlots} plots
+                {v.upcoming ? '🔜 Upcoming' : `${v.totalPlots} plots`}
               </span>
             </button>
           )
         })}
       </div>
 
-      {/* ── Price range banner ───────────────────────────────────────────── */}
-      <div className={styles.priceBanner} style={{ background: color }}>
-        <span className={styles.priceBannerLabel}>Price Range</span>
-        <span className={styles.priceBannerValue}>{venture.priceRangeLabel}</span>
-        <span className={styles.priceBannerNote}>Contact us for exact plot pricing</span>
-      </div>
-
-      {/* ── Category cards ───────────────────────────────────────────────── */}
-      <AnimatePresence mode="wait">
+      {/* ── Price banner / Upcoming placeholder ──────────────────────────── */}
+      {venture.upcoming ? (
         <motion.div
-          key={ventureKey}
-          className={styles.categoryGrid}
-          initial={{ opacity: 0, y: 8 }}
+          key="upcoming"
+          className={styles.upcomingCard}
+          initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0 }}
-          transition={{ duration: 0.2 }}
+          transition={{ duration: 0.3 }}
+          style={{ borderColor: `${color}44` }}
         >
-          {categories.map(({ key, data }) => {
-            const meta   = CATEGORY_META[key]
-            const isOpen = activeCategory === key
-            return (
-              <motion.div key={key} layout>
-                <CategoryCard
-                  meta={meta}
-                  data={data}
-                  isOpen={isOpen}
-                  onToggle={() => setActiveCategory(isOpen ? null : key)}
-                  onEnquire={onEnquire}
-                  hoveredPlot={hoveredPlot}
-                  setHoveredPlot={setHoveredPlot}
-                />
-              </motion.div>
-            )
-          })}
-        </motion.div>
-      </AnimatePresence>
-
-      {/* ── By Plot Size breakdown ───────────────────────────────────────── */}
-      <div className={styles.dimSection}>
-        <h3 className={styles.dimTitle}>By Plot Size</h3>
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={`dim-${ventureKey}`}
-            className={styles.dimGrid}
-            initial={{ opacity: 0, y: 6 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.2 }}
+          <div className={styles.upcomingIcon}>🔜</div>
+          <div className={styles.upcomingTitle} style={{ color }}>Trimbak Oaks — Coming Soon</div>
+          <p className={styles.upcomingDesc}>
+            Plot details for Trimbak Oaks, Penamaluru will be available shortly.
+            Register your interest now and be the first to know when bookings open.
+          </p>
+          <button
+            className="btn btn-gold"
+            onClick={() => onEnquire({ source: 'UPCOMING_INTEREST', venture: 'Trimbak Oaks', type: 'NOTIFY_ME' })}
           >
-            {venture.byDimension.map((d) => (
+            Notify Me When Available →
+          </button>
+        </motion.div>
+      ) : (
+        <>
+          {/* Price range banner */}
+          <div className={styles.priceBanner} style={{ background: color }}>
+            <span className={styles.priceBannerLabel}>Price Range</span>
+            <span className={styles.priceBannerValue}>{venture.priceRangeLabel}</span>
+            <span className={styles.priceBannerNote}>Contact us for exact plot pricing</span>
+          </div>
+
+          {/* Category cards */}
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={ventureKey}
+              className={styles.categoryGrid}
+              initial={{ opacity: 0, y: 8 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.2 }}
+            >
+              {categories.map(({ key, data }) => {
+                const meta   = CATEGORY_META[key]
+                const isOpen = activeCategory === key
+                return (
+                  <motion.div key={key} layout>
+                    <CategoryCard
+                      meta={meta}
+                      data={data}
+                      isOpen={isOpen}
+                      onToggle={() => setActiveCategory(isOpen ? null : key)}
+                      onEnquire={onEnquire}
+                      hoveredPlot={hoveredPlot}
+                      setHoveredPlot={setHoveredPlot}
+                    />
+                  </motion.div>
+                )
+              })}
+            </motion.div>
+          </AnimatePresence>
+
+          {/* By Plot Size breakdown */}
+          <div className={styles.dimSection}>
+            <h3 className={styles.dimTitle}>By Plot Size</h3>
+            <AnimatePresence mode="wait">
               <motion.div
-                key={d.dimension}
-                className={styles.dimCard}
-                whileHover={{ y: -2, boxShadow: '0 8px 28px rgba(30,77,43,0.12)' }}
+                key={`dim-${ventureKey}`}
+                className={styles.dimGrid}
+                initial={{ opacity: 0, y: 6 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.2 }}
               >
-                <div className={styles.dimNum}>{d.count}</div>
-                <div className={styles.dimLabel}>{d.dimension} ft</div>
-                <div className={styles.dimArea}>{d.areaLabel}</div>
-                <div className={styles.dimPrice} style={{ color }}>{d.priceFrom}</div>
-                <button
-                  className={`btn btn-green btn-sm ${styles.dimBtn}`}
-                  onClick={() => onEnquire({ source: 'DIMENSION_ENQUIRY', label: 'Enquire About Plot', type: 'PLOT_ENQUIRY', category: d.dimension, plotSize: d.dimension, plotArea: d.areaLabel, priceFrom: d.priceFrom, venture: venture.label })}
-                >
-                  Enquire
-                </button>
+                {venture.byDimension.map((d) => (
+                  <motion.div
+                    key={d.dimension}
+                    className={styles.dimCard}
+                    whileHover={{ y: -2, boxShadow: '0 8px 28px rgba(30,77,43,0.12)' }}
+                  >
+                    <div className={styles.dimNum}>{d.count}</div>
+                    <div className={styles.dimLabel}>{d.dimension} ft</div>
+                    <div className={styles.dimArea}>{d.areaLabel}</div>
+                    <div className={styles.dimPrice} style={{ color }}>{d.priceFrom}</div>
+                    <button
+                      className={`btn btn-green btn-sm ${styles.dimBtn}`}
+                      onClick={() => onEnquire({ category: d.dimension, source: 'DIMENSION_ENQUIRY', venture: venture.label })}
+                    >
+                      Enquire
+                    </button>
+                  </motion.div>
+                ))}
               </motion.div>
-            ))}
-          </motion.div>
-        </AnimatePresence>
-      </div>
+            </AnimatePresence>
+          </div>
+        </>
+      )}
     </section>
   )
 }

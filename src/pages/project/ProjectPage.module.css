@@ -221,50 +221,29 @@
 .galCell:hover .galOverlay { opacity: 1; }
 
 .lbOverlay {
-  position: fixed; inset: 0; z-index: 2000;
-  background: rgba(0,0,0,0.92);
-  display: flex; align-items: center; justify-content: center;
-  padding: 20px;
+  position: fixed; inset: 0; z-index: 2000; background: rgba(0,0,0,0.85);
+  display: flex; align-items: center; justify-content: center; padding: 24px;
 }
 .lbPanel {
+  background: #0c1f10; border-radius: 20px; padding: 32px; text-align: center;
+  max-width: 440px; width: 100%; border: 1px solid rgba(255,255,255,0.12);
   position: relative;
-  display: flex; flex-direction: column; align-items: center;
-  max-width: 92vw; max-height: 92vh; width: 100%;
 }
 .lbClose {
-  position: fixed; top: 16px; right: 16px;
-  background: rgba(255,255,255,0.15);
-  border: 1px solid rgba(255,255,255,0.25);
-  border-radius: 50%; width: 38px; height: 38px; color: #fff;
-  display: flex; align-items: center; justify-content: center;
-  cursor: pointer; z-index: 10; transition: background 0.15s;
-}
-.lbClose:hover { background: rgba(255,255,255,0.28); }
-.lbFullImg {
-  max-width: 92vw; max-height: 78vh;
-  width: auto; height: auto;
-  object-fit: contain;
-  border-radius: 10px; display: block;
-  box-shadow: 0 24px 64px rgba(0,0,0,0.6);
+  position: absolute; top: 14px; right: 14px; background: rgba(255,255,255,0.1);
+  border: none; border-radius: 7px; width: 30px; height: 30px; color: #fff;
+  display: flex; align-items: center; justify-content: center; cursor: pointer;
 }
 .lbIcon { font-size: 5rem; margin-bottom: 16px; }
-.lbLabel {
-  font-size: 14px; font-weight: 600; color: #fff;
-  margin-top: 14px; text-align: center;
-}
-.lbCount {
-  font-size: 12px; color: rgba(255,255,255,0.45);
-  margin-top: 4px; margin-bottom: 16px;
-}
-.lbNav { display: flex; gap: 12px; justify-content: center; }
+.lbLabel { font-size: 1.1rem; font-weight: 600; color: #fff; margin-bottom: 8px; }
+.lbCount { font-size: 12px; color: rgba(255,255,255,0.4); margin-bottom: 20px; }
+.lbNav { display: flex; gap: 10px; justify-content: center; }
 .lbBtn {
-  padding: 10px 28px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.2);
-  background: rgba(255,255,255,0.1); color: #fff; cursor: pointer;
+  padding: 10px 22px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.2);
+  background: rgba(255,255,255,0.08); color: #fff; cursor: pointer;
   font-family: 'DM Sans', sans-serif; font-size: 13px; transition: background 0.15s;
 }
-.lbBtn:hover { background: rgba(255,255,255,0.2); }
 .lbBtnGold { background: var(--gold); color: var(--green); border-color: var(--gold); }
-.lbBtnGold:hover { background: var(--gold-dark); }
 
 /* ── Videos tab ───────────────────────────────────────────────────────────── */
 .vidGrid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
@@ -376,65 +355,17 @@
   .amGrid    { grid-template-columns: 1fr; }
 }
 
-/* ── Facts section wrapper — full width matching CTA ─────────────── */
-.factsSection {
-  display: flex; flex-direction: column; gap: 16px;
+/* ── Upcoming project overview ───────────────────────────────────────────── */
+.upcomingOverview {
+  display: flex; flex-direction: column; align-items: center;
+  text-align: center; gap: 18px;
+  border: 2px dashed rgba(192,82,42,.35); border-radius: 20px;
+  padding: 56px 40px; background: rgba(192,82,42,.04);
 }
-.factsGrid {
-  display: grid; grid-template-columns: repeat(3, 1fr);
-  gap: 12px; width: 100%;
+.upcomingBadge {
+  font-size: 12px; font-weight: 700; letter-spacing: .06em;
+  text-transform: uppercase; background: rgba(192,82,42,.12);
+  color: #C0522A; padding: 4px 14px; border-radius: 100px;
 }
-.factCard {
-  background: rgba(30,77,43,.07); border: 1px solid rgba(30,77,43,.14);
-  border-radius: 14px; padding: 20px 16px; text-align: center;
-}
-.factVal {
-  font-family: 'Cormorant Garamond', serif; font-size: 1.6rem;
-  font-weight: 700; color: var(--green); line-height: 1.1; margin-bottom: 6px;
-}
-.factLabel { font-size: 12px; color: rgba(0,0,0,.45); font-weight: 500; }
-
-/* ── Pricing breakdown ────────────────────────────────────────────── */
-.priceBreakdown {
-  background: rgba(201,168,76,.08); border: 1px solid rgba(201,168,76,.25);
-  border-radius: 14px; padding: 18px 20px;
-}
-.pbTitle {
-  font-size: 11px; font-weight: 700; letter-spacing: 1.5px;
-  text-transform: uppercase; color: var(--gold-dark); margin-bottom: 12px;
-}
-.pbRows { display: flex; flex-direction: column; gap: 8px; }
-.pbRow {
-  display: flex; align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-}
-.pbDir { font-size: 13px; color: rgba(0,0,0,.6); font-weight: 600; white-space: nowrap; display: flex; align-items: center; gap: 6px; flex-shrink: 0; }
-.pbIcon { display: inline-block; width: 18px; text-align: center; flex-shrink: 0; }
-.pbRate { font-size: 13px; color: var(--green); text-align: right; }
-.pbRate strong { font-weight: 700; }
-.pbNote {
-  font-size: 11px; color: rgba(0,0,0,.4); margin-top: 4px; font-style: italic;
-}
-
-/* ── Full-width CTA button ────────────────────────────────────────── */
-.fullWidthCta {
-  width: 100%; justify-content: center;
-  padding: 16px 24px !important;
-  font-size: 14px !important; font-weight: 700 !important;
-  border-radius: 12px !important;
-}
-
-/* ── Project gallery images ───────────────────────────────────────── */
-.galImg {
-  position: absolute; inset: 0;
-  width: 100%; height: 100%;
-  object-fit: cover; object-position: center;
-  transition: transform 0.35s ease;
-  display: block;
-}
-.galCell:hover .galImg { transform: scale(1.05); }
-.lbFullImg {
-  max-width: 90vw; max-height: 80vh;
-  object-fit: contain; border-radius: 8px; display: block;
-}
+.upcomingHeading { font-size: 22px; font-weight: 700; color: var(--green); margin: 0; }
+.upcomingText    { font-size: 14px; color: var(--text-mid); max-width: 480px; line-height: 1.65; margin: 0; }

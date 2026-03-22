@@ -3,7 +3,6 @@ import { useParams, useNavigate } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import { ArrowLeft, Phone, MessageCircle, X, Play, Navigation, Menu } from 'lucide-react'
 import { getFacingRows } from '@/constants/facingMap'
-import { getProjectGallery, getProjectVideos } from '@/constants/projectGalleries'
 import { ACTIVE_PROJECTS } from '@/constants/projects'
 import { useSubmitLead }   from '@/hooks/useData'
 import LeadModal           from '@/components/ui/LeadModal'
@@ -81,80 +80,79 @@ function HomeTab({ proj, onEnquire }) {
 
 // ── Overview tab ──────────────────────────────────────────────────────────────
 function OverviewTab({ proj, onEnquire }) {
-  const facingRows = getFacingRows(proj.facings || {})
-
+  const facingRows  = getFacingRows(proj.facings || {})
   const totalFacing = facingRows.reduce((s, r) => s + r.value, 0)
 
   return (
     <div className={styles.tabContent}>
       <h2 className={styles.tabTitle}>Project Overview</h2>
 
-      {/* Facing breakdown */}
-      <div className={styles.facingCard}>
-        <div className={styles.facingHeader}>
-          <h3 className={styles.facingTitle}>Plot Distribution</h3>
-          <span className={styles.facingTotal}>{proj.total} total plots</span>
+      {proj.upcoming ? (
+        <div className={styles.upcomingOverview}>
+          <div className={styles.upcomingBadge}>🔜 Upcoming Project</div>
+          <h3 className={styles.upcomingHeading}>{proj.name} — Coming Soon</h3>
+          <p className={styles.upcomingText}>
+            Plot distribution details, pricing and availability for {proj.name} will be
+            published shortly. Register your interest now to be notified first when
+            bookings open.
+          </p>
+          <button className="btn btn-gold"
+            onClick={() => onEnquire({ source: 'PROJECT_OVERVIEW_UPCOMING', label: 'Notify Me', category: proj.name, type: 'NOTIFY_ME' })}>
+            Notify Me When Available →
+          </button>
         </div>
-        <div className={styles.facingRows}>
-          {facingRows.map((row) => (
-            <div key={row.label} className={styles.facingRow}>
-              <div className={styles.facingLabel}>
-                <span style={{ marginRight: 4 }}>{row.icon}</span>
-                <div className={styles.facingDot} style={{ background: row.color }} />
-                {row.label}
-              </div>
-              <div className={styles.facingBar}>
-                <motion.div
-                  className={styles.facingFill}
-                  style={{ background: row.color }}
-                  initial={{ width: 0 }}
-                  whileInView={{ width: `${(row.value / totalFacing) * 100}%` }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.8, ease: 'easeOut' }}
-                />
-              </div>
-              <div className={styles.facingCount}>{row.value}</div>
+      ) : (
+        <>
+          {/* Facing breakdown */}
+          <div className={styles.facingCard}>
+            <div className={styles.facingHeader}>
+              <h3 className={styles.facingTitle}>Plot Distribution</h3>
+              <span className={styles.facingTotal}>{proj.total} total plots</span>
             </div>
-          ))}
-        </div>
-      </div>
-
-      {/* Key facts grid — aligned width matches CTA below */}
-      <div className={styles.factsSection}>
-        <div className={styles.factsGrid}>
-          {[
-            { label: 'Total Plots',    value: proj.total },
-            { label: 'Starting Price', value: proj.starting },
-            { label: 'Project Status', value: 'Open for Booking' },
-          ].map((f) => (
-            <div key={f.label} className={styles.factCard}>
-              <div className={styles.factVal}>{f.value}</div>
-              <div className={styles.factLabel}>{f.label}</div>
+            <div className={styles.facingRows}>
+              {facingRows.map((row) => (
+                <div key={row.label} className={styles.facingRow}>
+                  <div className={styles.facingLabel}>
+                    <span style={{ marginRight: 4 }}>{row.icon}</span>
+                    <div className={styles.facingDot} style={{ background: row.color }} />
+                    {row.label}
+                  </div>
+                  <div className={styles.facingBar}>
+                    <motion.div
+                      className={styles.facingFill}
+                      style={{ background: row.color }}
+                      initial={{ width: 0 }}
+                      whileInView={{ width: `${(row.value / totalFacing) * 100}%` }}
+                      viewport={{ once: true }}
+                      transition={{ duration: 0.8, ease: 'easeOut' }}
+                    />
+                  </div>
+                  <div className={styles.facingCount}>{row.value}</div>
+                </div>
+              ))}
             </div>
-          ))}
-        </div>
-
-        {/* Pricing breakdown */}
-        <div className={styles.priceBreakdown}>
-          <div className={styles.pbTitle}>Plot Pricing (per Sq. Yard)</div>
-          <div className={styles.pbRows}>
-            <div className={styles.pbRow}>
-              <span className={styles.pbDir}><span className={styles.pbIcon}>☀</span> East Facing</span>
-              <span className={styles.pbRate}>Rs.13,000 + Rs.1,000 = <strong>Rs.14,000 /sq.yd</strong></span>
-            </div>
-            <div className={styles.pbRow}>
-              <span className={styles.pbDir}><span className={styles.pbIcon}>🌙</span> West Facing</span>
-              <span className={styles.pbRate}>Rs.12,500 + Rs.1,000 = <strong>Rs.13,500 /sq.yd</strong></span>
-            </div>
-            <div className={styles.pbNote}>* Corner charges extra &nbsp;|&nbsp; Prices subject to revision</div>
           </div>
-        </div>
 
-        <button className={`btn btn-gold ${styles.fullWidthCta}`}
-          onClick={() => onEnquire({ source: 'PROJECT_OVERVIEW', label: 'Get Plot Details', category: proj.name })}>
-          Get Detailed Plot Information →
-        </button>
-      </div>
+          {/* Key facts grid */}
+          <div className={styles.factsGrid}>
+            {[
+              { label: 'Total Plots',    value: proj.total },
+              { label: 'Starting Price', value: proj.starting },
+              { label: 'Project Status', value: 'Open for Booking' },
+            ].map((f) => (
+              <div key={f.label} className={styles.factCard}>
+                <div className={styles.factVal}>{f.value}</div>
+                <div className={styles.factLabel}>{f.label}</div>
+              </div>
+            ))}
+          </div>
+
+          <button className="btn btn-gold"
+            onClick={() => onEnquire({ source: 'PROJECT_OVERVIEW', label: 'Get Plot Details', category: proj.name })}>
+            Get Detailed Plot Information →
+          </button>
+        </>
+      )}
     </div>
   )
 }
@@ -208,10 +206,7 @@ function AmenitiesTab({ proj }) {
 // ── Gallery tab ───────────────────────────────────────────────────────────────
 function GalleryTab({ proj }) {
   const [lightbox, setLightbox] = useState(null)
-  // Use project-specific real images; fall back to proj.gallery metadata
-  const localImages = getProjectGallery(proj.id)
-  const items = localImages.length > 0 ? localImages : (proj.gallery || [])
-  const hasRealImages = localImages.length > 0
+  const items = proj.gallery || []
   const close = () => setLightbox(null)
 
   useEffect(() => {
@@ -225,21 +220,6 @@ function GalleryTab({ proj }) {
     return () => window.removeEventListener('keydown', h)
   }, [lightbox])
 
-  if (!hasRealImages) return (
-    <div className={styles.tabContent}>
-      <h2 className={styles.tabTitle}>Gallery</h2>
-      <div style={{ textAlign:'center', padding:'60px 0' }}>
-        <div style={{ fontSize:'3rem', marginBottom:12 }}>📷</div>
-        <div style={{ fontSize:'1.2rem', fontFamily:"'Cormorant Garamond',serif", color:'rgba(0,0,0,0.5)' }}>
-          Gallery <em style={{ color:'var(--gold-dark)' }}>Coming Soon</em>
-        </div>
-        <p style={{ fontSize:13, color:'rgba(0,0,0,0.35)', marginTop:8 }}>
-          Photos will be added shortly.
-        </p>
-      </div>
-    </div>
-  )
-
   return (
     <div className={styles.tabContent}>
       <h2 className={styles.tabTitle}>Gallery</h2>
@@ -249,10 +229,7 @@ function GalleryTab({ proj }) {
             className={`${styles.galCell} ${idx === 0 ? styles.galFeatured : ''}`}
             onClick={() => setLightbox(idx)}
             whileHover={{ scale: 1.02 }}>
-            {item.src
-              ? <img src={item.src} alt={item.label} className={styles.galImg} loading="lazy" />
-              : <div className={styles.galIcon} style={{ fontSize: idx === 0 ? '5rem' : '3rem' }}>{item.icon}</div>
-            }
+            <div className={styles.galIcon} style={{ fontSize: idx === 0 ? '5rem' : '3rem' }}>{item.icon}</div>
             <div className={styles.galOverlay}>{item.label}</div>
           </motion.div>
         ))}
@@ -265,14 +242,8 @@ function GalleryTab({ proj }) {
             onClick={(e) => { if (e.target === e.currentTarget) close() }}>
             <div className={styles.lbPanel}>
               <button className={styles.lbClose} onClick={close}><X size={16} /></button>
-              {items[lightbox]?.src
-                ? <img src={items[lightbox].src} alt={items[lightbox]?.label || ''} className={styles.lbFullImg} />
-                : <div className={styles.lbIcon}>{items[lightbox]?.icon}</div>
-              }
-              {items[lightbox]?.label && items[lightbox].label !== `Photo ${lightbox + 1}`
-                ? <div className={styles.lbLabel}>{items[lightbox].label}</div>
-                : null
-              }
+              <div className={styles.lbIcon}>{items[lightbox]?.icon}</div>
+              <div className={styles.lbLabel}>{items[lightbox]?.label}</div>
               <div className={styles.lbCount}>{lightbox + 1} / {items.length}</div>
               <div className={styles.lbNav}>
                 <button className={styles.lbBtn}
@@ -291,13 +262,7 @@ function GalleryTab({ proj }) {
 // ── Videos tab ────────────────────────────────────────────────────────────────
 function VideosTab({ proj }) {
   const [active, setActive] = useState(null)
-
-  // Local video files take priority; fall back to proj.videos (YouTube IDs etc.)
-  const localVids  = getProjectVideos(proj.id)
-  const youtubeVids = (proj.videos || []).filter(v => v.type === 'youtube' && v.id && !v.id.includes('dQw4w9WgXcY'))
-  const videos = localVids.length > 0
-    ? localVids.map((v, i) => ({ type: 'local', src: v.src, title: v.label || `Video ${i + 1}`, subtitle: proj.name }))
-    : youtubeVids
+  const videos = proj.videos || []
 
   useEffect(() => {
     if (!active) return
@@ -305,19 +270,6 @@ function VideosTab({ proj }) {
     window.addEventListener('keydown', h)
     return () => window.removeEventListener('keydown', h)
   }, [active])
-
-  if (!videos.length) return (
-    <div className={styles.tabContent}>
-      <h2 className={styles.tabTitle}>Videos</h2>
-      <div style={{ textAlign:'center', padding:'60px 0' }}>
-        <div style={{ fontSize:'3rem', marginBottom:12 }}>🎬</div>
-        <div style={{ fontSize:'1.2rem', fontFamily:"'Cormorant Garamond',serif", color:'rgba(0,0,0,0.5)' }}>
-          Videos <em style={{ color:'var(--gold-dark)' }}>Coming Soon</em>
-        </div>
-        <p style={{ fontSize:13, color:'rgba(0,0,0,0.35)', marginTop:8 }}>Project videos will be added shortly.</p>
-      </div>
-    </div>
-  )
 
   return (
     <div className={styles.tabContent}>
@@ -327,10 +279,7 @@ function VideosTab({ proj }) {
           <motion.div key={i} className={styles.vidCard}
             whileHover={{ y: -4 }} onClick={() => setActive(v)}>
             <div className={styles.vidThumb}>
-              {v.type === 'youtube'
-                ? <img src={`https://img.youtube.com/vi/${v.id}/hqdefault.jpg`} alt={v.title} className={styles.vidThumbnailImg} />
-                : <div className={styles.vidPlaceholder}><span>🎬</span></div>
-              }
+              <div className={styles.vidPlaceholder}><span>🎬</span></div>
               <div className={styles.vidPlayWrap}>
                 <Play size={22} fill="var(--green)" color="var(--green)" />
               </div>
@@ -356,7 +305,7 @@ function VideosTab({ proj }) {
                   frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                   allowFullScreen title={active.title} />
               ) : (
-                <video src={active.src} controls autoPlay playsInline style={{ width:'100%', borderRadius:8 }} />
+                <video src={active.id} controls autoPlay playsInline />
               )}
             </div>
           </motion.div>

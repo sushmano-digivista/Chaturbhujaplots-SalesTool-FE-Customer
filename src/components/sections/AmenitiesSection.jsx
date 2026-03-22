@@ -5,8 +5,43 @@ import styles from './Sections.module.css'
 const TABS       = ['INFRA', 'LIFESTYLE', 'UTILITIES']
 const TAB_LABELS = { INFRA: 'Infrastructure', LIFESTYLE: 'Lifestyle', UTILITIES: 'Utilities' }
 
+// ── Static fallback amenities (used when API returns nothing) ─────────────────
+// Sourced from Layout Amenities attachments (Anjana Paradise / Aparna Legacy)
+const FALLBACK_AMENITIES = [
+  // ── INFRASTRUCTURE ─────────────────────────────────────────────────────────
+  { tab: 'INFRA', icon: '🏛️',  label: 'Grand Entrance Arch',        sortOrder:  1, featured: false },
+  { tab: 'INFRA', icon: '🛣️',  label: '60ft & 40ft CC Roads',        sortOrder:  2, featured: false },
+  { tab: 'INFRA', icon: '🚧',  label: 'BT Roads',                    sortOrder:  3, featured: false },
+  { tab: 'INFRA', icon: '🔒',  label: 'Compound Wall',               sortOrder:  4, featured: false },
+  { tab: 'INFRA', icon: '🔐',  label: 'Security Arch',               sortOrder:  5, featured: false },
+  { tab: 'INFRA', icon: '🔢',  label: 'Name & Number Display Board', sortOrder:  6, featured: false },
+  { tab: 'INFRA', icon: '🌊',  label: 'Drainage System',             sortOrder:  7, featured: false },
+  { tab: 'INFRA', icon: '💡',  label: 'Underground Electricity',     sortOrder:  8, featured: false },
+  { tab: 'INFRA', icon: '🌙',  label: 'Designed LED Street Lights',  sortOrder:  9, featured: false },
+  { tab: 'INFRA', icon: '🌳',  label: 'Avenue Plantation',           sortOrder: 10, featured: false },
+  { tab: 'INFRA', icon: '🅿️',  label: 'Visitor Parking',             sortOrder: 11, featured: false },
+  { tab: 'INFRA', icon: '✅',  label: 'CRDA Proposed Layout',        sortOrder: 12, featured: false },
+
+  // ── LIFESTYLE ──────────────────────────────────────────────────────────────
+  { tab: 'LIFESTYLE', icon: '🏞️',  label: 'Modern Park',             sortOrder:  1, featured: false },
+  { tab: 'LIFESTYLE', icon: '🚶',  label: 'Walking Track',            sortOrder:  2, featured: false },
+  { tab: 'LIFESTYLE', icon: '🛝',  label: "Children's Play Area",     sortOrder:  3, featured: false },
+  { tab: 'LIFESTYLE', icon: '🕉️',  label: '100% Vastu Compliance',   sortOrder:  4, featured: false },
+  { tab: 'LIFESTYLE', icon: '🌿',  label: 'Green Landscaping',        sortOrder:  5, featured: false },
+  { tab: 'LIFESTYLE', icon: '🙏',  label: 'Hanuman Temple Nearby',    sortOrder:  6, featured: true,
+    featuredDesc: 'A magnificent Hanuman temple is located just minutes from Anjana Paradise.' },
+
+  // ── UTILITIES ──────────────────────────────────────────────────────────────
+  { tab: 'UTILITIES', icon: '💧',  label: 'Pure Drinking Water',      sortOrder:  1, featured: false },
+  { tab: 'UTILITIES', icon: '🚰',  label: 'Water Tank',               sortOrder:  2, featured: false },
+  { tab: 'UTILITIES', icon: '🚿',  label: 'Water Pipeline',           sortOrder:  3, featured: false },
+  { tab: 'UTILITIES', icon: '⚡',  label: 'Electricity',              sortOrder:  4, featured: false },
+  { tab: 'UTILITIES', icon: '🔐',  label: 'Gated Security',           sortOrder:  5, featured: false },
+  { tab: 'UTILITIES', icon: '🌐',  label: 'Underground Cabling',      sortOrder:  6, featured: false },
+]
+
 /**
- * FeaturedAmenity — full-width card for a highlighted amenity item.
+ * FeaturedAmenity — full-width highlighted card.
  */
 function FeaturedAmenity({ item, delay }) {
   return (
@@ -31,11 +66,21 @@ function FeaturedAmenity({ item, delay }) {
  * AmenitiesSection — tabbed grid of infrastructure, lifestyle and utility amenities.
  * Props:
  *   content  { amenities: Array<{ tab, icon, label, sortOrder, featured, featuredDesc? }> }
+ *
+ * Falls back to FALLBACK_AMENITIES when API returns nothing.
  */
 export default function AmenitiesSection({ content }) {
   const [tab, setTab] = useState('INFRA')
-  const all   = content?.amenities || []
+
+  // Use API data if available, otherwise static fallback
+  const all   = (content?.amenities?.length ? content.amenities : FALLBACK_AMENITIES)
   const items = all.filter((a) => a.tab === tab).sort((a, b) => a.sortOrder - b.sortOrder)
+
+  // Count per tab for the badge
+  const countByTab = TABS.reduce((acc, t) => {
+    acc[t] = all.filter((a) => a.tab === t).length
+    return acc
+  }, {})
 
   return (
     <section className="section section-cream" id="amenities">
@@ -45,6 +90,7 @@ export default function AmenitiesSection({ content }) {
         <p className="sec-sub">Every detail crafted for a refined, future-ready lifestyle.</p>
       </div>
 
+      {/* ── Tab selector ────────────────────────────────────────────────── */}
       <div className={styles.amTabs}>
         {TABS.map((t) => (
           <button
@@ -53,10 +99,14 @@ export default function AmenitiesSection({ content }) {
             onClick={() => setTab(t)}
           >
             {TAB_LABELS[t]}
+            <span className={`${styles.amTabCount} ${tab === t ? styles.amTabCountActive : ''}`}>
+              {countByTab[t]}
+            </span>
           </button>
         ))}
       </div>
 
+      {/* ── Amenity grid ────────────────────────────────────────────────── */}
       <AnimatePresence mode="wait">
         <motion.div
           key={tab}

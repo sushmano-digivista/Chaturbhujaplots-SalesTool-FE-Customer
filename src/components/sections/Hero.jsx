@@ -26,7 +26,7 @@ export default function Hero({ content, onEnquire }) {
         transition={{ duration: 0.7, ease: [0.4, 0, 0.2, 1] }}>
 
         <div className={styles.badges}>
-          {(hero.approvalBadges || ['CRDA Approved · LP No: 35/2025','AP RERA · P06060125894','Ready for Construction'])
+          {(hero.approvalBadges || ['APCRDA Proposed Layout · LP No: 35/2025','AP RERA · P06060125894','Ready for Construction'])
             .map(b => (
               <span key={b} className={styles.badge}>
                 <span className={styles.badgeDot} />
@@ -60,9 +60,9 @@ export default function Hero({ content, onEnquire }) {
 
         <div className={styles.statsBar}>
           {[
-            { value: summary?.totalPlots || 242, suffix: '',    label: 'Total Plots'    },
-            { value: 8,                           suffix: ' km', label: 'From Amaravati' },
-            { value: summary?.eastFacing?.count || 0, suffix: '', label: 'East-Facing'  },
+            { value: 25,   suffix: '+',   label: 'Years in Industry'  },
+            { value: 15,   suffix: '+',   label: 'Projects Delivered' },
+            { value: 1200, suffix: '+',   label: 'Happy Customers'    },
           ].map((s, i) => (
             <div key={i} className={styles.stat}>
               <div className={styles.statNum}>
@@ -102,13 +102,13 @@ export default function Hero({ content, onEnquire }) {
           <div className={styles.lcStatusDiv} />
           <div className={styles.lcStatusCard} style={{ background: 'rgba(76,175,116,.1)' }}>
             <div className={styles.lcStatusIcon}>✅</div>
-            <div className={styles.lcStatusNum}>{urgency.completedProjects || 6}</div>
+            <div className={styles.lcStatusNum}>{urgency.completedProjects || 11}</div>
             <div className={styles.lcStatusLabel}>Projects<br /><span>Completed</span></div>
           </div>
           <div className={styles.lcStatusDiv} />
           <div className={styles.lcStatusCard} style={{ background: 'rgba(100,181,246,.08)' }}>
             <div className={styles.lcStatusIcon}>🏗️</div>
-            <div className={styles.lcStatusNum}>{urgency.happyFamilies || '1000+'}</div>
+            <div className={styles.lcStatusNum}>{urgency.happyFamilies || '1200+'}</div>
             <div className={styles.lcStatusLabel}>Happy<br /><span>Families</span></div>
           </div>
         </div>
@@ -118,7 +118,7 @@ export default function Hero({ content, onEnquire }) {
         </div>
         <div className={styles.lcBarLabels}>
           <span>🟡 4 Open for Booking</span>
-          <span>✅ 6 Completed &amp; Sold Out</span>
+          <span>✅ 11 Completed &amp; Sold Out</span>
         </div>
 
         <div className={styles.lcStats}>

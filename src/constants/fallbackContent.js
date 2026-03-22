@@ -4,13 +4,13 @@
  */
 const FALLBACK_CONTENT = {
   hero: {
-    headline:       'Premium Plots Near',
-    subheadline:    'Amaravati',
-    description:    "Own a piece of Andhra Pradesh's fastest-growing capital corridor. APCRDA proposed layouts with 100% clear title — just 8–12 km from Amaravati, the new state capital. Avenue-lined roads, 24/7 water, overhead electricity & ready for immediate construction.",
+    headline:       'Welcome to',
+    subheadline:    'Chaturbhuja',
+    description:    "25 years of trust in Andhra Pradesh's real estate sector. Founded by Mr. Donepudi Durga Prasad, Chaturbhuja Properties & Infra has delivered 15+ successful ventures — open plots, houses and apartments — across the Krishna–NTR–Guntur corridor. APCRDA approved, RERA registered, 100% clear title.",
     approvalBadges: [
-      'APCRDA Proposed Layout',
+      'APCRDA Proposed Layouts',
       'AP RERA Registered',
-      '100% Clear Title · Ready for Construction',
+      '25 Years · 15+ Projects · 1200+ Families',
     ],
   },
 
@@ -19,8 +19,8 @@ const FALLBACK_CONTENT = {
     soldThisMonth:     8,
     priceRisePercent:  18,
     openProjects:      4,
-    completedProjects: 6,
-    happyFamilies:     '1000+',
+    completedProjects: 11,
+    happyFamilies:     '1200+',
   },
 
   stats: [
@@ -31,10 +31,10 @@ const FALLBACK_CONTENT = {
 
   portfolio: {
     stats: [
-      { value: '10+',   label: 'Projects Delivered', icon: '🏗️' },
-      { value: '1000+', label: 'Happy Families',      icon: '🏠' },
-      { value: '15+',   label: 'Years of Trust',      icon: '🏆' },
-      { value: '100%',  label: 'CRDA / RERA',         icon: '✅' },
+      { value: '25+',   label: 'Years in Industry',   icon: '🏆' },
+      { value: '15+',   label: 'Projects Delivered',  icon: '🏗' },
+      { value: '1200+', label: 'Happy Customers',     icon: '🏠' },
+      { value: '100%',  label: 'APCRDA / RERA',       icon: '✅' },
     ],
     active: [], // loaded from projects.js at runtime
     completed: [],
@@ -106,9 +106,9 @@ const FALLBACK_CONTENT = {
   },
 
   contact: {
-    phone:       '+91 99 666 96 993',
-    whatsapp:    '919966696993',
-    email:       'chaturbhuja2024@gmail.com',
+    phone:       '+91 89772 62683',
+    whatsapp:    '918977262683',
+    email:       'info@chaturbhuja.in',
     address:     'Flat No. 101, Venkat Meadows, Patamata, Vijayawada – 520007',
     mapEmbedUrl: 'https://maps.google.com/maps?q=Paritala,Andhra+Pradesh,India&t=k&z=14&ie=UTF8&iwloc=&output=embed',
     mapOpenUrl:  'https://maps.google.com/?q=Paritala,Krishna+District,Andhra+Pradesh',

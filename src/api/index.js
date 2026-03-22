@@ -32,3 +32,9 @@ export const plotSummaryApi = {
 export const leadApi = {
   submit: (data) => dashApi.post('/leads', data).then(r => r.data),
 }
+
+// ── Brochure API ──────────────────────────────────────────────────────────────
+export const brochureApi = {
+  sendEmail:    (data) => mediaApi.post('/brochure/email',    data).then(r => r.data),
+  sendWhatsApp: (data) => mediaApi.post('/brochure/whatsapp', data).then(r => r.data),
+}

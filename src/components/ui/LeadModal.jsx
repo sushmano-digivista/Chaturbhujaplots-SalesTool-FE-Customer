@@ -1,33 +1,29 @@
-import { createPortal }  from 'react-dom'
-import { useEffect, useState } from 'react'
-import { useForm }       from 'react-hook-form'
+import { createPortal }         from 'react-dom'
+import { useEffect, useState }  from 'react'
+import { useForm }               from 'react-hook-form'
 import { motion, AnimatePresence } from 'framer-motion'
-import { X, MessageCircle, Download, Mail } from 'lucide-react'
-import { useSubmitLead } from '@/hooks/useData'
-import { ACTIVE_PROJECTS } from '@/constants/projects'
-import { BROCHURES } from '@/constants/brochures'
+import { X, MessageCircle, Download, Mail, Loader2 } from 'lucide-react'
+import { useSubmitLead }         from '@/hooks/useData'
+import { ACTIVE_PROJECTS }       from '@/constants/projects'
+import { BROCHURES }             from '@/constants/brochures'
+import { brochureApi }           from '@/api'
 import styles from './LeadModal.module.css'
 
-/**
- * context = { source, label, category, plotNumber, type, projectId }
- */
 export default function LeadModal({ context, onClose, whatsapp }) {
-  const isOpen = !!context
+  const isOpen    = !!context
   const { register, handleSubmit, reset, watch, formState: { errors } } = useForm()
   const submitLead   = useSubmitLead()
-  const [submitted, setSubmitted] = useState(false)
+  const [submitted,  setSubmitted]  = useState(false)
+  const [emailSent,  setEmailSent]  = useState(false)
+  const [waSent,     setWaSent]     = useState(false)
+  const [sending,    setSending]    = useState(null) // 'email' | 'wa' | null
 
-  const selectedProject = watch('project') || ''
-  // Derive project ID from selected project name
-  const selectedProjObj = ACTIVE_PROJECTS.find(p => p.name === selectedProject)
-  const brochureUrl = BROCHURES[selectedProjObj?.id] || BROCHURES[context?.projectId] || BROCHURES.general || null
-
-  // Build WhatsApp message
-  const buildWAText = (data) => {
-    const proj = data?.project ? ` I am interested in ${data.project}.` : ''
-    const plot = data?.category ? ` Plot preference: ${data.category}.` : ''
-    return `Hi, I am interested in Chaturbhuja Properties plots near Amaravati.${proj}${plot} Please share details.`
-  }
+  const selectedProject  = watch('project') || ''
+  const enteredEmail     = watch('email')    || ''
+  const enteredPhone     = watch('phone')    || ''
+  const enteredName      = watch('name')     || ''
+  const selectedProjObj  = ACTIVE_PROJECTS.find(p => p.name === selectedProject)
+  const brochureUrl      = BROCHURES[selectedProjObj?.id] || BROCHURES[context?.projectId] || BROCHURES.general || null
 
   useEffect(() => {
     document.body.style.overflow = isOpen ? 'hidden' : ''
@@ -35,13 +31,13 @@ export default function LeadModal({ context, onClose, whatsapp }) {
   }, [isOpen])
 
   useEffect(() => {
-    const handler = e => { if (e.key === 'Escape') onClose() }
-    if (isOpen) window.addEventListener('keydown', handler)
-    return () => window.removeEventListener('keydown', handler)
+    const h = e => { if (e.key === 'Escape') onClose() }
+    if (isOpen) window.addEventListener('keydown', h)
+    return () => window.removeEventListener('keydown', h)
   }, [isOpen, onClose])
 
   useEffect(() => {
-    if (!isOpen) { setSubmitted(false); reset() }
+    if (!isOpen) { setSubmitted(false); setEmailSent(false); setWaSent(false); reset() }
   }, [isOpen])
 
   const onSubmit = async data => {
@@ -56,26 +52,45 @@ export default function LeadModal({ context, onClose, whatsapp }) {
       })
       setSubmitted(true)
       reset()
+    } catch { reset() }
+  }
+
+  const handleEmail = async () => {
+    if (!enteredEmail || sending) return
+    setSending('email')
+    try {
+      await brochureApi.sendEmail({
+        email:       enteredEmail,
+        name:        enteredName,
+        projectId:   selectedProjObj?.id || context?.projectId,
+        projectName: selectedProject || context?.category,
+      })
+      setEmailSent(true)
+    } catch { /* toast shown by axios interceptor */ }
+    finally { setSending(null) }
+  }
+
+  const handleWhatsApp = async () => {
+    if (!enteredPhone || sending) return
+    setSending('wa')
+    try {
+      const res = await brochureApi.sendWhatsApp({
+        phone:       enteredPhone,
+        name:        enteredName,
+        projectId:   selectedProjObj?.id || context?.projectId,
+        projectName: selectedProject || context?.category,
+      })
+      if (res.method === 'deeplink' && res.deepLink) {
+        window.open(res.deepLink, '_blank')
+      }
+      setWaSent(true)
     } catch {
-      reset()
+      // fallback: open wa.me directly
+      const num  = whatsapp || '918977262683'
+      const text = `Hi, I am interested in ${selectedProject || 'Chaturbhuja Properties'} plots. Please share details.`
+      window.open(`https://wa.me/${num}?text=${encodeURIComponent(text)}`, '_blank')
     }
-  }
-
-  const openWA = (formData) => {
-    const num = whatsapp || '918977262683'
-    window.open(
-      `https://wa.me/${num}?text=${encodeURIComponent(buildWAText(formData))}`,
-      '_blank'
-    )
-  }
-
-  const sendByEmail = (email, formData) => {
-    if (!brochureUrl) return
-    const subject = encodeURIComponent('Chaturbhuja Properties — Brochure Request')
-    const body = encodeURIComponent(
-      `Hi,\n\nPlease find the brochure for ${formData?.project || 'our projects'} at the link below:\n\nhttps://chaturbhuja.in${brochureUrl}\n\nRegards,\nChaturbhuja Properties & Infra`
-    )
-    window.open(`mailto:${email}?subject=${subject}&body=${body}`, '_blank')
+    finally { setSending(null) }
   }
 
   return createPortal(
@@ -86,8 +101,8 @@ export default function LeadModal({ context, onClose, whatsapp }) {
           onClick={e => { if (e.target === e.currentTarget) onClose() }}>
 
           <motion.div className={styles.sheet}
-            initial={{ y: '100%' }} animate={{ y: 0 }} exit={{ y: '100%' }}
-            transition={{ type: 'spring', damping: 28, stiffness: 300 }}>
+            initial={{ y:'100%' }} animate={{ y:0 }} exit={{ y:'100%' }}
+            transition={{ type:'spring', damping:28, stiffness:300 }}>
 
             <div className={styles.handle} />
             <button className={styles.closeBtn} onClick={onClose} aria-label="Close">
@@ -99,7 +114,7 @@ export default function LeadModal({ context, onClose, whatsapp }) {
               <h3 className={styles.title}>{context?.label || 'Get In Touch'}</h3>
               {context?.category && <span className={styles.catTag}>{context.category}</span>}
               <p className={styles.subtitle}>
-                Our team will reach out within 30 minutes during business hours.
+                Fill in your details — we'll call you back and send the brochure directly.
               </p>
             </div>
 
@@ -111,12 +126,11 @@ export default function LeadModal({ context, onClose, whatsapp }) {
                 <p className={styles.successMsg}>Our team will call you within 30 minutes.</p>
                 {brochureUrl && (
                   <a href={brochureUrl} download target="_blank" rel="noreferrer"
-                    className={`btn btn-gold btn-full ${styles.downloadBtn}`}>
-                    <Download size={16} /> Download Brochure
+                    className={styles.downloadBtn}>
+                    <Download size={15} /> Download Brochure
                   </a>
                 )}
-                <button className={`btn btn-green btn-full`} onClick={onClose}
-                  style={{ marginTop: 10 }}>
+                <button className="btn btn-green btn-full" onClick={onClose} style={{ marginTop:8 }}>
                   Close
                 </button>
               </div>
@@ -137,22 +151,21 @@ export default function LeadModal({ context, onClose, whatsapp }) {
                     placeholder="+91 XXXXX XXXXX" inputMode="tel" autoComplete="tel"
                     {...register('phone', {
                       required: 'Phone number is required',
-                      pattern:  { value: /^[6-9]\d{9}$/, message: 'Enter a valid 10-digit Indian mobile number' },
+                      pattern:  { value:/^[6-9]\d{9}$/, message:'Enter valid 10-digit Indian number' },
                     })} />
                   {errors.phone && <span className="form-error">{errors.phone.message}</span>}
                 </div>
 
                 <div className="form-group">
-                  <label className="form-label">Email (optional)</label>
+                  <label className="form-label">Email (optional — to receive brochure)</label>
                   <input className="form-input" placeholder="you@example.com"
                     inputMode="email" autoComplete="email"
                     {...register('email', {
-                      pattern: { value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/, message: 'Enter a valid email address' },
+                      pattern: { value:/^[^\s@]+@[^\s@]+\.[^\s@]+$/, message:'Enter valid email' },
                     })} />
                   {errors.email && <span className="form-error">{errors.email.message}</span>}
                 </div>
 
-                {/* Project Interest */}
                 <div className="form-group">
                   <label className="form-label">Project Interest</label>
                   <select className="form-input" {...register('project')}>
@@ -164,57 +177,71 @@ export default function LeadModal({ context, onClose, whatsapp }) {
                   </select>
                 </div>
 
-                {/* Plot Interest */}
                 {!context?.category && (
                   <div className="form-group">
                     <label className="form-label">Plot Interest</label>
                     <select className="form-input" {...register('category')}>
                       <option value="">Select preference</option>
-                      <option value="East-Facing">East-Facing</option>
-                      <option value="West-Facing">West-Facing</option>
-                      <option value="North-Facing">North-Facing</option>
-                      <option value="South-Facing">South-Facing</option>
-                      <option value="Corner Plots">Corner Plots</option>
-                      <option value="30×40 ft">30×40 ft</option>
-                      <option value="33×50 ft">33×50 ft</option>
-                      <option value="40×60 ft">40×60 ft</option>
-                      <option value="Other">Other</option>
+                      <option>East-Facing</option>
+                      <option>West-Facing</option>
+                      <option>North-Facing</option>
+                      <option>South-Facing</option>
+                      <option>Corner Plots</option>
+                      <option>30×40 ft</option>
+                      <option>33×50 ft</option>
+                      <option>40×60 ft</option>
+                      <option>Other</option>
                     </select>
                   </div>
                 )}
 
-                {/* CTAs */}
+                {/* ── CTAs ── */}
                 <div className={styles.actions}>
-                  {/* Primary: Request Callback */}
-                  <button type="submit" className={`btn btn-green btn-full`}
+
+                  {/* 1. Email */}
+                  <button type="button" className={styles.emailBtn}
+                    onClick={handleEmail}
+                    disabled={!enteredEmail || sending === 'email' || emailSent}
+                    title={!enteredEmail ? 'Enter your email above to receive brochure' : ''}>
+                    {sending === 'email'
+                      ? <Loader2 size={15} className={styles.spin} />
+                      : <Mail size={15} />}
+                    {emailSent ? 'Brochure Sent ✓' : 'Email Brochure'}
+                  </button>
+
+                  {/* 2. WhatsApp */}
+                  <button type="button" className={styles.waBtn}
+                    onClick={handleWhatsApp}
+                    disabled={!enteredPhone || sending === 'wa' || waSent}>
+                    {sending === 'wa'
+                      ? <Loader2 size={15} className={styles.spin} />
+                      : <MessageCircle size={15} />}
+                    {waSent ? 'Sent on WhatsApp ✓' : 'WhatsApp Brochure'}
+                  </button>
+
+                  {/* 3. Download */}
+                  {brochureUrl
+                    ? <a href={brochureUrl} download target="_blank" rel="noreferrer"
+                        className={styles.downloadBtn}>
+                        <Download size={15} /> Download Brochure
+                      </a>
+                    : <button type="button" className={`${styles.downloadBtn} ${styles.disabled}`} disabled>
+                        <Download size={15} /> Download Brochure
+                      </button>
+                  }
+
+                  {/* Divider */}
+                  <div className={styles.divider}><span>or</span></div>
+
+                  {/* 4. Request Callback (primary) */}
+                  <button type="submit" className="btn btn-green btn-full"
                     disabled={submitLead.isPending}>
                     {submitLead.isPending ? 'Sending…' : 'Request Callback'}
                   </button>
-
-                  {/* Download Brochure */}
-                  {brochureUrl && (
-                    <a href={brochureUrl} download target="_blank" rel="noreferrer"
-                      className={`btn btn-full ${styles.downloadBtn}`}>
-                      <Download size={16} /> Download Brochure
-                    </a>
-                  )}
-
-                  {/* WhatsApp brochure */}
-                  <button type="button" className={styles.waBtn} onClick={() => openWA(watch())}>
-                    <MessageCircle size={16} /> WhatsApp Brochure
-                  </button>
-
-                  {/* Email brochure — shown only if email entered */}
-                  {watch('email') && brochureUrl && (
-                    <button type="button" className={styles.emailBtn}
-                      onClick={() => sendByEmail(watch('email'), watch())}>
-                      <Mail size={16} /> Email Brochure
-                    </button>
-                  )}
                 </div>
+
               </form>
             )}
-
           </motion.div>
         </motion.div>
       )}

@@ -297,28 +297,30 @@
 }
 .ventureTab {
   display: flex; flex-direction: column; align-items: center; gap: 3px;
-  padding: 10px 20px; border-radius: 12px; border: 2px solid rgba(30,77,43,.15);
+  padding: 12px 22px; border-radius: 14px; border: 2px solid rgba(30,77,43,.15);
   background: #fff; cursor: pointer; transition: all .2s ease;
-  min-width: 140px;
+  min-width: 148px;
 }
-.ventureTab:hover { border-color: var(--green); background: var(--green-light); }
+.ventureTab:hover {
+  background: var(--tab-hover-bg, rgba(30,77,43,.08));
+  border-color: var(--tab-dot, #1E4D2B);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px rgba(0,0,0,.08);
+}
 .ventureTabActive {
-  border-color: var(--green) !important;
-  background: var(--green) !important;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0,0,0,.18) !important;
 }
-.ventureTabActive .ventureTabDot { background: #fff !important; box-shadow: 0 0 0 3px rgba(255,255,255,.3); }
-.ventureTabActive .ventureTabName { color: #fff !important; }
-.ventureTabActive .ventureTabShort { color: rgba(255,255,255,.75) !important; }
 .ventureTabDot {
-  width: 8px; height: 8px; border-radius: 50%;
-  background: var(--green); flex-shrink: 0;
+  width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0;
+  box-shadow: 0 0 0 2px rgba(255,255,255,.4);
 }
-.ventureTabName { font-size: 13px; font-weight: 700; color: var(--green); text-align: center; }
-.ventureTabShort { font-size: 11px; color: var(--text-light); text-align: center; }
+.ventureTabName  { font-size: 13px; font-weight: 700; text-align: center; }
+.ventureTabShort { font-size: 11px; text-align: center; }
 
-@media (max-width: 600px) {
+@media (max-width: 640px) {
   .ventureTabs { gap: 8px; }
-  .ventureTab { min-width: calc(50% - 8px); padding: 10px 12px; }
+  .ventureTab  { min-width: calc(50% - 8px); padding: 10px 12px; }
 }
 
 .distGrid { display:grid; grid-template-columns:repeat(auto-fill, minmax(280px,1fr)); gap:12px; }
@@ -327,11 +329,11 @@
   padding:16px 18px; display:flex; align-items:center; gap:12px; transition:all .2s;
 }
 .distCard:hover { border-color:var(--gold); transform:translateX(4px); }
-.distIcon { width:38px; height:38px; border-radius:10px; background:var(--green-light); display:flex; align-items:center; justify-content:center; font-size:18px; flex-shrink:0; }
+.distIcon { width:38px; height:38px; border-radius:10px; background:var(--green-light); display:flex; align-items:center; justify-content:center; font-size:18px; flex-shrink:0; transition: background .25s; }
 .distBody { flex:1; }
 .distName { font-size:13px; font-weight:600; color:var(--green); }
 .distSub  { font-size:11px; color:var(--text-light); }
-.distBadge { font-size:11px; font-weight:700; background:var(--green-light); color:var(--green); padding:3px 8px; border-radius:6px; white-space:nowrap; }
+.distBadge { font-size:11px; font-weight:700; background:var(--green-light); color:var(--green); padding:3px 10px; border-radius:20px; white-space:nowrap; transition: background .25s, color .25s; }
 
 /* ── Contact ────────────────────────────────────────── */
 .contactSec { background: linear-gradient(135deg, #0c2817, var(--green)); }

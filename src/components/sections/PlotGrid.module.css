@@ -128,3 +128,15 @@
   .priceBannerNote { display:none; }
 }
 @media (max-width:480px) { .dimGrid { grid-template-columns:1fr; } }
+
+/* ── Upcoming venture placeholder ───────────────────────────────────────── */
+.upcomingCard {
+  display: flex; flex-direction: column; align-items: center;
+  text-align: center; gap: 16px;
+  border: 2px dashed; border-radius: 20px;
+  padding: 56px 40px; margin: 8px 0 32px;
+  background: rgba(255,255,255,.6);
+}
+.upcomingIcon  { font-size: 48px; line-height: 1; }
+.upcomingTitle { font-size: 20px; font-weight: 700; }
+.upcomingDesc  { font-size: 14px; color: var(--text-mid); max-width: 480px; line-height: 1.6; margin: 0; }

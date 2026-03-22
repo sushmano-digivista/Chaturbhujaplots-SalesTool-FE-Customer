@@ -80,62 +80,79 @@ function HomeTab({ proj, onEnquire }) {
 
 // ── Overview tab ──────────────────────────────────────────────────────────────
 function OverviewTab({ proj, onEnquire }) {
-  const facingRows = getFacingRows(proj.facings || {})
-
+  const facingRows  = getFacingRows(proj.facings || {})
   const totalFacing = facingRows.reduce((s, r) => s + r.value, 0)
 
   return (
     <div className={styles.tabContent}>
       <h2 className={styles.tabTitle}>Project Overview</h2>
 
-      {/* Facing breakdown */}
-      <div className={styles.facingCard}>
-        <div className={styles.facingHeader}>
-          <h3 className={styles.facingTitle}>Plot Distribution</h3>
-          <span className={styles.facingTotal}>{proj.total} total plots</span>
+      {proj.upcoming ? (
+        <div className={styles.upcomingOverview}>
+          <div className={styles.upcomingBadge}>🔜 Upcoming Project</div>
+          <h3 className={styles.upcomingHeading}>{proj.name} — Coming Soon</h3>
+          <p className={styles.upcomingText}>
+            Plot distribution details, pricing and availability for {proj.name} will be
+            published shortly. Register your interest now to be notified first when
+            bookings open.
+          </p>
+          <button className="btn btn-gold"
+            onClick={() => onEnquire({ source: 'PROJECT_OVERVIEW_UPCOMING', label: 'Notify Me', category: proj.name, type: 'NOTIFY_ME' })}>
+            Notify Me When Available →
+          </button>
         </div>
-        <div className={styles.facingRows}>
-          {facingRows.map((row) => (
-            <div key={row.label} className={styles.facingRow}>
-              <div className={styles.facingLabel}>
-                <span style={{ marginRight: 4 }}>{row.icon}</span>
-                <div className={styles.facingDot} style={{ background: row.color }} />
-                {row.label}
-              </div>
-              <div className={styles.facingBar}>
-                <motion.div
-                  className={styles.facingFill}
-                  style={{ background: row.color }}
-                  initial={{ width: 0 }}
-                  whileInView={{ width: `${(row.value / totalFacing) * 100}%` }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.8, ease: 'easeOut' }}
-                />
-              </div>
-              <div className={styles.facingCount}>{row.value}</div>
+      ) : (
+        <>
+          {/* Facing breakdown */}
+          <div className={styles.facingCard}>
+            <div className={styles.facingHeader}>
+              <h3 className={styles.facingTitle}>Plot Distribution</h3>
+              <span className={styles.facingTotal}>{proj.total} total plots</span>
             </div>
-          ))}
-        </div>
-      </div>
-
-      {/* Key facts grid */}
-      <div className={styles.factsGrid}>
-        {[
-          { label: 'Total Plots',    value: proj.total },
-{ label: 'Starting Price', value: proj.starting },
-          { label: 'Project Status', value: 'Open for Booking' },
-        ].map((f) => (
-          <div key={f.label} className={styles.factCard}>
-            <div className={styles.factVal}>{f.value}</div>
-            <div className={styles.factLabel}>{f.label}</div>
+            <div className={styles.facingRows}>
+              {facingRows.map((row) => (
+                <div key={row.label} className={styles.facingRow}>
+                  <div className={styles.facingLabel}>
+                    <span style={{ marginRight: 4 }}>{row.icon}</span>
+                    <div className={styles.facingDot} style={{ background: row.color }} />
+                    {row.label}
+                  </div>
+                  <div className={styles.facingBar}>
+                    <motion.div
+                      className={styles.facingFill}
+                      style={{ background: row.color }}
+                      initial={{ width: 0 }}
+                      whileInView={{ width: `${(row.value / totalFacing) * 100}%` }}
+                      viewport={{ once: true }}
+                      transition={{ duration: 0.8, ease: 'easeOut' }}
+                    />
+                  </div>
+                  <div className={styles.facingCount}>{row.value}</div>
+                </div>
+              ))}
+            </div>
           </div>
-        ))}
-      </div>
 
-      <button className="btn btn-gold"
-        onClick={() => onEnquire({ source: 'PROJECT_OVERVIEW', label: 'Get Plot Details', category: proj.name })}>
-        Get Detailed Plot Information →
-      </button>
+          {/* Key facts grid */}
+          <div className={styles.factsGrid}>
+            {[
+              { label: 'Total Plots',    value: proj.total },
+              { label: 'Starting Price', value: proj.starting },
+              { label: 'Project Status', value: 'Open for Booking' },
+            ].map((f) => (
+              <div key={f.label} className={styles.factCard}>
+                <div className={styles.factVal}>{f.value}</div>
+                <div className={styles.factLabel}>{f.label}</div>
+              </div>
+            ))}
+          </div>
+
+          <button className="btn btn-gold"
+            onClick={() => onEnquire({ source: 'PROJECT_OVERVIEW', label: 'Get Plot Details', category: proj.name })}>
+            Get Detailed Plot Information →
+          </button>
+        </>
+      )}
     </div>
   )
 }

@@ -1,8 +1,30 @@
+import { useState, useEffect, useRef } from 'react'
 import { motion } from 'framer-motion'
-import CountUp from 'react-countup'
 import { useInView } from 'react-intersection-observer'
-import { usePlotSummary } from '@/hooks/useData'
 import styles from './Hero.module.css'
+
+// ── Lightweight animated counter — replaces react-countup JSX component
+//    Uses requestAnimationFrame for smooth counting; no external dep issues.
+function AnimatedCount({ end, duration = 1800, suffix = '' }) {
+  const [count, setCount] = useState(0)
+  const rafRef = useRef(null)
+
+  useEffect(() => {
+    let startTime = null
+    const step = (timestamp) => {
+      if (!startTime) startTime = timestamp
+      const progress = Math.min((timestamp - startTime) / duration, 1)
+      // ease-out curve
+      const eased = 1 - Math.pow(1 - progress, 3)
+      setCount(Math.round(eased * end))
+      if (progress < 1) rafRef.current = requestAnimationFrame(step)
+    }
+    rafRef.current = requestAnimationFrame(step)
+    return () => cancelAnimationFrame(rafRef.current)
+  }, [end, duration])
+
+  return <>{count}{suffix}</>
+}
 
 // ── Fallback values — used only when API is unavailable ───────────────────────
 const FB = {
@@ -92,7 +114,7 @@ export default function Hero({ content, onEnquire }) {
             <div key={i} className={styles.stat}>
               <div className={styles.statNum}>
                 {inView
-                  ? <CountUp end={s.value} duration={1.8} suffix={s.suffix} />
+                  ? <AnimatedCount end={s.value} duration={1800} suffix={s.suffix} />
                   : `0${s.suffix}`}
               </div>
               <div className={styles.statLabel}>{s.label}</div>

@@ -25,7 +25,8 @@ function HomeTab({ proj, onEnquire }) {
   return (
     <div className={styles.homeTab}>
       {/* Hero banner */}
-      <div className={`${styles.heroBanner} ${styles[proj.accentClass]}`}>
+      <div className={`${styles.heroBanner} ${styles[proj.accentClass]}`}
+        style={proj.heroImage ? { '--hero-img': `linear-gradient(rgba(10,30,18,.75),rgba(10,30,18,.75)), url(${proj.heroImage})` } : {}}>
         <div className={styles.heroContent}>
           <div className={styles.heroTag}>{proj.tag}</div>
           <h1 className={styles.heroName}>{proj.name}</h1>
@@ -361,6 +362,7 @@ function ContactTab({ proj, onEnquire }) {
           {c.whatsapp && <button className={styles.contactRow} onClick={openWA}><MessageCircle size={16} />WhatsApp Chat</button>}
           {c.email    && <a href={`mailto:${c.email}`}    className={styles.contactRow}>✉️ {c.email}</a>}
           {c.address  && <div className={styles.contactRow}>📍 {c.address}</div>}
+          {c.website  && <a href={`https://${c.website}`} target="_blank" rel="noreferrer" className={styles.contactRow}>🌐 {c.website}</a>}
         </div>
         <div className={styles.contactCtas}>
           <button className="btn btn-gold btn-full"

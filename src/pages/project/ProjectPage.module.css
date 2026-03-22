@@ -405,10 +405,12 @@
 }
 .pbRows { display: flex; flex-direction: column; gap: 8px; }
 .pbRow {
-  display: flex; align-items: center; justify-content: space-between;
-  flex-wrap: wrap; gap: 8px;
+  display: grid;
+  grid-template-columns: 140px 1fr;
+  align-items: center;
+  gap: 12px;
 }
-.pbDir { font-size: 13px; color: rgba(0,0,0,.6); font-weight: 600; }
+.pbDir { font-size: 13px; color: rgba(0,0,0,.6); font-weight: 600; white-space: nowrap; }
 .pbRate { font-size: 13px; color: var(--green); }
 .pbRate strong { font-weight: 700; }
 .pbNote {

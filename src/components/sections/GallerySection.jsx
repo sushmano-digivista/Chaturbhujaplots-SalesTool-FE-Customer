@@ -13,18 +13,20 @@ import styles from './Sections.module.css'
 
 // Single glob that picks up every image at every depth
 const allImageModules = import.meta.glob(
-  '../assets/gallery/chaturbhuja/**/*.{jpg,jpeg,png,webp,avif,JPG,JPEG,PNG,WEBP}',
+  '../assets/gallery/chaturbhuja/**/*.{jpg,jpeg,png,webp,avif}',
   { eager: true }
 )
 
 // Build flat sorted list — filename without extension as label
-const IMAGE_EXTS = /\.(jpg|jpeg|png|webp|avif)$/i
 const ALL_IMAGES = Object.keys(allImageModules)
-  .filter(path => IMAGE_EXTS.test(path))
   .sort()
   .map(path => ({
     src:   allImageModules[path].default,
-    label: path.split('/').pop().replace(/\.\w+$/, '').replace(/[-_]/g, ' ').replace(/^\d+\s*/, '').trim() || path.split('/').pop(),
+    label: path.split('/').pop()
+      .replace(/\.\w+$/, '')
+      .replace(/[-_]/g, ' ')
+      .replace(/^\d+\s*/, '')
+      .trim(),
   }))
 
 export default function GallerySection({ content }) {

@@ -5,6 +5,9 @@ import path from 'path'
 export default defineConfig({
   plugins: [react()],
   resolve: { alias: { '@': path.resolve(__dirname, './src') } },
+  optimizeDeps: {
+    include: ['react-countup', 'countup.js'],  // force CJS→ESM pre-bundling
+  },
   server: {
     port: 3000,
     proxy: {

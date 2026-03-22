@@ -354,3 +354,50 @@
   .galGrid   { grid-template-columns: 1fr; }
   .amGrid    { grid-template-columns: 1fr; }
 }
+
+/* ── Facts section wrapper — full width matching CTA ─────────────── */
+.factsSection {
+  display: flex; flex-direction: column; gap: 16px;
+}
+.factsGrid {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 12px; width: 100%;
+}
+.factCard {
+  background: rgba(30,77,43,.07); border: 1px solid rgba(30,77,43,.14);
+  border-radius: 14px; padding: 20px 16px; text-align: center;
+}
+.factVal {
+  font-family: 'Cormorant Garamond', serif; font-size: 1.6rem;
+  font-weight: 700; color: var(--green); line-height: 1.1; margin-bottom: 6px;
+}
+.factLabel { font-size: 12px; color: rgba(0,0,0,.45); font-weight: 500; }
+
+/* ── Pricing breakdown ────────────────────────────────────────────── */
+.priceBreakdown {
+  background: rgba(201,168,76,.08); border: 1px solid rgba(201,168,76,.25);
+  border-radius: 14px; padding: 18px 20px;
+}
+.pbTitle {
+  font-size: 11px; font-weight: 700; letter-spacing: 1.5px;
+  text-transform: uppercase; color: var(--gold-dark); margin-bottom: 12px;
+}
+.pbRows { display: flex; flex-direction: column; gap: 8px; }
+.pbRow {
+  display: flex; align-items: center; justify-content: space-between;
+  flex-wrap: wrap; gap: 8px;
+}
+.pbDir { font-size: 13px; color: rgba(0,0,0,.6); font-weight: 600; }
+.pbRate { font-size: 13px; color: var(--green); }
+.pbRate strong { font-weight: 700; }
+.pbNote {
+  font-size: 11px; color: rgba(0,0,0,.4); margin-top: 4px; font-style: italic;
+}
+
+/* ── Full-width CTA button ────────────────────────────────────────── */
+.fullWidthCta {
+  width: 100%; justify-content: center;
+  padding: 16px 24px !important;
+  font-size: 14px !important; font-weight: 700 !important;
+  border-radius: 12px !important;
+}

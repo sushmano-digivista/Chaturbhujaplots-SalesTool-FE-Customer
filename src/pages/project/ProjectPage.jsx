@@ -118,24 +118,42 @@ function OverviewTab({ proj, onEnquire }) {
         </div>
       </div>
 
-      {/* Key facts grid */}
-      <div className={styles.factsGrid}>
-        {[
-          { label: 'Total Plots',    value: proj.total },
-{ label: 'Starting Price', value: proj.starting },
-          { label: 'Project Status', value: 'Open for Booking' },
-        ].map((f) => (
-          <div key={f.label} className={styles.factCard}>
-            <div className={styles.factVal}>{f.value}</div>
-            <div className={styles.factLabel}>{f.label}</div>
-          </div>
-        ))}
-      </div>
+      {/* Key facts grid — aligned width matches CTA below */}
+      <div className={styles.factsSection}>
+        <div className={styles.factsGrid}>
+          {[
+            { label: 'Total Plots',    value: proj.total },
+            { label: 'Starting Price', value: proj.starting },
+            { label: 'Project Status', value: 'Open for Booking' },
+          ].map((f) => (
+            <div key={f.label} className={styles.factCard}>
+              <div className={styles.factVal}>{f.value}</div>
+              <div className={styles.factLabel}>{f.label}</div>
+            </div>
+          ))}
+        </div>
 
-      <button className="btn btn-gold"
-        onClick={() => onEnquire({ source: 'PROJECT_OVERVIEW', label: 'Get Plot Details', category: proj.name })}>
-        Get Detailed Plot Information →
-      </button>
+        {/* Pricing breakdown */}
+        <div className={styles.priceBreakdown}>
+          <div className={styles.pbTitle}>Plot Pricing (per Sq. Yard)</div>
+          <div className={styles.pbRows}>
+            <div className={styles.pbRow}>
+              <span className={styles.pbDir}>☀ East Facing</span>
+              <span className={styles.pbRate}>Rs.13,000 + Rs.1,000 = <strong>Rs.14,000 /sq.yd</strong></span>
+            </div>
+            <div className={styles.pbRow}>
+              <span className={styles.pbDir}>🌙 West Facing</span>
+              <span className={styles.pbRate}>Rs.12,500 + Rs.1,000 = <strong>Rs.13,500 /sq.yd</strong></span>
+            </div>
+            <div className={styles.pbNote}>* Corner charges extra &nbsp;|&nbsp; Prices subject to revision</div>
+          </div>
+        </div>
+
+        <button className={`btn btn-gold ${styles.fullWidthCta}`}
+          onClick={() => onEnquire({ source: 'PROJECT_OVERVIEW', label: 'Get Plot Details', category: proj.name })}>
+          Get Detailed Plot Information →
+        </button>
+      </div>
     </div>
   )
 }

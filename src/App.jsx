@@ -12,6 +12,9 @@ import PlotGrid  from '@/components/sections/PlotGrid'
 import LeadModal from '@/components/ui/LeadModal'
 
 import {
+  PortfolioSection,
+  GallerySection,
+  VideosSection,
   HighlightsSection,
   AmenitiesSection,
   QuoteSection,
@@ -21,21 +24,90 @@ import {
 
 import '@/styles/globals.css'
 
-// ── Fallback content shown when backend is offline ───────────────────────────
+// ── Fallback content ─────────────────────────────────────────
 const FALLBACK_CONTENT = {
   hero: {
-    headline: 'Premium Plots',
+    headline:    'Premium Plots Near',
     subheadline: 'Amaravati',
-    description: 'Secure your land just 8 km from Andhra Pradesh\'s new capital city — fully CRDA & RERA approved with world-class amenities.',
+    description: 'Own a piece of Andhra Pradesh\'s fastest-growing capital corridor. CRDA Proposed Layout with 100% Clear Title in Paritala — just 8 km from Amaravati, the New State Capital. Avenue-lined roads, 24/7 water, overhead electricity & ready for immediate construction. 242 thoughtfully planned plots, priced to invest today.',
     approvalBadges: ['CRDA Approved · LP No: 35/2025', 'AP RERA · P06060125894', 'Ready for Construction'],
   },
+  urgency: {
+    plotsLeft:         14,
+    soldThisMonth:     6,
+    priceRisePercent:  18,
+    openProjects:      4,
+    completedProjects: 6,
+    happyFamilies:     '1000+',
+  },
+  stats: [
+    { value: '242',  label: 'Total Plots'    },
+    { value: '8 km', label: 'From Amaravati' },
+    { value: '2025', label: 'CRDA Approved'  },
+  ],
+  portfolio: {
+    stats: [
+      { value: '10+',   label: 'Projects'  },
+      { value: '1000+', label: 'Families'  },
+      { value: '15+',   label: 'Years'     },
+      { value: '100%',  label: 'Approved'  },
+    ],
+    active: [
+      {
+        id: 'anjana', name: 'Anjana Paradise', loc: 'Paritala, Near Amaravati',
+        color: 'c1', available: 14, total: 242, starting: 'Rs.23.9L',
+        approvals: ['CRDA Proposed', 'AP RERA', 'Clear Title', 'Vaasthu'],
+        highlights: ['Adjacent to NH-16', '8km from Amaravati', 'Ready to Build', 'Avenue Lined Roads'],
+      },
+      {
+        id: 'trimbak', name: 'Trimbak Oaks', loc: 'Penamaluru, Near Vijayawada',
+        color: 'c2', available: 18, total: 48, starting: 'Rs.28L',
+        approvals: ['CRDA Approved', 'RERA Registered', 'Clear Title'],
+        highlights: ['5km from Vijayawada', 'NH-16 Access', 'Gated Security', 'Water & Electricity'],
+      },
+      {
+        id: 'aparna', name: 'Aparna Legacy', loc: 'Chevitikallu',
+        color: 'c3', available: 16, total: 28, starting: 'Rs.26L',
+        approvals: ['CRDA Approved', 'Vaastu Compliant', 'East-Facing'],
+        highlights: ['East-Facing Plots', 'Park Facing Options', 'Corner Plots Available', 'Water & Electricity'],
+      },
+      {
+        id: 'varaha', name: 'Varaha Virtue', loc: 'Pamarru, Near NH-16',
+        color: 'c4', available: 20, total: 32, starting: 'Rs.25L',
+        approvals: ['CRDA Approved', 'NH-16 Access', 'Industrial Corridor'],
+        highlights: ['Direct NH-16 Access', 'Industrial Corridor Zone', 'Gated Security 24/7', 'Jogging Track'],
+      },
+    ],
+    completed: [
+      { name: 'Nandana Vihar', loc: 'Kanumuru'   },
+      { name: 'County',        loc: 'Edupugallu'  },
+      { name: 'Pearl',         loc: 'Kankipadu'   },
+      { name: 'Empire',        loc: 'Penamaluru'  },
+      { name: 'Pride',         loc: 'Nepalli'     },
+      { name: 'Prime',         loc: 'Kankipadu'   },
+    ],
+  },
+  gallery: [
+    { label: 'Grand Entrance Arch',   icon: '🏛️' },
+    { label: 'Avenue Lined Roads',    icon: '🛣️' },
+    { label: 'Green Parks & Gardens', icon: '🌿' },
+    { label: 'Plot Layout View',      icon: '🏞️' },
+    { label: 'Tree Avenue',           icon: '🌴' },
+    { label: 'Floral Gardens',        icon: '🌺' },
+    { label: 'Security Gate',         icon: '🔒' },
+  ],
+  videos: [
+    { id: 'dQw4w9WgXcY', type: 'youtube', title: 'Anjana Paradise — Project Overview',    subtitle: 'Full property walkthrough & amenities' },
+    { id: 'dQw4w9WgXcY', type: 'youtube', title: 'Location & Connectivity',               subtitle: 'Paritala to Amaravati route explained'  },
+    { id: 'dQw4w9WgXcY', type: 'youtube', title: 'Amenities Showcase',                    subtitle: 'Infrastructure, parks & lifestyle'       },
+  ],
   highlights: [
-    { icon: '🛣️', title: 'Near National Highway',   description: 'Direct access to NH-16, connecting major cities.',        sortOrder: 1 },
-    { icon: '🏛️', title: '8 km from Amaravati',     description: 'Minutes from AP\'s new capital city.',                    sortOrder: 2 },
-    { icon: '🚆', title: 'Road & Rail Connectivity', description: 'Proposed express highway and railway expansion.',          sortOrder: 3 },
-    { icon: '🏭', title: 'Logistic Hub, Paritala',   description: 'Upcoming industrial and logistics corridor.',             sortOrder: 4 },
-    { icon: '🎓', title: 'Educational & Medical',    description: 'SRM, NRI Medical College within 10 km.',                  sortOrder: 5 },
-    { icon: '🏏', title: 'Mulapadu Stadium',         description: 'International-grade cricket stadium nearby.',             sortOrder: 6 },
+    { icon: '🛣️', title: 'Near National Highway',    description: 'Direct access to NH-16, connecting major cities.',          sortOrder: 1 },
+    { icon: '🏛️', title: '8 km from Amaravati',      description: 'Minutes from AP\'s new capital city.',                      sortOrder: 2 },
+    { icon: '🚆', title: 'Road & Rail Connectivity', description: 'Proposed express highway and railway expansion.',            sortOrder: 3 },
+    { icon: '🏭', title: 'Logistic Hub, Paritala',   description: 'Upcoming industrial and logistics corridor.',               sortOrder: 4 },
+    { icon: '🎓', title: 'Educational & Medical',    description: 'SRM, NRI Medical College within 10 km.',                    sortOrder: 5 },
+    { icon: '🏏', title: 'Mulapadu Stadium',         description: 'International-grade cricket stadium nearby.',               sortOrder: 6 },
   ],
   amenities: [
     { tab: 'INFRA',     icon: '🏛️', label: 'Grand Entrance Arch',      sortOrder: 1, featured: false },
@@ -72,11 +144,6 @@ const FALLBACK_CONTENT = {
       { value: 'Safe', label: 'CRDA + RERA'     },
     ],
   },
-  stats: [
-    { value: '120+', label: 'Total Plots'    },
-    { value: '8 km', label: 'From Amaravati' },
-    { value: '2025', label: 'CRDA Approved'  },
-  ],
   contact: {
     phone:       '+91 99999 99999',
     whatsapp:    '919999999999',
@@ -89,16 +156,10 @@ const FALLBACK_CONTENT = {
 
 const queryClient = new QueryClient({
   defaultOptions: {
-    queries: {
-      retry: 1,
-      staleTime: 60_000,
-      // Don't throw on error — use fallback instead
-      throwOnError: false,
-    },
+    queries: { retry: 1, staleTime: 60_000, throwOnError: false },
   },
 })
 
-// ── Root ──────────────────────────────────────────────────────────────────────
 export default function App() {
   return (
     <QueryClientProvider client={queryClient}>
@@ -118,7 +179,6 @@ export default function App() {
   )
 }
 
-// ── Customer Site ─────────────────────────────────────────────────────────────
 function CustomerSite() {
   const { data: content, isLoading, isError } = useContent()
   const [leadCtx, setLeadCtx] = useState(null)
@@ -126,11 +186,9 @@ function CustomerSite() {
   const openEnquiry  = useCallback(ctx => setLeadCtx(ctx), [])
   const closeEnquiry = useCallback(() => setLeadCtx(null), [])
 
-  // Use fallback content if API is down or still loading
   const activeContent = content || FALLBACK_CONTENT
   const contact       = activeContent?.contact || {}
 
-  // Only show full-screen loader for the very first load (not on error)
   if (isLoading && !isError) return <PageLoader />
 
   return (
@@ -139,6 +197,9 @@ function CustomerSite() {
 
       <main>
         <Hero              content={activeContent} onEnquire={openEnquiry} />
+        <PortfolioSection  content={activeContent} onEnquire={openEnquiry} />
+        <GallerySection    content={activeContent} />
+        <VideosSection     content={activeContent} />
         <QuoteSection      content={activeContent} onEnquire={openEnquiry} />
         <HighlightsSection content={activeContent} />
         <PlotGrid          onEnquire={openEnquiry} />
@@ -149,7 +210,7 @@ function CustomerSite() {
 
       <Footer    content={activeContent} />
       <StickyBar contact={contact}       onEnquire={openEnquiry} />
-      <FloatingWA contact={contact}      />
+      <FloatingWA contact={contact} />
 
       <LeadModal
         context={leadCtx}
@@ -176,4 +237,3 @@ function PageLoader() {
     </div>
   )
 }
-

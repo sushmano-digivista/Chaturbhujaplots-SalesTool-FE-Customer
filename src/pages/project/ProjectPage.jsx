@@ -47,11 +47,6 @@ function HomeTab({ proj, onEnquire }) {
         {/* Quick stats */}
         <div className={styles.heroStats}>
           <div className={styles.heroStat}>
-            <div className={styles.hsNum}>{proj.available}</div>
-            <div className={styles.hsLabel}>Plots Left</div>
-          </div>
-          <div className={styles.hsDivider} />
-          <div className={styles.heroStat}>
             <div className={styles.hsNum}>{proj.total}</div>
             <div className={styles.hsLabel}>Total Plots</div>
           </div>
@@ -97,7 +92,7 @@ function OverviewTab({ proj, onEnquire }) {
       <div className={styles.facingCard}>
         <div className={styles.facingHeader}>
           <h3 className={styles.facingTitle}>Plot Distribution</h3>
-          <span className={styles.facingTotal}>{proj.available} available of {proj.total}</span>
+          <span className={styles.facingTotal}>{proj.total} total plots</span>
         </div>
         <div className={styles.facingRows}>
           {facingRows.map((row) => (
@@ -127,8 +122,7 @@ function OverviewTab({ proj, onEnquire }) {
       <div className={styles.factsGrid}>
         {[
           { label: 'Total Plots',    value: proj.total },
-          { label: 'Available',      value: proj.available },
-          { label: 'Starting Price', value: proj.starting },
+{ label: 'Starting Price', value: proj.starting },
           { label: 'Project Status', value: 'Open for Booking' },
         ].map((f) => (
           <div key={f.label} className={styles.factCard}>

@@ -2,7 +2,8 @@ import { useState, useEffect, useCallback } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import { ArrowLeft, Phone, MessageCircle, X, Play, Navigation, Menu } from 'lucide-react'
-import { getFacingRows } from '@/constants/facingMap'
+import { getFacingRows }                from '@/constants/facingMap'
+import { getProjectGallery, getProjectVideos } from '@/constants/projectGalleries'
 import { ACTIVE_PROJECTS } from '@/constants/projects'
 import { useSubmitLead }   from '@/hooks/useData'
 import LeadModal           from '@/components/ui/LeadModal'
@@ -206,19 +207,35 @@ function AmenitiesTab({ proj }) {
 // ── Gallery tab ───────────────────────────────────────────────────────────────
 function GalleryTab({ proj }) {
   const [lightbox, setLightbox] = useState(null)
-  const items = proj.gallery || []
+  const localImages = getProjectGallery(proj.id)
+  const hasRealImages = localImages.length > 0
+  const items = hasRealImages ? localImages : (proj.gallery || [])
   const close = () => setLightbox(null)
+  const prev  = () => setLightbox(i => (i - 1 + items.length) % items.length)
+  const next  = () => setLightbox(i => (i + 1) % items.length)
 
   useEffect(() => {
     if (lightbox === null) return
     const h = (e) => {
       if (e.key === 'Escape')     close()
-      if (e.key === 'ArrowLeft')  setLightbox((i) => (i - 1 + items.length) % items.length)
-      if (e.key === 'ArrowRight') setLightbox((i) => (i + 1) % items.length)
+      if (e.key === 'ArrowLeft')  prev()
+      if (e.key === 'ArrowRight') next()
     }
     window.addEventListener('keydown', h)
     return () => window.removeEventListener('keydown', h)
   }, [lightbox])
+
+  if (!hasRealImages) return (
+    <div className={styles.tabContent}>
+      <h2 className={styles.tabTitle}>Gallery</h2>
+      <div style={{ textAlign:'center', padding:'60px 0' }}>
+        <div style={{ fontSize:'3rem', marginBottom:12 }}>📷</div>
+        <div style={{ fontSize:'1.2rem', fontFamily:"'Cormorant Garamond',serif", color:'rgba(0,0,0,0.5)' }}>
+          Gallery <em style={{ color:'var(--gold-dark)' }}>Coming Soon</em>
+        </div>
+      </div>
+    </div>
+  )
 
   return (
     <div className={styles.tabContent}>
@@ -229,7 +246,7 @@ function GalleryTab({ proj }) {
             className={`${styles.galCell} ${idx === 0 ? styles.galFeatured : ''}`}
             onClick={() => setLightbox(idx)}
             whileHover={{ scale: 1.02 }}>
-            <div className={styles.galIcon} style={{ fontSize: idx === 0 ? '5rem' : '3rem' }}>{item.icon}</div>
+            <img src={item.src} alt={item.label} className={styles.galImg} loading="lazy" />
             <div className={styles.galOverlay}>{item.label}</div>
           </motion.div>
         ))}
@@ -240,19 +257,17 @@ function GalleryTab({ proj }) {
           <motion.div className={styles.lbOverlay}
             initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
             onClick={(e) => { if (e.target === e.currentTarget) close() }}>
+            <button className={styles.lbClose} onClick={close}><X size={16} /></button>
+            <button className={`${styles.lbNavBtn} ${styles.lbNavLeft}`} onClick={prev}>‹</button>
             <div className={styles.lbPanel}>
-              <button className={styles.lbClose} onClick={close}><X size={16} /></button>
-              <div className={styles.lbIcon}>{items[lightbox]?.icon}</div>
-              <div className={styles.lbLabel}>{items[lightbox]?.label}</div>
-              <div className={styles.lbCount}>{lightbox + 1} / {items.length}</div>
-              <div className={styles.lbNav}>
-                <button className={styles.lbBtn}
-                  onClick={() => setLightbox((i) => (i - 1 + items.length) % items.length)}>← Prev</button>
-                <button className={`${styles.lbBtn} ${styles.lbBtnGold}`}
-                  onClick={() => setLightbox((i) => (i + 1) % items.length)}>Next →</button>
+              <img src={items[lightbox]?.src} alt={items[lightbox]?.label}
+                className={styles.lbFullImg} />
+              <div className={styles.lbCaption}>
+                <span className={styles.lbLabel}>{items[lightbox]?.label}</span>
+                <span className={styles.lbCount}>{lightbox + 1} / {items.length}</span>
               </div>
             </div>
-          </motion.div>
+            <button className={`${styles.lbNavBtn} ${styles.lbNavRight}`} onClick={next}>›</button>
         )}
       </AnimatePresence>
     </div>

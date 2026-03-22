@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from 'react'
 import { motion } from 'framer-motion'
+import { MapPin, Calendar, FileText } from 'lucide-react'
 import { useInView } from 'react-intersection-observer'
 import styles from './Hero.module.css'
 
@@ -92,17 +93,23 @@ export default function Hero({ content, onEnquire }) {
         <p className={styles.desc}>{description}</p>
 
         <div className={styles.btns}>
-          <button className="btn btn-gold" onClick={() => scrollTo('plots')}>
-            View Available Plots
-          </button>
-          <button className="btn btn-ghost"
-            onClick={() => onEnquire({ source: 'HERO_CTA', label: 'Book Site Visit', type: 'SITE_VISIT' })}>
-            Book Site Visit
-          </button>
-          <button className="btn btn-ghost"
+          <motion.button className="btn btn-gold" onClick={() => scrollTo('plots')}
+            whileHover={{ scale: 1.04 }} whileTap={{ scale: 0.97 }}
+            initial={{ opacity:0, y:12 }} animate={{ opacity:1, y:0 }} transition={{ delay:0.1 }}>
+            <MapPin size={15} /> View Available Plots
+          </motion.button>
+          <motion.button className="btn btn-ghost"
+            onClick={() => onEnquire({ source: 'HERO_CTA', label: 'Book Site Visit', type: 'SITE_VISIT' })}
+            whileHover={{ scale: 1.04 }} whileTap={{ scale: 0.97 }}
+            initial={{ opacity:0, y:12 }} animate={{ opacity:1, y:0 }} transition={{ delay:0.18 }}>
+            <Calendar size={15} /> Book Site Visit
+          </motion.button>
+          <motion.button className="btn btn-ghost"
+            whileHover={{ scale: 1.04 }} whileTap={{ scale: 0.97 }}
+            initial={{ opacity:0, y:12 }} animate={{ opacity:1, y:0 }} transition={{ delay:0.26 }}
             onClick={() => onEnquire({ source: 'HERO_CTA', label: 'Download Brochure', type: 'BROCHURE' })}>
-            Get Brochure
-          </button>
+            <FileText size={15} /> Get Brochure
+          </motion.button>
         </div>
 
         <div className={styles.statsBar}>

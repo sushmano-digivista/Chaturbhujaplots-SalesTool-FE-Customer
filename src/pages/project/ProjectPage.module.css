@@ -401,3 +401,17 @@
   font-size: 14px !important; font-weight: 700 !important;
   border-radius: 12px !important;
 }
+
+/* ── Project gallery images ───────────────────────────────────────── */
+.galImg {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  object-fit: cover; object-position: center;
+  transition: transform 0.35s ease;
+  display: block;
+}
+.galCell:hover .galImg { transform: scale(1.05); }
+.lbFullImg {
+  max-width: 90vw; max-height: 80vh;
+  object-fit: contain; border-radius: 8px; display: block;
+}

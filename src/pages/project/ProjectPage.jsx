@@ -211,6 +211,7 @@ function GalleryTab({ proj }) {
   // Use project-specific real images; fall back to proj.gallery metadata
   const localImages = PROJECT_GALLERIES[proj.id] || []
   const items = localImages.length > 0 ? localImages : (proj.gallery || [])
+  const hasRealImages = localImages.length > 0
   const close = () => setLightbox(null)
 
   useEffect(() => {
@@ -224,7 +225,7 @@ function GalleryTab({ proj }) {
     return () => window.removeEventListener('keydown', h)
   }, [lightbox])
 
-  if (!items.length) return (
+  if (!hasRealImages) return (
     <div className={styles.tabContent}>
       <h2 className={styles.tabTitle}>Gallery</h2>
       <div style={{ textAlign:'center', padding:'60px 0' }}>

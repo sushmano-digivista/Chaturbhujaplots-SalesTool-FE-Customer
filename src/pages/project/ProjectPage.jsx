@@ -3,6 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import { ArrowLeft, Phone, MessageCircle, X, Play, Navigation, Menu } from 'lucide-react'
 import { getFacingRows } from '@/constants/facingMap'
+import { PROJECT_GALLERIES } from '@/constants/projectGalleries'
 import { ACTIVE_PROJECTS } from '@/constants/projects'
 import { useSubmitLead }   from '@/hooks/useData'
 import LeadModal           from '@/components/ui/LeadModal'
@@ -207,7 +208,9 @@ function AmenitiesTab({ proj }) {
 // ── Gallery tab ───────────────────────────────────────────────────────────────
 function GalleryTab({ proj }) {
   const [lightbox, setLightbox] = useState(null)
-  const items = proj.gallery || []
+  // Use project-specific real images; fall back to proj.gallery metadata
+  const localImages = PROJECT_GALLERIES[proj.id] || []
+  const items = localImages.length > 0 ? localImages : (proj.gallery || [])
   const close = () => setLightbox(null)
 
   useEffect(() => {
@@ -221,6 +224,13 @@ function GalleryTab({ proj }) {
     return () => window.removeEventListener('keydown', h)
   }, [lightbox])
 
+  if (!items.length) return (
+    <div className={styles.tabContent}>
+      <h2 className={styles.tabTitle}>Gallery</h2>
+      <p style={{ color: 'rgba(0,0,0,0.4)', marginTop: 24 }}>Gallery coming soon.</p>
+    </div>
+  )
+
   return (
     <div className={styles.tabContent}>
       <h2 className={styles.tabTitle}>Gallery</h2>
@@ -230,7 +240,10 @@ function GalleryTab({ proj }) {
             className={`${styles.galCell} ${idx === 0 ? styles.galFeatured : ''}`}
             onClick={() => setLightbox(idx)}
             whileHover={{ scale: 1.02 }}>
-            <div className={styles.galIcon} style={{ fontSize: idx === 0 ? '5rem' : '3rem' }}>{item.icon}</div>
+            {item.src
+              ? <img src={item.src} alt={item.label} className={styles.galImg} loading="lazy" />
+              : <div className={styles.galIcon} style={{ fontSize: idx === 0 ? '5rem' : '3rem' }}>{item.icon}</div>
+            }
             <div className={styles.galOverlay}>{item.label}</div>
           </motion.div>
         ))}
@@ -243,7 +256,10 @@ function GalleryTab({ proj }) {
             onClick={(e) => { if (e.target === e.currentTarget) close() }}>
             <div className={styles.lbPanel}>
               <button className={styles.lbClose} onClick={close}><X size={16} /></button>
-              <div className={styles.lbIcon}>{items[lightbox]?.icon}</div>
+              {items[lightbox]?.src
+                ? <img src={items[lightbox].src} alt={items[lightbox].label} className={styles.lbFullImg} />
+                : <div className={styles.lbIcon}>{items[lightbox]?.icon}</div>
+              }
               <div className={styles.lbLabel}>{items[lightbox]?.label}</div>
               <div className={styles.lbCount}>{lightbox + 1} / {items.length}</div>
               <div className={styles.lbNav}>

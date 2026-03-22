@@ -1,29 +1,134 @@
-.footer { background:#0c2817; padding:52px 5% 32px; color:rgba(255,255,255,0.55); }
-.grid { display:grid; grid-template-columns:2fr 1fr 1fr; gap:48px; margin-bottom:40px; }
-.brand { font-family:'Cormorant Garamond',serif; font-size:24px; color:var(--white); margin-bottom:10px; }
-.brand em { color:var(--gold); font-style:normal; }
-.tagline { font-size:13px; color:rgba(255,255,255,0.4); line-height:1.65; margin-bottom:16px; }
-.badges { display:flex; flex-wrap:wrap; gap:7px; }
-.badge { background:rgba(201,168,76,0.15); border:1px solid rgba(201,168,76,0.25); color:var(--gold-light); padding:4px 12px; border-radius:4px; font-size:11px; font-weight:500; }
-.colTitle { color:var(--white); font-size:14px; font-weight:600; margin-bottom:14px; }
-.link { display:block; color:rgba(255,255,255,0.5); font-size:13px; margin-bottom:8px; background:none; border:none; cursor:pointer; text-align:left; padding:0; font-family:'DM Sans',sans-serif; text-decoration:none; transition:color 0.2s; }
-.link:hover { color:var(--gold-light); }
-.bottom { border-top:1px solid rgba(255,255,255,0.07); padding-top:20px; display:flex; justify-content:space-between; font-size:12px; color:rgba(255,255,255,0.3); }
+/* ── Footer shell ────────────────────────────────────────────────── */
+.footer {
+  background: #061610;
+  color: rgba(255,255,255,0.5);
+  position: relative;
+}
+.topBar {
+  height: 3px;
+  background: linear-gradient(90deg, transparent, #C9A84C 30%, #E8D5A3 50%, #C9A84C 70%, transparent);
+}
+.inner { padding: 52px 5% 32px; max-width: 1400px; margin: 0 auto; }
 
-/* Sticky bar */
+/* ── 4-column grid ───────────────────────────────────────────────── */
+.grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1.2fr; gap: 48px; margin-bottom: 44px; }
+
+/* ── Brand column ────────────────────────────────────────────────── */
+.footerLogo {
+  height: 44px; width: auto; object-fit: contain;
+  margin-bottom: 18px; display: block;
+  filter: brightness(0) invert(1) opacity(0.9);
+}
+.tagline {
+  font-size: 13px; color: rgba(255,255,255,0.38);
+  line-height: 1.75; margin-bottom: 18px;
+}
+.tagline strong { color: rgba(255,255,255,0.65); font-weight: 600; }
+
+.pillRow { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 14px; }
+.pill {
+  font-size: 10px; font-weight: 600; letter-spacing: 0.5px;
+  color: rgba(255,255,255,0.45);
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.1);
+  padding: 4px 10px; border-radius: 100px;
+}
+
+.badges { display: flex; flex-wrap: wrap; gap: 7px; }
+.badge {
+  background: rgba(201,168,76,0.12);
+  border: 1px solid rgba(201,168,76,0.22);
+  color: #d4a93c; padding: 4px 12px;
+  border-radius: 4px; font-size: 11px; font-weight: 500;
+}
+
+/* ── Column headings ─────────────────────────────────────────────── */
+.colTitle {
+  color: #fff; font-size: 13px; font-weight: 700;
+  letter-spacing: 0.8px; text-transform: uppercase;
+  margin-bottom: 16px; padding-bottom: 10px;
+  border-bottom: 1px solid rgba(201,168,76,0.18);
+}
+
+/* ── Quick links ─────────────────────────────────────────────────── */
+.link {
+  display: flex; align-items: center; gap: 6px;
+  color: rgba(255,255,255,0.45); font-size: 13px;
+  margin-bottom: 10px; background: none; border: none;
+  cursor: pointer; text-align: left; padding: 0;
+  font-family: 'DM Sans', sans-serif; text-decoration: none;
+  transition: color 0.2s, transform 0.15s;
+}
+.link:hover { color: #d4a93c; transform: translateX(3px); }
+.linkArrow { color: rgba(201,168,76,0.4); font-size: 15px; transition: color 0.2s; }
+.link:hover .linkArrow { color: #d4a93c; }
+
+/* ── Ongoing projects list ───────────────────────────────────────── */
+.projectItem {
+  display: flex; align-items: flex-start; gap: 9px;
+  font-size: 12.5px; color: rgba(255,255,255,0.45);
+  margin-bottom: 10px; line-height: 1.4;
+}
+.projectDot {
+  width: 6px; height: 6px; border-radius: 50%;
+  background: #C9A84C; flex-shrink: 0; margin-top: 5px;
+  box-shadow: 0 0 6px rgba(201,168,76,0.5);
+}
+
+/* ── Contact rows ────────────────────────────────────────────────── */
+.contactRow {
+  display: flex; align-items: flex-start; gap: 10px;
+  font-size: 13px; color: rgba(255,255,255,0.5);
+  margin-bottom: 12px; text-decoration: none;
+  background: none; border: none; cursor: pointer;
+  transition: color 0.2s; font-family: 'DM Sans', sans-serif;
+}
+.contactRow:hover { color: #d4a93c; }
+.contactIcon { font-size: 14px; flex-shrink: 0; margin-top: 1px; }
+
+/* ── Stat chips ──────────────────────────────────────────────────── */
+.statChips {
+  display: flex; gap: 8px; margin-top: 18px;
+  padding-top: 16px; border-top: 1px solid rgba(255,255,255,0.07);
+}
+.statChip {
+  flex: 1; text-align: center;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 10px; padding: 10px 6px;
+}
+.statChipNum {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.15rem; font-weight: 700; color: #C9A84C; line-height: 1;
+}
+.statChipLabel { font-size: 9px; color: rgba(255,255,255,0.3); margin-top: 4px; }
+
+/* ── Bottom bar ──────────────────────────────────────────────────── */
+.bottom {
+  border-top: 1px solid rgba(255,255,255,0.07);
+  padding-top: 20px; display: flex;
+  justify-content: space-between; align-items: center;
+  font-size: 11.5px; color: rgba(255,255,255,0.25);
+}
+
+/* ── Sticky bar ──────────────────────────────────────────────────── */
 .stickyBar { display:none; position:fixed; bottom:0; left:0; right:0; z-index:800; background:var(--green); border-top:1px solid rgba(201,168,76,0.3); grid-template-columns:1fr 1fr 1fr; height:60px; }
 .sbBtn { display:flex; flex-direction:column; align-items:center; justify-content:center; gap:3px; background:transparent; border:none; color:var(--white); cursor:pointer; font-size:10px; font-weight:500; font-family:'DM Sans',sans-serif; text-decoration:none; transition:background 0.2s; }
 .sbBtn:active { background:rgba(255,255,255,0.1); }
 .sbWa   { color:#4ade80; }
 .sbMain { background:var(--gold); color:var(--green); font-weight:700; }
 
-/* Floating WA */
+/* ── Floating WA ─────────────────────────────────────────────────── */
 .floatWA { position:fixed; bottom:80px; right:20px; width:52px; height:52px; background:#25D366; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:22px; cursor:pointer; box-shadow:0 4px 20px rgba(37,211,102,0.4); z-index:799; border:none; transition:transform 0.2s; }
 .floatWA:hover { transform:scale(1.1); }
 
-@media (max-width:768px) {
-  .stickyBar { display:grid; }
-  .floatWA   { bottom:72px; }
-  .grid      { grid-template-columns:1fr; gap:28px; }
-  .bottom    { flex-direction:column; gap:8px; text-align:center; }
+/* ── Responsive ──────────────────────────────────────────────────── */
+@media (max-width: 1100px) {
+  .grid { grid-template-columns: 1fr 1fr; gap: 36px; }
+}
+@media (max-width: 768px) {
+  .stickyBar { display: grid; }
+  .floatWA   { bottom: 72px; }
+  .grid      { grid-template-columns: 1fr; gap: 28px; }
+  .bottom    { flex-direction: column; gap: 8px; text-align: center; }
 }

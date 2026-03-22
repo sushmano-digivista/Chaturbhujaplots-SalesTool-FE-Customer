@@ -28,8 +28,7 @@ const FALLBACK_AMENITIES = [
   { tab: 'LIFESTYLE', icon: '🛝',  label: "Children's Play Area",     sortOrder:  3, featured: false },
   { tab: 'LIFESTYLE', icon: '🕉️',  label: '100% Vastu Compliance',   sortOrder:  4, featured: false },
   { tab: 'LIFESTYLE', icon: '🌿',  label: 'Green Landscaping',        sortOrder:  5, featured: false },
-  { tab: 'LIFESTYLE', icon: '🙏',  label: 'Hanuman Temple Nearby',    sortOrder:  6, featured: true,
-    featuredDesc: 'A magnificent Hanuman temple is located just minutes from Anjana Paradise.' },
+]
 
   // ── UTILITIES ──────────────────────────────────────────────────────────────
   { tab: 'UTILITIES', icon: '💧',  label: 'Pure Drinking Water',      sortOrder:  1, featured: false },

@@ -1,3 +1,4 @@
+import { DEFAULT_WA_NUMBER } from '@/constants/config'
 import { useState, useEffect, useRef } from 'react'
 import { motion } from 'framer-motion'
 import { MapPin, Calendar, FileText } from 'lucide-react'

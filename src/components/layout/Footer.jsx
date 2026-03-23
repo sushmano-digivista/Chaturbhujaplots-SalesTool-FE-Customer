@@ -1,3 +1,4 @@
+import { DEFAULT_WA_NUMBER, DEFAULT_PHONE } from '@/constants/config'
 import styles from './Footer.module.css'
 
 const QUICK_LINKS = [

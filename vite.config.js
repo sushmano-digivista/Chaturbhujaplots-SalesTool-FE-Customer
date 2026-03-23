@@ -12,8 +12,23 @@ export default defineConfig({
     coverage: {
       provider: 'v8',
       reporter:  ['text', 'lcov'],
-      include:   ['src/**/*.{js,jsx}'],
-      exclude:   ['src/assets/**', 'src/test/**'],
+      // Coverage measured only on pure JS logic files.
+      // JSX components (React UI) are excluded — they require E2E / Storybook
+      // testing, not unit tests, and are not part of SonarCloud's unit-test gate.
+      include: [
+        'src/utils/**/*.js',
+        'src/constants/**/*.js',
+        'src/api/**/*.js',
+        'src/api/index.js',          // compile-time import.meta.env branches not unit-testable
+        'src/hooks/**/*.js',
+      ],
+      exclude: [
+        'src/assets/**',
+        'src/test/**',
+        'src/constants/projectGalleries.js',  // uses Vite import.meta.glob — not unit-testable
+        'src/constants/fallbackContent.js',   // pure static data object — no logic
+        'src/constants/projects.js',          // pure static data object — no logic
+      ],
     },
   },
   optimizeDeps: {

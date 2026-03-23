@@ -59,7 +59,7 @@ export default function Hero({ content, onEnquire }) {
   const plotsLeft         = urgency.plotsLeft          || FB.urgency.plotsLeft
   const soldThisMonth     = urgency.soldThisMonth      || FB.urgency.soldThisMonth
   const priceRisePct      = urgency.priceRisePercent   || FB.urgency.priceRisePercent
-  const whatsapp          = contact.whatsapp           || '918977262683'
+  const whatsapp          = contact.whatsapp           || '919739762698'
 
   const scrollTo = id => document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' })
 

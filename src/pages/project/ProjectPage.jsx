@@ -7,6 +7,8 @@ import { getProjectGallery, getProjectVideos } from '@/constants/projectGallerie
 import { ACTIVE_PROJECTS } from '@/constants/projects'
 import { useSubmitLead }   from '@/hooks/useData'
 import LeadModal           from '@/components/ui/LeadModal'
+import { openWhatsApp, openMaps } from '@/utils/security'
+import { DEFAULT_WA_NUMBER }      from '@/constants/config'
 import styles              from './ProjectPage.module.css'
 
 // ── In-page nav tabs ──────────────────────────────────────────────────────────
@@ -39,7 +41,10 @@ function HomeTab({ proj, onEnquire }) {
               Enquire Now →
             </button>
             <button className="btn btn-ghost"
-              onClick={() => window.open(`https://wa.me/${proj.contact?.whatsapp || '919999999999'}?text=${encodeURIComponent(`Hi, I'm interested in ${proj.name}.`)}`, '_blank')}>
+              onClick={() => openWhatsApp(
+                proj.contact?.whatsapp || DEFAULT_WA_NUMBER,
+                `Hi, I'm interested in ${proj.name}.`,
+              )}>
               💬 WhatsApp
             </button>
           </div>
@@ -367,7 +372,7 @@ function LocationTab({ proj }) {
             title={`${proj.name} Location`} />
         )}
         <button className={styles.mapOpenBtn}
-          onClick={() => window.open(proj.mapOpenUrl, '_blank')}>
+          onClick={() => openMaps(proj.mapOpenUrl)}>
           <Navigation size={14} /> Open in Google Maps
         </button>
       </div>
@@ -392,9 +397,9 @@ function LocationTab({ proj }) {
 // ── Contact tab ───────────────────────────────────────────────────────────────
 function ContactTab({ proj, onEnquire }) {
   const c = proj.contact || {}
-  const openWA = () => window.open(
-    `https://wa.me/${c.whatsapp || '919999999999'}?text=${encodeURIComponent(`Hi, I am interested in ${proj.name} at ${proj.loc}.`)}`,
-    '_blank'
+  const openWA = () => openWhatsApp(
+    c.whatsapp || DEFAULT_WA_NUMBER,
+    `Hi, I am interested in ${proj.name} at ${proj.loc}.`
   )
 
   return (

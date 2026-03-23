@@ -1,3 +1,5 @@
+import { openWhatsApp }    from '@/utils/security'
+import { DEFAULT_WA_NUMBER } from '@/constants/config'
 import styles from './Footer.module.css'
 
 /**
@@ -7,13 +9,8 @@ import styles from './Footer.module.css'
  */
 export default function FloatingWA({ contact }) {
   const openWA = () => {
-    const num = contact?.whatsapp || '919999999999'
-    window.open(
-      `https://wa.me/${num}?text=${encodeURIComponent(
-        'Hi, I am interested in Anjana Paradise plots near Amaravati.',
-      )}`,
-      '_blank',
-    )
+    const num = contact?.whatsapp || DEFAULT_WA_NUMBER
+    openWhatsApp(num, 'Hi, I am interested in Anjana Paradise plots near Amaravati.')
   }
 
   return (

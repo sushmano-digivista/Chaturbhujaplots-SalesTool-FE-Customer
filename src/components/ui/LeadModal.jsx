@@ -7,6 +7,8 @@ import { useSubmitLead }         from '@/hooks/useData'
 import { ACTIVE_PROJECTS }       from '@/constants/projects'
 import { BROCHURES }             from '@/constants/brochures'
 import { brochureApi, siteVisitApi } from '@/api'
+import { openWhatsApp, safeOpenExternal } from '@/utils/security'
+import { DEFAULT_WA_NUMBER }     from '@/constants/config'
 import styles from './LeadModal.module.css'
 
 const ALL_BROCHURE_URLS = [
@@ -61,7 +63,7 @@ export default function LeadModal({ context, onClose, whatsapp }) {
 
   useEffect(() => {
     if (!isOpen) { setSubmitted(false); setEmailSent(false); setWaSent(false); setCtaErrors({}); reset() }
-  }, [isOpen])
+  }, [isOpen, reset])
 
   // ── Site Visit submit ────────────────────────────────────────────────────
   const onSiteVisitSubmit = async data => {
@@ -96,7 +98,11 @@ export default function LeadModal({ context, onClose, whatsapp }) {
       })
       setSubmitted(true)
       reset()
-    } catch { reset() }
+    } catch (err) {
+      // Lead mutation failed — reset form so user can retry; toast is shown by useSubmitLead.onError
+      if (import.meta.env.DEV) console.warn('[LeadModal] onBrochureSubmit error:', err)
+      reset()
+    }
   }
 
   // ── Email Brochure ───────────────────────────────────────────────────────
@@ -127,12 +133,13 @@ export default function LeadModal({ context, onClose, whatsapp }) {
       const res = await brochureApi.sendWhatsApp({ phone: enteredPhone, name: enteredName,
         projectId: selectedProjObj?.id || context?.projectId,
         projectName: selectedProject || context?.category })
-      if (res.method === 'deeplink' && res.deepLink) window.open(res.deepLink, '_blank')
+      // Only follow deepLink when it is a known-safe WhatsApp URL (Checkmarx CWE-601)
+      if (res.method === 'deeplink' && res.deepLink) safeOpenExternal(res.deepLink)
       setWaSent(true)
     } catch {
-      const num  = whatsapp || '918977262683'
+      const num  = whatsapp || DEFAULT_WA_NUMBER
       const text = `Hi, I am interested in ${selectedProject || 'Chaturbhuja Properties'} plots. Please share details.`
-      window.open(`https://wa.me/${num}?text=${encodeURIComponent(text)}`, '_blank')
+      openWhatsApp(num, text)
       setWaSent(true)
     } finally { setSending(null) }
   }
@@ -311,10 +318,10 @@ export default function LeadModal({ context, onClose, whatsapp }) {
                   </button>
                   <button type="button" className={styles.waBtn}
                     onClick={() => {
-                      const num = whatsapp || '918977262683'
+                      const num = whatsapp || DEFAULT_WA_NUMBER
                       const proj = watch('project') ? ` I am interested in ${watch('project')}.` : ''
                       const time = watch('callTime') ? ` Best time to reach me: ${watch('callTime')}.` : ''
-                      window.open(`https://wa.me/${num}?text=${encodeURIComponent(`Hi, I would like a callback from Chaturbhuja Properties.${proj}${time} My name is ${watch('name') || ''}.`)}`, '_blank')
+                      openWhatsApp(num, `Hi, I would like a callback from Chaturbhuja Properties.${proj}${time} My name is ${watch('name') || ''}.`)
                     }}>
                     <MessageCircle size={15} /> WhatsApp Instead
                   </button>
@@ -372,9 +379,9 @@ export default function LeadModal({ context, onClose, whatsapp }) {
                   </button>
                   <button type="button" className={styles.waBtn} style={{marginTop:0}}
                     onClick={() => {
-                      const num = whatsapp || '918977262683'
+                      const num = whatsapp || DEFAULT_WA_NUMBER
                       const txt = `Hi, I am interested in a ${context?.plotSize || context?.category} plot (${context?.plotArea}) in ${context?.venture || 'Chaturbhuja Properties'}. Price: ${context?.priceFrom}. Please share details.`
-                      window.open(`https://wa.me/${num}?text=${encodeURIComponent(txt)}`, '_blank')
+                      openWhatsApp(num, txt)
                     }}>
                     <MessageCircle size={15} /> WhatsApp Us
                   </button>

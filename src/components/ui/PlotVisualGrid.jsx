@@ -1,6 +1,10 @@
-import { useState, useRef, useEffect } from 'react'
+import { useState, useMemo } from 'react'
 import styles from '../sections/PlotGrid.module.css'
 
+/**
+ * Plot colour palette keyed by API category name.
+ * Centralised here so legend and cell colours are always in sync.
+ */
 const CATEGORY_COLORS = {
   eastFacing:  '#C9A84C',
   westFacing:  '#4A90D9',
@@ -17,98 +21,126 @@ const CATEGORY_META_LABELS = {
   cornerPlots: 'Corner Plots',
 }
 
+const COLS = 6
+const CELL_W = 118
+const CELL_H = 80
+const GAP_X = 8
+const GAP_Y = 8
+const ORIGIN_X = 30
+const ORIGIN_Y = 28
+const ROAD_Y = 210
+const ROAD_H = 52
+const MAX_PLOTS = 24
+
 /**
- * PlotVisualGrid — SVG layout map drawn from the plot-summary API response.
- * Each coloured cell represents a real plot number; hovering shows a tooltip,
- * clicking opens the lead-enquiry modal.
+ * Builds a map of plot-number (uppercase string) → fill colour.
+ * Pure function — safe to unit-test in isolation.
+ * @param {object} summary
+ * @returns {Record<string, string>}
+ */
+function buildColorMap(summary) {
+  const map = {}
+  Object.keys(CATEGORY_COLORS).forEach((key) => {
+    const cat = summary?.[key]
+    if (cat?.plotNumbers) {
+      cat.plotNumbers.forEach((n) => {
+        map[String(n).trim().toUpperCase()] = CATEGORY_COLORS[key]
+      })
+    }
+  })
+  return map
+}
+
+/**
+ * Returns de-duplicated plot numbers across all categories in order.
+ * @param {object} summary
+ * @returns {string[]}
+ */
+function collectPlotNumbers(summary) {
+  const all = []
+  Object.keys(CATEGORY_COLORS).forEach((key) => {
+    const cat = summary?.[key]
+    if (cat?.plotNumbers) cat.plotNumbers.forEach((n) => all.push(String(n).trim()))
+  })
+  return [...new Set(all)]
+}
+
+/**
+ * Returns the category label for a plot number, or empty string.
+ * @param {string} plotNum
+ * @param {object} summary
+ * @returns {string}
+ */
+function getCategoryLabel(plotNum, summary) {
+  const upper = plotNum.toUpperCase()
+  for (const key of Object.keys(CATEGORY_COLORS)) {
+    const found = summary?.[key]?.plotNumbers
+      ?.map((n) => String(n).trim().toUpperCase())
+      .includes(upper)
+    if (found) return CATEGORY_META_LABELS[key] ?? ''
+  }
+  return ''
+}
+
+/**
+ * Computes SVG y-position for row r, skipping past the road strip.
+ * @param {number} r
+ * @returns {number}
+ */
+function cellY(r) {
+  return r < 2
+    ? ORIGIN_Y + r * (CELL_H + GAP_Y)
+    : ORIGIN_Y + r * (CELL_H + GAP_Y) + ROAD_H
+}
+
+// ── Component ─────────────────────────────────────────────────────────────────
+
+/**
+ * PlotVisualGrid — declarative React SVG layout map.
  *
- * Props:
- *   summary    Plot summary object from the API
- *   onEnquire  (ctx) => void
+ * Security fix (Checkmarx CWE-79 / Sonar S5024):
+ *   Previously set `svg.innerHTML = html` where plot numbers came from an API
+ *   response.  Replaced with JSX — React escapes every dynamic value, so
+ *   injected content can never execute as markup.
+ *
+ * Props
+ *   summary   – API plot-summary object
+ *   onEnquire – (ctx: object) => void
  */
 export default function PlotVisualGrid({ summary, onEnquire }) {
-  const svgRef = useRef(null)
-  const [tip, setTip] = useState(null) // { x, y, num, catLabel }
+  const [tip, setTip] = useState(null)
 
-  useEffect(() => {
-    if (!summary || !svgRef.current) return
-    const svg = svgRef.current
+  const { colorMap, uniquePlots } = useMemo(() => ({
+    colorMap:    buildColorMap(summary),
+    uniquePlots: collectPlotNumbers(summary),
+  }), [summary])
 
-    // Build plot-number → category colour map
-    const colorMap = {}
-    Object.keys(CATEGORY_COLORS).forEach((key) => {
-      const cat = summary[key]
-      if (cat?.plotNumbers) {
-        cat.plotNumbers.forEach((num) => {
-          colorMap[String(num).trim().toUpperCase()] = CATEGORY_COLORS[key]
-        })
-      }
-    })
+  const total = Math.min(uniquePlots.length || summary?.totalPlots || 24, MAX_PLOTS)
 
-    // Collect unique plot numbers in order
-    const allPlots = []
-    Object.keys(CATEGORY_COLORS).forEach((key) => {
-      const cat = summary[key]
-      if (cat?.plotNumbers) cat.plotNumbers.forEach((n) => allPlots.push(String(n).trim()))
-    })
-    const uniquePlots = [...new Set(allPlots)]
-    const total       = uniquePlots.length || summary.totalPlots || 24
+  if (!summary) return null
 
-    // Build SVG HTML
-    const cols = 6, pw = 118, ph = 80, gx = 8, gy = 8, ox = 30, oy = 28
-    let html = '<rect width="900" height="500" fill="#EAF3DE" rx="8"/>'
-    html += '<rect x="20" y="210" width="860" height="52" fill="#D4C5A9" opacity="0.5" rx="4"/>'
-    html += '<text x="450" y="241" text-anchor="middle" fill="#8a7a5a" font-size="11" font-family="DM Sans,sans-serif" font-weight="500">Main Road — 60ft Wide</text>'
+  const cells = Array.from({ length: total }, (_, i) => {
+    const col  = i % COLS
+    const row  = Math.floor(i / COLS)
+    const x    = ORIGIN_X + col * (CELL_W + GAP_X)
+    const y    = cellY(row)
+    const num  = uniquePlots[i] ?? `P-${String(i + 1).padStart(3, '0')}`
+    const fill = colorMap[num.toUpperCase()] ?? 'rgba(30,77,43,0.25)'
+    return { x, y, num, fill }
+  })
 
-    for (let i = 0; i < Math.min(total, 24); i++) {
-      const c   = i % cols
-      const r   = Math.floor(i / cols)
-      const x   = ox + c * (pw + gx)
-      const y   = r < 2 ? oy + r * (ph + gy) : oy + r * (ph + gy) + 54
-      const num  = uniquePlots[i] || `P-${String(i + 1).padStart(3, '0')}`
-      const fill = colorMap[num.toUpperCase()] || 'rgba(30,77,43,0.25)'
-      html += `<g class="vp" data-num="${num}" style="cursor:pointer">
-        <rect x="${x}" y="${y}" width="${pw}" height="${ph}" fill="${fill}" opacity="0.85" rx="6" stroke="white" stroke-width="1.5"/>
-        <text x="${x + pw / 2}" y="${y + ph / 2}" text-anchor="middle" dominant-baseline="middle" fill="white" font-size="11" font-weight="600" font-family="DM Sans,sans-serif">${num}</text>
-      </g>`
-    }
+  const handleMouseEnter = (e, num) => {
+    const r = e.currentTarget.closest('svg')?.getBoundingClientRect()
+    if (!r) return
+    setTip({ x: e.clientX - r.left + 12, y: e.clientY - r.top - 20, num, catLabel: getCategoryLabel(num, summary) })
+  }
 
-    html += '<rect x="350" y="455" width="200" height="32" fill="#1E4D2B" rx="4"/>'
-    html += '<text x="450" y="476" text-anchor="middle" fill="#C9A84C" font-size="13" font-weight="700" font-family="Cormorant Garamond,serif" letter-spacing="2">ENTRANCE</text>'
-
-    svg.innerHTML = html
-
-    // Attach tooltip + click handlers
-    svg.querySelectorAll('.vp').forEach((el) => {
-      const num = el.dataset.num
-
-      const getCatLabel = () => {
-        let label = ''
-        Object.keys(CATEGORY_COLORS).forEach((k) => {
-          if (
-            summary[k]?.plotNumbers
-              ?.map((n) => String(n).trim().toUpperCase())
-              .includes(num.toUpperCase())
-          )
-            label = CATEGORY_META_LABELS[k]
-        })
-        return label
-      }
-
-      el.addEventListener('mouseenter', (e) => {
-        const r = svg.getBoundingClientRect()
-        setTip({ x: e.clientX - r.left + 12, y: e.clientY - r.top - 20, num, catLabel: getCatLabel() })
-      })
-      el.addEventListener('mousemove', (e) => {
-        const r = svg.getBoundingClientRect()
-        setTip((t) => (t ? { ...t, x: e.clientX - r.left + 12, y: e.clientY - r.top - 20 } : null))
-      })
-      el.addEventListener('mouseleave', () => setTip(null))
-      el.addEventListener('click', () =>
-        onEnquire({ plotNumber: num, category: getCatLabel(), source: 'CATEGORY_ENQUIRY' }),
-      )
-    })
-  }, [summary])
+  const handleMouseMove = (e) => {
+    if (!tip) return
+    const r = e.currentTarget.closest('svg')?.getBoundingClientRect()
+    if (!r) return
+    setTip((t) => t ? { ...t, x: e.clientX - r.left + 12, y: e.clientY - r.top - 20 } : null)
+  }
 
   return (
     <div className={styles.gridSection}>
@@ -117,11 +149,36 @@ export default function PlotVisualGrid({ summary, onEnquire }) {
 
       <div className={styles.gridWrap} style={{ position: 'relative' }}>
         <div style={{ overflowX: 'auto' }}>
-          <svg
-            ref={svgRef}
-            viewBox="0 0 900 500"
-            style={{ display: 'block', width: '100%', minWidth: 600 }}
-          />
+          <svg viewBox="0 0 900 500" style={{ display: 'block', width: '100%', minWidth: 600 }} aria-label="Interactive plot layout map">
+            <rect width="900" height="500" fill="#EAF3DE" rx="8" />
+            <rect x="20" y={ROAD_Y} width="860" height={ROAD_H} fill="#D4C5A9" opacity="0.5" rx="4" />
+            <text x="450" y={ROAD_Y + 31} textAnchor="middle" fill="#8a7a5a" fontSize="11" fontFamily="DM Sans,sans-serif" fontWeight="500">
+              Main Road — 60ft Wide
+            </text>
+
+            {cells.map(({ x, y, num, fill }) => (
+              <g
+                key={num}
+                style={{ cursor: 'pointer' }}
+                onMouseEnter={(e) => handleMouseEnter(e, num)}
+                onMouseMove={handleMouseMove}
+                onMouseLeave={() => setTip(null)}
+                onClick={() => onEnquire({ plotNumber: num, category: getCategoryLabel(num, summary), source: 'CATEGORY_ENQUIRY' })}
+                role="button"
+                aria-label={`Plot ${num}`}
+              >
+                <rect x={x} y={y} width={CELL_W} height={CELL_H} fill={fill} opacity="0.85" rx="6" stroke="white" strokeWidth="1.5" />
+                <text x={x + CELL_W / 2} y={y + CELL_H / 2} textAnchor="middle" dominantBaseline="middle" fill="white" fontSize="11" fontWeight="600" fontFamily="DM Sans,sans-serif">
+                  {num}
+                </text>
+              </g>
+            ))}
+
+            <rect x="350" y="455" width="200" height="32" fill="#1E4D2B" rx="4" />
+            <text x="450" y="476" textAnchor="middle" fill="#C9A84C" fontSize="13" fontWeight="700" fontFamily="Cormorant Garamond,serif" letterSpacing="2">
+              ENTRANCE
+            </text>
+          </svg>
         </div>
 
         {tip && (
@@ -131,7 +188,6 @@ export default function PlotVisualGrid({ summary, onEnquire }) {
           </div>
         )}
 
-        {/* Colour legend */}
         <div className={styles.gridLegend}>
           {Object.entries(CATEGORY_META_LABELS).map(([key, label]) => (
             <div key={key} className={styles.legItem}>

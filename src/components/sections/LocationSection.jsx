@@ -2,6 +2,7 @@ import { useState }    from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useInView }   from 'react-intersection-observer'
 import { Navigation }  from 'lucide-react'
+import { openMaps }    from '@/utils/security'
 import styles from './Sections.module.css'
 
 // ── Per-venture colour palette ────────────────────────────────────────────────
@@ -168,7 +169,7 @@ export default function LocationSection({ content }) {
               ))}
             </div>
             <button className={styles.popupBtn} style={{ background: palette.color }}
-              onClick={() => window.open(venture.openUrl, '_blank')}>
+              onClick={() => openMaps(venture.openUrl)}>
               Open in Maps
             </button>
             <div className={styles.popupArrow} />
@@ -184,7 +185,7 @@ export default function LocationSection({ content }) {
               </div>
             </div>
             <button className="btn btn-gold btn-sm"
-              onClick={() => window.open(venture.openUrl, '_blank')}>
+              onClick={() => openMaps(venture.openUrl)}>
               <Navigation size={14} /> Get Directions
             </button>
           </div>

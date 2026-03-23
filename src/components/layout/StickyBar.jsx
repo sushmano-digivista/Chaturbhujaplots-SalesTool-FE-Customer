@@ -1,4 +1,6 @@
 import { Phone, MessageCircle, Map } from 'lucide-react'
+import { openWhatsApp }    from '@/utils/security'
+import { DEFAULT_WA_NUMBER, DEFAULT_PHONE } from '@/constants/config'
 import styles from './Footer.module.css'
 
 /**
@@ -9,16 +11,13 @@ import styles from './Footer.module.css'
  */
 export default function StickyBar({ contact, onEnquire }) {
   const openWA = () => {
-    const num = contact?.whatsapp || '919999999999'
-    window.open(
-      `https://wa.me/${num}?text=${encodeURIComponent('Hi, I am interested in Anjana Paradise plots.')}`,
-      '_blank',
-    )
+    const num = contact?.whatsapp || DEFAULT_WA_NUMBER
+    openWhatsApp(num, 'Hi, I am interested in Anjana Paradise plots.')
   }
 
   return (
     <div className={styles.stickyBar}>
-      <a href={`tel:${contact?.phone || '+919999999999'}`} className={styles.sbBtn}>
+      <a href={`tel:${contact?.phone || DEFAULT_PHONE}`} className={styles.sbBtn}>
         <Phone size={20} />
         <span>Call</span>
       </a>

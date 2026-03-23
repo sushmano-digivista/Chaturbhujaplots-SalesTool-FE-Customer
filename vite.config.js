@@ -5,6 +5,17 @@ import path from 'path'
 export default defineConfig({
   plugins: [react()],
   resolve: { alias: { '@': path.resolve(__dirname, './src') } },
+  test: {
+    globals:     true,
+    environment: 'jsdom',
+    setupFiles:  ['./src/test/setup.js'],
+    coverage: {
+      provider: 'v8',
+      reporter:  ['text', 'lcov'],
+      include:   ['src/**/*.{js,jsx}'],
+      exclude:   ['src/assets/**', 'src/test/**'],
+    },
+  },
   optimizeDeps: {
     include: ['react-countup', 'countup.js'],  // force CJS→ESM pre-bundling
   },

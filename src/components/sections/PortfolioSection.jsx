@@ -5,6 +5,8 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { X } from 'lucide-react'
 import { ACTIVE_PROJECTS, COMPLETED_PROJECTS } from '@/constants/projects'
 import { getFacingRows } from '@/constants/facingMap'
+import { openWhatsApp }  from '@/utils/security'
+import { DEFAULT_WA_NUMBER } from '@/constants/config'
 import styles from './PortfolioSection.module.css'
 
 const STATS = [
@@ -228,9 +230,9 @@ function ProjectPopup({ proj, onClose, onNavigate }) {
           </button>
           <button
             className={styles.popupWa}
-            onClick={() => window.open(
-              `https://wa.me/919999999999?text=${encodeURIComponent(`Hi, I'm interested in ${proj.name} at ${proj.loc}. Please share details.`)}`,
-              '_blank'
+            onClick={() => openWhatsApp(
+              DEFAULT_WA_NUMBER,
+              `Hi, I'm interested in ${proj.name} at ${proj.loc}. Please share details.`,
             )}
           >
             💬 WhatsApp

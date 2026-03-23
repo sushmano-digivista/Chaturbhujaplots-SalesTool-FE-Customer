@@ -10,7 +10,7 @@ import styles from './Footer.module.css'
 export default function FloatingWA({ contact }) {
   const openWA = () => {
     const num = contact?.whatsapp || DEFAULT_WA_NUMBER
-    openWhatsApp(num, 'Hi, I am interested in Chatubhuja Properties & Infra.')
+    openWhatsApp(num, 'Hi, I am interested in Chaturbhuja Properties & Infra.')
   }
 
   return (

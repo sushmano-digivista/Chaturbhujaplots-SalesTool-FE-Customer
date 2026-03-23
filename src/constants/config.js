@@ -7,10 +7,10 @@
  */
 
 /** Default WhatsApp contact number (digits only, with country code). */
-export const DEFAULT_WA_NUMBER = '918977262683'
+export const DEFAULT_WA_NUMBER = '919739762698'
 
 /** Default voice-call contact number. */
-export const DEFAULT_PHONE = '+918977262683'
+export const DEFAULT_PHONE = '+919739762698'
 
 /** Business hours label shown across CTAs. */
 export const BUSINESS_HOURS = '9am–7pm'

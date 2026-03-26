@@ -212,7 +212,7 @@ export default function Hero({ content, onEnquire }) {
             Explore All Projects →
           </button>
           <a
-            href={`https://wa.me/${whatsapp}?text=${encodeURIComponent('Hi, I am interested in Chaturbhuja plots. Please share details.')}`}
+            href={`https://wa.me/${whatsapp}?text=${encodeURIComponent('Hi')}`}
             target="_blank" rel="noreferrer"
             className={styles.lcBtnWA}>
             💬

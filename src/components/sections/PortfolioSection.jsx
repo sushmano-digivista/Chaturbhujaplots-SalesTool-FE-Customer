@@ -232,7 +232,7 @@ function ProjectPopup({ proj, onClose, onNavigate }) {
             className={styles.popupWa}
             onClick={() => openWhatsApp(
               DEFAULT_WA_NUMBER,
-              `Hi, I'm interested in ${proj.name} at ${proj.loc}. Please share details.`,
+              'Hi'`,
             )}
           >
             💬 WhatsApp

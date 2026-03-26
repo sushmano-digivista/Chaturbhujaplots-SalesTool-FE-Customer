@@ -218,6 +218,21 @@ export default function Hero({ content, onEnquire }) {
             💬
           </a>
         </div>
+
+        {/* MD Contact Card — below buttons */}
+        <div className={styles.mdCard}>
+          <div className={styles.mdAvatar}>
+            <span>M</span>
+          </div>
+          <div className={styles.mdInfo}>
+            <div className={styles.mdRole}>Managing Director</div>
+            <div className={styles.mdName}>M Siva Nageswara Rao</div>
+            <a href="tel:+919948709041" className={styles.mdPhone}>
+              📞 +91 99487 09041
+            </a>
+          </div>
+        </div>
+
       </motion.div>
     </section>
   )

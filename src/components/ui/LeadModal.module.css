@@ -6,21 +6,38 @@
 .sheet {
   background: var(--white); border-radius: 20px 20px 0 0;
   width: 100%; max-width: 540px;
-  padding: 0 24px 40px;
-  max-height: 92vh; overflow-y: auto;
+  max-height: 92vh;
+  display: flex; flex-direction: column;
+  position: relative; overflow: hidden;
+}
+.stickyHeader {
   position: relative;
+  padding: 0 24px;
+  background: var(--white);
+  border-radius: 20px 20px 0 0;
+  flex-shrink: 0;
+  z-index: 10;
+}
+.scrollBody {
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  padding: 0 24px 40px;
+  flex: 1;
 }
 .handle {
   width: 36px; height: 4px;
   background: rgba(0,0,0,0.12); border-radius: 2px;
-  margin: 12px auto 20px;
+  margin: 12px auto 8px;
 }
 .closeBtn {
-  position: absolute; top: 14px; right: 16px;
+  position: absolute; top: 10px; right: 16px;
   background: var(--cream); border: none; border-radius: 50%;
-  width: 32px; height: 32px;
+  width: 36px; height: 36px;
   display: flex; align-items: center; justify-content: center;
   color: var(--text-mid); cursor: pointer; transition: background 0.2s;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+  z-index: 20;
 }
 .closeBtn:hover { background: var(--green-light); }
 
@@ -52,8 +69,11 @@
 /* Desktop — center modal instead of bottom sheet */
 @media (min-width: 600px) {
   .overlay { align-items: center; }
-  .sheet { border-radius: var(--rlg); max-height: 90vh; padding: 40px; }
+  .sheet { border-radius: var(--rlg); max-height: 90vh; }
+  .stickyHeader { padding: 40px 40px 0; border-radius: var(--rlg) var(--rlg) 0 0; }
+  .scrollBody { padding: 20px 40px 40px; }
   .handle { display: none; }
+  .closeBtn { top: 16px; right: 16px; }
 }
 
 /* ── Brochure CTA buttons ─────────────────────────────────────────── */

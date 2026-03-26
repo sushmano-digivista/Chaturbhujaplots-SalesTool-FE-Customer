@@ -79,13 +79,19 @@
 /* Desktop — center modal instead of bottom sheet */
 @media (min-width: 600px) {
   .overlay { align-items: center; }
-  .sheet { border-radius: var(--rlg); max-height: 90vh; padding: 40px; }
-  .scrollBody { padding: 0; overflow-y: visible; }
+  .sheet {
+    border-radius: var(--rlg);
+    max-height: 90vh;
+    max-width: 560px;
+    width: 90vw;
+  }
+  .topBar { padding: 20px 24px 0; border-radius: var(--rlg) var(--rlg) 0 0; }
   .handle { display: none; }
-  .sheet { border-radius: var(--rlg); max-height: 90vh; }
-  .topBar { padding: 20px 20px 0; }
-  .handle { display: none; }
-  .scrollBody { padding: 8px 40px 40px; }
+  .scrollBody {
+    padding: 8px 32px 40px;
+    overflow-y: auto;
+  }
+  .closeBtn { top: 16px; right: 16px; }
 }
 
 /* ── Brochure CTA buttons ─────────────────────────────────────────── */

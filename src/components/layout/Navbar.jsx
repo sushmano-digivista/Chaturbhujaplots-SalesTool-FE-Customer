@@ -177,6 +177,17 @@ export default function Navbar({ contact, onEnquire }) {
               <div className={styles.mobileProjectSub}>📍 {p.sub}</div>
             </button>
           ))}
+          {/* Completed & Sold Out */}
+          <div className={styles.mobileCompletedSection}>
+            <div className={styles.mobileCompletedHeader}>
+              <span className={styles.dropCheckDot} />
+              Completed &amp; Sold Out
+            </div>
+            <div className={styles.mobileCompletedList}>
+              {NAV_COMPLETED.join(' · ')}
+            </div>
+          </div>
+
           <button className={styles.mobileViewAll} onClick={() => { setMenuOpen(false); scrollTo('portfolio') }}>
             View all projects overview →
           </button>

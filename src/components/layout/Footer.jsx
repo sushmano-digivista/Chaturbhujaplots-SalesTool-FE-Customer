@@ -1,3 +1,4 @@
+import { DEFAULT_WA_NUMBER, DEFAULT_PHONE } from '@/constants/config'
 import styles from './Footer.module.css'
 
 const QUICK_LINKS = [
@@ -18,8 +19,8 @@ const PROJECTS = [
 
 export default function Footer({ content }) {
   const contact = content?.contact || {}
-  const phone    = contact.phone    || '+91 97397 62698'
-  const whatsapp = contact.whatsapp || '919739762698'
+  const phone    = DEFAULT_PHONE
+  const whatsapp = DEFAULT_WA_NUMBER
   const email    = contact.email    || 'info@chaturbhuja.in'
   const address  = contact.address  || 'Vijayawada, Andhra Pradesh'
 

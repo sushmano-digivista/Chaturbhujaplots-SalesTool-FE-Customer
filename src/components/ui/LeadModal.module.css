@@ -5,7 +5,7 @@
 }
 .sheet {
   background: var(--white); border-radius: 20px 20px 0 0;
-  width: 100%; max-width: 540px;
+  width: 100%;
   max-height: 92vh;
   display: flex; flex-direction: column;
   position: relative;
@@ -23,14 +23,19 @@
   margin: 14px auto 8px;
 }
 /* Close button — lives in overlay, always visible */
+.sheetWrapper {
+  position: relative;
+  width: 100%;
+  max-width: 540px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
 .closeBtn {
-  position: absolute;
-  bottom: calc(92vh - 12px);
-  right: 16px;
+  width: 44px; height: 44px;
+  border-radius: 50%;
   background: white;
   border: none;
-  border-radius: 50%;
-  width: 44px; height: 44px;
   display: flex;
   align-items: center; justify-content: center;
   color: #333;
@@ -39,6 +44,9 @@
   -webkit-tap-highlight-color: transparent;
   z-index: 3000;
   box-shadow: 0 2px 12px rgba(0,0,0,0.2);
+  margin-bottom: 8px;
+  margin-right: 8px;
+  flex-shrink: 0;
 }
 
 .modalHeader { margin-bottom: 22px; }
@@ -72,11 +80,14 @@
   .sheet { border-radius: var(--rlg); max-height: 90vh; padding: 40px; }
   .scrollBody { padding: 0; overflow-y: visible; }
   .handle { display: none; }
+  .sheetWrapper { max-width: 600px; }
   .closeBtn {
-    bottom: auto;
-    top: 12px;
-    right: 12px;
+    position: absolute;
+    top: -12px;
+    right: -12px;
+    margin: 0;
   }
+  .sheet { border-radius: var(--rlg); }
 }
 
 /* ── Brochure CTA buttons ─────────────────────────────────────────── */

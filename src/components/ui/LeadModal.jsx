@@ -220,18 +220,19 @@ export default function LeadModal({ context, onClose, whatsapp }) {
           initial={{ opacity:0 }} animate={{ opacity:1 }} exit={{ opacity:0 }}
           onClick={e => { if (e.target === e.currentTarget) onClose() }}>
 
+          {/* Close button outside scroll — always tappable on mobile */}
+          <button className={styles.closeBtnFloat} onClick={onClose} aria-label="Close">
+            <X size={20} />
+          </button>
+
           <motion.div className={styles.sheet}
             initial={{ y:'100%' }} animate={{ y:0 }} exit={{ y:'100%' }}
             transition={{ type:'spring', damping:28, stiffness:300 }}>
 
-            {/* Sticky header — always visible, never scrolls away */}
-            <div className={styles.stickyHeader}>
-              <div className={styles.handle} />
-              <button className={styles.closeBtn} onClick={onClose} aria-label="Close">
-                <X size={18} />
-              </button>
-            </div>
-
+            <div className={styles.handle} />
+            <button className={styles.closeBtn} onClick={onClose} aria-label="Close">
+              <X size={18} />
+            </button>
             <div className={styles.scrollBody}>
             <div className={styles.modalHeader}>
               <h3 className={styles.title}>{context?.label || 'Get In Touch'}</h3>

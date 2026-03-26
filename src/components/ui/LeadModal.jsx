@@ -6,7 +6,7 @@ import { X, MessageCircle, Download, Mail, Loader2, AlertCircle, Calendar } from
 import { useSubmitLead }         from '@/hooks/useData'
 import { ACTIVE_PROJECTS }       from '@/constants/projects'
 import { BROCHURES }             from '@/constants/brochures'
-import { brochureApi, siteVisitApi } from '@/api'
+import { brochureApi, siteVisitApi, leadApi } from '@/api'
 import { openWhatsApp, safeOpenExternal } from '@/utils/security'
 import { DEFAULT_WA_NUMBER }     from '@/constants/config'
 import styles from './LeadModal.module.css'
@@ -75,10 +75,10 @@ export default function LeadModal({ context, onClose, whatsapp }) {
         project: data.project || context?.category || undefined,
         date:    data.date,
       })
-      // Also save lead to DB
-      await submitLead.mutateAsync({
+      // Also save lead to DB (silently - don't show error toast if this fails)
+      leadApi.submit({
         name: data.name, phone: data.phone, email: data.email || undefined,
-        source: 'SITE_VISIT_SCHEDULED', categoryInterest: data.project || context?.category || undefined,
+        source: 'CONTACT_FORM', categoryInterest: data.project || context?.category || undefined,
       }).catch(() => {})
       setSubmitted(true)
       reset()

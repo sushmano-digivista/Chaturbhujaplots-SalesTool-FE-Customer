@@ -220,17 +220,18 @@ export default function LeadModal({ context, onClose, whatsapp }) {
           initial={{ opacity:0 }} animate={{ opacity:1 }} exit={{ opacity:0 }}
           onClick={e => { if (e.target === e.currentTarget) onClose() }}>
 
-          <div className={styles.sheetWrapper}>
-            <button className={styles.closeBtn} onClick={onClose} aria-label="Close" type="button">
-              <X size={22} />
-            </button>
+          <motion.div className={styles.sheet}
+            initial={{ y:'100%' }} animate={{ y:0 }} exit={{ y:'100%' }}
+            transition={{ type:'spring', damping:28, stiffness:300 }}>
 
-            <motion.div className={styles.sheet}
-              initial={{ y:'100%' }} animate={{ y:0 }} exit={{ y:'100%' }}
-              transition={{ type:'spring', damping:28, stiffness:300 }}>
-
+            <div className={styles.topBar}>
               <div className={styles.handle} />
-              <div className={styles.scrollBody}>
+              <button className={styles.closeBtn} onClick={onClose} aria-label="Close" type="button">
+                <X size={20} />
+              </button>
+            </div>
+
+            <div className={styles.scrollBody}>
             <div className={styles.modalHeader}>
               <h3 className={styles.title}>{context?.label || 'Get In Touch'}</h3>
               {context?.category && <span className={styles.catTag}>{context.category}</span>}
@@ -479,9 +480,8 @@ export default function LeadModal({ context, onClose, whatsapp }) {
               </form>
             )}
 
-              </div>{/* end scrollBody */}
-            </motion.div>
-          </div>{/* end sheetWrapper */}
+            </div>{/* end scrollBody */}
+          </motion.div>
         </motion.div>
       )}
     </AnimatePresence>,

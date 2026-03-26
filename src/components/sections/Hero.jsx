@@ -138,6 +138,20 @@ export default function Hero({ content, onEnquire }) {
         animate={{ opacity: 1, x: 0 }}
         transition={{ duration: 0.7, delay: 0.2, ease: [0.4, 0, 0.2, 1] }}>
 
+        {/* MD Contact Card */}
+        <div className={styles.mdCard}>
+          <div className={styles.mdAvatar}>
+            <span>M</span>
+          </div>
+          <div className={styles.mdInfo}>
+            <div className={styles.mdRole}>Managing Director</div>
+            <div className={styles.mdName}>M Siva Nageswara Rao</div>
+            <a href="tel:+919948709041" className={styles.mdPhone}>
+              📞 +91 99487 09041
+            </a>
+          </div>
+        </div>
+
         <div className={styles.lcTag}>
           <span className={styles.lcPulse} />
           Limited Time Offer

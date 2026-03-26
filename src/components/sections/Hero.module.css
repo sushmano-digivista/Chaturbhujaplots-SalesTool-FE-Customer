@@ -128,3 +128,49 @@
   .btns .btn { width: 100%; justify-content: center; }
   .statsBar { gap: 24px; }
 }
+
+/* ── MD Contact Card ─────────────────────────────────────────────────── */
+.mdCard {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(201,168,76,0.35);
+  border-radius: 14px;
+  padding: 14px 16px;
+  margin-bottom: 18px;
+}
+.mdAvatar {
+  width: 48px; height: 48px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #C9A84C, #e2bf64);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 20px; font-weight: 800; color: #1a0c00;
+  flex-shrink: 0;
+}
+.mdInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.mdRole {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #C9A84C;
+}
+.mdName {
+  font-size: 14px;
+  font-weight: 700;
+  color: #fff;
+  line-height: 1.2;
+}
+.mdPhone {
+  font-size: 13px;
+  color: rgba(255,255,255,0.75);
+  text-decoration: none;
+  font-weight: 500;
+  margin-top: 2px;
+}
+.mdPhone:hover { color: #C9A84C; }

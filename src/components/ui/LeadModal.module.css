@@ -9,7 +9,7 @@
   max-height: 92vh;
   display: flex; flex-direction: column;
   position: relative;
-  overflow: visible;
+  overflow: hidden;
 }
 .scrollBody {
   overflow-y: auto;
@@ -20,43 +20,25 @@
 .handle {
   width: 36px; height: 4px;
   background: rgba(0,0,0,0.12); border-radius: 2px;
-  margin: 20px auto 8px;
+  margin: 14px auto 8px;
 }
-/* Float close button above the sheet - never inside scroll */
-.closeBtnFloat {
-  position: absolute;
-  bottom: calc(92vh - 44px);
-  right: 16px;
-  background: var(--white);
-  border: none;
-  border-radius: 50%;
-  width: 40px; height: 40px;
-  display: flex; align-items: center; justify-content: center;
-  color: var(--text-mid);
-  cursor: pointer;
-  z-index: 2100;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
-  touch-action: manipulation;
-  -webkit-tap-highlight-color: transparent;
-}
-.closeBtnFloat:hover { background: var(--green-light); }
-/* Keep old closeBtn for desktop */
+/* Close button — lives in overlay, always visible */
 .closeBtn {
   position: absolute;
-  top: -18px;
-  right: 12px;
+  bottom: calc(92vh - 12px);
+  right: 16px;
   background: white;
-  border: 2px solid #ddd;
+  border: none;
   border-radius: 50%;
   width: 44px; height: 44px;
-  display: flex !important;
+  display: flex;
   align-items: center; justify-content: center;
   color: #333;
   cursor: pointer;
   touch-action: manipulation;
   -webkit-tap-highlight-color: transparent;
-  z-index: 9999;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  z-index: 3000;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.2);
 }
 
 .modalHeader { margin-bottom: 22px; }
@@ -90,10 +72,10 @@
   .sheet { border-radius: var(--rlg); max-height: 90vh; padding: 40px; }
   .scrollBody { padding: 0; overflow-y: visible; }
   .handle { display: none; }
-  .closeBtnFloat { display: none; }
   .closeBtn {
-    display: flex;
-    position: absolute; top: 16px; right: 16px;
+    bottom: auto;
+    top: 12px;
+    right: 12px;
   }
 }
 

@@ -220,13 +220,14 @@ export default function LeadModal({ context, onClose, whatsapp }) {
           initial={{ opacity:0 }} animate={{ opacity:1 }} exit={{ opacity:0 }}
           onClick={e => { if (e.target === e.currentTarget) onClose() }}>
 
+          <button className={styles.closeBtn} onClick={onClose} aria-label="Close" type="button">
+            <X size={22} />
+          </button>
+
           <motion.div className={styles.sheet}
             initial={{ y:'100%' }} animate={{ y:0 }} exit={{ y:'100%' }}
             transition={{ type:'spring', damping:28, stiffness:300 }}>
 
-            <button className={styles.closeBtn} onClick={onClose} aria-label="Close" type="button">
-              <X size={20} />
-            </button>
             <div className={styles.handle} />
             <div className={styles.scrollBody}>
             <div className={styles.modalHeader}>

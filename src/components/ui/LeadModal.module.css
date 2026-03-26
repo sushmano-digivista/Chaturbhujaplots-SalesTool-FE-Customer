@@ -9,6 +9,7 @@
   max-height: 92vh;
   display: flex; flex-direction: column;
   position: relative; overflow: hidden;
+  padding-top: 0;
 }
 .scrollBody {
   overflow-y: auto;

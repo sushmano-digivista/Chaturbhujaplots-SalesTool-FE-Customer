@@ -298,7 +298,7 @@
   box-shadow: 0 12px 32px rgba(0,0,0,0.08);
   max-height: 0; overflow: hidden; transition: max-height 0.3s ease;
 }
-.mobileMenu.open { display: flex; max-height: 520px; }
+.mobileMenu.open { display: flex; max-height: 90vh; overflow-y: auto; }
 .mobileLink {
   color: #2c2c2c; font-size: 11px; padding: 16px 5%;
   border: none; background: none; text-align: left; cursor: pointer;

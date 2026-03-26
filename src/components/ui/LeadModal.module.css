@@ -20,7 +20,7 @@
 .handle {
   width: 36px; height: 4px;
   background: rgba(0,0,0,0.12); border-radius: 2px;
-  margin: 12px auto 16px;
+  margin: 56px auto 8px;
 }
 /* Float close button above the sheet - never inside scroll */
 .closeBtnFloat {
@@ -42,15 +42,14 @@
 .closeBtnFloat:hover { background: var(--green-light); }
 /* Keep old closeBtn for desktop */
 .closeBtn {
-  position: absolute; top: 16px; right: 16px;
-  background: var(--cream); border: none; border-radius: 50%;
-  width: 36px; height: 36px;
-  display: flex; align-items: center; justify-content: center;
-  color: var(--text-mid); cursor: pointer; transition: background 0.2s;
+  position: absolute; top: 12px; right: 12px;
+  background: rgba(0,0,0,0.08); border: none; border-radius: 50%;
+  width: 44px; height: 44px;
+  display: flex !important; align-items: center; justify-content: center;
+  color: #333; cursor: pointer; transition: background 0.2s;
   touch-action: manipulation;
   -webkit-tap-highlight-color: transparent;
-  z-index: 20;
-  display: none;
+  z-index: 9999;
 }
 
 .modalHeader { margin-bottom: 22px; }

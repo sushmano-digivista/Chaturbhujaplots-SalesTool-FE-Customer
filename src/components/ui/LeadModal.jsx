@@ -225,6 +225,7 @@ export default function LeadModal({ context, onClose, whatsapp }) {
             transition={{ type:'spring', damping:28, stiffness:300 }}>
 
             <div className={styles.topBar}>
+              <div style={{width:44}} />{/* spacer to center handle */}
               <div className={styles.handle} />
               <button className={styles.closeBtn} onClick={onClose} aria-label="Close" type="button">
                 <X size={20} />

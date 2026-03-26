@@ -18,27 +18,27 @@
   flex: 1;
 }
 .handle {
-  width: 36px; height: 4px;
-  background: rgba(0,0,0,0.12); border-radius: 2px;
+  width: 40px; height: 5px;
+  background: rgba(0,0,0,0.15); border-radius: 3px;
+  flex: 1;
+  align-self: center;
   margin: 0 auto;
 }
 /* Close button — lives in overlay, always visible */
 .topBar {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   align-items: center;
-  padding: 12px 16px 0;
-  position: relative;
+  justify-content: space-between;
+  padding: 14px 16px 10px;
   flex-shrink: 0;
-  min-height: 52px;
+  background: var(--white, #fff);
+  border-bottom: 1px solid rgba(0,0,0,0.06);
 }
 .closeBtn {
-  position: absolute;
-  top: 8px;
-  right: 12px;
   width: 44px; height: 44px;
   border-radius: 50%;
-  background: var(--cream, #f5f0e8);
+  background: #f0ece4;
   border: none;
   display: flex;
   align-items: center; justify-content: center;
@@ -46,9 +46,9 @@
   cursor: pointer;
   touch-action: manipulation;
   -webkit-tap-highlight-color: transparent;
-  z-index: 10;
+  flex-shrink: 0;
 }
-.closeBtn:active { background: #e0d5c0; }
+.closeBtn:active { background: #ddd8cc; }
 
 .modalHeader { margin-bottom: 22px; }
 .title {

@@ -1,13 +1,12 @@
 .hero {
-  min-height: auto;
   background:
     linear-gradient(160deg, rgba(11,36,21,.95) 0%, rgba(30,77,43,.88) 45%, rgba(45,110,64,.82) 100%),
     url('/All_Ready_To_Buy_Ventures.png') center/cover no-repeat;
   display: grid;
   grid-template-columns: 1fr 400px;
-  align-items: center;
+  align-items: start;
   gap: 40px;
-  padding: calc(var(--nav-h) + 8px) 5% 40px;
+  padding: calc(var(--nav-h) + 24px) 5% 48px;
   position: relative; overflow: hidden;
 }
 .overlay {

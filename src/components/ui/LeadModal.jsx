@@ -224,11 +224,15 @@ export default function LeadModal({ context, onClose, whatsapp }) {
             initial={{ y:'100%' }} animate={{ y:0 }} exit={{ y:'100%' }}
             transition={{ type:'spring', damping:28, stiffness:300 }}>
 
-            <div className={styles.handle} />
-            <button className={styles.closeBtn} onClick={onClose} aria-label="Close">
-              <X size={18} />
-            </button>
+            {/* Sticky header — always visible, never scrolls away */}
+            <div className={styles.stickyHeader}>
+              <div className={styles.handle} />
+              <button className={styles.closeBtn} onClick={onClose} aria-label="Close">
+                <X size={18} />
+              </button>
+            </div>
 
+            <div className={styles.scrollBody}>
             <div className={styles.modalHeader}>
               <h3 className={styles.title}>{context?.label || 'Get In Touch'}</h3>
               {context?.category && <span className={styles.catTag}>{context.category}</span>}

@@ -51,12 +51,105 @@
   background: rgba(10,28,16,.7);
   backdrop-filter: blur(20px);
   border: 1.5px solid rgba(201,168,76,.45);
-  border-radius: 20px; padding: 28px;
+  border-radius: 20px; padding: 20px 24px 24px;
   position: relative; z-index: 1; overflow: hidden;
 }
 .limitedCard::before {
   content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
   background: linear-gradient(90deg,#C9A84C,#E8D5A3,#9B7B2E);
+}
+
+/* ── Director Contact Card ──────────────────────────── */
+.directorCard {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: linear-gradient(135deg, rgba(201,168,76,.18) 0%, rgba(201,168,76,.06) 100%);
+  border: 1px solid rgba(201,168,76,.35);
+  border-radius: 14px;
+  padding: 12px 14px;
+  margin-bottom: 18px;
+  position: relative;
+  overflow: hidden;
+  transition: border-color .2s;
+}
+.directorCard:hover { border-color: rgba(201,168,76,.6); }
+
+.directorGlow {
+  position: absolute;
+  top: -30px; left: -30px;
+  width: 100px; height: 100px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(201,168,76,.2) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.directorAvatar {
+  position: relative;
+  flex-shrink: 0;
+  width: 44px; height: 44px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #C9A84C, #9B7B2E);
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 0 0 2px rgba(201,168,76,.4), 0 4px 12px rgba(0,0,0,.3);
+}
+.directorAvatar span {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.2rem; font-weight: 700; color: #1a3a24; line-height: 1;
+}
+.directorOnline {
+  position: absolute;
+  bottom: 1px; right: 1px;
+  width: 10px; height: 10px;
+  border-radius: 50%;
+  background: #4CAF50;
+  border: 2px solid rgba(10,28,16,.9);
+  animation: pulse-green 2s ease-in-out infinite;
+}
+@keyframes pulse-green {
+  0%,100% { box-shadow: 0 0 0 0 rgba(76,175,80,.5); }
+  50%      { box-shadow: 0 0 0 4px rgba(76,175,80,0); }
+}
+
+.directorInfo { flex: 1; min-width: 0; }
+.directorTitle {
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--gold);
+  opacity: .8;
+  margin-bottom: 2px;
+}
+.directorName {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1rem; font-weight: 700;
+  color: #fff; line-height: 1.2;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.directorPhone {
+  display: inline-flex; align-items: center; gap: 4px;
+  font-size: 11px; color: rgba(255,255,255,.65);
+  text-decoration: none; margin-top: 3px;
+  transition: color .2s;
+}
+.directorPhone:hover { color: var(--gold); }
+
+.directorCallBtn {
+  flex-shrink: 0;
+  width: 36px; height: 36px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, rgba(76,175,80,.25), rgba(76,175,80,.1));
+  border: 1px solid rgba(76,175,80,.4);
+  color: #4CAF50;
+  display: flex; align-items: center; justify-content: center;
+  text-decoration: none;
+  transition: all .2s;
+}
+.directorCallBtn:hover {
+  background: rgba(76,175,80,.35);
+  transform: scale(1.1);
+  box-shadow: 0 4px 12px rgba(76,175,80,.3);
 }
 
 .lcTag {

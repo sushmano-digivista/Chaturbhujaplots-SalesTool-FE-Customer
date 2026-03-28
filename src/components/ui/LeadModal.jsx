@@ -481,6 +481,7 @@ export default function LeadModal({ context, onClose, whatsapp }) {
               </form>
             )}
 
+            </div>{/* /scrollBody */}
           </motion.div>
         </motion.div>
       )}

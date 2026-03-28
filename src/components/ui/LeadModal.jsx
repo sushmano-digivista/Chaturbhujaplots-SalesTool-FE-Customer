@@ -462,31 +462,33 @@ export default function LeadModal({ context, onClose, whatsapp, content }) {
                 )}
 
                 <div className={styles.actions}>
-                  <div className={styles.ctaGroup}>
-                    <button type="button" className={styles.emailBtn}
-                      onClick={handleEmail} disabled={sending === 'email' || emailSent}>
-                      {sending === 'email' ? <Loader2 size={15} className={styles.spin} /> : <Mail size={15} />}
-                      {emailSent ? 'Brochure Sent ✓' : 'Email Brochure'}
-                    </button>
-                    {ctaErrors.email && <p className={styles.ctaError}><AlertCircle size={12} /> {ctaErrors.email}</p>}
-                  </div>
+                  <div className={styles.ctaRow}>
+                    <div className={styles.ctaGroup}>
+                      <button type="button" className={styles.emailBtn}
+                        onClick={handleEmail} disabled={sending === 'email' || emailSent}>
+                        {sending === 'email' ? <Loader2 size={15} className={styles.spin} /> : <Mail size={15} />}
+                        {emailSent ? 'Sent ✓' : 'Email'}
+                      </button>
+                      {ctaErrors.email && <p className={styles.ctaError}><AlertCircle size={12} /> {ctaErrors.email}</p>}
+                    </div>
 
-                  <div className={styles.ctaGroup}>
-                    <button type="button" className={styles.waBtn}
-                      onClick={handleWhatsApp} disabled={sending === 'wa' || waSent}>
-                      {sending === 'wa' ? <Loader2 size={15} className={styles.spin} /> : <MessageCircle size={15} />}
-                      {waSent ? 'Sent on WhatsApp ✓' : 'WhatsApp Brochure'}
-                    </button>
-                    {ctaErrors.wa && <p className={styles.ctaError}><AlertCircle size={12} /> {ctaErrors.wa}</p>}
-                  </div>
+                    <div className={styles.ctaGroup}>
+                      <button type="button" className={styles.waBtn}
+                        onClick={handleWhatsApp} disabled={sending === 'wa' || waSent}>
+                        {sending === 'wa' ? <Loader2 size={15} className={styles.spin} /> : <MessageCircle size={15} />}
+                        {waSent ? 'Sent ✓' : 'WhatsApp'}
+                      </button>
+                      {ctaErrors.wa && <p className={styles.ctaError}><AlertCircle size={12} /> {ctaErrors.wa}</p>}
+                    </div>
 
-                  <div className={styles.ctaGroup}>
-                    <button type="button" className={styles.downloadBtn} onClick={handleDownload}>
-                      <Download size={15} />
-                      {isAny ? 'Download All Brochures' : 'Download Brochure'}
-                    </button>
-                    {ctaErrors.download && <p className={styles.ctaError}><AlertCircle size={12} /> {ctaErrors.download}</p>}
-                  </div>
+                    <div className={styles.ctaGroup}>
+                      <button type="button" className={styles.downloadBtn} onClick={handleDownload}>
+                        <Download size={15} />
+                        {isAny ? 'Download All' : 'Download'}
+                      </button>
+                      {ctaErrors.download && <p className={styles.ctaError}><AlertCircle size={12} /> {ctaErrors.download}</p>}
+                    </div>
+                  </div>{/* /ctaRow */}
 
                   <div className={styles.divider}><span>or</span></div>
 

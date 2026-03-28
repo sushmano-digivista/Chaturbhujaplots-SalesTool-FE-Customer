@@ -57,6 +57,19 @@
 .form { display: flex; flex-direction: column; gap: 14px; }
 
 .actions { display: flex; flex-direction: column; gap: 10px; margin-top: 4px; }
+
+/* Three brochure CTAs in one horizontal row */
+.ctaRow {
+  display: flex;
+  gap: 8px;
+}
+.ctaRow .ctaGroup { flex: 1; }
+.ctaRow .ctaGroup button,
+.ctaRow .ctaGroup a {
+  width: 100%;
+  font-size: 12.5px;
+  padding: 11px 6px;
+}
 .waBtn {
   display: flex; align-items: center; justify-content: center; gap: 8px;
   background: #25D366; color: var(--white); border: none;

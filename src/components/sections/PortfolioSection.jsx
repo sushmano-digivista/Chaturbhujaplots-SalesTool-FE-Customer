@@ -135,6 +135,7 @@ function ProjectPopup({ proj, onClose, onNavigate }) {
         exit={{ opacity: 0, scale: 0.94, y: 16 }}
         transition={{ type: 'spring', damping: 26, stiffness: 300 }}
       >
+        <div className={styles.popupScroll}>
         {/* Accent top bar */}
         <div className={styles.popupBar} />
 
@@ -238,6 +239,7 @@ function ProjectPopup({ proj, onClose, onNavigate }) {
             💬 WhatsApp
           </button>
         </div>
+        </div>{/* /popupScroll */}
       </motion.div>
     </motion.div>,
     document.body

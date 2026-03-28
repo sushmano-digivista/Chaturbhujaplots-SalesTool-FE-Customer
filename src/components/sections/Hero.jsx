@@ -191,25 +191,42 @@ export default function Hero({ content, onEnquire }) {
 
         {/* ── Premium Director Contact Card ─────────────────────────────── */}
         <div className={styles.directorCard}>
-          <div className={styles.directorGlow} />
-          <div className={styles.directorAvatar}>
-            <span>{dirAvatar}</span>
+          {/* decorative shimmer strips */}
+          <div className={styles.directorShimmer1} />
+          <div className={styles.directorShimmer2} />
+
+          {/* Left — avatar */}
+          <div className={styles.directorAvatarWrap}>
+            <div className={styles.directorRing} />
+            <div className={styles.directorAvatar}>
+              <span>{dirAvatar}</span>
+            </div>
             <div className={styles.directorOnline} />
           </div>
+
+          {/* Centre — identity */}
           <div className={styles.directorInfo}>
-            <div className={styles.directorTitle}>{dirTitle}</div>
+            <div className={styles.directorBadge}>{dirTitle}</div>
             <div className={styles.directorName}>{dirName}</div>
             <a href={`tel:${dirPhone}`} className={styles.directorPhone}>
-              <Phone size={11} />
+              <Phone size={10} />
               {dirPhone}
             </a>
           </div>
-          <a
-            href={`tel:${dirPhone}`}
-            className={styles.directorCallBtn}
-            aria-label={`Call ${dirName}`}>
-            <Phone size={15} />
-          </a>
+
+          {/* Right — CTAs */}
+          <div className={styles.directorActions}>
+            <a href={`tel:${dirPhone}`} className={styles.directorCallBtn} aria-label="Call">
+              <Phone size={13} />
+              <span>Call</span>
+            </a>
+            <a
+              href={`https://wa.me/${DEFAULT_WA_NUMBER}?text=${encodeURIComponent(`Hi, I am interested in Chaturbhuja plots. Please share details.`)}`}
+              target="_blank" rel="noreferrer"
+              className={styles.directorWaBtn} aria-label="WhatsApp">
+              💬
+            </a>
+          </div>
         </div>
 
         {/* ── Urgency Tag ───────────────────────────────────────────────── */}

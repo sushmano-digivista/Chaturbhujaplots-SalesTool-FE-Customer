@@ -1,4 +1,5 @@
 import { DEFAULT_WA_NUMBER } from '@/constants/config'
+import FALLBACK from '@/constants/fallbackContent'
 import { useState, useEffect, useRef } from 'react'
 import { motion } from 'framer-motion'
 import { MapPin, Calendar, FileText, Phone } from 'lucide-react'
@@ -26,62 +27,29 @@ function AnimatedCount({ end, duration = 1800, suffix = '' }) {
   return <>{count}{suffix}</>
 }
 
-// ── Fallback values — used only when API is unavailable ──────────────────────
-const FB = {
-  headline:    'Premium Plots in',
-  subheadline: 'Andhra Pradesh',
-  description: "A name rooted in integrity — Chaturbhuja Properties & Infra has been shaping Andhra Pradesh's real estate landscape for 25 years. Under the leadership of Mr. Donepudi Durga Prasad, we have placed 1200+ families in homes they are proud of, across 15+ APCRDA & RERA approved ventures in the Krishna–NTR–Guntur corridor.",
-  badges: [
-    'APCRDA Proposed Layout · LP No: 35/2025',
-    'AP RERA · P06060125894',
-    'Ready for Construction',
-  ],
-  director: {
-    title:  'Marketing Director',
-    name:   'M Siva Nageswara Rao',
-    phone:  '+91 99487 09041',
-    avatar: 'M',
-  },
-  urgency: {
-    tagline:           'Limited Time Offer',
-    headline:          'Plots Closing Fast!',
-    subheadline:       'Lock In Current Rates',
-    description:       'Prices are set to rise next quarter. Secure your plot today before the revision hits.',
-    openProjects:      4,
-    openProjectsLabel: 'Projects Open',
-    openProjectsSub:   'For Booking',
-    completedProjects: 11,
-    completedLabel:    'Projects',
-    completedSub:      'Completed',
-    happyFamilies:     '1200+',
-    familiesLabel:     'Happy',
-    familiesSub:       'Families',
-    barOpenLabel:      'Open for Booking',
-    barClosedLabel:    'Completed & Sold',
-    ctaButton:         'Explore All Projects →',
-  },
-  lcStats: [
-    { num: '25+',  label: 'Years of Trust' },
-    { num: '100%', label: 'Clear Title'    },
-    { num: 'RERA', label: 'Registered'     },
-  ],
-}
+// ── Single source of truth for fallbacks: fallbackContent.js ─────────────────
+const FB = FALLBACK
 
 export default function Hero({ content, onEnquire }) {
   const { ref, inView } = useInView({ triggerOnce: true, threshold: 0.2 })
 
-  // ── Resolve all data from API with fallbacks ─────────────────────────────
-  const hero = content?.hero    || {}
-  const dir  = content?.director || {}
-  const urg  = content?.urgency  || {}
-  const lcs  = content?.lcStats  || []
+  // ── Resolve all data from MongoDB API, fall back to FALLBACK_CONTENT ──────
+  const hero = content?.hero      || {}
+  const dir  = content?.director  || {}
+  const urg  = content?.urgency   || {}
+  const lcs  = content?.lcStats   || []
+  const hst  = content?.heroStats || []
 
-  const headline    = hero.headline    || FB.headline
-  const subheadline = hero.subheadline || FB.subheadline
-  const description = hero.description || FB.description
-  const badges      = hero.approvalBadges?.length ? hero.approvalBadges : FB.badges
+  // Hero left panel
+  const headline    = hero.headline    || FB.hero.headline
+  const subheadline = hero.subheadline || FB.hero.subheadline
+  const description = hero.description || FB.hero.description
+  const badges      = hero.approvalBadges?.length ? hero.approvalBadges : FB.hero.approvalBadges
 
-  // Director
+  // Animated stats bar — from DB heroStats, fallback to FALLBACK_CONTENT.heroStats
+  const heroStats = hst.length ? hst : FB.heroStats
+
+  // Director card
   const dirTitle  = dir.title  || FB.director.title
   const dirName   = dir.name   || FB.director.name
   const dirPhone  = dir.phone  || FB.director.phone
@@ -110,10 +78,7 @@ export default function Hero({ content, onEnquire }) {
 
   const whatsapp = DEFAULT_WA_NUMBER
   const barWidth = `${Math.round((openProjects / (openProjects + completedProjects)) * 100)}%`
-
   const scrollTo = id => document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' })
-
-  // Parse headline for italic "!" suffix
   const headBase   = urgHeadline.replace(/!+$/, '')
   const headSuffix = urgHeadline.endsWith('!') ? '!' : ''
 
@@ -129,6 +94,7 @@ export default function Hero({ content, onEnquire }) {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.7, ease: [0.4, 0, 0.2, 1] }}>
 
+        {/* Approval badges — from MongoDB hero.approvalBadges */}
         <div className={styles.badges}>
           {badges.map(b => (
             <span key={b} className={styles.badge}>
@@ -164,16 +130,13 @@ export default function Hero({ content, onEnquire }) {
           </motion.button>
         </div>
 
+        {/* Animated stats bar — from MongoDB heroStats */}
         <div className={styles.statsBar}>
-          {[
-            { value: 25,   suffix: '+', label: 'Years in Industry'  },
-            { value: 15,   suffix: '+', label: 'Projects Delivered' },
-            { value: 1200, suffix: '+', label: 'Happy Customers'    },
-          ].map((s, i) => (
+          {heroStats.map((s, i) => (
             <div key={i} className={styles.stat}>
               <div className={styles.statNum}>
                 {inView
-                  ? <AnimatedCount end={s.value} duration={1800} suffix={s.suffix} />
+                  ? <AnimatedCount end={s.end} duration={1800} suffix={s.suffix} />
                   : `0${s.suffix}`}
               </div>
               <div className={styles.statLabel}>{s.label}</div>
@@ -189,13 +152,11 @@ export default function Hero({ content, onEnquire }) {
         animate={{ opacity: 1, x: 0 }}
         transition={{ duration: 0.7, delay: 0.2, ease: [0.4, 0, 0.2, 1] }}>
 
-        {/* ── Premium Director Contact Card ─────────────────────────────── */}
+        {/* ── Premium Director Contact Card — from MongoDB director ──────── */}
         <div className={styles.directorCard}>
-          {/* decorative shimmer strips */}
           <div className={styles.directorShimmer1} />
           <div className={styles.directorShimmer2} />
 
-          {/* Left — avatar */}
           <div className={styles.directorAvatarWrap}>
             <div className={styles.directorRing} />
             <div className={styles.directorAvatar}>
@@ -204,24 +165,20 @@ export default function Hero({ content, onEnquire }) {
             <div className={styles.directorOnline} />
           </div>
 
-          {/* Centre — identity */}
           <div className={styles.directorInfo}>
             <div className={styles.directorBadge}>{dirTitle}</div>
             <div className={styles.directorName}>{dirName}</div>
             <a href={`tel:${dirPhone}`} className={styles.directorPhone}>
-              <Phone size={10} />
-              {dirPhone}
+              <Phone size={10} />{dirPhone}
             </a>
           </div>
 
-          {/* Right — CTAs */}
           <div className={styles.directorActions}>
             <a href={`tel:${dirPhone}`} className={styles.directorCallBtn} aria-label="Call">
-              <Phone size={13} />
-              <span>Call</span>
+              <Phone size={13} /><span>Call</span>
             </a>
             <a
-              href={`https://wa.me/${DEFAULT_WA_NUMBER}?text=${encodeURIComponent(`Hi, I am interested in Chaturbhuja plots. Please share details.`)}`}
+              href={`https://wa.me/${DEFAULT_WA_NUMBER}?text=${encodeURIComponent('Hi, I am interested in Chaturbhuja plots. Please share details.')}`}
               target="_blank" rel="noreferrer"
               className={styles.directorWaBtn} aria-label="WhatsApp">
               💬
@@ -229,7 +186,7 @@ export default function Hero({ content, onEnquire }) {
           </div>
         </div>
 
-        {/* ── Urgency Tag ───────────────────────────────────────────────── */}
+        {/* ── Urgency Tag — from MongoDB urgency.tagline ────────────────── */}
         <div className={styles.lcTag}>
           <span className={styles.lcPulse} />
           {tagline}
@@ -241,7 +198,7 @@ export default function Hero({ content, onEnquire }) {
         </h3>
         <p className={styles.lcDesc}>{urgDesc}</p>
 
-        {/* ── Stats Grid ────────────────────────────────────────────────── */}
+        {/* ── Stats Grid — from MongoDB urgency ─────────────────────────── */}
         <div className={styles.lcStatus}>
           <div className={styles.lcStatusCard} style={{ background: 'rgba(201,168,76,.12)' }}>
             <div className={styles.lcStatusIcon}>🟡</div>
@@ -277,7 +234,7 @@ export default function Hero({ content, onEnquire }) {
           <span>✅ {completedProjects} {barClosedLabel}</span>
         </div>
 
-        {/* ── Trust Stats ───────────────────────────────────────────────── */}
+        {/* ── Trust Stats — from MongoDB lcStats ────────────────────────── */}
         <div className={styles.lcStats}>
           {lcStats.map((s, i) => (
             <div key={i} className={styles.lcs}>

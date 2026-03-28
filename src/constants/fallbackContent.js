@@ -154,6 +154,14 @@ const FALLBACK_CONTENT = {
     { end: 15,   suffix: '+', label: 'Projects Delivered' },
     { end: 1200, suffix: '+', label: 'Happy Customers'    },
   ],
+
+  brochureNotes: [
+    {
+      projectName: 'Trimbak Oaks',
+      available:   false,
+      note:        "Brochure for Trimbak Oaks is not yet available. You can still connect with our team via WhatsApp or request a callback — we'll share all project details personally.",
+    },
+  ],
 }
 
 export default FALLBACK_CONTENT

@@ -5,7 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { X, MessageCircle, Download, Mail, Loader2, AlertCircle, Calendar } from 'lucide-react'
 import { useSubmitLead }         from '@/hooks/useData'
 import { ACTIVE_PROJECTS }       from '@/constants/projects'
-import { BROCHURES }             from '@/constants/brochures'
+import { BROCHURES, getBrochureUrl } from '@/constants/brochures'
 import { brochureApi, siteVisitApi } from '@/api'
 import { openWhatsApp, safeOpenExternal } from '@/utils/security'
 import { DEFAULT_WA_NUMBER }     from '@/constants/config'
@@ -22,7 +22,7 @@ const isSiteVisit  = ctx => ctx?.type === 'SITE_VISIT'
 const isPlotEnquiry = ctx => ctx?.type === 'PLOT_ENQUIRY'
 const isCallback    = ctx => ctx?.type === 'CALLBACK'
 
-export default function LeadModal({ context, onClose, whatsapp }) {
+export default function LeadModal({ context, onClose, whatsapp, content }) {
   const isOpen    = !!context
   const isSV      = isSiteVisit(context)
   const isPE      = isPlotEnquiry(context)
@@ -43,7 +43,16 @@ export default function LeadModal({ context, onClose, whatsapp }) {
 
   const selectedProjObj = ACTIVE_PROJECTS.find(p => p.name === selectedProject)
   const isAny           = selectedProject === 'Any Project'
-  const brochureUrl     = isAny ? null : (BROCHURES[selectedProjObj?.id] || BROCHURES[context?.projectId] || null)
+
+  // Use getBrochureUrl so explicit null (unavailable) is preserved correctly
+  const brochureUrl = isAny
+    ? null
+    : getBrochureUrl(selectedProjObj?.id || context?.projectId)
+
+  // Brochure note from MongoDB — shown when selected project has no brochure
+  const brochureNote = !isAny && selectedProject
+    ? content?.brochureNotes?.find(n => n.projectName === selectedProject && n.available === false)?.note
+    : null
 
   const clearCtaError = key => setCtaErrors(e => ({ ...e, [key]: '' }))
 
@@ -201,13 +210,18 @@ export default function LeadModal({ context, onClose, whatsapp }) {
         <select className="form-input" {...register('project')}
           onChange={e => { clearCtaError('download'); register('project').onChange(e) }}>
           <option value="">Select a project</option>
-          {ACTIVE_PROJECTS
-            .filter(p => isSV || BROCHURES[p.id] !== null)
-            .map(p => (
-              <option key={p.id} value={p.name}>{p.name} — {p.loc}</option>
-            ))}
+          {ACTIVE_PROJECTS.map(p => (
+            <option key={p.id} value={p.name}>{p.name} — {p.loc}</option>
+          ))}
           <option value="Any Project">{isSV ? 'Any / Not Sure Yet' : 'Any / Not Sure Yet — Download All'}</option>
         </select>
+        {/* Dynamic note from MongoDB when selected project has no brochure */}
+        {!isSV && brochureNote && (
+          <div className={styles.brochureUnavailableNote}>
+            <span className={styles.brochureNoteIcon}>ℹ️</span>
+            <p>{brochureNote}</p>
+          </div>
+        )}
         {!isSV && isAny && (
           <p className={styles.allBrochuresNote}>📦 {ALL_BROCHURE_URLS.length} brochures will be downloaded</p>
         )}

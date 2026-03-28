@@ -138,6 +138,30 @@
   border-radius: 6px; border-left: 3px solid var(--gold);
 }
 
+/* Shown when selected project has no brochure available */
+.brochureUnavailableNote {
+  display: flex;
+  gap: 8px;
+  align-items: flex-start;
+  margin-top: 8px;
+  padding: 10px 12px;
+  background: rgba(255, 152, 0, 0.08);
+  border: 1px solid rgba(255, 152, 0, 0.25);
+  border-left: 3px solid #FF9800;
+  border-radius: 8px;
+}
+.brochureNoteIcon {
+  font-size: 14px;
+  flex-shrink: 0;
+  line-height: 1.5;
+}
+.brochureUnavailableNote p {
+  font-size: 12.5px;
+  color: #7a5200;
+  line-height: 1.6;
+  margin: 0;
+}
+
 /* ── Plot enquiry card ────────────────────────────────────────────── */
 .plotCard {
   background: linear-gradient(135deg, rgba(30,77,43,0.06) 0%, rgba(201,168,76,0.08) 100%);

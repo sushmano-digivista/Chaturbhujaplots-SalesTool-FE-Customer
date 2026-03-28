@@ -84,6 +84,7 @@ export default function HomePage() {
         context={leadCtx}
         onClose={closeEnquiry}
         whatsapp={contact.whatsapp}
+        content={activeContent}
       />
     </div>
   )

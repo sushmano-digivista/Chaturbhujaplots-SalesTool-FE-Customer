@@ -7,7 +7,7 @@
   grid-template-columns: 1fr 400px;
   align-items: center;
   gap: 40px;
-  padding: calc(var(--nav-h) + 4px) 5% 48px;
+  padding: var(--nav-h) 5% 48px;
   position: relative; overflow: hidden;
 }
 .overlay {
@@ -272,7 +272,7 @@
 
 /* Responsive */
 @media (max-width: 900px) {
-  .hero { grid-template-columns: 1fr; padding: calc(var(--nav-h) + 4px) 5% 48px; }
+  .hero { grid-template-columns: 1fr; padding: var(--nav-h) 5% 48px; }
   .limitedCard { margin-top: 8px; }
 }
 @media (max-width: 768px) {

@@ -19,8 +19,9 @@ describe('BROCHURES', () => {
     expect(BROCHURES).toHaveProperty('general')
   })
 
-  it('each entry is a non-empty string path', () => {
-    Object.values(BROCHURES).forEach((url) => {
+  it('each entry is either a non-empty string path or null (unavailable)', () => {
+    Object.entries(BROCHURES).forEach(([key, url]) => {
+      if (url === null) return // null = brochure not yet available (e.g. trimbak)
       expect(typeof url).toBe('string')
       expect(url.length).toBeGreaterThan(0)
     })
@@ -36,7 +37,7 @@ describe('getBrochureUrl', () => {
     expect(getBrochureUrl('anjana')).toBe(BROCHURES.anjana)
     expect(getBrochureUrl('aparna')).toBe(BROCHURES.aparna)
     expect(getBrochureUrl('varaha')).toBe(BROCHURES.varaha)
-    expect(getBrochureUrl('trimbak')).toBe(BROCHURES.trimbak)
+    expect(getBrochureUrl('trimbak')).toBeNull() // no brochure available yet
   })
 
   it('returns the general brochure URL for an unknown project ID', () => {

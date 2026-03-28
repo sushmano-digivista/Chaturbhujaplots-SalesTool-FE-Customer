@@ -201,9 +201,11 @@ export default function LeadModal({ context, onClose, whatsapp }) {
         <select className="form-input" {...register('project')}
           onChange={e => { clearCtaError('download'); register('project').onChange(e) }}>
           <option value="">Select a project</option>
-          {ACTIVE_PROJECTS.map(p => (
-            <option key={p.id} value={p.name}>{p.name} — {p.loc}</option>
-          ))}
+          {ACTIVE_PROJECTS
+            .filter(p => isSV || BROCHURES[p.id] !== null)
+            .map(p => (
+              <option key={p.id} value={p.name}>{p.name} — {p.loc}</option>
+            ))}
           <option value="Any Project">{isSV ? 'Any / Not Sure Yet' : 'Any / Not Sure Yet — Download All'}</option>
         </select>
         {!isSV && isAny && (

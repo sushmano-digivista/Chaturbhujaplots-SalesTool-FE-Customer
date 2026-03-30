@@ -20,7 +20,7 @@ const allImageModules = {
 
 // Build flat sorted list — filename without extension as label
 const ALL_IMAGES = Object.keys(allImageModules)
-  .sort()
+  .sort((a, b) => a.localeCompare(b))
   .map(path => ({
     src:   allImageModules[path].default,
     label: path.split('/').pop()

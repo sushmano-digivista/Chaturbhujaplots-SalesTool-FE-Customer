@@ -18,7 +18,6 @@ export const FACING_MAP = {
   // East–North
   'East/North':            'eastNorth',
   'East/North corner':     'eastNorth',
-  'North/East corner':     'eastNorth',
   // East–South
   'East/South':            'eastSouth',
   'East/South corner':     'eastSouth',
@@ -33,7 +32,6 @@ export const FACING_MAP = {
   // West–North
   'West/North':            'westNorth',
   'West/North corner':     'westNorth',
-  'North/West corner':     'westNorth',
   // West–South
   'West/South':            'westSouth',
   'West/South corner':     'westSouth',

@@ -325,7 +325,7 @@
 }
 .popupCta:hover { opacity: 0.88; transform: translateY(-1px); }
 .popupWa {
-  padding: 14px 20px; border-radius: 12px; border: none;
+  padding: 14px 20px; border-radius: 12px;
   background: rgba(37,211,102,0.1); color: #25D366;
   font-size: 14px; font-weight: 600; cursor: pointer;
   border: 1px solid rgba(37,211,102,0.22);

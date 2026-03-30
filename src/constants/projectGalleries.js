@@ -46,7 +46,7 @@ const FOLDER_LABELS = {
 function buildMap(modules) {
   const result = {}
 
-  Object.keys(modules).sort().forEach((path) => {
+  Object.keys(modules).sort((a, b) => a.localeCompare(b)).forEach((path) => {
     const parts     = path.split('/')
     const folder    = parts[parts.length - 2]
     const projId    = FOLDER_TO_ID[folder]

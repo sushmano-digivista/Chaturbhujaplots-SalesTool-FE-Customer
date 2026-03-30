@@ -5,13 +5,8 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { X, MessageCircle, Download, Mail, Loader2, AlertCircle, Calendar, ChevronRight } from 'lucide-react'
 import { useSubmitLead }         from '@/hooks/useData'
 import { ACTIVE_PROJECTS }       from '@/constants/projects'
-<<<<<<< HEAD
 import { BROCHURES, getBrochureUrl } from '@/constants/brochures'
-import { brochureApi, siteVisitApi } from '@/api'
-=======
-import { BROCHURES }             from '@/constants/brochures'
 import { brochureApi, siteVisitApi, leadApi } from '@/api'
->>>>>>> fb808556485f2c30fd40ff1787e3ff0ec81923f8
 import { openWhatsApp, safeOpenExternal } from '@/utils/security'
 import { DEFAULT_WA_NUMBER }     from '@/constants/config'
 import styles from './LeadModal.module.css'
@@ -597,11 +592,7 @@ export default function LeadModal({ context, onClose, whatsapp, content }) {
               </form>
             )}
 
-<<<<<<< HEAD
             </div>{/* /scrollBody */}
-=======
-            </div>{/* end scrollBody */}
->>>>>>> fb808556485f2c30fd40ff1787e3ff0ec81923f8
           </motion.div>
         </motion.div>
       )}

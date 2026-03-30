@@ -19,21 +19,8 @@ export default function PageLoader() {
           objectFit: 'contain',
           animation: 'splashPulse 1.8s ease-in-out infinite',
           filter: 'drop-shadow(0 0 24px rgba(201,168,76,0.4))',
-          clipPath: 'inset(0 0 25% 0)',
         }}
       />
-      <div style={{
-        marginTop: 20,
-        fontFamily: 'Georgia, serif',
-        fontSize: 13,
-        letterSpacing: '0.25em',
-        textTransform: 'uppercase',
-        color: 'rgba(201,168,76,0.8)',
-        animation: 'splashFadeIn 1.2s ease forwards',
-        opacity: 0,
-      }}>
-        Properties &amp; Infra
-      </div>
       <div style={{
         marginTop: 32,
         width: 160, height: 2,
@@ -53,7 +40,6 @@ export default function PageLoader() {
           0%, 100% { transform: scale(1);    opacity: 1;    }
           50%       { transform: scale(1.04); opacity: 0.88; }
         }
-        @keyframes splashFadeIn { to { opacity: 1; } }
         @keyframes splashShimmer {
           0%   { background-position: 200% 0; width: 0%;    }
           50%  { background-position:   0% 0; width: 100%;  }

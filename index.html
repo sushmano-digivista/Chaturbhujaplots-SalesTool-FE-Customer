@@ -28,18 +28,8 @@
           object-fit: contain;
           animation: splashPulse 1.8s ease-in-out infinite;
           filter: drop-shadow(0 0 24px rgba(201,168,76,0.4));
-          clip-path: inset(0 0 25% 0);
         }
-        #splash-tagline {
-          margin-top: 20px;
-          font-family: Georgia, serif;
-          font-size: 13px;
-          letter-spacing: 0.25em;
-          text-transform: uppercase;
-          color: rgba(201,168,76,0.8);
-          animation: splashFadeIn 1.2s ease forwards;
-          opacity: 0;
-        }
+
         #splash-bar {
           margin-top: 32px;
           width: 160px;
@@ -58,9 +48,6 @@
         @keyframes splashPulse {
           0%, 100% { transform: scale(1);   opacity: 1; }
           50%       { transform: scale(1.04); opacity: 0.88; }
-        }
-        @keyframes splashFadeIn {
-          to { opacity: 1; }
         }
         @keyframes splashShimmer {
           0%   { background-position: 200% 0; width: 0%; }

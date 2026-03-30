@@ -19,6 +19,7 @@ export default function PageLoader() {
           objectFit: 'contain',
           animation: 'splashPulse 1.8s ease-in-out infinite',
           filter: 'drop-shadow(0 0 24px rgba(201,168,76,0.4))',
+          clipPath: 'inset(0 0 25% 0)',
         }}
       />
       <div style={{

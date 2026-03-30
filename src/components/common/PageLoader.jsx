@@ -1,47 +1,40 @@
 /**
- * PageLoader — Duplex house splash (redesigned to match reference image).
- * Left section: tall 2-story cream/beige. Right section: lower dark brown.
- * Draw phase: 0→2.5s. Paint phase: 2.5→3.0s. Minimum display: 3.5s.
+ * PageLoader — Real estate logo style splash screen.
+ * Gold arc draws first, then buildings left→right in silhouette,
+ * then roofs fill gold, walls fill dark (logo effect).
+ * Minimum 3.5s display.
  */
 import { useEffect, useState } from 'react'
 
 const CSS = `
-  .hp { fill:transparent; stroke:#2a1008; stroke-linecap:round; stroke-linejoin:round; }
-  .hl { fill:none; stroke:#2a1008; stroke-linecap:round; }
-
-  #h-lw  { stroke-width:2.5; stroke-dasharray:615; stroke-dashoffset:615; animation:draw .70s ease .00s forwards,fillLW .50s ease 2.5s forwards; }
-  #h-rw  { stroke-width:2.5; stroke-dasharray:480; stroke-dashoffset:480; animation:draw .60s ease .60s forwards,fillRW .50s ease 2.5s forwards; }
-  #h-lr  { stroke-width:3;   stroke-dasharray:348; stroke-dashoffset:348; animation:draw .30s ease 1.05s forwards,fillDF .50s ease 2.5s forwards; }
-  #h-rr  { stroke-width:3;   stroke-dasharray:282; stroke-dashoffset:282; animation:draw .28s ease 1.25s forwards,fillDF .50s ease 2.5s forwards; }
-  #h-lfw { stroke-width:2;   stroke-dasharray:254; stroke-dashoffset:254; animation:draw .24s ease 1.45s forwards,fillWN .50s ease 2.5s forwards; }
-  #h-llf { stroke-width:2;   stroke-dasharray:260; stroke-dashoffset:260; animation:draw .24s ease 1.55s forwards,fillLA .50s ease 2.5s forwards; }
-  #h-lgw { stroke-width:2;   stroke-dasharray:402; stroke-dashoffset:402; animation:draw .26s ease 1.72s forwards,fillWN .50s ease 2.5s forwards; }
-  #h-ruw { stroke-width:2;   stroke-dasharray:302; stroke-dashoffset:302; animation:draw .25s ease 1.86s forwards,fillWN .50s ease 2.5s forwards; }
-  #h-rbl { stroke-width:3;   stroke-dasharray:256; stroke-dashoffset:256; animation:draw .22s ease 1.96s forwards,fillDF .50s ease 2.5s forwards; }
-  #h-rgw { stroke-width:2;   stroke-dasharray:256; stroke-dashoffset:256; animation:draw .22s ease 2.06s forwards,fillWN .50s ease 2.5s forwards; }
-  #h-rep { stroke-width:2;   stroke-dasharray:162; stroke-dashoffset:162; animation:draw .16s ease 2.16s forwards,fillEP .50s ease 2.5s forwards; }
-  .h-lv  { stroke-width:1;   stroke-dasharray:65;  stroke-dashoffset:65;  animation:draw .14s ease 2.24s forwards; }
-  .h-lh  { stroke-width:1;   stroke-dasharray:67;  stroke-dashoffset:67;  animation:draw .12s ease 2.32s forwards; }
-  .h-ev  { stroke-width:1.5; stroke-dasharray:56;  stroke-dashoffset:56;  animation:draw .12s ease 2.28s forwards; }
-  .h-bb  { stroke-width:1.5; stroke-dasharray:7;   stroke-dashoffset:7;   animation:draw .07s ease 2.36s forwards; }
-  #h-s1  { stroke-width:1.5; stroke-dasharray:82;  stroke-dashoffset:82;  animation:draw .10s ease 2.36s forwards,fillST .50s ease 2.5s forwards; }
-  #h-s2  { stroke-width:1.5; stroke-dasharray:72;  stroke-dashoffset:72;  animation:draw .09s ease 2.41s forwards,fillST .50s ease 2.5s forwards; }
-  #h-s3  { stroke-width:1.5; stroke-dasharray:62;  stroke-dashoffset:62;  animation:draw .08s ease 2.45s forwards,fillST .50s ease 2.5s forwards; }
-  #h-gr  { stroke-width:1.5; stroke-dasharray:655; stroke-dashoffset:655; animation:draw .20s ease 2.42s forwards,fillGR .50s ease 2.5s forwards; }
-  #h-bl  { stroke-width:1.5; stroke-dasharray:170; stroke-dashoffset:170; animation:draw .16s ease 2.48s forwards,fillBU .50s ease 2.5s forwards; }
-  #h-bm  { stroke-width:1.5; stroke-dasharray:130; stroke-dashoffset:130; animation:draw .13s ease 2.52s forwards,fillBU .50s ease 2.5s forwards; }
-  #h-bri { stroke-width:1.5; stroke-dasharray:130; stroke-dashoffset:130; animation:draw .13s ease 2.55s forwards,fillBU .50s ease 2.5s forwards; }
+  .hp { fill:transparent; stroke:#d4c4a0; stroke-linecap:round; stroke-linejoin:round; }
+  #h-arc { stroke:#C9A84C; stroke-width:3.5; fill:none; stroke-dasharray:285; stroke-dashoffset:285; animation:draw .75s ease .00s forwards; }
+  #h-cr  { stroke-width:2.5; stroke-dasharray:123; stroke-dashoffset:123; animation:draw .28s ease .65s forwards,fillRF .5s ease 2.5s forwards; }
+  #h-lr  { stroke-width:2.5; stroke-dasharray:99;  stroke-dashoffset:99;  animation:draw .22s ease 1.10s forwards,fillRF .5s ease 2.5s forwards; }
+  #h-rr  { stroke-width:2.5; stroke-dasharray:110; stroke-dashoffset:110; animation:draw .25s ease 1.38s forwards,fillRF .5s ease 2.5s forwards; }
+  #h-flr { stroke-width:2;   stroke-dasharray:52;  stroke-dashoffset:52;  animation:draw .14s ease 1.76s forwards,fillRF .5s ease 2.5s forwards; }
+  #h-frr { stroke-width:2;   stroke-dasharray:52;  stroke-dashoffset:52;  animation:draw .14s ease 1.80s forwards,fillRF .5s ease 2.5s forwards; }
+  #h-clc { stroke-width:2;   stroke-dasharray:90;  stroke-dashoffset:90;  animation:draw .18s ease .88s forwards,fillWL .5s ease 2.5s forwards; }
+  #h-crc { stroke-width:2;   stroke-dasharray:62;  stroke-dashoffset:62;  animation:draw .14s ease .96s forwards,fillWL .5s ease 2.5s forwards; }
+  #h-lc  { stroke-width:2;   stroke-dasharray:74;  stroke-dashoffset:74;  animation:draw .16s ease 1.26s forwards,fillWL .5s ease 2.5s forwards; }
+  #h-rc  { stroke-width:2;   stroke-dasharray:78;  stroke-dashoffset:78;  animation:draw .16s ease 1.57s forwards,fillWL .5s ease 2.5s forwards; }
+  #h-cb  { stroke-width:2.5; stroke-dasharray:308; stroke-dashoffset:308; animation:draw .38s ease 1.00s forwards,fillWL .5s ease 2.5s forwards; }
+  #h-lb  { stroke-width:2.5; stroke-dasharray:200; stroke-dashoffset:200; animation:draw .28s ease 1.32s forwards,fillWL .5s ease 2.5s forwards; }
+  #h-rb  { stroke-width:2.5; stroke-dasharray:244; stroke-dashoffset:244; animation:draw .32s ease 1.60s forwards,fillWL .5s ease 2.5s forwards; }
+  #h-flb { stroke-width:2;   stroke-dasharray:102; stroke-dashoffset:102; animation:draw .16s ease 1.78s forwards,fillWL .5s ease 2.5s forwards; }
+  #h-frb { stroke-width:2;   stroke-dasharray:96;  stroke-dashoffset:96;  animation:draw .16s ease 1.83s forwards,fillWL .5s ease 2.5s forwards; }
+  .h-cw  { stroke-width:1.5; stroke-dasharray:62;  stroke-dashoffset:62;  animation:draw .13s ease 2.00s forwards,fillWN .5s ease 2.5s forwards; }
+  .h-lw  { stroke-width:1.5; stroke-dasharray:52;  stroke-dashoffset:52;  animation:draw .11s ease 2.04s forwards,fillWN .5s ease 2.5s forwards; }
+  .h-rw  { stroke-width:1.5; stroke-dasharray:52;  stroke-dashoffset:52;  animation:draw .11s ease 2.07s forwards,fillWN .5s ease 2.5s forwards; }
+  .h-sw  { stroke-width:1.5; stroke-dasharray:36;  stroke-dashoffset:36;  animation:draw .09s ease 2.11s forwards,fillWN .5s ease 2.5s forwards; }
+  #h-cd  { stroke-width:1.5; stroke-dasharray:94;  stroke-dashoffset:94;  animation:draw .11s ease 2.15s forwards,fillWN .5s ease 2.5s forwards; }
+  #h-ld  { stroke-width:1.5; stroke-dasharray:68;  stroke-dashoffset:68;  animation:draw .09s ease 2.18s forwards,fillWN .5s ease 2.5s forwards; }
+  #h-gnd { stroke:#C9A84C; stroke-width:2.5; fill:none; stroke-linecap:round; stroke-dasharray:280; stroke-dashoffset:280; animation:draw .22s ease 2.22s forwards; }
 
   @keyframes draw   { to { stroke-dashoffset:0 } }
-  @keyframes fillLW { to { fill:#f2ede0 } }
-  @keyframes fillRW { to { fill:#7a3e22 } }
-  @keyframes fillDF { to { fill:#341608 } }
-  @keyframes fillWN { to { fill:#9ac0d8 } }
-  @keyframes fillLA { to { fill:#c08040 } }
-  @keyframes fillEP { to { fill:#47200c } }
-  @keyframes fillST { to { fill:#d0c4b0 } }
-  @keyframes fillGR { to { fill:#4a9a22 } }
-  @keyframes fillBU { to { fill:#2a7010 } }
+  @keyframes fillRF { to { fill:#C9A84C } }
+  @keyframes fillWL { to { fill:#243c2a } }
+  @keyframes fillWN { to { fill:#0d1e12 } }
   @keyframes logoPulse {
     0%,100%{ transform:scale(1);    filter:brightness(1.7) drop-shadow(0 0 36px rgba(201,168,76,.6))  drop-shadow(0 0 10px rgba(201,168,76,.35)); }
     50%    { transform:scale(1.03); filter:brightness(1.9) drop-shadow(0 0 52px rgba(201,168,76,.80)) drop-shadow(0 0 14px rgba(201,168,76,.50)); }
@@ -58,69 +51,67 @@ export default function PageLoader() {
   useEffect(() => { const t = setTimeout(() => setGone(true), 3500); return () => clearTimeout(t) }, [])
   if (gone) return null
 
-  const lvX = [36, 49, 62, 75]
-  const lhY = [69, 86, 103]
-  const evX = [254, 260, 266, 272]
-  const bbX = [171,179,187,195,203,211,219,227,235,243,251,259,267,275]
-
   return (
     <div style={{ position:'fixed', inset:0,
       background:'radial-gradient(ellipse at center,#0f2d1a 0%,#081a0f 100%)',
       display:'flex', flexDirection:'column', alignItems:'center', justifyContent:'center', zIndex:9999 }}>
       <style>{CSS}</style>
 
-      {/* Duplex house SVG */}
-      <svg viewBox="0 0 300 225" width="230" style={{maxWidth:'85vw', display:'block', marginBottom:-2}}
+      <svg viewBox="0 0 280 195" width="240" style={{maxWidth:'88vw', display:'block', marginBottom:2}}
         xmlns="http://www.w3.org/2000/svg">
 
-        {/* Grass + bushes (bottom layer) */}
-        <rect id="h-gr"  className="hp" x="0"   y="200" width="300" height="25" rx="3"/>
-        <ellipse id="h-bl"  className="hp" cx="55"  cy="206" rx="35" ry="12"/>
-        <ellipse id="h-bm"  className="hp" cx="162" cy="206" rx="26" ry="11"/>
-        <ellipse id="h-bri" className="hp" cx="222" cy="206" rx="26" ry="11"/>
+        {/* Gold arc — drawn first, sweeps across behind buildings */}
+        <path id="h-arc" d="M 32,131 A 115,115 0 0,1 248,131"/>
 
-        {/* Main walls */}
-        <rect id="h-lw" className="hp" x="15"  y="45"  width="150" height="155"/>
-        <rect id="h-rw" className="hp" x="163" y="82"  width="120" height="118"/>
+        {/* Far-left mini (background) */}
+        <polyline id="h-flr" className="hp" points="4,162 19,142 34,162"/>
+        <rect     id="h-flb" className="hp" x="5"   y="161" width="28" height="23"/>
+        <rect               className="hp h-sw" x="10"  y="168" width="9"  height="9"/>
 
-        {/* Roof overhangs */}
-        <rect id="h-lr" className="hp" x="10"  y="33"  width="158" height="14"/>
-        <rect id="h-rr" className="hp" x="158" y="70"  width="125" height="14"/>
+        {/* Left medium */}
+        <rect     id="h-lc"  className="hp" x="37"  y="112" width="10" height="30"/>
+        <polyline id="h-lr"  className="hp" points="20,148 52,112 84,148"/>
+        <rect     id="h-lb"  className="hp" x="21"  y="147" width="62" height="37"/>
+        <rect               className="hp h-lw" x="30"  y="155" width="13" height="13"/>
+        <rect               className="hp h-lw" x="50"  y="155" width="13" height="13"/>
+        <rect     id="h-ld"  className="hp" x="58"  y="163" width="14" height="21"/>
 
-        {/* Left windows + lattice */}
-        <rect id="h-lfw" className="hp" x="95"  y="52"  width="62"  height="63"/>
-        <rect id="h-llf" className="hp" x="23"  y="52"  width="65"  height="63"/>
-        <rect id="h-lgw" className="hp" x="23"  y="127" width="134" height="65"/>
+        {/* Center — tallest, dominant */}
+        <rect     id="h-clc" className="hp" x="112" y="65"  width="10" height="36"/>
+        <rect     id="h-crc" className="hp" x="150" y="80"  width="9"  height="22"/>
+        <polyline id="h-cr"  className="hp" points="90,110 130,65 170,110"/>
+        <rect     id="h-cb"  className="hp" x="91"  y="109" width="78" height="75"/>
+        <rect               className="hp h-cw" x="100" y="118" width="16" height="15"/>
+        <rect               className="hp h-cw" x="122" y="118" width="16" height="15"/>
+        <rect               className="hp h-cw" x="144" y="118" width="16" height="15"/>
+        <rect               className="hp h-cw" x="100" y="140" width="16" height="15"/>
+        <rect               className="hp h-cw" x="144" y="140" width="16" height="15"/>
+        <rect     id="h-cd"  className="hp" x="120" y="158" width="20" height="26"/>
 
-        {/* Right windows + balcony + entry */}
-        <rect id="h-ruw" className="hp" x="170" y="89"  width="107" height="42"/>
-        <rect id="h-rbl" className="hp" x="163" y="129" width="120" height="6"/>
-        <rect id="h-rgw" className="hp" x="170" y="138" width="72"  height="54"/>
-        <rect id="h-rep" className="hp" x="249" y="138" width="25"  height="54"/>
+        {/* Right medium */}
+        <rect     id="h-rc"  className="hp" x="233" y="100" width="9"  height="32"/>
+        <polyline id="h-rr"  className="hp" points="172,138 210,100 248,138"/>
+        <rect     id="h-rb"  className="hp" x="173" y="137" width="74" height="47"/>
+        <rect               className="hp h-rw" x="182" y="146" width="13" height="13"/>
+        <rect               className="hp h-rw" x="200" y="146" width="13" height="13"/>
+        <rect               className="hp h-rw" x="182" y="164" width="13" height="13"/>
+        <rect               className="hp h-rw" x="200" y="164" width="13" height="13"/>
 
-        {/* Lattice verticals */}
-        {lvX.map(x => <line key={x} className="hl h-lv" x1={x} y1="52" x2={x} y2="115"/>)}
-        {/* Lattice horizontals */}
-        {lhY.map(y => <line key={y} className="hl h-lh" x1="23" y1={y} x2="88" y2={y}/>)}
-        {/* Entry stripes */}
-        {evX.map(x => <line key={x} className="hl h-ev" x1={x} y1="138" x2={x} y2="192"/>)}
-        {/* Balcony bars */}
-        {bbX.map(x => <line key={x} className="hl h-bb" x1={x} y1="129" x2={x} y2="135"/>)}
+        {/* Far-right mini */}
+        <polyline id="h-frr" className="hp" points="244,166 258,148 272,166"/>
+        <rect     id="h-frb" className="hp" x="245" y="165" width="26" height="19"/>
+        <rect               className="hp h-sw" x="252" y="171" width="8"  height="8"/>
 
-        {/* Steps */}
-        <rect id="h-s1" className="hp" x="256" y="163" width="30" height="10"/>
-        <rect id="h-s2" className="hp" x="261" y="173" width="25" height="10"/>
-        <rect id="h-s3" className="hp" x="266" y="183" width="20" height="10"/>
+        {/* Gold ground swoosh */}
+        <path id="h-gnd" d="M 3,188 C 70,194 210,194 277,188"/>
       </svg>
 
-      {/* Logo */}
       <img src="/chaturbhuja-logo.webp" alt="Chaturbhuja Properties & Infra"
         style={{ width:300, maxWidth:'80vw', objectFit:'contain',
           animation:'logoPulse 2s ease-in-out infinite',
           filter:'brightness(1.7) drop-shadow(0 0 36px rgba(201,168,76,.6)) drop-shadow(0 0 10px rgba(201,168,76,.35))' }}/>
 
-      {/* Shimmer bar */}
-      <div style={{marginTop:18, width:180, height:2, background:'rgba(255,255,255,.07)', borderRadius:2, overflow:'hidden'}}>
+      <div style={{marginTop:16, width:180, height:2, background:'rgba(255,255,255,.07)', borderRadius:2, overflow:'hidden'}}>
         <div style={{ height:'100%',
           background:'linear-gradient(90deg,transparent,#C9A84C,#e8cf7a,#C9A84C,transparent)',
           backgroundSize:'300% 100%', animation:'shimmer 1.6s ease-in-out infinite', borderRadius:2 }}/>

@@ -17,67 +17,59 @@
       <!-- Loading splash — replaced by React on load -->
       <style>
 
-        .hp { fill:transparent; stroke:#3d2010; stroke-linecap:round; stroke-linejoin:round; }
-        .hl { fill:none;        stroke:#5a3520; stroke-linecap:round; }
+        /* Base styles */
+        #splash { position:fixed; inset:0; background:radial-gradient(ellipse at center,#0f2d1a 0%,#081a0f 100%); display:flex; flex-direction:column; align-items:center; justify-content:center; z-index:9999; }
+        #splash-house { display:block; margin-bottom:-2px; }
+        #splash-logo { width:300px; max-width:80vw; object-fit:contain; animation:logoPulse 2s ease-in-out infinite; filter:brightness(1.7) drop-shadow(0 0 36px rgba(201,168,76,.6)) drop-shadow(0 0 10px rgba(201,168,76,.35)); }
+        #splash-bar { margin-top:18px; width:180px; height:2px; background:rgba(255,255,255,.07); border-radius:2px; overflow:hidden; }
+        #splash-bar-fill { height:100%; background:linear-gradient(90deg,transparent,#C9A84C,#e8cf7a,#C9A84C,transparent); background-size:300% 100%; animation:shimmer 1.6s ease-in-out infinite; border-radius:2px; }
 
-        /* ── Draw + paint each element ── */
+        /* House path base */
+        .hp { fill:transparent; stroke:#2a1008; stroke-linecap:round; stroke-linejoin:round; }
+        .hl { fill:none; stroke:#2a1008; stroke-linecap:round; }
+
+        /* ── DRAW phase (stroke-dashoffset → 0) ── */
         /* Main walls */
-        #h-lw  { stroke-width:2.5; stroke-dasharray:556; stroke-dashoffset:556; animation:draw .65s ease .00s forwards, fillLW .45s ease 2.5s forwards; }
-        #h-rw  { stroke-width:2.5; stroke-dasharray:466; stroke-dashoffset:466; animation:draw .60s ease .50s forwards, fillRW .45s ease 2.5s forwards; }
-        /* Roofs */
-        #h-lr  { stroke-width:2.5; stroke-dasharray:338; stroke-dashoffset:338; animation:draw .28s ease .95s forwards, fillDF .45s ease 2.5s forwards; }
-        #h-rr  { stroke-width:2.5; stroke-dasharray:286; stroke-dashoffset:286; animation:draw .25s ease 1.15s forwards, fillDF .45s ease 2.5s forwards; }
-        /* Windows */
-        #h-wgl { stroke-width:1.5; stroke-dasharray:274; stroke-dashoffset:274; animation:draw .25s ease 1.35s forwards, fillWN .45s ease 2.5s forwards; }
-        #h-lf  { stroke-width:1.5; stroke-dasharray:228; stroke-dashoffset:228; animation:draw .22s ease 1.55s forwards, fillLA .45s ease 2.5s forwards; }
-        #h-wul { stroke-width:1.5; stroke-dasharray:206; stroke-dashoffset:206; animation:draw .20s ease 1.72s forwards, fillWN .45s ease 2.5s forwards; }
-        #h-wgr { stroke-width:1.5; stroke-dasharray:270; stroke-dashoffset:270; animation:draw .24s ease 1.86s forwards, fillWN .45s ease 2.5s forwards; }
-        #h-ep  { stroke-width:1.5; stroke-dasharray:152; stroke-dashoffset:152; animation:draw .16s ease 2.02s forwards, fillEP .45s ease 2.5s forwards; }
-        #h-wur { stroke-width:1.5; stroke-dasharray:170; stroke-dashoffset:170; animation:draw .16s ease 2.12s forwards, fillWN .45s ease 2.5s forwards; }
-        /* Entry vertical stripes */
-        .h-ev  { stroke-width:1;   stroke-dasharray:32;  stroke-dashoffset:32;  animation:draw .10s ease 2.18s forwards; }
-        /* Lattice grid */
-        .h-lv  { stroke-width:1;   stroke-dasharray:47;  stroke-dashoffset:47;  animation:draw .14s ease 2.22s forwards; }
-        .h-lh  { stroke-width:1;   stroke-dasharray:65;  stroke-dashoffset:65;  animation:draw .12s ease 2.30s forwards; }
-        /* Balcony */
-        #h-bal { stroke-width:2.5; stroke-dasharray:250; stroke-dashoffset:250; animation:draw .22s ease 2.20s forwards, fillDF .45s ease 2.5s forwards; }
-        .h-bb  { stroke-width:1.5; stroke-dasharray:5;   stroke-dashoffset:5;   animation:draw .07s ease 2.38s forwards; }
+        #h-lw  { stroke-width:2.5; stroke-dasharray:615; stroke-dashoffset:615; animation:draw .70s ease .00s forwards, fillLW .50s ease 2.5s forwards; }
+        #h-rw  { stroke-width:2.5; stroke-dasharray:480; stroke-dashoffset:480; animation:draw .60s ease .60s forwards, fillRW .50s ease 2.5s forwards; }
+        /* Roof overhangs */
+        #h-lr  { stroke-width:3;   stroke-dasharray:348; stroke-dashoffset:348; animation:draw .30s ease 1.05s forwards, fillDF .50s ease 2.5s forwards; }
+        #h-rr  { stroke-width:3;   stroke-dasharray:282; stroke-dashoffset:282; animation:draw .28s ease 1.25s forwards, fillDF .50s ease 2.5s forwards; }
+        /* Left section windows */
+        #h-lfw { stroke-width:2;   stroke-dasharray:254; stroke-dashoffset:254; animation:draw .24s ease 1.45s forwards, fillWN .50s ease 2.5s forwards; }
+        #h-llf { stroke-width:2;   stroke-dasharray:260; stroke-dashoffset:260; animation:draw .24s ease 1.55s forwards, fillLA .50s ease 2.5s forwards; }
+        #h-lgw { stroke-width:2;   stroke-dasharray:402; stroke-dashoffset:402; animation:draw .26s ease 1.72s forwards, fillWN .50s ease 2.5s forwards; }
+        /* Right section windows */
+        #h-ruw { stroke-width:2;   stroke-dasharray:302; stroke-dashoffset:302; animation:draw .25s ease 1.86s forwards, fillWN .50s ease 2.5s forwards; }
+        #h-rbl { stroke-width:3;   stroke-dasharray:256; stroke-dashoffset:256; animation:draw .22s ease 1.96s forwards, fillDF .50s ease 2.5s forwards; }
+        #h-rgw { stroke-width:2;   stroke-dasharray:256; stroke-dashoffset:256; animation:draw .22s ease 2.06s forwards, fillWN .50s ease 2.5s forwards; }
+        #h-rep { stroke-width:2;   stroke-dasharray:162; stroke-dashoffset:162; animation:draw .16s ease 2.16s forwards, fillEP .50s ease 2.5s forwards; }
+        /* Details */
+        .h-lv  { stroke-width:1;   stroke-dasharray:65;  stroke-dashoffset:65;  animation:draw .14s ease 2.24s forwards; }
+        .h-lh  { stroke-width:1;   stroke-dasharray:67;  stroke-dashoffset:67;  animation:draw .12s ease 2.32s forwards; }
+        .h-ev  { stroke-width:1.5; stroke-dasharray:56;  stroke-dashoffset:56;  animation:draw .12s ease 2.28s forwards; }
+        .h-bb  { stroke-width:1.5; stroke-dasharray:7;   stroke-dashoffset:7;   animation:draw .07s ease 2.36s forwards; }
         /* Steps */
-        #h-s1  { stroke-width:1.5; stroke-dasharray:86;  stroke-dashoffset:86;  animation:draw .10s ease 2.38s forwards, fillST .45s ease 2.5s forwards; }
-        #h-s2  { stroke-width:1.5; stroke-dasharray:74;  stroke-dashoffset:74;  animation:draw .09s ease 2.43s forwards, fillST .45s ease 2.5s forwards; }
-        #h-s3  { stroke-width:1.5; stroke-dasharray:62;  stroke-dashoffset:62;  animation:draw .08s ease 2.47s forwards, fillST .45s ease 2.5s forwards; }
-        /* Ground & plants */
-        #h-gr  { stroke-width:1.5; stroke-dasharray:592; stroke-dashoffset:592; animation:draw .22s ease 2.45s forwards, fillGR .45s ease 2.5s forwards; }
-        #h-bl  { stroke-width:1.5; stroke-dasharray:146; stroke-dashoffset:146; animation:draw .16s ease 2.52s forwards, fillBU .45s ease 2.5s forwards; }
-        #h-bm  { stroke-width:1.5; stroke-dasharray:107; stroke-dashoffset:107; animation:draw .13s ease 2.56s forwards, fillBU .45s ease 2.5s forwards; }
-        #h-bri { stroke-width:1.5; stroke-dasharray:113; stroke-dashoffset:113; animation:draw .14s ease 2.59s forwards, fillBU .45s ease 2.5s forwards; }
+        #h-s1  { stroke-width:1.5; stroke-dasharray:82;  stroke-dashoffset:82;  animation:draw .10s ease 2.36s forwards, fillST .50s ease 2.5s forwards; }
+        #h-s2  { stroke-width:1.5; stroke-dasharray:72;  stroke-dashoffset:72;  animation:draw .09s ease 2.41s forwards, fillST .50s ease 2.5s forwards; }
+        #h-s3  { stroke-width:1.5; stroke-dasharray:62;  stroke-dashoffset:62;  animation:draw .08s ease 2.45s forwards, fillST .50s ease 2.5s forwards; }
+        /* Ground + plants */
+        #h-gr  { stroke-width:1.5; stroke-dasharray:655; stroke-dashoffset:655; animation:draw .20s ease 2.42s forwards, fillGR .50s ease 2.5s forwards; }
+        #h-bl  { stroke-width:1.5; stroke-dasharray:170; stroke-dashoffset:170; animation:draw .16s ease 2.48s forwards, fillBU .50s ease 2.5s forwards; }
+        #h-bm  { stroke-width:1.5; stroke-dasharray:130; stroke-dashoffset:130; animation:draw .13s ease 2.52s forwards, fillBU .50s ease 2.5s forwards; }
+        #h-bri { stroke-width:1.5; stroke-dasharray:130; stroke-dashoffset:130; animation:draw .13s ease 2.55s forwards, fillBU .50s ease 2.5s forwards; }
 
-        /* Fill keyframes */
+        /* ── PAINT keyframes ── */
         @keyframes draw   { to { stroke-dashoffset:0 } }
-        @keyframes fillLW { to { fill:#f0ebe0 } }
-        @keyframes fillRW { to { fill:#8b5e3c } }
-        @keyframes fillDF { to { fill:#3d2314 } }
-        @keyframes fillWN { to { fill:#b8d4ec } }
-        @keyframes fillLA { to { fill:#c4904a } }
-        @keyframes fillEP { to { fill:#4a2810 } }
-        @keyframes fillST { to { fill:#c8b8a8 } }
-        @keyframes fillGR { to { fill:#5a9e3a } }
-        @keyframes fillBU { to { fill:#3d7a20 } }
-
-        /* Logo & bar */
-        #splash-logo {
-          width:320px; max-width:82vw; object-fit:contain; display:block;
-          animation:logoPulse 2s ease-in-out infinite;
-          filter:brightness(1.7) drop-shadow(0 0 36px rgba(201,168,76,.6)) drop-shadow(0 0 10px rgba(201,168,76,.35));
-        }
-        #splash-bar { margin-top:20px; width:180px; height:2px; background:rgba(255,255,255,.07); border-radius:2px; overflow:hidden; }
-        #splash-bar-fill {
-          height:100%;
-          background:linear-gradient(90deg,transparent,#C9A84C,#e8cf7a,#C9A84C,transparent);
-          background-size:300% 100%;
-          animation:shimmer 1.6s ease-in-out infinite;
-          border-radius:2px;
-        }
+        @keyframes fillLW { to { fill:#f2ede0 } }  /* warm cream */
+        @keyframes fillRW { to { fill:#7a3e22 } }  /* deep brown */
+        @keyframes fillDF { to { fill:#341608 } }  /* very dark brown (roofs, balcony) */
+        @keyframes fillWN { to { fill:#9ac0d8 } }  /* blue-gray windows */
+        @keyframes fillLA { to { fill:#c08040 } }  /* wood/lattice */
+        @keyframes fillEP { to { fill:#47200c } }  /* very dark entry */
+        @keyframes fillST { to { fill:#d0c4b0 } }  /* concrete steps */
+        @keyframes fillGR { to { fill:#4a9a22 } }  /* green grass */
+        @keyframes fillBU { to { fill:#2a7010 } }  /* dark green bushes */
         @keyframes logoPulse {
           0%,100%{ transform:scale(1);    filter:brightness(1.7) drop-shadow(0 0 36px rgba(201,168,76,.6))  drop-shadow(0 0 10px rgba(201,168,76,.35)); }
           50%    { transform:scale(1.03); filter:brightness(1.9) drop-shadow(0 0 52px rgba(201,168,76,.80)) drop-shadow(0 0 14px rgba(201,168,76,.50)); }
@@ -87,73 +79,89 @@
           50%  { background-position:  0% 0; width:100%; }
           100% { background-position:-200% 0; width:100%; }
         }
-        #splash { position:fixed; inset:0; background:radial-gradient(ellipse at center,#0f2d1a 0%,#081a0f 100%); display:flex; flex-direction:column; align-items:center; justify-content:center; z-index:9999; }
-        #splash-house { display:block; margin-bottom:-4px; }
         #splash.hide { animation:splashOut .45s ease forwards; }
         @keyframes splashOut { to { opacity:0; transform:scale(1.02); } }
 
       </style>
       <div id="splash">
-        <svg id="splash-house" viewBox="0 0 280 196" width="220" style="max-width:82vw;display:block;margin-bottom:-4px" xmlns="http://www.w3.org/2000/svg">
-          <!-- Ground + bushes (bottom layer) -->
-          <rect id="h-gr"  class="hp" x="0" y="183" width="280" height="13" rx="2"/>
-          <ellipse id="h-bl"  class="hp" cx="50"  cy="185" rx="30" ry="9"/>
-          <ellipse id="h-bm"  class="hp" cx="145" cy="185" rx="22" ry="8"/>
-          <ellipse id="h-bri" class="hp" cx="212" cy="185" rx="22" ry="9"/>
-          <!-- Main walls -->
-          <rect id="h-lw" class="hp" x="10"  y="50"  width="145" height="133"/>
-          <rect id="h-rw" class="hp" x="152" y="68"  width="118" height="115"/>
-          <!-- Roof overhangs -->
-          <rect id="h-lr" class="hp" x="5"   y="37"  width="153" height="15"/>
-          <rect id="h-rr" class="hp" x="147" y="55"  width="127" height="15"/>
-          <!-- Left windows -->
-          <rect id="h-wgl" class="hp" x="18"  y="112" width="70" height="66"/>
-          <rect id="h-lf"  class="hp" x="18"  y="57"  width="65" height="47"/>
-          <rect id="h-wul" class="hp" x="91"  y="57"  width="55" height="47"/>
-          <!-- Right windows & entry -->
-          <rect id="h-wgr" class="hp" x="158" y="110" width="67" height="68"/>
-          <rect id="h-ep"  class="hp" x="158" y="74"  width="43" height="32"/>
-          <rect id="h-wur" class="hp" x="205" y="74"  width="52" height="32"/>
+        <svg id="splash-house" viewBox="0 0 300 225" width="230" style="max-width:85vw;display:block;margin-bottom:-2px" xmlns="http://www.w3.org/2000/svg">
+
+          <!-- Grass platform (bottom layer first) -->
+          <rect id="h-gr"  class="hp" x="0"   y="200" width="300" height="25" rx="3"/>
+          <!-- Bushes -->
+          <ellipse id="h-bl"  class="hp" cx="55"  cy="206" rx="35" ry="12"/>
+          <ellipse id="h-bm"  class="hp" cx="162" cy="206" rx="26" ry="11"/>
+          <ellipse id="h-bri" class="hp" cx="222" cy="206" rx="26" ry="11"/>
+
+          <!-- Main walls (drawn on top of grass) -->
+          <!-- Left section: tall 2-story cream wall -->
+          <rect id="h-lw" class="hp" x="15"  y="45"  width="150" height="155"/>
+          <!-- Right section: lower dark brown wall (starts 37px lower) -->
+          <rect id="h-rw" class="hp" x="163" y="82"  width="120" height="118"/>
+
+          <!-- Roof overhangs (dark brown) -->
+          <rect id="h-lr" class="hp" x="10"  y="33"  width="158" height="14"/>
+          <rect id="h-rr" class="hp" x="158" y="70"  width="125" height="14"/>
+
+          <!-- Left section windows -->
+          <!-- 2nd floor: right window (blue) -->
+          <rect id="h-lfw" class="hp" x="95"  y="52"  width="62"  height="63"/>
+          <!-- 2nd floor: lattice panel (wood) -->
+          <rect id="h-llf" class="hp" x="23"  y="52"  width="65"  height="63"/>
+          <!-- 1st floor: large window -->
+          <rect id="h-lgw" class="hp" x="23"  y="127" width="134" height="65"/>
+
+          <!-- Right section windows -->
+          <!-- 2nd floor (balcony window) -->
+          <rect id="h-ruw" class="hp" x="170" y="89"  width="107" height="42"/>
+          <!-- Balcony horizontal rail -->
+          <rect id="h-rbl" class="hp" x="163" y="129" width="120" height="6"/>
+          <!-- 1st floor: left window -->
+          <rect id="h-rgw" class="hp" x="170" y="138" width="72"  height="54"/>
+          <!-- 1st floor: entry panel (stripes) -->
+          <rect id="h-rep" class="hp" x="249" y="138" width="25"  height="54"/>
+
+          <!-- Lattice grid — verticals (x=36,49,62,75) -->
+          <line class="hl h-lv" x1="36" y1="52" x2="36" y2="115"/>
+          <line class="hl h-lv" x1="49" y1="52" x2="49" y2="115"/>
+          <line class="hl h-lv" x1="62" y1="52" x2="62" y2="115"/>
+          <line class="hl h-lv" x1="75" y1="52" x2="75" y2="115"/>
+          <!-- Lattice grid — horizontals (y=69,86,103) -->
+          <line class="hl h-lh" x1="23" y1="69"  x2="88" y2="69"/>
+          <line class="hl h-lh" x1="23" y1="86"  x2="88" y2="86"/>
+          <line class="hl h-lh" x1="23" y1="103" x2="88" y2="103"/>
+
           <!-- Entry vertical stripes -->
-          <line class="hl h-ev" x1="165" y1="74" x2="165" y2="106"/>
-          <line class="hl h-ev" x1="172" y1="74" x2="172" y2="106"/>
-          <line class="hl h-ev" x1="179" y1="74" x2="179" y2="106"/>
-          <line class="hl h-ev" x1="186" y1="74" x2="186" y2="106"/>
-          <line class="hl h-ev" x1="193" y1="74" x2="193" y2="106"/>
-          <!-- Lattice verticals -->
-          <line class="hl h-lv" x1="29" y1="57" x2="29" y2="104"/>
-          <line class="hl h-lv" x1="40" y1="57" x2="40" y2="104"/>
-          <line class="hl h-lv" x1="51" y1="57" x2="51" y2="104"/>
-          <line class="hl h-lv" x1="62" y1="57" x2="62" y2="104"/>
-          <line class="hl h-lv" x1="73" y1="57" x2="73" y2="104"/>
-          <!-- Lattice horizontals -->
-          <line class="hl h-lh" x1="18" y1="69" x2="83" y2="69"/>
-          <line class="hl h-lh" x1="18" y1="81" x2="83" y2="81"/>
-          <line class="hl h-lh" x1="18" y1="93" x2="83" y2="93"/>
-          <!-- Balcony rail + bars -->
-          <rect id="h-bal" class="hp" x="152" y="68" width="118" height="5"/>
-          <line class="hl h-bb" x1="160" y1="68" x2="160" y2="73"/>
-          <line class="hl h-bb" x1="168" y1="68" x2="168" y2="73"/>
-          <line class="hl h-bb" x1="176" y1="68" x2="176" y2="73"/>
-          <line class="hl h-bb" x1="184" y1="68" x2="184" y2="73"/>
-          <line class="hl h-bb" x1="192" y1="68" x2="192" y2="73"/>
-          <line class="hl h-bb" x1="200" y1="68" x2="200" y2="73"/>
-          <line class="hl h-bb" x1="208" y1="68" x2="208" y2="73"/>
-          <line class="hl h-bb" x1="216" y1="68" x2="216" y2="73"/>
-          <line class="hl h-bb" x1="224" y1="68" x2="224" y2="73"/>
-          <line class="hl h-bb" x1="232" y1="68" x2="232" y2="73"/>
-          <line class="hl h-bb" x1="240" y1="68" x2="240" y2="73"/>
-          <line class="hl h-bb" x1="248" y1="68" x2="248" y2="73"/>
-          <line class="hl h-bb" x1="256" y1="68" x2="256" y2="73"/>
-          <line class="hl h-bb" x1="264" y1="68" x2="264" y2="73"/>
-          <!-- Steps -->
-          <rect id="h-s1" class="hp" x="238" y="156" width="34" height="8"/>
-          <rect id="h-s2" class="hp" x="244" y="164" width="28" height="8"/>
-          <rect id="h-s3" class="hp" x="250" y="172" width="22" height="8"/>
+          <line class="hl h-ev" x1="254" y1="138" x2="254" y2="192"/>
+          <line class="hl h-ev" x1="260" y1="138" x2="260" y2="192"/>
+          <line class="hl h-ev" x1="266" y1="138" x2="266" y2="192"/>
+          <line class="hl h-ev" x1="272" y1="138" x2="272" y2="192"/>
+
+          <!-- Balcony vertical bars (every 8px, x=171→283) -->
+          <line class="hl h-bb" x1="171" y1="129" x2="171" y2="135"/>
+          <line class="hl h-bb" x1="179" y1="129" x2="179" y2="135"/>
+          <line class="hl h-bb" x1="187" y1="129" x2="187" y2="135"/>
+          <line class="hl h-bb" x1="195" y1="129" x2="195" y2="135"/>
+          <line class="hl h-bb" x1="203" y1="129" x2="203" y2="135"/>
+          <line class="hl h-bb" x1="211" y1="129" x2="211" y2="135"/>
+          <line class="hl h-bb" x1="219" y1="129" x2="219" y2="135"/>
+          <line class="hl h-bb" x1="227" y1="129" x2="227" y2="135"/>
+          <line class="hl h-bb" x1="235" y1="129" x2="235" y2="135"/>
+          <line class="hl h-bb" x1="243" y1="129" x2="243" y2="135"/>
+          <line class="hl h-bb" x1="251" y1="129" x2="251" y2="135"/>
+          <line class="hl h-bb" x1="259" y1="129" x2="259" y2="135"/>
+          <line class="hl h-bb" x1="267" y1="129" x2="267" y2="135"/>
+          <line class="hl h-bb" x1="275" y1="129" x2="275" y2="135"/>
+
+          <!-- Steps (3 descending) -->
+          <rect id="h-s1" class="hp" x="256" y="163" width="30" height="10"/>
+          <rect id="h-s2" class="hp" x="261" y="173" width="25" height="10"/>
+          <rect id="h-s3" class="hp" x="266" y="183" width="20" height="10"/>
         </svg>
-        <img id="splash-logo" src="/chaturbhuja-logo.webp" alt="Chaturbhuja Properties & Infra" />
+        <img id="splash-logo" src="/chaturbhuja-logo.webp" alt="Chaturbhuja Properties &amp; Infra" />
         <div id="splash-bar"><div id="splash-bar-fill"></div></div>
       </div>
+    </div>
     </div>
     </div>
     </div>

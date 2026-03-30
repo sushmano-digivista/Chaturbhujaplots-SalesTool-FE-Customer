@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 
 import { useContent }   from '@/hooks/useData'
 import FALLBACK_CONTENT from '@/constants/fallbackContent'
@@ -40,15 +40,27 @@ import PageLoader from '@/components/common/PageLoader'
  *   2. Export  it from src/components/sections/index.js
  *   3. Import + place <YourNewSection /> inside <main> below
  */
+const SPLASH_MS = 3000 // match house draw animation duration
+
 export default function HomePage() {
   const { data: content, isLoading, isError } = useContent()
-  const [leadCtx, setLeadCtx] = useState(null)
+  const [leadCtx,     setLeadCtx]     = useState(null)
+  const [splashDone,  setSplashDone]  = useState(false)
+  const [mountedAt]                   = useState(() => Date.now())
 
   const openEnquiry  = useCallback((ctx) => setLeadCtx(ctx), [])
   const closeEnquiry = useCallback(() => setLeadCtx(null),   [])
 
+  // Enforce 3s minimum so the house finishes drawing before we transition
+  useEffect(() => {
+    const elapsed = Date.now() - mountedAt
+    const wait    = Math.max(0, SPLASH_MS - elapsed)
+    const t = setTimeout(() => setSplashDone(true), wait)
+    return () => clearTimeout(t)
+  }, [mountedAt])
+
   // Show full-screen loader only on the very first load (not on API error)
-  if (isLoading && !isError) return <PageLoader />
+  if ((isLoading || !splashDone) && !isError) return <PageLoader />
 
   // Fall back to static content when the API is down
   const activeContent = content || FALLBACK_CONTENT

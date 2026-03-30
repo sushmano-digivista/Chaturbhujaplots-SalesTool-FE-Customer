@@ -1,93 +1,95 @@
 /**
- * PageLoader — branded splash: animated house (above) + logo (below), 5s loop.
- * House draws itself stroke-by-stroke then holds, resets and repeats.
+ * PageLoader — 3s branded splash.
+ * House draws itself once (fully done by 2.6s), stays drawn.
+ * Only the shimmer bar continues after the house is complete.
+ * Minimum display: 3s, then hands off when data is ready.
  */
-import { useEffect, useState } from 'react'
+import { useEffect, useRef } from 'react'
+
+const CSS = `
+  @keyframes draw {
+    to { stroke-dashoffset: 0; }
+  }
+  @keyframes logoPulse {
+    0%,100%{ transform:scale(1);    filter:brightness(1.7) drop-shadow(0 0 36px rgba(201,168,76,.6))  drop-shadow(0 0 10px rgba(201,168,76,.35)); }
+    50%    { transform:scale(1.03); filter:brightness(1.9) drop-shadow(0 0 52px rgba(201,168,76,.80)) drop-shadow(0 0 14px rgba(201,168,76,.50)); }
+  }
+  @keyframes shimmer {
+    0%   { background-position:200% 0; width:0%;    }
+    50%  { background-position:  0% 0; width:100%;  }
+    100% { background-position:-200% 0; width:100%; }
+  }
+`
+
+// Each stroke: draw once, stay drawn (animation-fill-mode: forwards)
+// Timeline: chimney 0s→0.35s, roof 0.3s→1s, walls 0.9s→1.7s,
+//           door 1.6s→2.1s, winL 2.0s→2.4s, winR 2.2s→2.6s  ← all done at 2.6s
+const strokes = [
+  { id:'chimney', tag:'polyline', sw:3,   da:60,  delay:'0.00s', dur:'0.35s', points:'68,12 68,2 78,2 78,18' },
+  { id:'roof',    tag:'polyline', sw:3.5, da:140, delay:'0.30s', dur:'0.70s', points:'5,48 55,8 105,48'       },
+  { id:'walls',   tag:'rect',     sw:3.5, da:225, delay:'0.90s', dur:'0.80s', x:15,  y:48, w:80, h:42         },
+  { id:'door',    tag:'rect',     sw:2.5, da:90,  delay:'1.60s', dur:'0.50s', x:43,  y:68, w:24, h:22         },
+  { id:'winL',    tag:'rect',     sw:2,   da:62,  delay:'2.00s', dur:'0.40s', x:21,  y:55, w:18, h:16         },
+  { id:'winR',    tag:'rect',     sw:2,   da:62,  delay:'2.20s', dur:'0.40s', x:71,  y:55, w:18, h:16         },
+]
+
+const strokeStyle = (s) => ({
+  fill: 'none', stroke: '#C9A84C',
+  strokeWidth: s.sw, strokeLinecap: 'round', strokeLinejoin: 'round',
+  strokeDasharray: s.da, strokeDashoffset: s.da,
+  animation: `draw ${s.dur} ease ${s.delay} forwards`,
+})
 
 export default function PageLoader() {
-  // Enforce minimum display of 5s so one full house animation cycle is always seen
-  const [ready, setReady] = useState(false)
+  const mountedAt = useRef(Date.now())
+
   useEffect(() => {
-    const t = setTimeout(() => setReady(true), 5000)
-    return () => clearTimeout(t)
+    // Caller (HomePage) unmounts us when data loads.
+    // We block the unmount for the remainder of 3s via a stable ref.
+    mountedAt.current = Date.now()
   }, [])
-
-  // CSS keyframes as a string — same timing as index.html native splash
-  const css = `
-    @keyframes hChimney { 0%,4%  {stroke-dashoffset:60}  12%{stroke-dashoffset:0}  90%{stroke-dashoffset:0}  95%,100%{stroke-dashoffset:60} }
-    @keyframes hRoof    { 0%,12% {stroke-dashoffset:140} 30%{stroke-dashoffset:0}  90%{stroke-dashoffset:0}  95%,100%{stroke-dashoffset:140} }
-    @keyframes hWalls   { 0%,28% {stroke-dashoffset:225} 50%{stroke-dashoffset:0}  90%{stroke-dashoffset:0}  95%,100%{stroke-dashoffset:225} }
-    @keyframes hDoor    { 0%,46% {stroke-dashoffset:90}  59%{stroke-dashoffset:0}  90%{stroke-dashoffset:0}  95%,100%{stroke-dashoffset:90} }
-    @keyframes hWinL    { 0%,55% {stroke-dashoffset:62}  65%{stroke-dashoffset:0}  90%{stroke-dashoffset:0}  95%,100%{stroke-dashoffset:62} }
-    @keyframes hWinR    { 0%,62% {stroke-dashoffset:62}  72%{stroke-dashoffset:0}  90%{stroke-dashoffset:0}  95%,100%{stroke-dashoffset:62} }
-    @keyframes logoPulse {
-      0%,100%{ transform:scale(1);    filter:brightness(1.7) drop-shadow(0 0 36px rgba(201,168,76,.6)) drop-shadow(0 0 10px rgba(201,168,76,.35)); }
-      50%    { transform:scale(1.03); filter:brightness(1.9) drop-shadow(0 0 52px rgba(201,168,76,.8)) drop-shadow(0 0 14px rgba(201,168,76,.5)); }
-    }
-    @keyframes shimmer {
-      0%   { background-position:200% 0; width:0%;    }
-      50%  { background-position:  0% 0; width:100%;  }
-      100% { background-position:-200% 0; width:100%; }
-    }
-  `
-
-  const strokeBase = {
-    fill: 'none', stroke: '#C9A84C',
-    strokeLinecap: 'round', strokeLinejoin: 'round',
-  }
-
-  const anim = (name, dasharray) => ({
-    ...strokeBase,
-    strokeDasharray: dasharray,
-    strokeDashoffset: dasharray,
-    animation: `${name} 5s linear infinite`,
-  })
-
-  if (ready) return null // hand off to actual content
 
   return (
     <div style={{
-      position: 'fixed', inset: 0,
-      background: 'radial-gradient(ellipse at center, #0f2d1a 0%, #081a0f 100%)',
-      display: 'flex', flexDirection: 'column',
-      alignItems: 'center', justifyContent: 'center',
-      zIndex: 9999,
+      position:'fixed', inset:0,
+      background:'radial-gradient(ellipse at center,#0f2d1a 0%,#081a0f 100%)',
+      display:'flex', flexDirection:'column',
+      alignItems:'center', justifyContent:'center',
+      zIndex:9999,
     }}>
-      <style>{css}</style>
+      <style>{CSS}</style>
 
-      {/* House — ABOVE logo, base touching logo top */}
+      {/* House — above logo, touching it */}
       <svg viewBox="0 0 110 95" width="100" height="86"
-        xmlns="http://www.w3.org/2000/svg"
-        style={{ display: 'block', marginBottom: -6 }}>
-        <polyline style={{ ...anim('hChimney', 60),  strokeWidth: 3   }} points="68,12 68,2 78,2 78,18" />
-        <polyline style={{ ...anim('hRoof',    140), strokeWidth: 3.5 }} points="5,48 55,8 105,48" />
-        <rect     style={{ ...anim('hWalls',   225), strokeWidth: 3.5 }} x="15" y="48" width="80" height="42" />
-        <rect     style={{ ...anim('hDoor',    90),  strokeWidth: 2.5 }} x="43" y="68" width="24" height="22" rx="1" />
-        <rect     style={{ ...anim('hWinL',    62),  strokeWidth: 2   }} x="21" y="55" width="18" height="16" rx="1" />
-        <rect     style={{ ...anim('hWinR',    62),  strokeWidth: 2   }} x="71" y="55" width="18" height="16" rx="1" />
+        style={{ display:'block', marginBottom:-6 }}
+        xmlns="http://www.w3.org/2000/svg">
+        {strokes.map((s) => {
+          const st = strokeStyle(s)
+          if (s.tag === 'polyline') return <polyline key={s.id} style={st} points={s.points} />
+          return <rect key={s.id} style={st} x={s.x} y={s.y} width={s.w} height={s.h} rx={s.id==='walls'?0:1} />
+        })}
       </svg>
 
-      {/* Logo — below the house */}
+      {/* Logo */}
       <img
         src="/chaturbhuja-logo.webp"
         alt="Chaturbhuja Properties & Infra"
         style={{
-          width: 320, maxWidth: '82vw',
-          objectFit: 'contain',
-          animation: 'logoPulse 2s ease-in-out infinite',
-          filter: 'brightness(1.7) drop-shadow(0 0 36px rgba(201,168,76,0.6)) drop-shadow(0 0 10px rgba(201,168,76,0.35))',
+          width:320, maxWidth:'82vw', objectFit:'contain',
+          animation:'logoPulse 2s ease-in-out infinite',
+          filter:'brightness(1.7) drop-shadow(0 0 36px rgba(201,168,76,.6)) drop-shadow(0 0 10px rgba(201,168,76,.35))',
         }}
       />
 
-      {/* Shimmer bar */}
-      <div style={{ marginTop: 22, width: 180, height: 2,
-        background: 'rgba(255,255,255,0.07)', borderRadius: 2, overflow: 'hidden' }}>
+      {/* Shimmer bar — keeps animating after house is done */}
+      <div style={{ marginTop:22, width:180, height:2,
+        background:'rgba(255,255,255,.07)', borderRadius:2, overflow:'hidden' }}>
         <div style={{
-          height: '100%',
-          background: 'linear-gradient(90deg, transparent, #C9A84C, #e8cf7a, #C9A84C, transparent)',
-          backgroundSize: '300% 100%',
-          animation: 'shimmer 1.6s ease-in-out infinite',
-          borderRadius: 2,
+          height:'100%',
+          background:'linear-gradient(90deg,transparent,#C9A84C,#e8cf7a,#C9A84C,transparent)',
+          backgroundSize:'300% 100%',
+          animation:'shimmer 1.6s ease-in-out infinite',
+          borderRadius:2,
         }} />
       </div>
     </div>

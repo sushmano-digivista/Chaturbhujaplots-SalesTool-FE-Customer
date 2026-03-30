@@ -6,11 +6,14 @@
  * hunting for magic strings across the codebase.
  */
 
-/** Default WhatsApp contact number (digits only, with country code). */
-export const DEFAULT_WA_NUMBER = '919739762698'
+/** WhatsApp bot number (Twilio sandbox) — customers chat here to start the questionnaire bot. */
+export const DEFAULT_WA_NUMBER = '14155238886'
 
-/** Default voice-call contact number. */
+/** Voice-call contact number for the business. */
 export const DEFAULT_PHONE = '+919739762698'
+
+/** Owner/business WhatsApp number — for direct enquiries (not bot). */
+export const OWNER_WA_NUMBER = '919739762698'
 
 /** Business hours label shown across CTAs. */
 export const BUSINESS_HOURS = '9am–7pm'

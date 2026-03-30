@@ -152,6 +152,7 @@ export default function Hero({ content, onEnquire }) {
         animate={{ opacity: 1, x: 0 }}
         transition={{ duration: 0.7, delay: 0.2, ease: [0.4, 0, 0.2, 1] }}>
 
+<<<<<<< HEAD
         {/* ── Premium Director Contact Card — from MongoDB director ──────── */}
         <div className={styles.directorCard}>
           <div className={styles.directorShimmer1} />
@@ -182,11 +183,26 @@ export default function Hero({ content, onEnquire }) {
               target="_blank" rel="noreferrer"
               className={styles.directorWaBtn} aria-label="WhatsApp">
               💬
+=======
+        {/* MD Contact Card */}
+        <div className={styles.mdCard}>
+          <div className={styles.mdAvatar}>
+            <span>M</span>
+          </div>
+          <div className={styles.mdInfo}>
+            <div className={styles.mdRole}>Managing Director</div>
+            <div className={styles.mdName}>M Siva Nageswara Rao</div>
+            <a href="tel:+919948709041" className={styles.mdPhone}>
+              📞 +91 99487 09041
+>>>>>>> fb808556485f2c30fd40ff1787e3ff0ec81923f8
             </a>
           </div>
         </div>
 
+<<<<<<< HEAD
         {/* ── Urgency Tag — from MongoDB urgency.tagline ────────────────── */}
+=======
+>>>>>>> fb808556485f2c30fd40ff1787e3ff0ec81923f8
         <div className={styles.lcTag}>
           <span className={styles.lcPulse} />
           {tagline}
@@ -250,12 +266,14 @@ export default function Hero({ content, onEnquire }) {
             {ctaButton}
           </button>
           <a
-            href={`https://wa.me/${whatsapp}?text=${encodeURIComponent('Hi, I am interested in Chaturbhuja plots. Please share details.')}`}
+            href={`https://wa.me/${whatsapp}?text=${encodeURIComponent('Hi')}`}
             target="_blank" rel="noreferrer"
             className={styles.lcBtnWA}>
             💬
           </a>
         </div>
+
+
       </motion.div>
     </section>
   )

@@ -103,7 +103,7 @@ function OverviewTab({ proj, onEnquire }) {
             bookings open.
           </p>
           <button className="btn btn-gold"
-            onClick={() => onEnquire({ source: 'PROJECT_OVERVIEW_UPCOMING', label: 'Notify Me', category: proj.name, type: 'NOTIFY_ME' })}>
+            onClick={() => onEnquire({ source: 'UPCOMING_INTEREST', label: 'Notify Me', category: proj.name, type: 'NOTIFY_ME' })}>
             Notify Me When Available →
           </button>
         </div>
@@ -154,7 +154,7 @@ function OverviewTab({ proj, onEnquire }) {
           </div>
 
           <button className="btn btn-gold"
-            onClick={() => onEnquire({ source: 'PROJECT_OVERVIEW', label: 'Get Plot Details', category: proj.name })}>
+            onClick={() => onEnquire({ source: 'CONTACT_FORM', label: 'Get Plot Details', category: proj.name })}>
             Get Detailed Plot Information →
           </button>
         </>
@@ -415,11 +415,11 @@ function ContactTab({ proj, onEnquire }) {
         </div>
         <div className={styles.contactCtas}>
           <button className="btn btn-gold btn-full"
-            onClick={() => onEnquire({ source: 'PROJECT_CONTACT', label: 'Request Callback', type: 'CALLBACK', category: proj.name })}>
+            onClick={() => onEnquire({ source: 'CONTACT_FORM', label: 'Request Callback', type: 'CALLBACK', category: proj.name })}>
             📞 Request Callback
           </button>
           <button className="btn btn-green btn-full" style={{ marginTop: 10 }}
-            onClick={() => onEnquire({ source: 'PROJECT_CONTACT', label: 'Schedule Site Visit', type: 'SITE_VISIT', category: proj.name })}>
+            onClick={() => onEnquire({ source: 'CONTACT_FORM', label: 'Schedule Site Visit', type: 'SITE_VISIT', category: proj.name })}>
             🗓️ Schedule Site Visit
           </button>
           <button className={styles.waBtn} onClick={openWA}>
@@ -481,7 +481,7 @@ export default function ProjectPage() {
             <span className={styles.headerLoc}>📍 {proj.loc}</span>
           </div>
           <button className={styles.enquireBtn}
-            onClick={() => openEnquiry({ source: 'PROJECT_NAV', label: 'Enquire Now', category: proj.name })}>
+            onClick={() => openEnquiry({ source: 'CONTACT_FORM', label: 'Enquire Now', category: proj.name })}>
             Enquire Now →
           </button>
           {/* Mobile nav toggle */}

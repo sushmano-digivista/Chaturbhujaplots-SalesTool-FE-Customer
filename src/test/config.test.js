@@ -11,10 +11,10 @@ import {
 } from '../constants/config'
 
 describe('config constants', () => {
-  it('DEFAULT_WA_NUMBER is a digits-only Indian number with country code', () => {
-    expect(DEFAULT_WA_NUMBER).toBe('919739762698')
+  it('DEFAULT_WA_NUMBER is a digits-only phone number', () => {
+    expect(DEFAULT_WA_NUMBER).toBe('14155238886')
     expect(/^\d+$/.test(DEFAULT_WA_NUMBER)).toBe(true)
-    expect(DEFAULT_WA_NUMBER.startsWith('91')).toBe(true)
+    expect(DEFAULT_WA_NUMBER.length).toBeGreaterThan(9)
   })
 
   it('DEFAULT_PHONE includes + prefix and country code', () => {

@@ -2,11 +2,16 @@ import { createPortal }         from 'react-dom'
 import { useEffect, useState }  from 'react'
 import { useForm }               from 'react-hook-form'
 import { motion, AnimatePresence } from 'framer-motion'
-import { X, MessageCircle, Download, Mail, Loader2, AlertCircle, Calendar } from 'lucide-react'
+import { X, MessageCircle, Download, Mail, Loader2, AlertCircle, Calendar, ChevronRight } from 'lucide-react'
 import { useSubmitLead }         from '@/hooks/useData'
 import { ACTIVE_PROJECTS }       from '@/constants/projects'
+<<<<<<< HEAD
 import { BROCHURES, getBrochureUrl } from '@/constants/brochures'
 import { brochureApi, siteVisitApi } from '@/api'
+=======
+import { BROCHURES }             from '@/constants/brochures'
+import { brochureApi, siteVisitApi, leadApi } from '@/api'
+>>>>>>> fb808556485f2c30fd40ff1787e3ff0ec81923f8
 import { openWhatsApp, safeOpenExternal } from '@/utils/security'
 import { DEFAULT_WA_NUMBER }     from '@/constants/config'
 import styles from './LeadModal.module.css'
@@ -34,6 +39,8 @@ export default function LeadModal({ context, onClose, whatsapp, content }) {
   const [waSent,    setWaSent]     = useState(false)
   const [sending,   setSending]    = useState(null)
   const [ctaErrors, setCtaErrors]  = useState({})
+  const [waStep, setWaStep]         = useState(0)   // 0=hidden, 1=project, 2=visit, 3=callback, 4=done
+  const [waAnswers, setWaAnswers]   = useState({})
 
   const selectedProject = watch('project')  || ''
   const enteredEmail    = watch('email')     || ''
@@ -70,6 +77,11 @@ export default function LeadModal({ context, onClose, whatsapp, content }) {
     return () => window.removeEventListener('keydown', h)
   }, [isOpen, onClose])
 
+  // Reset WA questionnaire when modal closes
+  useEffect(() => {
+    if (!isOpen) { setWaStep(0); setWaAnswers({}) }
+  }, [isOpen])
+
   useEffect(() => {
     if (!isOpen) { setSubmitted(false); setEmailSent(false); setWaSent(false); setCtaErrors({}); reset() }
   }, [isOpen, reset])
@@ -84,10 +96,10 @@ export default function LeadModal({ context, onClose, whatsapp, content }) {
         project: data.project || context?.category || undefined,
         date:    data.date,
       })
-      // Also save lead to DB
-      await submitLead.mutateAsync({
+      // Also save lead to DB (silently - don't show error toast if this fails)
+      leadApi.submit({
         name: data.name, phone: data.phone, email: data.email || undefined,
-        source: 'SITE_VISIT_SCHEDULED', categoryInterest: data.project || context?.category || undefined,
+        source: 'CONTACT_FORM', categoryInterest: data.project || context?.category || undefined,
       }).catch(() => {})
       setSubmitted(true)
       reset()
@@ -240,11 +252,11 @@ export default function LeadModal({ context, onClose, whatsapp, content }) {
             initial={{ y:'100%' }} animate={{ y:0 }} exit={{ y:'100%' }}
             transition={{ type:'spring', damping:28, stiffness:300 }}>
 
-            {/* Sticky header — always visible, never scrolls away */}
-            <div className={styles.stickyHeader}>
+            <div className={styles.topBar}>
+              <div style={{width:44}} />{/* spacer to center handle */}
               <div className={styles.handle} />
-              <button className={styles.closeBtn} onClick={onClose} aria-label="Close">
-                <X size={18} />
+              <button className={styles.closeBtn} onClick={onClose} aria-label="Close" type="button">
+                <X size={20} />
               </button>
             </div>
 
@@ -337,16 +349,102 @@ export default function LeadModal({ context, onClose, whatsapp, content }) {
                     {submitLead.isPending ? 'Requesting…' : '📞 Call Me Back'}
                   </button>
                   <button type="button" className={styles.waBtn}
-                    onClick={() => {
-                      const num = whatsapp || DEFAULT_WA_NUMBER
-                      const proj = watch('project') ? ` I am interested in ${watch('project')}.` : ''
-                      const time = watch('callTime') ? ` Best time to reach me: ${watch('callTime')}.` : ''
-                      openWhatsApp(num, `Hi, I would like a callback from Chaturbhuja Properties.${proj}${time} My name is ${watch('name') || ''}.`)
-                    }}>
+                    onClick={() => setWaStep(1)}>
                     <MessageCircle size={15} /> WhatsApp Instead
                   </button>
                 </div>
               </form>
+
+            ) : waStep > 0 ? (
+              /* ══ WHATSAPP QUESTIONNAIRE ══ */
+              <div className={styles.waQuestionnaire}>
+
+                {/* Step 1 — Project */}
+                {waStep === 1 && (
+                  <div className={styles.waStep}>
+                    <div className={styles.waStepHeader}>
+                      🏡 <strong>Step 1 of 3 — Project Interest</strong>
+                    </div>
+                    <p className={styles.waStepDesc}>Which project are you interested in?</p>
+                    {[
+                      { id: 'anjana',  label: 'Anjana Paradise',   sub: 'Paritala · Near Amaravati · 242 plots' },
+                      { id: 'aparna',  label: 'Aparna Legacy',     sub: 'Chevitikallu · 273 plots' },
+                      { id: 'varaha',  label: 'Varaha Virtue',     sub: 'Pamarru · Near NH-16 · 132 plots' },
+                      { id: 'trimbak', label: 'Trimbak Oaks',      sub: 'Penamaluru · Near Vijayawada · Coming soon' },
+                      { id: 'any',     label: 'Any / All Projects', sub: 'Send me all brochures' },
+                    ].map((p, i) => (
+                      <button key={p.id} className={styles.waOption}
+                        onClick={() => { setWaAnswers(a => ({ ...a, project: p.label })); setWaStep(2) }}>
+                        <span className={styles.waOptionNum}>{i + 1}</span>
+                        <span className={styles.waOptionText}>
+                          <strong>{p.label}</strong>
+                          <span>{p.sub}</span>
+                        </span>
+                        <ChevronRight size={16} />
+                      </button>
+                    ))}
+                  </div>
+                )}
+
+                {/* Step 2 — Site Visit */}
+                {waStep === 2 && (
+                  <div className={styles.waStep}>
+                    <div className={styles.waStepHeader}>
+                      📅 <strong>Step 2 of 3 — Site Visit</strong>
+                    </div>
+                    <p className={styles.waStepDesc}>Would you like to schedule a free site visit?</p>
+                    {[
+                      { id: 'morning',   label: 'Morning (9am–12pm)' },
+                      { id: 'afternoon', label: 'Afternoon (12pm–4pm)' },
+                      { id: 'skip',      label: 'Skip for now' },
+                    ].map((t, i) => (
+                      <button key={t.id} className={styles.waOption}
+                        onClick={() => { setWaAnswers(a => ({ ...a, visit: t.id === 'skip' ? null : t.label })); setWaStep(3) }}>
+                        <span className={styles.waOptionNum}>{i + 1}</span>
+                        <span className={styles.waOptionText}><strong>{t.label}</strong></span>
+                        <ChevronRight size={16} />
+                      </button>
+                    ))}
+                  </div>
+                )}
+
+                {/* Step 3 — Callback */}
+                {waStep === 3 && (
+                  <div className={styles.waStep}>
+                    <div className={styles.waStepHeader}>
+                      📞 <strong>Step 3 of 3 — Callback Time</strong>
+                    </div>
+                    <p className={styles.waStepDesc}>When is the best time for our advisor to call you?</p>
+                    {[
+                      { id: 'morning',   label: 'Morning (9am–12pm)' },
+                      { id: 'afternoon', label: 'Afternoon (12pm–4pm)' },
+                      { id: 'skip',      label: 'Skip for now' },
+                    ].map((t, i) => (
+                      <button key={t.id} className={styles.waOption}
+                        onClick={() => {
+                          const cb = t.id === 'skip' ? null : t.label
+                          const proj = waAnswers.project || 'Any Project'
+                          const visit = waAnswers.visit ? `\n📅 Site Visit: ${waAnswers.visit}` : ''
+                          const callback = cb ? `\n📞 Callback: ${cb}` : ''
+                          const msg = `🏡 Hi! I am interested in Chaturbhuja Properties & Infra.\n\n` +
+                            `🏘️ Project: ${proj}` + visit + callback +
+                            `\n\nPlease share more details and brochure. Thank you!`
+                          openWhatsApp(whatsapp || DEFAULT_WA_NUMBER, msg)
+                          setWaStep(0)
+                          onClose()
+                        }}>
+                        <span className={styles.waOptionNum}>{i + 1}</span>
+                        <span className={styles.waOptionText}><strong>{t.label}</strong></span>
+                        <ChevronRight size={16} />
+                      </button>
+                    ))}
+                  </div>
+                )}
+
+                <button className={styles.waBack} onClick={() => setWaStep(s => Math.max(0, s - 1))}>
+                  ← Back
+                </button>
+              </div>
 
             ) : isPE ? (
               /* ══ PLOT ENQUIRY FORM ══ */
@@ -499,7 +597,11 @@ export default function LeadModal({ context, onClose, whatsapp, content }) {
               </form>
             )}
 
+<<<<<<< HEAD
             </div>{/* /scrollBody */}
+=======
+            </div>{/* end scrollBody */}
+>>>>>>> fb808556485f2c30fd40ff1787e3ff0ec81923f8
           </motion.div>
         </motion.div>
       )}

@@ -160,7 +160,41 @@ export default function Navbar({ contact, onEnquire }) {
 
       {/* Mobile menu */}
       <div className={`${styles.mobileMenu} ${menuOpen ? styles.open : ''}`}>
-        <button className={styles.mobileLink} onClick={() => scrollTo('portfolio')}>Portfolio</button>
+
+        {/* Portfolio section with project cards */}
+        <div className={styles.mobilePortfolioSection}>
+          <div className={styles.mobilePortfolioHeader}>
+            <span className={styles.dropPulse} />
+            Our Portfolio
+          </div>
+          {NAV_PROJECTS.map((p) => (
+            <button
+              key={p.id}
+              className={styles.mobileProjectCard}
+              onClick={() => { setMenuOpen(false); navigate(`/project/${p.id}`) }}
+            >
+              <div className={styles.mobileProjectName}>{p.name}</div>
+              <div className={styles.mobileProjectSub}>📍 {p.sub}</div>
+            </button>
+          ))}
+          {/* Completed & Sold Out */}
+          <div className={styles.mobileCompletedSection}>
+            <div className={styles.mobileCompletedHeader}>
+              <span className={styles.dropCheckDot} />
+              Completed &amp; Sold Out
+            </div>
+            <div className={styles.mobileCompletedList}>
+              {NAV_COMPLETED.join(' · ')}
+            </div>
+          </div>
+
+          <button className={styles.mobileViewAll} onClick={() => { setMenuOpen(false); scrollTo('portfolio') }}>
+            View all projects overview →
+          </button>
+        </div>
+
+        <div className={styles.mobileDivider} />
+
         {NAV_LINKS.map((l) => (
           <button key={l.id} className={styles.mobileLink} onClick={() => scrollTo(l.id)}>
             {l.label}

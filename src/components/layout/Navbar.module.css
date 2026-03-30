@@ -298,7 +298,7 @@
   box-shadow: 0 12px 32px rgba(0,0,0,0.08);
   max-height: 0; overflow: hidden; transition: max-height 0.3s ease;
 }
-.mobileMenu.open { display: flex; max-height: 520px; }
+.mobileMenu.open { display: flex; max-height: 90vh; overflow-y: auto; }
 .mobileLink {
   color: #2c2c2c; font-size: 11px; padding: 16px 5%;
   border: none; background: none; text-align: left; cursor: pointer;
@@ -319,4 +319,80 @@
 @media (max-width: 900px) {
   .links       { display: none; }
   .mobileRight { display: flex; }
+}
+
+/* ── Mobile portfolio section ──────────────────────────────────────── */
+.mobilePortfolioSection {
+  padding: 12px 0 4px;
+}
+.mobilePortfolioHeader {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: var(--text-light, #888);
+  text-transform: uppercase;
+  padding: 0 20px 10px;
+}
+.mobileProjectCard {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  width: 100%;
+  padding: 12px 20px;
+  background: none;
+  border: none;
+  border-bottom: 1px solid rgba(0,0,0,0.06);
+  cursor: pointer;
+  text-align: left;
+}
+.mobileProjectCard:active { background: var(--green-light, #f0f7f0); }
+.mobileProjectName {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--green, #1a4d2e);
+}
+.mobileProjectSub {
+  font-size: 12px;
+  color: var(--text-light, #888);
+  margin-top: 2px;
+}
+.mobileViewAll {
+  width: 100%;
+  padding: 12px 20px;
+  background: none;
+  border: none;
+  text-align: left;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--green, #1a4d2e);
+  cursor: pointer;
+}
+.mobileDivider {
+  height: 1px;
+  background: rgba(0,0,0,0.08);
+  margin: 4px 0;
+}
+
+/* Completed & Sold Out section in mobile menu */
+.mobileCompletedSection {
+  padding: 12px 20px 8px;
+}
+.mobileCompletedHeader {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: var(--text-light, #888);
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+.mobileCompletedList {
+  font-size: 13px;
+  color: var(--text-light, #888);
+  line-height: 1.5;
 }

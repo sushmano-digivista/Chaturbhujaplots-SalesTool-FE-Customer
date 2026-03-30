@@ -10,16 +10,23 @@ const PLOT_BASE = isDev
   ? '/api/plots'
   : 'https://chaturbhujaplots-sales-tool-be-plot-upload-services-3oufzzl9q.vercel.app/api/v1/plots'
 
+const COMMON_URL = 'https://chaturbhujaplots-sales-tool-be-comm.vercel.app/api/v1'
+
 const MEDIA_BASE = isDev
   ? '/api/media'
-  : 'https://chaturbhujaplots-sales-tool-be-common-services-p78gvop5a.vercel.app/api/v1/media'
+  : `${COMMON_URL}/media`
+
+const COMMON_BASE = isDev
+  ? '/api/common'
+  : COMMON_URL
 
 // Force fresh responses — prevents 304 Not Modified from serving stale DB data
 const noCacheHeaders = { 'Cache-Control': 'no-cache', 'Pragma': 'no-cache' }
 
-const dashApi  = axios.create({ baseURL: DASHBOARD_BASE, timeout: 15000, headers: noCacheHeaders })
-const plotApi  = axios.create({ baseURL: PLOT_BASE,      timeout: 15000, headers: noCacheHeaders })
-const mediaApi = axios.create({ baseURL: MEDIA_BASE,     timeout: 15000, headers: noCacheHeaders })
+const dashApi   = axios.create({ baseURL: DASHBOARD_BASE, timeout: 15000, headers: noCacheHeaders })
+const plotApi   = axios.create({ baseURL: PLOT_BASE,      timeout: 15000, headers: noCacheHeaders })
+const mediaApi  = axios.create({ baseURL: MEDIA_BASE,     timeout: 15000, headers: noCacheHeaders })
+const commonApi = axios.create({ baseURL: COMMON_BASE,    timeout: 15000, headers: noCacheHeaders })
 
 export const contentApi = {
   getAll: () => dashApi.get('/content').then(r => r.data),
@@ -41,5 +48,5 @@ export const brochureApi = {
 
 // ── Site Visit API ────────────────────────────────────────────────────────────
 export const siteVisitApi = {
-  book: (data) => mediaApi.post('/site-visit', data).then(r => r.data),
+  book: (data) => commonApi.post('/site-visit', data).then(r => r.data),
 }

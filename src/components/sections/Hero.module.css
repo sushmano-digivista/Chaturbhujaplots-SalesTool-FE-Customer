@@ -6,11 +6,7 @@
   grid-template-columns: 1fr 400px;
   align-items: start;
   gap: 40px;
-<<<<<<< HEAD
   padding: calc(var(--nav-h) - 36px) 5% 48px;
-=======
-  padding: calc(var(--nav-h) + 24px) 5% 48px;
->>>>>>> fb808556485f2c30fd40ff1787e3ff0ec81923f8
   position: relative; overflow: hidden;
 }
 .overlay {

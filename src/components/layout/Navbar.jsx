@@ -55,7 +55,7 @@ export default function Navbar({ contact, onEnquire }) {
       <nav className={`${styles.nav} ${scrolled ? styles.scrolled : ''}`}>
 
         {/* Logo — white pill container guarantees contrast on any bg */}
-        <a href="#home" className={styles.logo} onClick={(e) => { e.preventDefault(); scrollTo('home') }}>
+        <a href="/" className={styles.logo} onClick={(e) => { e.preventDefault(); window.location.reload() }}>
           <img
             src="/chaturbhuja-logo.webp"
             alt="Chaturbhuja Properties & Infra"

@@ -233,7 +233,7 @@ function ProjectPopup({ proj, onClose, onNavigate }) {
             className={styles.popupWa}
             onClick={() => openWhatsApp(
               DEFAULT_WA_NUMBER,
-              'Hi'`,
+              'Hi',
             )}
           >
             💬 WhatsApp

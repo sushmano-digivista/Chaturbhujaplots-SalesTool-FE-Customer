@@ -15,26 +15,72 @@
   <body>
     <div id="root">
       <!-- Loading splash — replaced by React on load -->
-      <div id="splash" style="
-        position:fixed;inset:0;
-        background:#F5F0E8;
-        display:flex;flex-direction:column;
-        align-items:center;justify-content:center;
-        z-index:9999;
-      ">
+      <style>
+        #splash {
+          position: fixed; inset: 0;
+          background: #0b2415;
+          display: flex; flex-direction: column;
+          align-items: center; justify-content: center;
+          z-index: 9999;
+        }
+        #splash-logo {
+          width: 260px; max-width: 75vw;
+          object-fit: contain;
+          animation: splashPulse 1.8s ease-in-out infinite;
+          filter: drop-shadow(0 0 24px rgba(201,168,76,0.4));
+        }
+        #splash-tagline {
+          margin-top: 20px;
+          font-family: Georgia, serif;
+          font-size: 13px;
+          letter-spacing: 0.25em;
+          text-transform: uppercase;
+          color: rgba(201,168,76,0.8);
+          animation: splashFadeIn 1.2s ease forwards;
+          opacity: 0;
+        }
+        #splash-bar {
+          margin-top: 32px;
+          width: 160px;
+          height: 2px;
+          background: rgba(255,255,255,0.08);
+          border-radius: 2px;
+          overflow: hidden;
+        }
+        #splash-bar-fill {
+          height: 100%;
+          background: linear-gradient(90deg, #C9A84C, #e2bf64, #C9A84C);
+          background-size: 200% 100%;
+          animation: splashShimmer 1.4s ease-in-out infinite;
+          border-radius: 2px;
+        }
+        @keyframes splashPulse {
+          0%, 100% { transform: scale(1);   opacity: 1; }
+          50%       { transform: scale(1.04); opacity: 0.88; }
+        }
+        @keyframes splashFadeIn {
+          to { opacity: 1; }
+        }
+        @keyframes splashShimmer {
+          0%   { background-position: 200% 0; width: 0%; }
+          50%  { background-position: 0% 0;   width: 100%; }
+          100% { background-position: -200% 0; width: 100%; }
+        }
+        #splash.hide {
+          animation: splashOut 0.5s ease forwards;
+        }
+        @keyframes splashOut {
+          to { opacity: 0; transform: scale(1.02); }
+        }
+      </style>
+      <div id="splash">
         <img
+          id="splash-logo"
           src="/chaturbhuja-logo.webp"
           alt="Chaturbhuja Properties & Infra"
-          style="width:220px;max-width:70vw;object-fit:contain;margin-bottom:24px;"
         />
-        <div style="
-          width:40px;height:40px;
-          border:3px solid rgba(30,77,43,0.15);
-          border-top-color:#1E4D2B;
-          border-radius:50%;
-          animation:spin 0.8s linear infinite;
-        "></div>
-        <style>@keyframes spin{to{transform:rotate(360deg)}}</style>
+        <div id="splash-tagline">Properties &amp; Infra</div>
+        <div id="splash-bar"><div id="splash-bar-fill"></div></div>
       </div>
     </div>
     <script>

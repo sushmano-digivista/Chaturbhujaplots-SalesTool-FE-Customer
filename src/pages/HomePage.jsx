@@ -40,7 +40,7 @@ import PageLoader from '@/components/common/PageLoader'
  *   2. Export  it from src/components/sections/index.js
  *   3. Import + place <YourNewSection /> inside <main> below
  */
-const SPLASH_MS = 3000 // match house draw animation duration
+const SPLASH_MS = 3500 // match house draw animation duration
 
 export default function HomePage() {
   const { data: content, isLoading, isError } = useContent()

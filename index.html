@@ -16,25 +16,61 @@
     <div id="root">
       <!-- Loading splash — replaced by React on load -->
       <style>
-        * { margin:0; padding:0; box-sizing:border-box; }
-        #splash {
-          position:fixed; inset:0;
-          background:radial-gradient(ellipse at center,#0f2d1a 0%,#081a0f 100%);
-          display:flex; flex-direction:column;
-          align-items:center; justify-content:center;
-          z-index:9999;
-        }
-        #splash-house { display:block; margin-bottom:-6px; }
+
+        .hp { fill:transparent; stroke:#3d2010; stroke-linecap:round; stroke-linejoin:round; }
+        .hl { fill:none;        stroke:#5a3520; stroke-linecap:round; }
+
+        /* ── Draw + paint each element ── */
+        /* Main walls */
+        #h-lw  { stroke-width:2.5; stroke-dasharray:556; stroke-dashoffset:556; animation:draw .65s ease .00s forwards, fillLW .45s ease 2.5s forwards; }
+        #h-rw  { stroke-width:2.5; stroke-dasharray:466; stroke-dashoffset:466; animation:draw .60s ease .50s forwards, fillRW .45s ease 2.5s forwards; }
+        /* Roofs */
+        #h-lr  { stroke-width:2.5; stroke-dasharray:338; stroke-dashoffset:338; animation:draw .28s ease .95s forwards, fillDF .45s ease 2.5s forwards; }
+        #h-rr  { stroke-width:2.5; stroke-dasharray:286; stroke-dashoffset:286; animation:draw .25s ease 1.15s forwards, fillDF .45s ease 2.5s forwards; }
+        /* Windows */
+        #h-wgl { stroke-width:1.5; stroke-dasharray:274; stroke-dashoffset:274; animation:draw .25s ease 1.35s forwards, fillWN .45s ease 2.5s forwards; }
+        #h-lf  { stroke-width:1.5; stroke-dasharray:228; stroke-dashoffset:228; animation:draw .22s ease 1.55s forwards, fillLA .45s ease 2.5s forwards; }
+        #h-wul { stroke-width:1.5; stroke-dasharray:206; stroke-dashoffset:206; animation:draw .20s ease 1.72s forwards, fillWN .45s ease 2.5s forwards; }
+        #h-wgr { stroke-width:1.5; stroke-dasharray:270; stroke-dashoffset:270; animation:draw .24s ease 1.86s forwards, fillWN .45s ease 2.5s forwards; }
+        #h-ep  { stroke-width:1.5; stroke-dasharray:152; stroke-dashoffset:152; animation:draw .16s ease 2.02s forwards, fillEP .45s ease 2.5s forwards; }
+        #h-wur { stroke-width:1.5; stroke-dasharray:170; stroke-dashoffset:170; animation:draw .16s ease 2.12s forwards, fillWN .45s ease 2.5s forwards; }
+        /* Entry vertical stripes */
+        .h-ev  { stroke-width:1;   stroke-dasharray:32;  stroke-dashoffset:32;  animation:draw .10s ease 2.18s forwards; }
+        /* Lattice grid */
+        .h-lv  { stroke-width:1;   stroke-dasharray:47;  stroke-dashoffset:47;  animation:draw .14s ease 2.22s forwards; }
+        .h-lh  { stroke-width:1;   stroke-dasharray:65;  stroke-dashoffset:65;  animation:draw .12s ease 2.30s forwards; }
+        /* Balcony */
+        #h-bal { stroke-width:2.5; stroke-dasharray:250; stroke-dashoffset:250; animation:draw .22s ease 2.20s forwards, fillDF .45s ease 2.5s forwards; }
+        .h-bb  { stroke-width:1.5; stroke-dasharray:5;   stroke-dashoffset:5;   animation:draw .07s ease 2.38s forwards; }
+        /* Steps */
+        #h-s1  { stroke-width:1.5; stroke-dasharray:86;  stroke-dashoffset:86;  animation:draw .10s ease 2.38s forwards, fillST .45s ease 2.5s forwards; }
+        #h-s2  { stroke-width:1.5; stroke-dasharray:74;  stroke-dashoffset:74;  animation:draw .09s ease 2.43s forwards, fillST .45s ease 2.5s forwards; }
+        #h-s3  { stroke-width:1.5; stroke-dasharray:62;  stroke-dashoffset:62;  animation:draw .08s ease 2.47s forwards, fillST .45s ease 2.5s forwards; }
+        /* Ground & plants */
+        #h-gr  { stroke-width:1.5; stroke-dasharray:592; stroke-dashoffset:592; animation:draw .22s ease 2.45s forwards, fillGR .45s ease 2.5s forwards; }
+        #h-bl  { stroke-width:1.5; stroke-dasharray:146; stroke-dashoffset:146; animation:draw .16s ease 2.52s forwards, fillBU .45s ease 2.5s forwards; }
+        #h-bm  { stroke-width:1.5; stroke-dasharray:107; stroke-dashoffset:107; animation:draw .13s ease 2.56s forwards, fillBU .45s ease 2.5s forwards; }
+        #h-bri { stroke-width:1.5; stroke-dasharray:113; stroke-dashoffset:113; animation:draw .14s ease 2.59s forwards, fillBU .45s ease 2.5s forwards; }
+
+        /* Fill keyframes */
+        @keyframes draw   { to { stroke-dashoffset:0 } }
+        @keyframes fillLW { to { fill:#f0ebe0 } }
+        @keyframes fillRW { to { fill:#8b5e3c } }
+        @keyframes fillDF { to { fill:#3d2314 } }
+        @keyframes fillWN { to { fill:#b8d4ec } }
+        @keyframes fillLA { to { fill:#c4904a } }
+        @keyframes fillEP { to { fill:#4a2810 } }
+        @keyframes fillST { to { fill:#c8b8a8 } }
+        @keyframes fillGR { to { fill:#5a9e3a } }
+        @keyframes fillBU { to { fill:#3d7a20 } }
+
+        /* Logo & bar */
         #splash-logo {
-          width:320px; max-width:82vw; object-fit:contain;
+          width:320px; max-width:82vw; object-fit:contain; display:block;
           animation:logoPulse 2s ease-in-out infinite;
-          filter:brightness(1.7) drop-shadow(0 0 36px rgba(201,168,76,.6))
-                 drop-shadow(0 0 10px rgba(201,168,76,.35));
+          filter:brightness(1.7) drop-shadow(0 0 36px rgba(201,168,76,.6)) drop-shadow(0 0 10px rgba(201,168,76,.35));
         }
-        #splash-bar {
-          margin-top:22px; width:180px; height:2px;
-          background:rgba(255,255,255,.07); border-radius:2px; overflow:hidden;
-        }
+        #splash-bar { margin-top:20px; width:180px; height:2px; background:rgba(255,255,255,.07); border-radius:2px; overflow:hidden; }
         #splash-bar-fill {
           height:100%;
           background:linear-gradient(90deg,transparent,#C9A84C,#e8cf7a,#C9A84C,transparent);
@@ -42,16 +78,7 @@
           animation:shimmer 1.6s ease-in-out infinite;
           border-radius:2px;
         }
-        /* House strokes — draw once, stay drawn (forwards), all done by 2.6s */
-        .hp { fill:none; stroke:#C9A84C; stroke-linecap:round; stroke-linejoin:round; }
-        #h-chimney { stroke-width:3;   stroke-dasharray:60;  stroke-dashoffset:60;  animation:draw 0.35s ease         0.00s forwards; }
-        #h-roof    { stroke-width:3.5; stroke-dasharray:140; stroke-dashoffset:140; animation:draw 0.70s ease         0.30s forwards; }
-        #h-walls   { stroke-width:3.5; stroke-dasharray:225; stroke-dashoffset:225; animation:draw 0.80s ease         0.90s forwards; }
-        #h-door    { stroke-width:2.5; stroke-dasharray:90;  stroke-dashoffset:90;  animation:draw 0.50s ease         1.60s forwards; }
-        #h-winL    { stroke-width:2;   stroke-dasharray:62;  stroke-dashoffset:62;  animation:draw 0.40s ease         2.00s forwards; }
-        #h-winR    { stroke-width:2;   stroke-dasharray:62;  stroke-dashoffset:62;  animation:draw 0.40s ease         2.20s forwards; }
-        @keyframes draw       { to { stroke-dashoffset:0; } }
-        @keyframes logoPulse  {
+        @keyframes logoPulse {
           0%,100%{ transform:scale(1);    filter:brightness(1.7) drop-shadow(0 0 36px rgba(201,168,76,.6))  drop-shadow(0 0 10px rgba(201,168,76,.35)); }
           50%    { transform:scale(1.03); filter:brightness(1.9) drop-shadow(0 0 52px rgba(201,168,76,.80)) drop-shadow(0 0 14px rgba(201,168,76,.50)); }
         }
@@ -60,17 +87,69 @@
           50%  { background-position:  0% 0; width:100%; }
           100% { background-position:-200% 0; width:100%; }
         }
-        #splash.hide { animation:splashOut 0.45s ease forwards; }
+        #splash { position:fixed; inset:0; background:radial-gradient(ellipse at center,#0f2d1a 0%,#081a0f 100%); display:flex; flex-direction:column; align-items:center; justify-content:center; z-index:9999; }
+        #splash-house { display:block; margin-bottom:-4px; }
+        #splash.hide { animation:splashOut .45s ease forwards; }
         @keyframes splashOut { to { opacity:0; transform:scale(1.02); } }
+
       </style>
       <div id="splash">
-        <svg id="splash-house" viewBox="0 0 110 95" width="100" height="86" xmlns="http://www.w3.org/2000/svg">
-          <polyline id="h-chimney" class="hp" points="68,12 68,2 78,2 78,18" />
-          <polyline id="h-roof"    class="hp" points="5,48 55,8 105,48" />
-          <rect     id="h-walls"  class="hp" x="15" y="48" width="80" height="42" />
-          <rect     id="h-door"   class="hp" x="43" y="68" width="24" height="22" rx="1" />
-          <rect     id="h-winL"   class="hp" x="21" y="55" width="18" height="16" rx="1" />
-          <rect     id="h-winR"   class="hp" x="71" y="55" width="18" height="16" rx="1" />
+        <svg id="splash-house" viewBox="0 0 280 196" width="220" style="max-width:82vw;display:block;margin-bottom:-4px" xmlns="http://www.w3.org/2000/svg">
+          <!-- Ground + bushes (bottom layer) -->
+          <rect id="h-gr"  class="hp" x="0" y="183" width="280" height="13" rx="2"/>
+          <ellipse id="h-bl"  class="hp" cx="50"  cy="185" rx="30" ry="9"/>
+          <ellipse id="h-bm"  class="hp" cx="145" cy="185" rx="22" ry="8"/>
+          <ellipse id="h-bri" class="hp" cx="212" cy="185" rx="22" ry="9"/>
+          <!-- Main walls -->
+          <rect id="h-lw" class="hp" x="10"  y="50"  width="145" height="133"/>
+          <rect id="h-rw" class="hp" x="152" y="68"  width="118" height="115"/>
+          <!-- Roof overhangs -->
+          <rect id="h-lr" class="hp" x="5"   y="37"  width="153" height="15"/>
+          <rect id="h-rr" class="hp" x="147" y="55"  width="127" height="15"/>
+          <!-- Left windows -->
+          <rect id="h-wgl" class="hp" x="18"  y="112" width="70" height="66"/>
+          <rect id="h-lf"  class="hp" x="18"  y="57"  width="65" height="47"/>
+          <rect id="h-wul" class="hp" x="91"  y="57"  width="55" height="47"/>
+          <!-- Right windows & entry -->
+          <rect id="h-wgr" class="hp" x="158" y="110" width="67" height="68"/>
+          <rect id="h-ep"  class="hp" x="158" y="74"  width="43" height="32"/>
+          <rect id="h-wur" class="hp" x="205" y="74"  width="52" height="32"/>
+          <!-- Entry vertical stripes -->
+          <line class="hl h-ev" x1="165" y1="74" x2="165" y2="106"/>
+          <line class="hl h-ev" x1="172" y1="74" x2="172" y2="106"/>
+          <line class="hl h-ev" x1="179" y1="74" x2="179" y2="106"/>
+          <line class="hl h-ev" x1="186" y1="74" x2="186" y2="106"/>
+          <line class="hl h-ev" x1="193" y1="74" x2="193" y2="106"/>
+          <!-- Lattice verticals -->
+          <line class="hl h-lv" x1="29" y1="57" x2="29" y2="104"/>
+          <line class="hl h-lv" x1="40" y1="57" x2="40" y2="104"/>
+          <line class="hl h-lv" x1="51" y1="57" x2="51" y2="104"/>
+          <line class="hl h-lv" x1="62" y1="57" x2="62" y2="104"/>
+          <line class="hl h-lv" x1="73" y1="57" x2="73" y2="104"/>
+          <!-- Lattice horizontals -->
+          <line class="hl h-lh" x1="18" y1="69" x2="83" y2="69"/>
+          <line class="hl h-lh" x1="18" y1="81" x2="83" y2="81"/>
+          <line class="hl h-lh" x1="18" y1="93" x2="83" y2="93"/>
+          <!-- Balcony rail + bars -->
+          <rect id="h-bal" class="hp" x="152" y="68" width="118" height="5"/>
+          <line class="hl h-bb" x1="160" y1="68" x2="160" y2="73"/>
+          <line class="hl h-bb" x1="168" y1="68" x2="168" y2="73"/>
+          <line class="hl h-bb" x1="176" y1="68" x2="176" y2="73"/>
+          <line class="hl h-bb" x1="184" y1="68" x2="184" y2="73"/>
+          <line class="hl h-bb" x1="192" y1="68" x2="192" y2="73"/>
+          <line class="hl h-bb" x1="200" y1="68" x2="200" y2="73"/>
+          <line class="hl h-bb" x1="208" y1="68" x2="208" y2="73"/>
+          <line class="hl h-bb" x1="216" y1="68" x2="216" y2="73"/>
+          <line class="hl h-bb" x1="224" y1="68" x2="224" y2="73"/>
+          <line class="hl h-bb" x1="232" y1="68" x2="232" y2="73"/>
+          <line class="hl h-bb" x1="240" y1="68" x2="240" y2="73"/>
+          <line class="hl h-bb" x1="248" y1="68" x2="248" y2="73"/>
+          <line class="hl h-bb" x1="256" y1="68" x2="256" y2="73"/>
+          <line class="hl h-bb" x1="264" y1="68" x2="264" y2="73"/>
+          <!-- Steps -->
+          <rect id="h-s1" class="hp" x="238" y="156" width="34" height="8"/>
+          <rect id="h-s2" class="hp" x="244" y="164" width="28" height="8"/>
+          <rect id="h-s3" class="hp" x="250" y="172" width="22" height="8"/>
         </svg>
         <img id="splash-logo" src="/chaturbhuja-logo.webp" alt="Chaturbhuja Properties & Infra" />
         <div id="splash-bar"><div id="splash-bar-fill"></div></div>
@@ -79,9 +158,10 @@
     </div>
     </div>
     </div>
+    </div>
     <script>
       var splashShownAt = Date.now()
-      var MIN_SPLASH_MS = 3000
+      var MIN_SPLASH_MS = 3500
       document.addEventListener('DOMContentLoaded', function() {
         var observer = new MutationObserver(function() {
           var root   = document.getElementById('root')

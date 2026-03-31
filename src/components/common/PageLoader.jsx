@@ -2,7 +2,6 @@
  * PageLoader — Real estate logo style splash screen.
  * Gold arc draws first, then buildings left→right in silhouette,
  * then roofs fill gold, walls fill dark (logo effect).
- * Minimum 3.5s display.
  */
 import { useEffect, useState } from 'react'
 
@@ -47,10 +46,6 @@ const CSS = `
 `
 
 export default function PageLoader() {
-  const [gone, setGone] = useState(false)
-  useEffect(() => { const t = setTimeout(() => setGone(true), 3500); return () => clearTimeout(t) }, [])
-  if (gone) return null
-
   return (
     <div style={{ position:'fixed', inset:0,
       background:'radial-gradient(ellipse at center,#0f2d1a 0%,#081a0f 100%)',
@@ -59,24 +54,16 @@ export default function PageLoader() {
 
       <svg viewBox="0 0 280 195" width="240" style={{maxWidth:'88vw', display:'block', marginBottom:2}}
         xmlns="http://www.w3.org/2000/svg">
-
-        {/* Gold arc — drawn first, sweeps across behind buildings */}
         <path id="h-arc" d="M 32,131 A 115,115 0 0,1 248,131"/>
-
-        {/* Far-left mini (background) */}
         <polyline id="h-flr" className="hp" points="4,162 19,142 34,162"/>
         <rect     id="h-flb" className="hp" x="5"   y="161" width="28" height="23"/>
         <rect               className="hp h-sw" x="10"  y="168" width="9"  height="9"/>
-
-        {/* Left medium */}
         <rect     id="h-lc"  className="hp" x="37"  y="112" width="10" height="30"/>
         <polyline id="h-lr"  className="hp" points="20,148 52,112 84,148"/>
         <rect     id="h-lb"  className="hp" x="21"  y="147" width="62" height="37"/>
         <rect               className="hp h-lw" x="30"  y="155" width="13" height="13"/>
         <rect               className="hp h-lw" x="50"  y="155" width="13" height="13"/>
         <rect     id="h-ld"  className="hp" x="58"  y="163" width="14" height="21"/>
-
-        {/* Center — tallest, dominant */}
         <rect     id="h-clc" className="hp" x="112" y="65"  width="10" height="36"/>
         <rect     id="h-crc" className="hp" x="150" y="80"  width="9"  height="22"/>
         <polyline id="h-cr"  className="hp" points="90,110 130,65 170,110"/>
@@ -87,8 +74,6 @@ export default function PageLoader() {
         <rect               className="hp h-cw" x="100" y="140" width="16" height="15"/>
         <rect               className="hp h-cw" x="144" y="140" width="16" height="15"/>
         <rect     id="h-cd"  className="hp" x="120" y="158" width="20" height="26"/>
-
-        {/* Right medium */}
         <rect     id="h-rc"  className="hp" x="233" y="100" width="9"  height="32"/>
         <polyline id="h-rr"  className="hp" points="172,138 210,100 248,138"/>
         <rect     id="h-rb"  className="hp" x="173" y="137" width="74" height="47"/>
@@ -96,13 +81,9 @@ export default function PageLoader() {
         <rect               className="hp h-rw" x="200" y="146" width="13" height="13"/>
         <rect               className="hp h-rw" x="182" y="164" width="13" height="13"/>
         <rect               className="hp h-rw" x="200" y="164" width="13" height="13"/>
-
-        {/* Far-right mini */}
         <polyline id="h-frr" className="hp" points="244,166 258,148 272,166"/>
         <rect     id="h-frb" className="hp" x="245" y="165" width="26" height="19"/>
         <rect               className="hp h-sw" x="252" y="171" width="8"  height="8"/>
-
-        {/* Gold ground swoosh */}
         <path id="h-gnd" d="M 3,188 C 70,194 210,194 277,188"/>
       </svg>
 

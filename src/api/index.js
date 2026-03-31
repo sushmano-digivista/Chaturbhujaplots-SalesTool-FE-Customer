@@ -4,7 +4,7 @@ const isDev = import.meta.env.DEV
 
 const DASHBOARD_BASE = isDev
   ? '/api/dashboard'
-  : 'https://chaturbhujaplots-sales-tool-be-dasboard-services-bl1y4rh7f.vercel.app/api/v1'
+  : 'https://chaturbhujaplots-sales-tool-be-dasb.vercel.app/api/v1'
 
 const PLOT_BASE = isDev
   ? '/api/plots'

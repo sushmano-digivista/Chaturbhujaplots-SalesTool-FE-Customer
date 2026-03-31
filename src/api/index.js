@@ -41,9 +41,10 @@ export const leadApi = {
 }
 
 // ── Brochure API ──────────────────────────────────────────────────────────────
+// Routes live at /api/v1/brochure/* on CommonServices — use commonApi not mediaApi
 export const brochureApi = {
-  sendEmail:    (data) => mediaApi.post('/brochure/email',    data).then(r => r.data),
-  sendWhatsApp: (data) => mediaApi.post('/brochure/whatsapp', data).then(r => r.data),
+  sendEmail:    (data) => commonApi.post('/brochure/email',    data).then(r => r.data),
+  sendWhatsApp: (data) => commonApi.post('/brochure/whatsapp', data).then(r => r.data),
 }
 
 // ── Site Visit API ────────────────────────────────────────────────────────────

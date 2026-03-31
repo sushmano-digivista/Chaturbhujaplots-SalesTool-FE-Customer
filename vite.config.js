@@ -52,6 +52,12 @@ export default defineConfig({
         rewrite:      p => p.replace(/^\/api\/media/, '/api/v1/media'),
         changeOrigin: true,
       },
+      // commonApi calls — brochure, site-visit, etc.
+      '/api/common': {
+        target:       'http://localhost:8081',
+        rewrite:      p => p.replace(/^\/api\/common/, '/api/v1'),
+        changeOrigin: true,
+      },
     },
   },
 })

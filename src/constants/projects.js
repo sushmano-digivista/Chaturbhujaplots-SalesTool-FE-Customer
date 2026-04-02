@@ -138,8 +138,8 @@ export const ACTIVE_PROJECTS = [
   {
     id:          'aparna',
     name:        'Aparna Legacy',
-    loc:         'Chevitikallu, Kanchikacherla',
-    fullAddress: 'Chevitikallu Village, Kanchikacherla Mandal, NTR District, AP',
+    loc:         'Chevitikallu, Gateway of Amaravati Capital Region',
+    fullAddress: 'Chevitikallu Village, Gateway of Amaravati Capital Region, Kanchikacherla Mandal, NTR District, AP',
     accentClass: 'accentBlue',
     heroImage:   '/Aparna_Legacy_Chevitikallu_Home.png',
     available:   16,

@@ -54,7 +54,7 @@ export default function Navbar({ contact, onEnquire }) {
     const el = document.getElementById(id)
     if (!el) return
     const navHeight = document.querySelector('[class*="navbar"]')?.offsetHeight || 68
-    const top = el.getBoundingClientRect().top + window.scrollY - navHeight - 8
+    const top = el.getBoundingClientRect().top + window.scrollY - navHeight - 56
     window.scrollTo({ top, behavior: 'smooth' })
   }, 50)
 }

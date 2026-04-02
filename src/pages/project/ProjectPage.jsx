@@ -4,15 +4,13 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { ArrowLeft, Phone, MessageCircle, X, Play, Navigation, Menu } from 'lucide-react'
 import { getFacingRows }                from '@/constants/facingMap'
 import { getProjectGallery, getProjectVideos } from '@/constants/projectGalleries'
-import { ACTIVE_PROJECTS } from '@/constants/projects'
-import { useSubmitLead, usePricing, useContactSettings } from '@/hooks/useData'
+import { useSubmitLead, usePricing, useContactSettings, useProject } from '@/hooks/useData'
 import LeadModal           from '@/components/ui/LeadModal'
 import PricingCard         from '@/components/ui/PricingCard'
 import { openWhatsApp, openMaps } from '@/utils/security'
 import { DEFAULT_WA_NUMBER }      from '@/constants/config'
 import styles              from './ProjectPage.module.css'
 
-// ── In-page nav tabs ──────────────────────────────────────────────────────────
 const TABS = [
   { id: 'home',      label: 'Home'      },
   { id: 'overview',  label: 'Overview'  },
@@ -23,35 +21,31 @@ const TABS = [
   { id: 'contact',   label: 'Contact'   },
 ]
 
-// ── Hero / Home tab ───────────────────────────────────────────────────────────
 function HomeTab({ proj, onEnquire }) {
   const total = proj.facings ? Object.values(proj.facings).reduce((a, b) => a + b, 0) : proj.total
   return (
     <div className={styles.homeTab}>
-      {/* Hero banner */}
-      <div className={`${styles.heroBanner} ${styles[proj.accentClass]}`}
-        style={proj.heroImage ? { '--hero-img': `linear-gradient(rgba(10,30,18,.75),rgba(10,30,18,.75)), url(${proj.heroImage})` } : {}}>
+      <div className={styles.heroBanner + ' ' + styles[proj.accentClass]}
+        style={proj.heroImage ? { '--hero-img': 'linear-gradient(rgba(10,30,18,.75),rgba(10,30,18,.75)), url(' + proj.heroImage + ')' } : {}}>
         <div className={styles.heroContent}>
           <div className={styles.heroTag}>{proj.tag}</div>
           <h1 className={styles.heroName}>{proj.name}</h1>
           <p className={styles.heroLoc}>📍 {proj.loc}</p>
           <p className={styles.heroDesc}>{proj.description}</p>
           <div className={styles.heroBtns}>
-            <button className="btn btn-gold"
+            <button className='btn btn-gold'
               onClick={() => onEnquire({ source: 'PROJECT_HOME', label: 'Enquire Now', category: proj.name })}>
               Enquire Now →
             </button>
-            <button className="btn btn-ghost"
+            <button className='btn btn-ghost'
               onClick={() => openWhatsApp(
                 proj.contact?.whatsapp || DEFAULT_WA_NUMBER,
-                `Hi, I'm interested in ${proj.name}.`,
+                'Hi, I am interested in ' + proj.name + '.',
               )}>
               💬 WhatsApp
             </button>
           </div>
         </div>
-
-        {/* Quick stats */}
         <div className={styles.heroStats}>
           <div className={styles.heroStat}>
             <div className={styles.hsNum}>{proj.upcoming ? 'Coming Soon' : proj.total}</div>
@@ -64,17 +58,13 @@ function HomeTab({ proj, onEnquire }) {
           </div>
         </div>
       </div>
-
-      {/* Approval badges */}
       <div className={styles.approvalRow}>
-        {proj.approvals.map((a) => (
+        {(proj.approvals || []).map((a) => (
           <span key={a} className={styles.approvalChip}>✓ {a}</span>
         ))}
       </div>
-
-      {/* Highlights */}
       <div className={styles.hlGrid}>
-        {proj.highlights.map((h) => (
+        {(proj.highlights || []).map((h) => (
           <div key={h} className={styles.hlCard}>
             <span className={styles.hlCheck}>✓</span>
             <span>{h}</span>
@@ -85,15 +75,12 @@ function HomeTab({ proj, onEnquire }) {
   )
 }
 
-// ── Overview tab ──────────────────────────────────────────────────────────────
 function OverviewTab({ proj, onEnquire, apiPricing }) {
   const facingRows  = getFacingRows(proj.facings || {})
   const totalFacing = facingRows.reduce((s, r) => s + r.value, 0)
-
   return (
     <div className={styles.tabContent}>
       <h2 className={styles.tabTitle}>Project Overview</h2>
-
       {proj.upcoming ? (
         <div className={styles.upcomingOverview}>
           <div className={styles.upcomingBadge}>🔜 Upcoming Project</div>
@@ -103,14 +90,13 @@ function OverviewTab({ proj, onEnquire, apiPricing }) {
             published shortly. Register your interest now to be notified first when
             bookings open.
           </p>
-          <button className="btn btn-gold"
+          <button className='btn btn-gold'
             onClick={() => onEnquire({ source: 'UPCOMING_INTEREST', label: 'Notify Me', category: proj.name, type: 'NOTIFY_ME' })}>
             Notify Me When Available →
           </button>
         </div>
       ) : (
         <>
-          {/* Facing breakdown */}
           <div className={styles.facingCard}>
             <div className={styles.facingHeader}>
               <h3 className={styles.facingTitle}>Plot Distribution</h3>
@@ -129,7 +115,7 @@ function OverviewTab({ proj, onEnquire, apiPricing }) {
                       className={styles.facingFill}
                       style={{ background: row.color }}
                       initial={{ width: 0 }}
-                      whileInView={{ width: `${(row.value / totalFacing) * 100}%` }}
+                      whileInView={{ width: (row.value / totalFacing * 100) + '%' }}
                       viewport={{ once: true }}
                       transition={{ duration: 0.8, ease: 'easeOut' }}
                     />
@@ -139,11 +125,7 @@ function OverviewTab({ proj, onEnquire, apiPricing }) {
               ))}
             </div>
           </div>
-
-          {/* Pricing */}
-      {(apiPricing || proj.pricing) && <div style={{marginBottom:'20px'}}><PricingCard pricing={apiPricing || proj.pricing} /></div>}
-
-      {/* Key facts grid */}
+          {(apiPricing || proj.pricing) && <div style={{marginBottom:'20px'}}><PricingCard pricing={apiPricing || proj.pricing} /></div>}
           <div className={styles.factsGrid}>
             {[
               { label: 'Total Plots',    value: proj.total },
@@ -156,8 +138,7 @@ function OverviewTab({ proj, onEnquire, apiPricing }) {
               </div>
             ))}
           </div>
-
-          <button className="btn btn-gold"
+          <button className='btn btn-gold'
             onClick={() => onEnquire({ source: 'CONTACT_FORM', label: 'Get Plot Details', category: proj.name })}>
             Get Detailed Plot Information →
           </button>
@@ -167,26 +148,24 @@ function OverviewTab({ proj, onEnquire, apiPricing }) {
   )
 }
 
-// ── Amenities tab ─────────────────────────────────────────────────────────────
 function AmenitiesTab({ proj }) {
   const [tab, setTab] = useState('INFRA')
   const tabs      = [...new Set((proj.amenities || []).map((a) => a.tab))]
   const tabLabels = { INFRA: 'Infrastructure', LIFESTYLE: 'Lifestyle', UTILITIES: 'Utilities' }
   const items     = (proj.amenities || []).filter((a) => a.tab === tab)
-
   return (
     <div className={styles.tabContent}>
       <h2 className={styles.tabTitle}>Amenities</h2>
       <div className={styles.amTabs}>
         {tabs.map((t) => (
           <button key={t}
-            className={`${styles.amTab} ${tab === t ? styles.amTabActive : ''}`}
+            className={styles.amTab + ' ' + (tab === t ? styles.amTabActive : '')}
             onClick={() => setTab(t)}>
             {tabLabels[t] || t}
           </button>
         ))}
       </div>
-      <AnimatePresence mode="wait">
+      <AnimatePresence mode='wait'>
         <motion.div key={tab} className={styles.amGrid}
           initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}>
           {items.map((item) => (
@@ -213,7 +192,6 @@ function AmenitiesTab({ proj }) {
   )
 }
 
-// ── Gallery tab ───────────────────────────────────────────────────────────────
 function GalleryTab({ proj }) {
   const [lightbox, setLightbox] = useState(null)
   const localImages = getProjectGallery(proj.id)
@@ -222,7 +200,6 @@ function GalleryTab({ proj }) {
   const close = () => setLightbox(null)
   const prev  = () => setLightbox(i => (i - 1 + items.length) % items.length)
   const next  = () => setLightbox(i => (i + 1) % items.length)
-
   useEffect(() => {
     if (lightbox === null) return
     const h = (e) => {
@@ -233,7 +210,6 @@ function GalleryTab({ proj }) {
     window.addEventListener('keydown', h)
     return () => window.removeEventListener('keydown', h)
   }, [lightbox])
-
   if (!hasRealImages) return (
     <div className={styles.tabContent}>
       <h2 className={styles.tabTitle}>Gallery</h2>
@@ -245,38 +221,35 @@ function GalleryTab({ proj }) {
       </div>
     </div>
   )
-
   return (
     <div className={styles.tabContent}>
       <h2 className={styles.tabTitle}>Gallery</h2>
       <div className={styles.galGrid}>
         {items.map((item, idx) => (
           <motion.div key={idx}
-            className={`${styles.galCell} ${idx === 0 ? styles.galFeatured : ''}`}
+            className={styles.galCell + ' ' + (idx === 0 ? styles.galFeatured : '')}
             onClick={() => setLightbox(idx)}
             whileHover={{ scale: 1.02 }}>
-            <img src={item.src} alt={item.label} className={styles.galImg} loading="lazy" />
+            <img src={item.src} alt={item.label} className={styles.galImg} loading='lazy' />
             <div className={styles.galOverlay}>{item.label}</div>
           </motion.div>
         ))}
       </div>
-
       <AnimatePresence>
         {lightbox !== null && (
           <motion.div className={styles.lbOverlay}
             initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
             onClick={(e) => { if (e.target === e.currentTarget) close() }}>
             <button className={styles.lbClose} onClick={close}><X size={16} /></button>
-            <button className={`${styles.lbNavBtn} ${styles.lbNavLeft}`} onClick={prev}>‹</button>
+            <button className={styles.lbNavBtn + ' ' + styles.lbNavLeft} onClick={prev}>‹</button>
             <div className={styles.lbPanel}>
-              <img src={items[lightbox]?.src} alt={items[lightbox]?.label}
-                className={styles.lbFullImg} />
+              <img src={items[lightbox]?.src} alt={items[lightbox]?.label} className={styles.lbFullImg} />
               <div className={styles.lbCaption}>
                 <span className={styles.lbLabel}>{items[lightbox]?.label}</span>
                 <span className={styles.lbCount}>{lightbox + 1} / {items.length}</span>
               </div>
             </div>
-            <button className={`${styles.lbNavBtn} ${styles.lbNavRight}`} onClick={next}>›</button>
+            <button className={styles.lbNavBtn + ' ' + styles.lbNavRight} onClick={next}>›</button>
           </motion.div>
         )}
       </AnimatePresence>
@@ -284,24 +257,19 @@ function GalleryTab({ proj }) {
   )
 }
 
-// ── Videos tab ────────────────────────────────────────────────────────────────
 function VideosTab({ proj }) {
   const [active, setActive] = useState(null)
-
-  // Load local video files; fall back to youtube entries from proj.videos
   const localVids   = getProjectVideos(proj.id)
   const youtubeVids = (proj.videos || []).filter(v => v.type === 'youtube' && v.id && !v.id.includes('dQw4w9WgXcY'))
   const videos = localVids.length > 0
-    ? localVids.map((v, i) => ({ type: 'local', src: v.src, title: v.label || `Video ${i + 1}`, subtitle: v.subtitle || proj.name }))
+    ? localVids.map((v, i) => ({ type: 'local', src: v.src, title: v.label || ('Video ' + (i + 1)), subtitle: v.subtitle || proj.name }))
     : youtubeVids
-
   useEffect(() => {
     if (!active) return
     const h = (e) => { if (e.key === 'Escape') setActive(null) }
     window.addEventListener('keydown', h)
     return () => window.removeEventListener('keydown', h)
   }, [active])
-
   if (!videos.length) return (
     <div className={styles.tabContent}>
       <h2 className={styles.tabTitle}>Videos</h2>
@@ -313,7 +281,6 @@ function VideosTab({ proj }) {
       </div>
     </div>
   )
-
   return (
     <div className={styles.tabContent}>
       <h2 className={styles.tabTitle}>Videos</h2>
@@ -323,11 +290,11 @@ function VideosTab({ proj }) {
             whileHover={{ y: -4 }} onClick={() => setActive(v)}>
             <div className={styles.vidThumb}>
               {v.type === 'youtube'
-                ? <img src={`https://img.youtube.com/vi/${v.id}/hqdefault.jpg`} alt={v.title} className={styles.vidThumbnailImg} />
-                : <video src={v.src} className={styles.vidThumbnailImg} muted preload="metadata" style={{ pointerEvents:'none' }} />
+                ? <img src={'https://img.youtube.com/vi/' + v.id + '/hqdefault.jpg'} alt={v.title} className={styles.vidThumbnailImg} />
+                : <video src={v.src} className={styles.vidThumbnailImg} muted preload='metadata' style={{ pointerEvents:'none' }} />
               }
               <div className={styles.vidPlayWrap}>
-                <Play size={22} fill="var(--green)" color="var(--green)" />
+                <Play size={22} fill='var(--green)' color='var(--green)' />
               </div>
             </div>
             <div className={styles.vidInfo}>
@@ -339,7 +306,6 @@ function VideosTab({ proj }) {
           </motion.div>
         ))}
       </div>
-
       <AnimatePresence>
         {active && (
           <motion.div className={styles.vidModal}
@@ -349,8 +315,8 @@ function VideosTab({ proj }) {
               <button className={styles.vidClose} onClick={() => setActive(null)}><X size={18} /></button>
               <div className={styles.vidModalTitle}>{active.title}</div>
               {active.type === 'youtube' ? (
-                <iframe src={`https://www.youtube.com/embed/${active.id}?autoplay=1&rel=0`}
-                  frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                <iframe src={'https://www.youtube.com/embed/' + active.id + '?autoplay=1&rel=0'}
+                  frameBorder='0' allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture'
                   allowFullScreen title={active.title} />
               ) : (
                 <video src={active.src} controls autoPlay playsInline style={{ width:'100%', borderRadius:8 }} />
@@ -363,7 +329,6 @@ function VideosTab({ proj }) {
   )
 }
 
-// ── Location tab ──────────────────────────────────────────────────────────────
 function LocationTab({ proj }) {
   const distances = proj.distances || []
   return (
@@ -372,8 +337,8 @@ function LocationTab({ proj }) {
       <div className={styles.mapWrap}>
         {proj.mapEmbedUrl && (
           <iframe src={proj.mapEmbedUrl} className={styles.iframe}
-            allowFullScreen loading="lazy" referrerPolicy="no-referrer-when-downgrade"
-            title={`${proj.name} Location`} />
+            allowFullScreen loading='lazy' referrerPolicy='no-referrer-when-downgrade'
+            title={proj.name + ' Location'} />
         )}
         <button className={styles.mapOpenBtn}
           onClick={() => openMaps(proj.mapOpenUrl)}>
@@ -398,7 +363,6 @@ function LocationTab({ proj }) {
   )
 }
 
-// ── Contact tab ───────────────────────────────────────────────────────────────
 function ContactTab({ proj, onEnquire, ownerSettings }) {
   const c = proj.contact || {}
   const address = (proj.id === 'aparna' && ownerSettings?.aparna_contact_address)
@@ -406,26 +370,25 @@ function ContactTab({ proj, onEnquire, ownerSettings }) {
     : c.address
   const openWA = () => openWhatsApp(
     c.whatsapp || DEFAULT_WA_NUMBER,
-    `Hi! 👋 I visited your website and I'm interested in *${proj.name}* at ${proj.loc}. Could you please share details on available plots, pricing, and how to schedule a site visit? Thank you!`
+    'Hi! I visited your website and I am interested in ' + proj.name + ' at ' + proj.loc + '. Could you please share details on available plots, pricing, and how to schedule a site visit? Thank you!'
   )
-
   return (
     <div className={styles.tabContent}>
       <h2 className={styles.tabTitle}>Contact Us</h2>
       <div className={styles.contactGrid}>
         <div className={styles.contactInfo}>
-          {c.phone    && <a href={`tel:${c.phone}`}       className={styles.contactRow}><Phone size={16} />{c.phone}</a>}
+          {c.phone    && <a href={'tel:' + c.phone}       className={styles.contactRow}><Phone size={16} />{c.phone}</a>}
           {c.whatsapp && <button className={styles.contactRow} onClick={openWA}><MessageCircle size={16} />WhatsApp Chat</button>}
-          {c.email    && <a href={`mailto:${c.email}`}    className={styles.contactRow}>✉️ {c.email}</a>}
+          {c.email    && <a href={'mailto:' + c.email}    className={styles.contactRow}>✉️ {c.email}</a>}
           {address    && <div className={styles.contactRow}>📍 {address}</div>}
-          {c.website  && <a href={`https://${c.website}`} target="_blank" rel="noreferrer" className={styles.contactRow}>🌐 {c.website}</a>}
+          {c.website  && <a href={'https://' + c.website} target='_blank' rel='noreferrer' className={styles.contactRow}>🌐 {c.website}</a>}
         </div>
         <div className={styles.contactCtas}>
-          <button className="btn btn-gold btn-full"
+          <button className='btn btn-gold btn-full'
             onClick={() => onEnquire({ source: 'CONTACT_FORM', label: 'Request Callback', type: 'CALLBACK', category: proj.name })}>
             📞 Request Callback
           </button>
-          <button className="btn btn-green btn-full" style={{ marginTop: 10 }}
+          <button className='btn btn-green btn-full' style={{ marginTop: 10 }}
             onClick={() => onEnquire({ source: 'CONTACT_FORM', label: 'Schedule Site Visit', type: 'SITE_VISIT', category: proj.name })}>
             🗓️ Schedule Site Visit
           </button>
@@ -438,7 +401,6 @@ function ContactTab({ proj, onEnquire, ownerSettings }) {
   )
 }
 
-// ── ProjectPage ───────────────────────────────────────────────────────────────
 export default function ProjectPage() {
   const { id }      = useParams()
   const navigate    = useNavigate()
@@ -446,28 +408,38 @@ export default function ProjectPage() {
   const [leadCtx,   setLeadCtx]     = useState(null)
   const [mobileNav, setMobileNav]   = useState(false)
 
-  const proj = ACTIVE_PROJECTS.find((p) => p.id === id)
-  const { data: ownerSettings } = useContactSettings()
+  // Fetch project data from MongoDB, fallback to projects.js
+  const { data: proj, isLoading } = useProject(id)
+  const { data: ownerSettings }   = useContactSettings()
+  const { data: apiPricing }      = usePricing()
+  const projectPricing = apiPricing?.find(p => p.projectId === id) || null
 
   const openEnquiry  = useCallback((ctx) => setLeadCtx(ctx), [])
   const closeEnquiry = useCallback(() => setLeadCtx(null),   [])
 
-  // Scroll to top on mount
   useEffect(() => { window.scrollTo(0, 0) }, [id])
+
+  if (isLoading) {
+    return (
+      <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+        <div style={{ fontSize: '2rem' }}>⏳</div>
+      </div>
+    )
+  }
 
   if (!proj) {
     return (
       <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'column', gap: 16 }}>
         <div style={{ fontSize: '3rem' }}>🏗️</div>
         <h2 style={{ fontFamily: 'Cormorant Garamond,serif' }}>Project not found</h2>
-        <button className="btn btn-gold" onClick={() => navigate('/')}>← Back to Home</button>
+        <button className='btn btn-gold' onClick={() => navigate('/')}>← Back to Home</button>
       </div>
     )
   }
 
   const tabComponents = {
     home:      <HomeTab      proj={proj} onEnquire={openEnquiry} />,
-    overview:  <OverviewTab  proj={proj} onEnquire={openEnquiry} />,
+    overview:  <OverviewTab  proj={proj} onEnquire={openEnquiry} apiPricing={projectPricing} />,
     amenities: <AmenitiesTab proj={proj} />,
     gallery:   <GalleryTab   proj={proj} />,
     videos:    <VideosTab    proj={proj} />,
@@ -477,9 +449,7 @@ export default function ProjectPage() {
 
   return (
     <div className={styles.page}>
-
-      {/* ── Top nav bar ───────────────────────────────────────────────────── */}
-      <header className={`${styles.header} ${styles[proj.accentClass]}`}>
+      <header className={styles.header + ' ' + styles[proj.accentClass]}>
         <div className={styles.headerTop}>
           <button className={styles.backBtn} onClick={() => navigate('/')}>
             <ArrowLeft size={16} /> Back
@@ -492,31 +462,26 @@ export default function ProjectPage() {
             onClick={() => openEnquiry({ source: 'CONTACT_FORM', label: 'Enquire Now', category: proj.name })}>
             Enquire Now →
           </button>
-          {/* Mobile nav toggle */}
           <button className={styles.mobileNavBtn} onClick={() => setMobileNav((v) => !v)}>
             <Menu size={18} />
           </button>
         </div>
-
-        {/* Desktop tab bar */}
         <nav className={styles.tabBar}>
           {TABS.map((t) => (
             <button key={t.id}
-              className={`${styles.tabBtn} ${activeTab === t.id ? styles.tabBtnActive : ''}`}
+              className={styles.tabBtn + ' ' + (activeTab === t.id ? styles.tabBtnActive : '')}
               onClick={() => { setActiveTab(t.id); setMobileNav(false) }}>
               {t.label}
             </button>
           ))}
         </nav>
-
-        {/* Mobile nav dropdown */}
         <AnimatePresence>
           {mobileNav && (
             <motion.nav className={styles.mobileTabMenu}
               initial={{ opacity: 0, y: -8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}>
               {TABS.map((t) => (
                 <button key={t.id}
-                  className={`${styles.mobileTabBtn} ${activeTab === t.id ? styles.mobileTabActive : ''}`}
+                  className={styles.mobileTabBtn + ' ' + (activeTab === t.id ? styles.mobileTabActive : '')}
                   onClick={() => { setActiveTab(t.id); setMobileNav(false) }}>
                   {t.label}
                 </button>
@@ -525,10 +490,8 @@ export default function ProjectPage() {
           )}
         </AnimatePresence>
       </header>
-
-      {/* ── Tab content ───────────────────────────────────────────────────── */}
       <main className={styles.main}>
-        <AnimatePresence mode="wait">
+        <AnimatePresence mode='wait'>
           <motion.div key={activeTab}
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
@@ -538,8 +501,6 @@ export default function ProjectPage() {
           </motion.div>
         </AnimatePresence>
       </main>
-
-      {/* ── Lead modal ────────────────────────────────────────────────────── */}
       <LeadModal
         context={leadCtx}
         onClose={closeEnquiry}
@@ -548,4 +509,3 @@ export default function ProjectPage() {
     </div>
   )
 }
-

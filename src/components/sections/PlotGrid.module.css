@@ -149,3 +149,34 @@
 .upcomingIcon  { font-size: 48px; line-height: 1; }
 .upcomingTitle { font-size: 20px; font-weight: 700; }
 .upcomingDesc  { font-size: 14px; color: var(--text-mid); max-width: 480px; line-height: 1.6; margin: 0; }
+
+/* ── Expandable price panel ──────────────────────────────────────── */
+.priceBannerWrap { border-radius: 14px; overflow: hidden; margin-bottom: 24px; }
+.priceBannerWrap .priceBanner {
+  margin-bottom: 0; border-radius: 0;
+  border: none; background: none;
+  transition: opacity 0.15s;
+}
+.priceBannerWrap .priceBanner:hover { opacity: 0.92; }
+
+.priceExpanded {
+  background: #fff; border: 1px solid rgba(30,77,43,0.12);
+  border-top: none; overflow: hidden;
+}
+.priceGrid { padding: 16px 20px; display: flex; flex-direction: column; gap: 10px; }
+.priceRow {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 12px; flex-wrap: wrap; font-size: 13px;
+}
+.priceDir {
+  font-weight: 600; color: rgba(0,0,0,0.6); white-space: nowrap;
+  display: flex; align-items: center; gap: 6px;
+}
+.priceVal { color: var(--green); text-align: right; }
+.priceVal strong { font-weight: 800; }
+.priceDivider {
+  font-size: 10px; font-weight: 700; letter-spacing: 1.2px;
+  text-transform: uppercase; color: rgba(0,0,0,0.35);
+  border-top: 1px dashed rgba(201,168,76,0.4);
+  padding-top: 10px; margin-top: 2px;
+}

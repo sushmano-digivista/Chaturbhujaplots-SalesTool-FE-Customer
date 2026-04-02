@@ -15,6 +15,35 @@ const CATEGORY_META = {
   cornerPlots: { icon: <Maximize2 size={18} />, label: 'Corner Plots', color: '#9B7B2E', bg: 'rgba(155,123,46,0.12)'  },
 }
 
+// ── Pricing per venture (sourced from official price sheets) ─────────────────
+const VENTURE_PRICING = {
+  anjana: {
+    east:    { base: 13000, dev: 1000 },
+    west:    { base: 12500, dev: 1000 },
+    corners: [
+      { type: 'North-East Corner', extra: 1000 },
+      { type: 'Other Corners',     extra: 500  },
+    ],
+  },
+  aparna: {
+    east:    { base: 12000, dev: 1000 },
+    west:    { base: 11500, dev: 1000 },
+    corners: [
+      { type: 'North-East Corner', extra: 1000 },
+      { type: 'Other Corners',     extra: 500  },
+    ],
+  },
+  varaha: {
+    east:    { base: 15000, dev: 1000 },
+    west:    { base: 14500, dev: 1000 },
+    corners: [
+      { type: 'North-East Corner', extra: 1000 },
+      { type: 'Other Corners',     extra: 500  },
+    ],
+    corpus:  { amount: 100 },
+  },
+}
+
 // ── Static plot data per venture (from Excel registers) ───────────────────────
 const VENTURE_PLOTS = {
   anjana: {
@@ -122,6 +151,7 @@ export default function PlotGrid({ onEnquire }) {
   const [ventureKey,     setVentureKey]     = useState('anjana')
   const [activeCategory, setActiveCategory] = useState(null)
   const [hoveredPlot,    setHoveredPlot]    = useState(null)
+  const [priceOpen,      setPriceOpen]      = useState(false)
 
   const venture    = VENTURE_PLOTS[ventureKey]
   const color      = VENTURE_COLORS[ventureKey]
@@ -149,7 +179,7 @@ export default function PlotGrid({ onEnquire }) {
               key={k}
               className={`${styles.ventureBtn} ${isActive ? styles.ventureBtnActive : ''}`}
               style={isActive ? { background: VENTURE_COLORS[k], borderColor: VENTURE_COLORS[k] } : { '--vbtn-color': VENTURE_COLORS[k] }}
-              onClick={() => { setVentureKey(k); setActiveCategory(null) }}
+              onClick={() => { setVentureKey(k); setActiveCategory(null); setPriceOpen(false) }}
             >
               <span className={styles.ventureBtnName} style={{ color: isActive ? '#fff' : VENTURE_COLORS[k] }}>{v.label}</span>
               <span className={styles.ventureBtnSub}  style={{ color: isActive ? 'rgba(255,255,255,.75)' : 'var(--text-light)' }}>{v.short}</span>
@@ -187,11 +217,74 @@ export default function PlotGrid({ onEnquire }) {
       ) : (
         <>
           {/* Price range banner */}
-          <div className={styles.priceBanner} style={{ background: color }}>
-            <span className={styles.priceBannerLabel}>Price Range</span>
-            <span className={styles.priceBannerValue}>{venture.priceRangeLabel}</span>
-            <span className={styles.priceBannerNote}>Contact us for exact plot pricing</span>
-          </div>
+          {(() => {
+            const vp = VENTURE_PRICING[ventureKey]
+            if (!vp) return (
+              <div className={styles.priceBanner} style={{ background: color }}>
+                <span className={styles.priceBannerLabel}>Price Range</span>
+                <span className={styles.priceBannerValue}>{venture.priceRangeLabel}</span>
+                <span className={styles.priceBannerNote}>Contact us for exact plot pricing</span>
+              </div>
+            )
+            return (
+              <div className={styles.priceBannerWrap}>
+                <button
+                  className={styles.priceBanner}
+                  style={{ background: color, cursor: 'pointer', width: '100%', textAlign: 'left' }}
+                  onClick={() => setPriceOpen(o => !o)}
+                >
+                  <span className={styles.priceBannerLabel}>Price Range</span>
+                  <span className={styles.priceBannerValue}>
+                    East: ₹{vp.east.base.toLocaleString('en-IN')} &nbsp;|&nbsp; West: ₹{vp.west.base.toLocaleString('en-IN')}
+                    <span style={{fontSize:'12px',opacity:.7}}> + ₹{vp.east.dev.toLocaleString('en-IN')} Dev.</span>
+                  </span>
+                  <span className={styles.priceBannerNote}>
+                    {priceOpen ? 'Hide pricing ▲' : 'View full pricing ▼'}
+                  </span>
+                </button>
+
+                {priceOpen && (
+                  <motion.div
+                    className={styles.priceExpanded}
+                    initial={{ opacity: 0, height: 0 }}
+                    animate={{ opacity: 1, height: 'auto' }}
+                    exit={{ opacity: 0, height: 0 }}
+                    transition={{ duration: 0.25 }}
+                  >
+                    <div className={styles.priceGrid}>
+                      <div className={styles.priceRow}>
+                        <span className={styles.priceDir}>☀ East Facing</span>
+                        <span className={styles.priceVal}>
+                          ₹{vp.east.base.toLocaleString('en-IN')} + ₹{vp.east.dev.toLocaleString('en-IN')} Dev. Charges
+                          <strong> = ₹{(vp.east.base + vp.east.dev).toLocaleString('en-IN')}/sq.yd</strong>
+                        </span>
+                      </div>
+                      <div className={styles.priceRow}>
+                        <span className={styles.priceDir}>🌙 West Facing</span>
+                        <span className={styles.priceVal}>
+                          ₹{vp.west.base.toLocaleString('en-IN')} + ₹{vp.west.dev.toLocaleString('en-IN')} Dev. Charges
+                          <strong> = ₹{(vp.west.base + vp.west.dev).toLocaleString('en-IN')}/sq.yd</strong>
+                        </span>
+                      </div>
+                      <div className={styles.priceDivider}>Corner Charges (Extra)</div>
+                      {vp.corners.map((c, i) => (
+                        <div key={i} className={styles.priceRow}>
+                          <span className={styles.priceDir}>{c.type}</span>
+                          <span className={styles.priceVal}>₹{c.extra.toLocaleString('en-IN')}/sq.yd extra</span>
+                        </div>
+                      ))}
+                      {vp.corpus && (
+                        <div className={styles.priceRow}>
+                          <span className={styles.priceDir}>Corpus Fund</span>
+                          <span className={styles.priceVal}>₹{vp.corpus.amount}/sq.yd</span>
+                        </div>
+                      )}
+                    </div>
+                  </motion.div>
+                )}
+              </div>
+            )
+          })()}
 
           {/* Category cards */}
           <AnimatePresence mode="wait">

@@ -22,7 +22,7 @@ export default function Footer({ content }) {
   const phone    = DEFAULT_PHONE
   const whatsapp = content?.contact?.whatsapp || DEFAULT_WA_NUMBER
   const email    = contact.email    || 'msnraoooo@gmail.com'
-  const website  = contact?.website   || 'www.chaturbhujaplots.in'
+  const website  = contact?.website || 'www.chaturbhujaplots.in' // reads from DB
   const address  = contact.address  || 'Vijayawada, Andhra Pradesh'
 
   const scrollTo = (id) => document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' })

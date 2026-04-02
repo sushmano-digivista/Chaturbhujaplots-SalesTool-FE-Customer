@@ -222,7 +222,7 @@ function ProjectPopup({ proj, onClose, onNavigate, pricing }) {
         </div>
 
         {/* Pricing */}
-        {(pricing || proj.pricing) && <div style={{padding:'0 20px 4px'}}><PricingCard pricing={pricing || proj.pricing} compact /></div>}
+        {(pricing || proj.pricing) && <div style={{padding:'0 20px 4px'}}><PricingCard pricing={pricing || proj.pricing} compact dark /></div>}
 
         {/* CTAs */}
         <div className={styles.popupActions}>

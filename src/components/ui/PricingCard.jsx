@@ -4,11 +4,11 @@ import styles from './PricingCard.module.css'
  * PricingCard — reusable pricing breakdown for any project.
  * Props: pricing { east, west, corners[], corpus?, note }
  */
-export default function PricingCard({ pricing, compact = false }) {
+export default function PricingCard({ pricing, compact = false, dark = false }) {
   if (!pricing) return null
 
   return (
-    <div className={`${styles.card} ${compact ? styles.compact : ''}`}>
+    <div className={`${styles.card} ${compact ? styles.compact : ''} ${dark ? styles.dark : ''}`}>
       <div className={styles.header}>
         <span className={styles.tag}>PLOT PRICING</span>
         <span className={styles.unit}>per sq. yard</span>

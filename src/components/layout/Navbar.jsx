@@ -46,6 +46,11 @@ export default function Navbar({ contact, onEnquire }) {
 
   const scrollTo = (id) => {
   setTimeout(() => {
+    // For contact section, scroll to very bottom of page
+    if (id === 'contact') {
+      window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' })
+      return
+    }
     const el = document.getElementById(id)
     if (!el) return
     const navHeight = document.querySelector('[class*="navbar"]')?.offsetHeight || 68

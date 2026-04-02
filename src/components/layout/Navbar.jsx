@@ -45,10 +45,12 @@ export default function Navbar({ contact, onEnquire }) {
   }, [])
 
   const scrollTo = (id) => {
-    setMenuOpen(false)
-    setPortOpen(false)
-    document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' })
-  }
+  const el = document.getElementById(id)
+  if (!el) return
+  const navHeight = document.querySelector('[class*="navbar"]')?.offsetHeight || 68
+  const top = el.getBoundingClientRect().top + window.scrollY - navHeight - 20
+  window.scrollTo({ top, behavior: 'smooth' })
+}
 
   return (
     <>
@@ -210,3 +212,4 @@ export default function Navbar({ contact, onEnquire }) {
     </>
   )
 }
+

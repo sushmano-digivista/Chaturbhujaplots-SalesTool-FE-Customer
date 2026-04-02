@@ -302,3 +302,4 @@ export const COMPANY_CONTACT = {
   registeredOffice: 'Flat No. 101, Venkat Meadows, Patamata, Vijayawada 520007',
   corporateOffice:  'First Floor, Padmavathi Icon, Panta Kaluva Road, Near Auto Nagar, Vijayawada 520007',
 }
+

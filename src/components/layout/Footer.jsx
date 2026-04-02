@@ -23,6 +23,7 @@ export default function Footer({ content }) {
   const whatsapp = content?.contact?.whatsapp || DEFAULT_WA_NUMBER
   const email    = contact.email    || 'msnraoooo@gmail.com'
   const website  = contact?.website || 'www.chaturbhujaplots.in' // reads from DB
+  const waMsg    = contact?.whatsappMessage || 'Hi, I am interested in Chaturbhuja Properties plots. Please share more details.'
   const address  = contact.address  || 'Vijayawada, Andhra Pradesh'
 
   const scrollTo = (id) => document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' })
@@ -93,7 +94,7 @@ export default function Footer({ content }) {
             </a>
 
             <a
-              href={`https://wa.me/${whatsapp}?text=${encodeURIComponent('Hi! 👋 I came across Chaturbhuja Properties & Infra and I'm interested in your premium plots. Could you please share more details on available plots, pricing, and site visit options? Thank you!')}`}
+              href={`https://wa.me/${whatsapp}?text=${encodeURIComponent(waMsg)}`}
               target="_blank" rel="noreferrer"
               className={styles.contactRow}
             >

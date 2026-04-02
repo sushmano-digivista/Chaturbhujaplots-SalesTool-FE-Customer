@@ -14,7 +14,7 @@ export default function ContactSection({ content, onEnquire }) {
 
   const openWA = () => {
     const num = contact.whatsapp || DEFAULT_WA_NUMBER
-    openWhatsApp(num, 'Hi! 👋 I came across Chaturbhuja Properties & Infra and I'm interested in your premium plots. Could you please share more details on available plots, pricing, and site visit options? Thank you!')
+    openWhatsApp(num, contact?.whatsappMessage || 'Hi, I am interested in Chaturbhuja Properties plots. Please share more details.')
   }
 
   return (

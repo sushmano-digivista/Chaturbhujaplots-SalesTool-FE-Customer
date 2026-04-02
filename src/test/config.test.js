@@ -12,13 +12,13 @@ import {
 
 describe('config constants', () => {
   it('DEFAULT_WA_NUMBER is a digits-only phone number', () => {
-    expect(DEFAULT_WA_NUMBER).toBe('14155238886')
+    expect(DEFAULT_WA_NUMBER).toBe('918977262683')
     expect(/^\d+$/.test(DEFAULT_WA_NUMBER)).toBe(true)
     expect(DEFAULT_WA_NUMBER.length).toBeGreaterThan(9)
   })
 
   it('DEFAULT_PHONE includes + prefix and country code', () => {
-    expect(DEFAULT_PHONE).toBe('+919739762698')
+    expect(DEFAULT_PHONE).toBe('+91 89772 62683')
     expect(DEFAULT_PHONE.startsWith('+')).toBe(true)
   })
 

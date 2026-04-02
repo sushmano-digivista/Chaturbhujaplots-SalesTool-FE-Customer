@@ -1,22 +1,19 @@
 /**
  * config.js — Application-level constants.
- *
- * Centralises values that are used in multiple components (Sonar: S1192
- * "string literals should not be duplicated").  Change once here rather than
- * hunting for magic strings across the codebase.
+ * Change once here — used across all components.
  */
 
-/** WhatsApp bot number (Twilio sandbox) — customers chat here to start the questionnaire bot. */
-export const DEFAULT_WA_NUMBER = '14155238886'
+/** WhatsApp number for direct customer enquiries */
+export const DEFAULT_WA_NUMBER = '918977262683'
 
-/** Voice-call contact number for the business. */
-export const DEFAULT_PHONE = '+919739762698'
+/** Voice-call contact number */
+export const DEFAULT_PHONE = '+91 89772 62683'
 
-/** Owner/business WhatsApp number — for direct enquiries (not bot). */
-export const OWNER_WA_NUMBER = '919739762698'
+/** Owner/business WhatsApp number */
+export const OWNER_WA_NUMBER = '918977262683'
 
-/** Business hours label shown across CTAs. */
+/** Business hours label shown across CTAs */
 export const BUSINESS_HOURS = '9am–7pm'
 
-/** Maximum minutes for a callback promise. */
+/** Maximum minutes for a callback promise */
 export const CALLBACK_MINUTES = 30

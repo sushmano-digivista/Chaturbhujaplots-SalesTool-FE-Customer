@@ -109,8 +109,8 @@ const FALLBACK_CONTENT = {
   },
 
   contact: {
-    phone:       '+91 97397 62698',
-    whatsapp:    '919739762698',
+    phone:       '+91 89772 62683',
+    whatsapp:    '918977262683',
     email:       'info@chaturbhuja.in',
     address:     'Flat No. 101, Venkat Meadows, Patamata, Vijayawada – 520007',
     mapEmbedUrl: 'https://maps.google.com/maps?q=Paritala,Andhra+Pradesh,India&t=k&z=14&ie=UTF8&iwloc=&output=embed',

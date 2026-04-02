@@ -2,7 +2,7 @@
 
 .btn {
   position: fixed;
-  bottom: 90px;          /* sits just above the floating WhatsApp button */
+  bottom: 140px;         /* sits above the floating WhatsApp button */
   right: 24px;
   z-index: 999;
 
@@ -45,4 +45,3 @@
   from { opacity: 0; transform: translateY(12px); }
   to   { opacity: 1; transform: translateY(0);    }
 }
-

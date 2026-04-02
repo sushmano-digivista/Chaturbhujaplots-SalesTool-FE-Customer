@@ -22,8 +22,8 @@ const PROJECTS = [
 function scrollTo(id) {
   const el = document.getElementById(id)
   if (!el) return
-  const headerHeight = document.querySelector('header')?.offsetHeight || 80
-  const extraPadding = 80  // extra breathing room below header
+  const headerHeight = document.querySelector('[class*="navbar"]')?.offsetHeight || 68
+  const extraPadding = 20  // extra breathing room below header
   const top = el.getBoundingClientRect().top + window.scrollY - headerHeight - extraPadding
   window.scrollTo({ top, behavior: 'smooth' })
 }

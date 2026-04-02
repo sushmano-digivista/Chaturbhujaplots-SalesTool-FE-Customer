@@ -23,7 +23,7 @@ function scrollTo(id) {
   const el = document.getElementById(id)
   if (!el) return
   const headerHeight = document.querySelector('header')?.offsetHeight || 80
-  const extraPadding = 32  // extra breathing room below header
+  const extraPadding = 80  // extra breathing room below header
   const top = el.getBoundingClientRect().top + window.scrollY - headerHeight - extraPadding
   window.scrollTo({ top, behavior: 'smooth' })
 }

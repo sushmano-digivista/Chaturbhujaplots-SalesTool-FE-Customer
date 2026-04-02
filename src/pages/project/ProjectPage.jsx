@@ -7,6 +7,7 @@ import { getProjectGallery, getProjectVideos } from '@/constants/projectGallerie
 import { ACTIVE_PROJECTS } from '@/constants/projects'
 import { useSubmitLead }   from '@/hooks/useData'
 import LeadModal           from '@/components/ui/LeadModal'
+import PricingCard         from '@/components/ui/PricingCard'
 import { openWhatsApp, openMaps } from '@/utils/security'
 import { DEFAULT_WA_NUMBER }      from '@/constants/config'
 import styles              from './ProjectPage.module.css'
@@ -139,7 +140,10 @@ function OverviewTab({ proj, onEnquire }) {
             </div>
           </div>
 
-          {/* Key facts grid */}
+          {/* Pricing */}
+      {proj.pricing && <div style={{marginBottom:'20px'}}><PricingCard pricing={proj.pricing} /></div>}
+
+      {/* Key facts grid */}
           <div className={styles.factsGrid}>
             {[
               { label: 'Total Plots',    value: proj.total },

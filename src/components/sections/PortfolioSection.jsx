@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { X } from 'lucide-react'
 import { ACTIVE_PROJECTS, COMPLETED_PROJECTS } from '@/constants/projects'
 import { getFacingRows } from '@/constants/facingMap'
+import PricingCard     from '@/components/ui/PricingCard'
 import { openWhatsApp }  from '@/utils/security'
 import { DEFAULT_WA_NUMBER } from '@/constants/config'
 import styles from './PortfolioSection.module.css'
@@ -219,6 +220,9 @@ function ProjectPopup({ proj, onClose, onNavigate }) {
             </div>
           </div>
         </div>
+
+        {/* Pricing */}
+        {proj.pricing && <div style={{padding:'0 20px 4px'}}><PricingCard pricing={proj.pricing} compact /></div>}
 
         {/* CTAs */}
         <div className={styles.popupActions}>

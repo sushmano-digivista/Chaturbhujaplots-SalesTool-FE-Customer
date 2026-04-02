@@ -122,12 +122,12 @@ export default function Navbar({ contact, onEnquire }) {
                   <span className={styles.dropCheckDot} />
                   Completed &amp; Sold Out
                 </div>
-                <button className={styles.dropCompletedLine} onClick={() => scrollTo('portfolio')}>
+                <button className={styles.dropCompletedLine} onClick={() => { setPortOpen(false); scrollTo('portfolio') }}>
                   {NAV_COMPLETED.join(' · ')}
                 </button>
 
                 {/* Footer CTA */}
-                <button className={styles.dropViewAll} onClick={() => scrollTo('portfolio')}>
+                <button className={styles.dropViewAll} onClick={() => { setPortOpen(false); scrollTo('portfolio') }}>
                   <span>View all projects overview</span>
                   <span className={styles.dropViewAllArrow}>→</span>
                 </button>
@@ -213,4 +213,5 @@ export default function Navbar({ contact, onEnquire }) {
     </>
   )
 }
+
 

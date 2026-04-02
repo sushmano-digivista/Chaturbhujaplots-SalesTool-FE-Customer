@@ -1,5 +1,5 @@
 import { useQuery, useMutation } from '@tanstack/react-query'
-import { contentApi, plotSummaryApi, leadApi, pricingApi } from '@/api'
+import { contentApi, plotSummaryApi, leadApi, pricingApi, settingsApi } from '@/api'
 import toast from 'react-hot-toast'
 
 export function useContent() {
@@ -32,5 +32,20 @@ export function usePricing() {
     queryFn:  pricingApi.getAll,
     staleTime: 0,
     refetchOnWindowFocus: true,
+  })
+}
+
+// ── Contact Settings ──────────────────────────────────────────────────────────
+// Fetches ownerPhone and ownerEmail from MongoDB via CommonServices API.
+export function useContactSettings() {
+  return useQuery({
+    queryKey: ['contact-settings'],
+    queryFn:  settingsApi.getContact,
+    staleTime: 5 * 60 * 1000,
+    retry: 2,
+    placeholderData: {
+      ownerPhone: '919739762698',
+      ownerEmail: 'info@chaturbhuja.in',
+    },
   })
 }

@@ -1,66 +1,44 @@
 import { useState, useEffect, useCallback } from 'react'
 
-import { useContent, usePricing }   from '@/hooks/useData'
+import { useContent, usePricing } from '@/hooks/useData'
 import FALLBACK_CONTENT from '@/constants/fallbackContent'
 
-// ── Layout components (each in its own file) ──────────────────────────────────
 import { Navbar, Footer, StickyBar, FloatingWA } from '@/components/layout'
-
-// ── Section components (each in its own file) ─────────────────────────────────
 import {
-  Hero,
-  PlotGrid,
-  PortfolioSection,
-  GallerySection,
-  VideosSection,
-  HighlightsSection,
-  AmenitiesSection,
-  QuoteSection,
-  LocationSection,
-  ContactSection,
+  Hero, PlotGrid, PortfolioSection, GallerySection, VideosSection,
+  HighlightsSection, AmenitiesSection, QuoteSection, LocationSection, ContactSection,
 } from '@/components/sections'
-
-// ── UI components ─────────────────────────────────────────────────────────────
 import { LeadModal } from '@/components/ui'
-
-// ── Common utilities ──────────────────────────────────────────────────────────
 import PageLoader from '@/components/common/PageLoader'
 
-/**
- * HomePage — the customer-facing sales page.
- *
- * Composition pattern: this file imports and assembles all section components.
- * Each section is self-contained in its own JSX file and can be:
- *   - Reordered by moving a single line inside <main>
- *   - Removed by commenting out a single line
- *   - Reused elsewhere by importing the same component
- *
- * To add a new section:
- *   1. Create  src/components/sections/YourNewSection.jsx
- *   2. Export  it from src/components/sections/index.js
- *   3. Import + place <YourNewSection /> inside <main> below
- */
+// Animation duration in ms -- must match CSS animation total in PageLoader
+const LOADER_MIN_MS = 2800
+
 export default function HomePage() {
   const { data: content, isLoading, isError } = useContent()
   const { data: pricingMap } = usePricing()
   const [leadCtx,     setLeadCtx]     = useState(null)
+  const [showLoader,  setShowLoader]  = useState(true)
+
   const openEnquiry  = useCallback((ctx) => setLeadCtx(ctx), [])
   const closeEnquiry = useCallback(() => setLeadCtx(null),   [])
 
-  // Show full-screen loader only on the very first load (not on API error)
-  if (isLoading && !isError) return <PageLoader />
+  // Guarantee the PageLoader shows for at least LOADER_MIN_MS
+  // so the full SVG animation always completes before content appears
+  useEffect(() => {
+    const timer = setTimeout(() => setShowLoader(false), LOADER_MIN_MS)
+    return () => clearTimeout(timer)
+  }, [])
 
-  // Fall back to static content when the API is down
+  // Show loader until BOTH the timer has elapsed AND data has loaded
+  if ((isLoading && !isError) || showLoader) return <PageLoader />
+
   const activeContent = content || FALLBACK_CONTENT
   const contact       = activeContent?.contact || {}
 
   return (
     <div style={{ paddingTop: 'var(--nav-h)' }}>
-
-      {/* ── Persistent chrome ─────────────────────────────────────────── */}
       <Navbar contact={contact} onEnquire={openEnquiry} />
-
-      {/* ── Page sections — add / remove / reorder here ───────────────── */}
       <main>
         <Hero              content={activeContent} onEnquire={openEnquiry} />
         <PortfolioSection pricingMap={pricingMap}  content={activeContent} onEnquire={openEnquiry} />
@@ -73,13 +51,9 @@ export default function HomePage() {
         <LocationSection   content={activeContent} />
         <ContactSection    content={activeContent} onEnquire={openEnquiry} />
       </main>
-
-      {/* ── Footer chrome ─────────────────────────────────────────────── */}
       <Footer     content={activeContent} />
       <StickyBar  contact={contact}       onEnquire={openEnquiry} />
       <FloatingWA contact={contact} />
-
-      {/* ── Lead capture modal — portal-rendered ──────────────────────── */}
       <LeadModal
         context={leadCtx}
         onClose={closeEnquiry}

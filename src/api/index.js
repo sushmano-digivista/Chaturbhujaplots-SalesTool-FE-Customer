@@ -20,7 +20,6 @@ const COMMON_BASE = isDev
   ? '/api/common'
   : COMMON_URL
 
-// Force fresh responses — prevents 304 Not Modified from serving stale DB data
 const noCacheHeaders = { 'Cache-Control': 'no-cache', 'Pragma': 'no-cache' }
 
 const dashApi   = axios.create({ baseURL: DASHBOARD_BASE, timeout: 15000, headers: noCacheHeaders })
@@ -40,20 +39,16 @@ export const leadApi = {
   submit: (data) => dashApi.post('/leads', data).then(r => r.data),
 }
 
-// ── Brochure API ──────────────────────────────────────────────────────────────
-// Routes live at /api/v1/brochure/* on CommonServices — use commonApi not mediaApi
 export const brochureApi = {
   sendEmail:    (data) => commonApi.post('/brochure/email',    data).then(r => r.data),
   sendWhatsApp: (data) => commonApi.post('/brochure/whatsapp', data).then(r => r.data),
 }
 
-// ── Site Visit API ────────────────────────────────────────────────────────────
 export const siteVisitApi = {
   book: (data) => commonApi.post('/site-visit', data).then(r => r.data),
 }
 
-// ── Pricing API ───────────────────────────────────────────────────────────────
-export const pricingApi = {
-  getAll: () => dashApi.get('/pricing').then(r => r.data),
-  getOne: (id) => dashApi.get(`/pricing/${id}`).then(r => r.data),
+// ── Settings API ──────────────────────────────────────────────────────────────
+export const settingsApi = {
+  getContact: () => commonApi.get('/settings/contact').then(r => r.data),
 }

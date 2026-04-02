@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { useInView }   from 'react-intersection-observer'
 import { Navigation }  from 'lucide-react'
 import { openMaps }    from '@/utils/security'
+import { useContactSettings } from '@/hooks/useData'
 import styles from './Sections.module.css'
 
 // ── Per-venture colour palette ────────────────────────────────────────────────
@@ -95,8 +96,14 @@ const VENTURES = [
 export default function LocationSection({ content }) {
   const [active, setActive] = useState(0)
   const { ref, inView }     = useInView({ triggerOnce: true, threshold: 0.25 })
+  const { data: ownerSettings } = useContactSettings()
 
-  const venture = VENTURES[active]
+  const venture = {
+    ...VENTURES[active],
+    address: (VENTURES[active].id === 'aparna' && ownerSettings?.aparna_contact_address)
+      ? ownerSettings.aparna_contact_address
+      : VENTURES[active].address,
+  }
   const palette = PALETTE[active]
 
   return (
@@ -226,3 +233,4 @@ export default function LocationSection({ content }) {
     </section>
   )
 }
+

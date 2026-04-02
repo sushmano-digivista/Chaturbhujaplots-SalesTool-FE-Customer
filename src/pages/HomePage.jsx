@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from 'react'
 
-import { useContent }   from '@/hooks/useData'
+import { useContent, usePricing }   from '@/hooks/useData'
 import FALLBACK_CONTENT from '@/constants/fallbackContent'
 
 // ── Layout components (each in its own file) ──────────────────────────────────
@@ -42,6 +42,7 @@ import PageLoader from '@/components/common/PageLoader'
  */
 export default function HomePage() {
   const { data: content, isLoading, isError } = useContent()
+  const { data: pricingMap } = usePricing()
   const [leadCtx,     setLeadCtx]     = useState(null)
   const openEnquiry  = useCallback((ctx) => setLeadCtx(ctx), [])
   const closeEnquiry = useCallback(() => setLeadCtx(null),   [])

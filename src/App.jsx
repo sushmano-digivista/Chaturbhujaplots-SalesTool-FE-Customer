@@ -1,9 +1,9 @@
 import { Routes, Route } from 'react-router-dom'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { Toaster } from 'react-hot-toast'
-
 import HomePage    from '@/pages/HomePage'
 import ProjectPage from '@/pages/project/ProjectPage'
+import ScrollToTop from '@/components/common/ScrollToTop'
 import '@/styles/globals.css'
 
 const queryClient = new QueryClient({
@@ -37,6 +37,10 @@ export default function App() {
         <Route path="/project/:id"       element={<ProjectPage />} />
         <Route path="/project/:id/:tab"  element={<ProjectPage />} />
       </Routes>
+
+      {/* ── Scroll to top button — appears after scrolling 300px ── */}
+      <ScrollToTop />
     </QueryClientProvider>
   )
 }
+

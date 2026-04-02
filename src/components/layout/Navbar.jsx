@@ -45,11 +45,13 @@ export default function Navbar({ contact, onEnquire }) {
   }, [])
 
   const scrollTo = (id) => {
-  const el = document.getElementById(id)
-  if (!el) return
-  const navHeight = document.querySelector('[class*="navbar"]')?.offsetHeight || 68
-  const top = el.getBoundingClientRect().top + window.scrollY - navHeight - 20
-  window.scrollTo({ top, behavior: 'smooth' })
+  setTimeout(() => {
+    const el = document.getElementById(id)
+    if (!el) return
+    const navHeight = document.querySelector('[class*="navbar"]')?.offsetHeight || 68
+    const top = el.getBoundingClientRect().top + window.scrollY - navHeight - 20
+    window.scrollTo({ top, behavior: 'smooth' })
+  }, 50)
 }
 
   return (

@@ -178,7 +178,7 @@ export default function Hero({ content, onEnquire }) {
               <Phone size={13} /><span>Call</span>
             </a>
             <a
-              href={`https://wa.me/${DEFAULT_WA_NUMBER}?text=${encodeURIComponent('Hi, I am interested in Chaturbhuja plots. Please share details.')}`}
+              href={`https://wa.me/${DEFAULT_WA_NUMBER}?text=${encodeURIComponent('Hi! 👋 I came across Chaturbhuja Properties & Infra and I'm interested in your premium plots. Could you please share more details on available plots, pricing, and site visit options? Thank you!')}`}
               target="_blank" rel="noreferrer"
               className={styles.directorWaBtn} aria-label="WhatsApp">
               💬
@@ -250,7 +250,7 @@ export default function Hero({ content, onEnquire }) {
             {ctaButton}
           </button>
           <a
-            href={`https://wa.me/${whatsapp}?text=${encodeURIComponent('Hi')}`}
+            href={`https://wa.me/${whatsapp}?text=${encodeURIComponent('Hi! 👋 I came across Chaturbhuja Properties & Infra and I'm interested in your premium plots. Could you please share more details on available plots, pricing, and site visit options? Thank you!')}`}
             target="_blank" rel="noreferrer"
             className={styles.lcBtnWA}>
             💬

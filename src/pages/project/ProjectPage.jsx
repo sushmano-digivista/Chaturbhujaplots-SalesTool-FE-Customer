@@ -403,7 +403,7 @@ function ContactTab({ proj, onEnquire }) {
   const c = proj.contact || {}
   const openWA = () => openWhatsApp(
     c.whatsapp || DEFAULT_WA_NUMBER,
-    `Hi, I am interested in ${proj.name} at ${proj.loc}.`
+    `Hi! 👋 I visited your website and I'm interested in *${proj.name}* at ${proj.loc}. Could you please share details on available plots, pricing, and how to schedule a site visit? Thank you!`
   )
 
   return (

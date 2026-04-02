@@ -9,7 +9,7 @@ import styles from './Footer.module.css'
  */
 export default function FloatingWA({ contact }) {
   const openWA = () => {
-    openWhatsApp(contact?.whatsapp || DEFAULT_WA_NUMBER, 'Hi')
+    openWhatsApp(contact?.whatsapp || DEFAULT_WA_NUMBER, 'Hi! 👋 I came across Chaturbhuja Properties & Infra and I'm interested in your premium plots. Could you please share more details on available plots, pricing, and site visit options? Thank you!')
   }
 
   return (

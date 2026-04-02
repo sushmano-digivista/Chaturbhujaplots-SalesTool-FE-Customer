@@ -20,7 +20,7 @@ const PROJECTS = [
 export default function Footer({ content }) {
   const contact = content?.contact || {}
   const phone    = DEFAULT_PHONE
-  const whatsapp = DEFAULT_WA_NUMBER
+  const whatsapp = content?.contact?.whatsapp || DEFAULT_WA_NUMBER
   const email    = contact.email    || 'info@chaturbhuja.in'
   const address  = contact.address  || 'Vijayawada, Andhra Pradesh'
 

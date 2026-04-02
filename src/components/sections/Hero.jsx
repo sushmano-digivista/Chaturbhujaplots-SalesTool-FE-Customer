@@ -76,7 +76,7 @@ export default function Hero({ content, onEnquire }) {
   // Trust stats (bottom 3 boxes)
   const lcStats = lcs.length ? lcs : FB.lcStats
 
-  const whatsapp = DEFAULT_WA_NUMBER
+  const whatsapp = content?.contact?.whatsapp || DEFAULT_WA_NUMBER
   const barWidth = `${Math.round((openProjects / (openProjects + completedProjects)) * 100)}%`
   const scrollTo = id => document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' })
   const headBase   = urgHeadline.replace(/!+$/, '')

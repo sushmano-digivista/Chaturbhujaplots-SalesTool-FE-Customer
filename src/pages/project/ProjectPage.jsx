@@ -5,7 +5,7 @@ import { ArrowLeft, Phone, MessageCircle, X, Play, Navigation, Menu } from 'luci
 import { getFacingRows }                from '@/constants/facingMap'
 import { getProjectGallery, getProjectVideos } from '@/constants/projectGalleries'
 import { ACTIVE_PROJECTS } from '@/constants/projects'
-import { useSubmitLead, usePricing } from '@/hooks/useData'
+import { useSubmitLead, usePricing, useContactSettings } from '@/hooks/useData'
 import LeadModal           from '@/components/ui/LeadModal'
 import PricingCard         from '@/components/ui/PricingCard'
 import { openWhatsApp, openMaps } from '@/utils/security'
@@ -399,8 +399,11 @@ function LocationTab({ proj }) {
 }
 
 // ── Contact tab ───────────────────────────────────────────────────────────────
-function ContactTab({ proj, onEnquire }) {
+function ContactTab({ proj, onEnquire, ownerSettings }) {
   const c = proj.contact || {}
+  const address = (proj.id === 'aparna' && ownerSettings?.aparna_contact_address)
+    ? ownerSettings.aparna_contact_address
+    : c.address
   const openWA = () => openWhatsApp(
     c.whatsapp || DEFAULT_WA_NUMBER,
     `Hi! 👋 I visited your website and I'm interested in *${proj.name}* at ${proj.loc}. Could you please share details on available plots, pricing, and how to schedule a site visit? Thank you!`
@@ -414,7 +417,7 @@ function ContactTab({ proj, onEnquire }) {
           {c.phone    && <a href={`tel:${c.phone}`}       className={styles.contactRow}><Phone size={16} />{c.phone}</a>}
           {c.whatsapp && <button className={styles.contactRow} onClick={openWA}><MessageCircle size={16} />WhatsApp Chat</button>}
           {c.email    && <a href={`mailto:${c.email}`}    className={styles.contactRow}>✉️ {c.email}</a>}
-          {c.address  && <div className={styles.contactRow}>📍 {c.address}</div>}
+          {address    && <div className={styles.contactRow}>📍 {address}</div>}
           {c.website  && <a href={`https://${c.website}`} target="_blank" rel="noreferrer" className={styles.contactRow}>🌐 {c.website}</a>}
         </div>
         <div className={styles.contactCtas}>
@@ -444,6 +447,7 @@ export default function ProjectPage() {
   const [mobileNav, setMobileNav]   = useState(false)
 
   const proj = ACTIVE_PROJECTS.find((p) => p.id === id)
+  const { data: ownerSettings } = useContactSettings()
 
   const openEnquiry  = useCallback((ctx) => setLeadCtx(ctx), [])
   const closeEnquiry = useCallback(() => setLeadCtx(null),   [])
@@ -468,7 +472,7 @@ export default function ProjectPage() {
     gallery:   <GalleryTab   proj={proj} />,
     videos:    <VideosTab    proj={proj} />,
     location:  <LocationTab  proj={proj} />,
-    contact:   <ContactTab   proj={proj} onEnquire={openEnquiry} />,
+    contact:   <ContactTab   proj={proj} onEnquire={openEnquiry} ownerSettings={ownerSettings} />,
   }
 
   return (
@@ -544,3 +548,4 @@ export default function ProjectPage() {
     </div>
   )
 }
+

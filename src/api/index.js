@@ -58,7 +58,9 @@ export const pricingApi = {
 }
 
 // ── Settings API ──────────────────────────────────────────────────────────────
-// Fetches owner contact details (phone, email) from MongoDB via CommonServices
+// Settings always fetched from production — not proxied through local dev server
+const settingsApiClient = axios.create({ baseURL: COMMON_URL, timeout: 15000, headers: noCacheHeaders })
 export const settingsApi = {
-  getContact: () => commonApi.get('/settings/contact').then(r => r.data),
+  getContact: () => settingsApiClient.get('/settings/contact').then(r => r.data),
 }
+

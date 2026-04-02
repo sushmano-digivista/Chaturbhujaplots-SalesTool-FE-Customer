@@ -477,7 +477,7 @@ export default function ProjectPage() {
       {/* ── Top nav bar ───────────────────────────────────────────────────── */}
       <header className={`${styles.header} ${styles[proj.accentClass]}`}>
         <div className={styles.headerTop}>
-          <button className={styles.backBtn} onClick={() => navigate('/')}>
+          <button className={styles.backBtn} onClick={() => navigate('/?scrollTo=portfolio')}>
             <ArrowLeft size={16} /> Back
           </button>
           <div className={styles.headerTitle}>
@@ -544,3 +544,4 @@ export default function ProjectPage() {
     </div>
   )
 }
+

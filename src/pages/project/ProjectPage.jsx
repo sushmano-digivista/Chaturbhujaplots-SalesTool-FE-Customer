@@ -412,7 +412,7 @@ export default function ProjectPage() {
   const { data: proj, isLoading } = useProject(id)
   const { data: ownerSettings }   = useContactSettings()
   const { data: apiPricing }      = usePricing()
-  const projectPricing = apiPricing?.find(p => p.projectId === id) || null
+  const projectPricing = Array.isArray(apiPricing) ? (apiPricing.find(p => p.projectId === id) || null) : null
 
   const openEnquiry  = useCallback((ctx) => setLeadCtx(ctx), [])
   const closeEnquiry = useCallback(() => setLeadCtx(null),   [])

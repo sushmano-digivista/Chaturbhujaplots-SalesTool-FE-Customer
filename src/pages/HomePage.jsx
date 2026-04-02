@@ -25,8 +25,6 @@ import { LeadModal } from '@/components/ui'
 
 // ── Common utilities ──────────────────────────────────────────────────────────
 import PageLoader from '@/components/common/PageLoader'
-import { useLocation } from 'react-router-dom'
-
 
 /**
  * HomePage — the customer-facing sales page.
@@ -43,20 +41,6 @@ import { useLocation } from 'react-router-dom'
  *   3. Import + place <YourNewSection /> inside <main> below
  */
 export default function HomePage() {
-  const location = useLocation()
-
-useEffect(() => {
-  const params = new URLSearchParams(location.search)
-  const scrollTarget = params.get('scrollTo')
-  if (scrollTarget) {
-    setTimeout(() => {
-      const el = document.getElementById(scrollTarget)
-      if (!el) return
-      const navHeight = document.querySelector('[class*="navbar"]')?.offsetHeight || 68
-      window.scrollTo({ top: el.offsetTop - navHeight, behavior: 'smooth' })
-    }, 300)
-  }
-}, [location.search])
   const { data: content, isLoading, isError } = useContent()
   const { data: pricingMap } = usePricing()
   const [leadCtx,     setLeadCtx]     = useState(null)
@@ -105,4 +89,3 @@ useEffect(() => {
     </div>
   )
 }
-

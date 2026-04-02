@@ -233,12 +233,12 @@ export default function PlotGrid({ onEnquire }) {
                   style={{ background: color, cursor: 'pointer', width: '100%', textAlign: 'left' }}
                   onClick={() => setPriceOpen(o => !o)}
                 >
-                  <span className={styles.priceBannerLabel}>Price Range</span>
-                  <span className={styles.priceBannerValue}>
+                  <span className={styles.priceBannerLabel} style={{ color: 'rgba(255,255,255,0.75)' }}>Price Range</span>
+                  <span className={styles.priceBannerValue} style={{ color: '#fff', fontSize: '15px' }}>
                     East: ₹{vp.east.base.toLocaleString('en-IN')} &nbsp;|&nbsp; West: ₹{vp.west.base.toLocaleString('en-IN')}
-                    <span style={{fontSize:'12px',opacity:.7}}> + ₹{vp.east.dev.toLocaleString('en-IN')} Dev.</span>
+                    <span style={{fontSize:'12px',opacity:.8}}> + ₹{vp.east.dev.toLocaleString('en-IN')} Dev.</span>
                   </span>
-                  <span className={styles.priceBannerNote}>
+                  <span className={styles.priceBannerNote} style={{ color: 'rgba(255,255,255,0.85)', fontWeight: 600 }}>
                     {priceOpen ? 'Hide pricing ▲' : 'View full pricing ▼'}
                   </span>
                 </button>

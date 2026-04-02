@@ -270,7 +270,7 @@ function CompletedCard({ proj, index }) {
 }
 
 // ── Main ──────────────────────────────────────────────────────────────────────
-export default function PortfolioSection({ content }) {
+export default function PortfolioSection({ content, onEnquire, pricingMap }) {
   const navigate = useNavigate()
   const [activeProj, setActiveProj] = useState(null)
 

@@ -111,9 +111,9 @@ export default function Footer({ content }) {
               <span>Vijayawada, Andhra Pradesh</span>
             </div>
 
-            <a href="https://www.chaturbhuja.in" target="_blank" rel="noreferrer" className={styles.contactRow}>
+            <a href={`https://${website}`} target="_blank" rel="noreferrer" className={styles.contactRow}>
               <span className={styles.contactIcon}>🌐</span>
-              <span>www.chaturbhuja.in</span>
+              <span>{website}</span>
             </a>
 
           </div>

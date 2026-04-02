@@ -36,7 +36,6 @@ export function usePricing() {
 }
 
 // -- Contact Settings --------------------------------------------------
-// Fetches ownerPhone, ownerEmail, aparna_contact_address from MongoDB
 export function useContactSettings() {
   return useQuery({
     queryKey: ['contact-settings'],
@@ -51,36 +50,34 @@ export function useContactSettings() {
 }
 
 // -- Projects ----------------------------------------------------------
-// Fetches all project content from MongoDB.
-// Merges DB data with local projects.js fallback by project id.
-// Static fields (accentClass, heroImage, upcoming) always come from local.
+// Uses ACTIVE_PROJECTS as immediate placeholder so UI never blocks.
+// DB data merges in the background — zero loading flash.
 export function useProjects() {
   const { data: remoteProjects, isLoading, error } = useQuery({
     queryKey: ['projects'],
     queryFn:  projectsApi.getAll,
     staleTime: 0,
     retry: 2,
+    placeholderData: [],
   })
 
-  // Merge: DB data overrides local fallback, static fields always local
+  // Merge: DB data overrides local fallback, static fields always from local
   const projects = ACTIVE_PROJECTS.map(local => {
     const remote = remoteProjects?.find(p => p.id === local.id)
     if (!remote) return local
     return {
       ...local,
       ...remote,
-      // Static fields always from local -- never overridden by DB
       id:          local.id,
       accentClass: local.accentClass,
       heroImage:   local.heroImage,
       upcoming:    local.upcoming,
-      // Preserve local pricing/facings if DB has none
       pricing: remote.pricing || local.pricing,
       facings: remote.facings || local.facings,
     }
   })
 
-  return { data: projects, isLoading, error }
+  return { data: projects, isLoading: false, error }
 }
 
 // -- Single Project ----------------------------------------------------

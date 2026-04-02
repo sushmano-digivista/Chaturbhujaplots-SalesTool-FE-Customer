@@ -1,4 +1,5 @@
-import { DEFAULT_WA_NUMBER, DEFAULT_PHONE } from '@/constants/config'
+import { DEFAULT_WA_NUMBER } from '@/constants/config'
+import { useContactSettings } from '@/hooks/useData'
 import styles from './Footer.module.css'
 
 const QUICK_LINKS = [
@@ -17,21 +18,28 @@ const PROJECTS = [
   'Varaha Virtue @ Pamarru',
 ]
 
-export default function Footer({ content }) {
-  const contact = content?.contact || {}
-  const phone    = DEFAULT_PHONE
-  const whatsapp = content?.contact?.whatsapp || DEFAULT_WA_NUMBER
-  const email    = contact.email    || 'msnraoooo@gmail.com'
-  const website  = contact?.website || 'www.chaturbhujaplots.in' // reads from DB
-  const waMsg    = contact?.whatsappMessage || 'Hi, I am interested in Chaturbhuja Properties plots. Please share more details.'
-  const address  = contact.address  || 'Vijayawada, Andhra Pradesh'
+// Scroll to section with offset for sticky header
+function scrollTo(id) {
+  const el = document.getElementById(id)
+  if (!el) return
+  const headerHeight = document.querySelector('header')?.offsetHeight || 80
+  const top = el.getBoundingClientRect().top + window.scrollY - headerHeight - 16
+  window.scrollTo({ top, behavior: 'smooth' })
+}
 
-  const scrollTo = (id) => document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' })
+export default function Footer({ content }) {
+  const { data: ownerSettings } = useContactSettings()
+
+  const contact  = content?.contact || {}
+  const phone    = ownerSettings?.ownerPhone
+                    ? `+${ownerSettings.ownerPhone}`
+                    : contact.phone || '+919739762698'
+  const whatsapp = ownerSettings?.ownerPhone || DEFAULT_WA_NUMBER
+  const email    = ownerSettings?.ownerEmail || contact.email || 'info@chaturbhuja.in'
 
   return (
     <footer className={styles.footer}>
 
-      {/* ── Top divider line ─────────────────────────────────── */}
       <div className={styles.topBar} />
 
       <div className={styles.inner}>
@@ -51,8 +59,6 @@ export default function Footer({ content }) {
               and apartments — with 1200+ happy families settled across the
               Krishna–NTR–Guntur corridor.
             </p>
-
-            {/* Approval badges */}
             <div className={styles.badges}>
               <span className={styles.badge}>APCRDA Approved</span>
               <span className={styles.badge}>AP RERA Registered</span>
@@ -94,7 +100,7 @@ export default function Footer({ content }) {
             </a>
 
             <a
-              href={`https://wa.me/${whatsapp}?text=${encodeURIComponent(waMsg)}`}
+              href={`https://wa.me/${whatsapp}?text=${encodeURIComponent('Hi, I am interested in Chaturbhuja plots. Please share details.')}`}
               target="_blank" rel="noreferrer"
               className={styles.contactRow}
             >
@@ -112,11 +118,10 @@ export default function Footer({ content }) {
               <span>Vijayawada, Andhra Pradesh</span>
             </div>
 
-            <a href={`https://${website}`} target="_blank" rel="noreferrer" className={styles.contactRow}>
+            <a href="https://www.chaturbhujaplots.in" target="_blank" rel="noreferrer" className={styles.contactRow}>
               <span className={styles.contactIcon}>🌐</span>
-              <span>{website}</span>
+              <span>www.chaturbhujaplots.in</span>
             </a>
-
           </div>
 
         </div>
@@ -130,3 +135,4 @@ export default function Footer({ content }) {
     </footer>
   )
 }
+

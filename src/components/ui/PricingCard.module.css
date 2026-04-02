@@ -1,4 +1,4 @@
-/* ── Light mode (default — used in ProjectPage overview) ─────────── */
+/* ── Base card (light background — ProjectPage overview) ─────────── */
 .card {
   background: linear-gradient(135deg, rgba(30,77,43,0.05) 0%, rgba(201,168,76,0.07) 100%);
   border: 1px solid rgba(30,77,43,0.14);
@@ -8,63 +8,45 @@
 }
 .compact { padding: 14px 16px; }
 
-/* ── Dark mode (used in Portfolio popup on dark green bg) ────────── */
-.dark {
-  background: rgba(255,255,255,0.06);
-  border-color: rgba(201,168,76,0.3);
-}
-
 .header {
   display: flex; align-items: center; justify-content: space-between;
   margin-bottom: 14px;
 }
-.tag {
-  font-size: 10px; font-weight: 800; letter-spacing: 1.8px;
-  text-transform: uppercase; color: var(--gold);
-}
-.unit { font-size: 10px; color: rgba(255,255,255,0.4); font-style: italic; }
-.card:not(.dark) .unit { color: rgba(0,0,0,0.35); }
+.tag  { font-size: 10px; font-weight: 800; letter-spacing: 1.8px; text-transform: uppercase; color: var(--gold-dark); }
+.unit { font-size: 10px; color: rgba(0,0,0,0.35); font-style: italic; }
 
 .rows { display: flex; flex-direction: column; gap: 10px; margin-bottom: 14px; }
-.row {
-  display: flex; align-items: center; justify-content: space-between;
-  gap: 12px; flex-wrap: wrap;
-}
-.dir {
-  display: flex; align-items: center; gap: 6px;
-  font-size: 13px; font-weight: 600;
-  color: rgba(255,255,255,0.75); white-space: nowrap;
-}
-.card:not(.dark) .dir { color: rgba(0,0,0,0.6); }
-.dirIcon { display: inline-block; width: 18px; text-align: center; }
-.rate { font-size: 13px; color: var(--gold-light); text-align: right; }
-.card:not(.dark) .rate { color: var(--green); }
-.rate strong { font-weight: 800; }
-.dev { font-size: 11px; color: rgba(255,255,255,0.45); }
-.card:not(.dark) .dev { color: rgba(0,0,0,0.45); }
+.row  { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
 
-/* Corner charges */
+.dir  { display: flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 600; color: rgba(0,0,0,0.6); white-space: nowrap; }
+.dirIcon { display: inline-block; width: 18px; text-align: center; }
+.rate { font-size: 13px; color: var(--green); text-align: right; }
+.rate strong { font-weight: 800; }
+.dev  { font-size: 11px; color: rgba(0,0,0,0.4); }
+
 .cornerSection {
-  background: rgba(201,168,76,0.08);
-  border-top: 1px dashed rgba(201,168,76,0.3);
+  background: rgba(201,168,76,0.07);
+  border-top: 1px dashed rgba(201,168,76,0.35);
   padding-top: 12px; margin-top: 4px;
 }
-.cornerTitle {
-  font-size: 10px; font-weight: 700; letter-spacing: 1.2px;
-  text-transform: uppercase; color: rgba(255,255,255,0.4);
-  margin-bottom: 8px;
-}
-.card:not(.dark) .cornerTitle { color: rgba(0,0,0,0.4); }
-.cornerRow {
-  display: flex; align-items: center; justify-content: space-between;
-  gap: 8px; margin-bottom: 5px;
-}
-.cornerType { font-size: 12px; color: rgba(255,255,255,0.6); font-weight: 500; }
-.card:not(.dark) .cornerType { color: rgba(0,0,0,0.55); }
-.cornerExtra { font-size: 12px; color: var(--gold); font-weight: 700; }
+.cornerTitle  { font-size: 10px; font-weight: 700; letter-spacing: 1.2px; text-transform: uppercase; color: rgba(0,0,0,0.4); margin-bottom: 8px; }
+.cornerRow    { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 5px; }
+.cornerType   { font-size: 12px; color: rgba(0,0,0,0.55); font-weight: 500; }
+.cornerExtra  { font-size: 12px; color: var(--gold-dark); font-weight: 700; }
+.note         { font-size: 10px; color: rgba(0,0,0,0.35); margin-top: 10px; font-style: italic; }
 
-.note {
-  font-size: 10px; color: rgba(255,255,255,0.3); margin-top: 10px;
-  font-style: italic;
+/* ── Dark variant (popup on dark green bg) ────────────────────────── */
+.dark {
+  background: rgba(255,255,255,0.06);
+  border-color: rgba(201,168,76,0.3);
 }
-.card:not(.dark) .note { color: rgba(0,0,0,0.35); }
+.dark .tag          { color: var(--gold); }
+.dark .unit         { color: rgba(255,255,255,0.4); }
+.dark .dir          { color: rgba(255,255,255,0.75); }
+.dark .rate         { color: var(--gold-light); }
+.dark .dev          { color: rgba(255,255,255,0.45); }
+.dark .cornerSection{ background: rgba(201,168,76,0.08); border-top-color: rgba(201,168,76,0.25); }
+.dark .cornerTitle  { color: rgba(255,255,255,0.4); }
+.dark .cornerType   { color: rgba(255,255,255,0.6); }
+.dark .cornerExtra  { color: var(--gold); }
+.dark .note         { color: rgba(255,255,255,0.3); }

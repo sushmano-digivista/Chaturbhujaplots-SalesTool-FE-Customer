@@ -23,7 +23,7 @@ function scrollTo(id) {
   const el = document.getElementById(id)
   if (!el) return
   const headerHeight = document.querySelector('[class*="navbar"]')?.offsetHeight || 68
-  const extraPadding = 20  // extra breathing room below header
+  const extraPadding = 8  // extra breathing room below header
   const top = el.getBoundingClientRect().top + window.scrollY - headerHeight - extraPadding
   window.scrollTo({ top, behavior: 'smooth' })
 }
@@ -34,7 +34,7 @@ export default function Footer({ content }) {
   const contact  = content?.contact || {}
   const phone    = ownerSettings?.ownerPhone
                     ? `+${ownerSettings.ownerPhone}`
-                    : contact.phone || '+919739762698'
+                    : contact.phone || '+919948709041'
   const whatsapp = ownerSettings?.ownerPhone || DEFAULT_WA_NUMBER
   const email    = ownerSettings?.ownerEmail || contact.email || 'info@chaturbhuja.in'
 

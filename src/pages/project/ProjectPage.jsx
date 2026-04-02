@@ -5,7 +5,7 @@ import { ArrowLeft, Phone, MessageCircle, X, Play, Navigation, Menu } from 'luci
 import { getFacingRows }                from '@/constants/facingMap'
 import { getProjectGallery, getProjectVideos } from '@/constants/projectGalleries'
 import { ACTIVE_PROJECTS } from '@/constants/projects'
-import { useSubmitLead }   from '@/hooks/useData'
+import { useSubmitLead, usePricing } from '@/hooks/useData'
 import LeadModal           from '@/components/ui/LeadModal'
 import PricingCard         from '@/components/ui/PricingCard'
 import { openWhatsApp, openMaps } from '@/utils/security'
@@ -86,7 +86,7 @@ function HomeTab({ proj, onEnquire }) {
 }
 
 // ── Overview tab ──────────────────────────────────────────────────────────────
-function OverviewTab({ proj, onEnquire }) {
+function OverviewTab({ proj, onEnquire, apiPricing }) {
   const facingRows  = getFacingRows(proj.facings || {})
   const totalFacing = facingRows.reduce((s, r) => s + r.value, 0)
 
@@ -141,7 +141,7 @@ function OverviewTab({ proj, onEnquire }) {
           </div>
 
           {/* Pricing */}
-      {proj.pricing && <div style={{marginBottom:'20px'}}><PricingCard pricing={proj.pricing} /></div>}
+      {(apiPricing || proj.pricing) && <div style={{marginBottom:'20px'}}><PricingCard pricing={apiPricing || proj.pricing} /></div>}
 
       {/* Key facts grid */}
           <div className={styles.factsGrid}>

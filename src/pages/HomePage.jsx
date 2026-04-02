@@ -62,12 +62,12 @@ export default function HomePage() {
       {/* ── Page sections — add / remove / reorder here ───────────────── */}
       <main>
         <Hero              content={activeContent} onEnquire={openEnquiry} />
-        <PortfolioSection  content={activeContent} onEnquire={openEnquiry} />
+        <PortfolioSection pricingMap={pricingMap}  content={activeContent} onEnquire={openEnquiry} />
         <GallerySection    content={activeContent} />
         <VideosSection     content={activeContent} />
         <QuoteSection      content={activeContent} onEnquire={openEnquiry} />
         <HighlightsSection content={activeContent} />
-        <PlotGrid                                  onEnquire={openEnquiry} />
+        <PlotGrid pricingMap={pricingMap}                                  onEnquire={openEnquiry} />
         <AmenitiesSection  content={activeContent} />
         <LocationSection   content={activeContent} />
         <ContactSection    content={activeContent} onEnquire={openEnquiry} />

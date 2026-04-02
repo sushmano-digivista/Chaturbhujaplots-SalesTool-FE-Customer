@@ -113,7 +113,7 @@ function ProjectCard({ proj, index, onClick }) {
 }
 
 // ── Project detail popup (portal) ─────────────────────────────────────────────
-function ProjectPopup({ proj, onClose, onNavigate }) {
+function ProjectPopup({ proj, onClose, onNavigate, pricing }) {
   const ac = ACCENT[proj.accentClass] || ACCENT.accentGold
 
   const facingRows = getFacingRows(proj.facings || {})
@@ -222,7 +222,7 @@ function ProjectPopup({ proj, onClose, onNavigate }) {
         </div>
 
         {/* Pricing */}
-        {proj.pricing && <div style={{padding:'0 20px 4px'}}><PricingCard pricing={proj.pricing} compact /></div>}
+        {(pricing || proj.pricing) && <div style={{padding:'0 20px 4px'}}><PricingCard pricing={pricing || proj.pricing} compact /></div>}
 
         {/* CTAs */}
         <div className={styles.popupActions}>
@@ -354,6 +354,7 @@ export default function PortfolioSection({ content }) {
             key={activeProj.id}
             proj={activeProj}
             onClose={() => setActiveProj(null)}
+            pricing={pricingMap?.[activeProj?.id]}
             onNavigate={() => { navigate(`/project/${activeProj.id}`); setActiveProj(null) }}
           />
         )}

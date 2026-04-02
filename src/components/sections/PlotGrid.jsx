@@ -15,8 +15,8 @@ const CATEGORY_META = {
   cornerPlots: { icon: <Maximize2 size={18} />, label: 'Corner Plots', color: '#9B7B2E', bg: 'rgba(155,123,46,0.12)'  },
 }
 
-// ── Pricing per venture (sourced from official price sheets) ─────────────────
-const VENTURE_PRICING = {
+// ── Local pricing fallback (used when API is unavailable) ───────────────────
+const LOCAL_PRICING = {
   anjana: {
     east:    { base: 13000, dev: 1000 },
     west:    { base: 12500, dev: 1000 },
@@ -147,11 +147,12 @@ const VENTURE_COLORS = { anjana: '#1E4D2B', aparna: '#C9A84C', varaha: '#1976D2'
  * PlotGrid — "Explore Available Plots" section with venture switcher.
  * Uses static data from Excel registers when API is unavailable.
  */
-export default function PlotGrid({ onEnquire }) {
+export default function PlotGrid({ onEnquire, pricingMap }) {
   const [ventureKey,     setVentureKey]     = useState('anjana')
   const [activeCategory, setActiveCategory] = useState(null)
   const [hoveredPlot,    setHoveredPlot]    = useState(null)
   const [priceOpen,      setPriceOpen]      = useState(false)
+  const VENTURE_PRICING = pricingMap || LOCAL_PRICING
 
   const venture    = VENTURE_PLOTS[ventureKey]
   const color      = VENTURE_COLORS[ventureKey]

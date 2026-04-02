@@ -51,3 +51,9 @@ export const brochureApi = {
 export const siteVisitApi = {
   book: (data) => commonApi.post('/site-visit', data).then(r => r.data),
 }
+
+// ── Pricing API ───────────────────────────────────────────────────────────────
+export const pricingApi = {
+  getAll: () => dashApi.get('/pricing').then(r => r.data),
+  getOne: (id) => dashApi.get(`/pricing/${id}`).then(r => r.data),
+}

@@ -13,7 +13,16 @@ export const ACTIVE_PROJECTS = [
     heroImage:   '/Anjana_Paradise_Paritala_Home.png',
     available:   14,
     total:       242,      // confirmed from Paritala layout plan (242 plots)
-    starting:    'Rs.24.8L',    // West 183 sq yd × Rs.13,500/sq yd
+    starting:    'Rs.24.8L',
+    pricing: {
+      east:    { base: 13000, dev: 1000, label: 'Rs.13,000 + Rs.1,000 Dev. Charges' },
+      west:    { base: 12500, dev: 1000, label: 'Rs.12,500 + Rs.1,000 Dev. Charges' },
+      corners: [
+        { type: 'North-East Corner', extra: 1000, label: 'Rs.1,000/sq.yd extra' },
+        { type: 'Other Corners',     extra: 500,  label: 'Rs.500/sq.yd extra'   },
+      ],
+      note: 'All prices per sq. yard. Corner charges additional.',
+    },
     tag:         'Featured',
     status:      'APCRDA LP No: 35/2025 | AP RERA P06060125894',
     // Source: paritala_plot_dimensions.xlsx (Paritala Plan-22.pdf, 242 plots)
@@ -136,6 +145,15 @@ export const ACTIVE_PROJECTS = [
     available:   16,
     total:       273,
     starting:    'Rs.26L',
+    pricing: {
+      east:    { base: 12000, dev: 1000, label: 'Rs.12,000 + Rs.1,000 Dev. Charges' },
+      west:    { base: 11500, dev: 1000, label: 'Rs.11,500 + Rs.1,000 Dev. Charges' },
+      corners: [
+        { type: 'North-East Corner', extra: 1000, label: 'Rs.1,000/sq.yd extra' },
+        { type: 'Other Corners',     extra: 500,  label: 'Rs.500/sq.yd extra'   },
+      ],
+      note: 'All prices per sq. yard. Corner charges additional.',
+    },
     tag:         'Limited',
     status:      'APCRDA Proposed Layout',
     facings:     { east: 119, west: 138, north: 16 },
@@ -201,6 +219,16 @@ export const ACTIVE_PROJECTS = [
     available:   20,
     total:       132,
     starting:    'Rs.25L',
+    pricing: {
+      east:    { base: 15000, dev: 1000, label: 'Rs.15,000 + Rs.1,000 Dev. Charges' },
+      west:    { base: 14500, dev: 1000, label: 'Rs.14,500 + Rs.1,000 Dev. Charges' },
+      corners: [
+        { type: 'North-East Corner', extra: 1000, label: 'Rs.1,000/sq.yd extra' },
+        { type: 'Other Corners',     extra: 500,  label: 'Rs.500/sq.yd extra'   },
+      ],
+      corpus:  { amount: 100, label: 'Rs.100/sq.yd Corpus Fund' },
+      note: 'All prices per sq. yard. Corner charges additional.',
+    },
     tag:         'Hot',
     status:      'APCRDA Proposed Layout | NH-16 Frontage',
     facings:     { east: 79, west: 53 },

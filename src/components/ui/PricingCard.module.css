@@ -1,0 +1,55 @@
+.card {
+  background: linear-gradient(135deg, rgba(30,77,43,0.05) 0%, rgba(201,168,76,0.07) 100%);
+  border: 1px solid rgba(30,77,43,0.14);
+  border-left: 4px solid var(--gold);
+  border-radius: 14px;
+  padding: 18px 20px;
+}
+.compact { padding: 14px 16px; }
+
+.header {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 14px;
+}
+.tag {
+  font-size: 10px; font-weight: 800; letter-spacing: 1.8px;
+  text-transform: uppercase; color: var(--gold-dark);
+}
+.unit { font-size: 10px; color: rgba(0,0,0,0.35); font-style: italic; }
+
+.rows { display: flex; flex-direction: column; gap: 10px; margin-bottom: 14px; }
+.row {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 12px; flex-wrap: wrap;
+}
+.dir {
+  display: flex; align-items: center; gap: 6px;
+  font-size: 13px; font-weight: 600; color: rgba(0,0,0,0.6); white-space: nowrap;
+}
+.dirIcon { display: inline-block; width: 18px; text-align: center; }
+.rate { font-size: 13px; color: var(--green); text-align: right; }
+.rate strong { font-weight: 800; }
+.dev { font-size: 11px; color: rgba(0,0,0,0.45); }
+
+/* Corner charges */
+.cornerSection {
+  background: rgba(201,168,76,0.07);
+  border-top: 1px dashed rgba(201,168,76,0.35);
+  padding-top: 12px; margin-top: 4px;
+}
+.cornerTitle {
+  font-size: 10px; font-weight: 700; letter-spacing: 1.2px;
+  text-transform: uppercase; color: rgba(0,0,0,0.4);
+  margin-bottom: 8px;
+}
+.cornerRow {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 8px; margin-bottom: 5px;
+}
+.cornerType { font-size: 12px; color: rgba(0,0,0,0.55); font-weight: 500; }
+.cornerExtra { font-size: 12px; color: var(--gold-dark); font-weight: 700; }
+
+.note {
+  font-size: 10px; color: rgba(0,0,0,0.35); margin-top: 10px;
+  font-style: italic;
+}

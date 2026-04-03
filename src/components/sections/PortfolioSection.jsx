@@ -236,8 +236,8 @@ function ProjectPopup({ proj, onClose, onNavigate, pricing }) {
           <button
             className={styles.popupWa}
             onClick={() => openWhatsApp(
-              DEFAULT_WA_NUMBER,
-              'Hi',
+              proj.contact?.whatsapp || DEFAULT_WA_NUMBER,
+              proj.contact?.whatsappMessage || 'Hi! I am interested in ' + proj.name + '. Can I book a free site visit? 🏡',
             )}
           >
             💬 WhatsApp

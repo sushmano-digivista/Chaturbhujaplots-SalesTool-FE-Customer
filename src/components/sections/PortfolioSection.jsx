@@ -4,6 +4,7 @@ import { createPortal }  from 'react-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import { X } from 'lucide-react'
 import { ACTIVE_PROJECTS, COMPLETED_PROJECTS } from '@/constants/projects'
+import { useProjects } from '@/hooks/useData'
 import { getFacingRows } from '@/constants/facingMap'
 import PricingCard     from '@/components/ui/PricingCard'
 import { openWhatsApp }  from '@/utils/security'
@@ -274,8 +275,9 @@ export default function PortfolioSection({ content, onEnquire, pricingMap }) {
   const navigate = useNavigate()
   const [activeProj, setActiveProj] = useState(null)
 
+  const { data: dbProjects } = useProjects()
   const portfolioStats = content?.portfolio?.stats || STATS
-  const active    = content?.portfolio?.active    || ACTIVE_PROJECTS
+  const active    = content?.portfolio?.active    || dbProjects || ACTIVE_PROJECTS
   const completed = content?.portfolio?.completed
     ? content.portfolio.completed.map((p, i) => ({ year: '2022', plots: 48 - i * 6, ...p }))
     : COMPLETED_PROJECTS

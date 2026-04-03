@@ -18,6 +18,13 @@ const PROJECTS = [
   'Varaha Virtue @ Pamarru',
 ]
 
+// Social media links
+const SOCIAL_LINKS = [
+  { icon: 'f', label: 'Facebook', url: 'https://www.facebook.com/profile.php?id=61575447640354', color: '#1877F2' },
+  // { icon: 'in', label: 'Instagram', url: 'https://www.instagram.com/chaturbhujaproperties', color: '#E1306C' },
+  // { icon: 'yt', label: 'YouTube', url: 'https://www.youtube.com/@chaturbhujaproperties', color: '#FF0000' },
+]
+
 // Scroll to section with offset for sticky header
 function scrollTo(id) {
   const el = document.getElementById(id)
@@ -62,6 +69,17 @@ export default function Footer({ content }) {
               <span className={styles.badge}>APCRDA Approved</span>
               <span className={styles.badge}>AP RERA Registered</span>
               <span className={styles.badge}>25 Yrs · 15+ Projects</span>
+            </div>
+            <div className={styles.socialLinks}>
+              {SOCIAL_LINKS.map((s) => (
+                <a key={s.label} href={s.url} target='_blank' rel='noreferrer'
+                  className={styles.socialBtn}
+                  style={{ background: s.color }}
+                  title={s.label}
+                >
+                  {s.label}
+                </a>
+              ))}
             </div>
           </div>
 

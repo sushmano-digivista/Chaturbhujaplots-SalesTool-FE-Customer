@@ -199,7 +199,7 @@ export default function Navbar({ contact, onEnquire }) {
         <div className={styles.mobileDivider} />
 
         {NAV_LINKS.map((l) => (
-          <button key={l.id} className={styles.mobileLink} onClick={() => scrollTo(l.id)}>
+          <button key={l.id} className={styles.mobileLink} onClick={() => { setMenuOpen(false); scrollTo(l.id) }}>
             {l.label}
           </button>
         ))}

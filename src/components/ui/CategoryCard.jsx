@@ -20,7 +20,7 @@ export default function CategoryCard({ meta, data, isOpen, onToggle, onEnquire, 
         <div className={styles.catRight}>
           <div className={styles.catCount} style={{ color: meta.color }}>{data.count}</div>
           <div className={styles.catCountLabel}>PLOTS</div>
-          {data.priceFrom !== '—' && (
+          {false && (
             <div className={styles.catPrice}>from {data.priceFrom}</div>
           )}
         </div>

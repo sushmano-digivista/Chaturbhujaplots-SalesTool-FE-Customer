@@ -1,0 +1,51 @@
+/* LanguageToggle.module.css */
+
+.toggle {
+  display:         inline-flex;
+  align-items:     center;
+  gap:             0;
+  background:      rgba(255, 255, 255, 0.08);
+  border:          1px solid rgba(201, 168, 76, 0.35);
+  border-radius:   100px;
+  padding:         5px 12px;
+  cursor:          pointer;
+  font-family:     'DM Sans', sans-serif;
+  font-size:       13px;
+  font-weight:     600;
+  letter-spacing:  0.04em;
+  color:           rgba(255, 255, 255, 0.6);
+  transition:      border-color 0.2s, background 0.2s, box-shadow 0.2s;
+  user-select:     none;
+  white-space:     nowrap;
+  flex-shrink:     0;
+}
+
+.toggle:hover {
+  border-color:    rgba(201, 168, 76, 0.65);
+  background:      rgba(201, 168, 76, 0.10);
+  box-shadow:      0 0 0 3px rgba(201, 168, 76, 0.08);
+}
+
+.option {
+  padding:         0 5px;
+  transition:      color 0.2s;
+}
+
+.option.active {
+  color:           #C9A84C;
+  font-weight:     700;
+}
+
+.divider {
+  opacity:         0.35;
+  font-weight:     300;
+  padding:         0 2px;
+}
+
+/* Mobile: slightly smaller */
+@media (max-width: 768px) {
+  .toggle {
+    font-size:  12px;
+    padding:    4px 10px;
+  }
+}

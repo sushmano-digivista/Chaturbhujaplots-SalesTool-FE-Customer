@@ -47,7 +47,11 @@ export default function Hero({ content, onEnquire }) {
   const headline    = (isTe && t('content.hero.headline'))    || hero.headline    || FB.hero.headline
   const subheadline = (isTe && t('content.hero.subheadline')) || hero.subheadline || FB.hero.subheadline
   const description = (isTe && t('content.hero.description')) || hero.description || FB.hero.description
-  const badges      = hero.approvalBadges?.length ? hero.approvalBadges : FB.hero.approvalBadges
+  // Approval badges — use translated array in Telugu mode
+  const teBadges = isTe ? t('content.hero.approvalBadges') : null
+  const badges   = (Array.isArray(teBadges) && teBadges.length)
+    ? teBadges
+    : (hero.approvalBadges?.length ? hero.approvalBadges : FB.hero.approvalBadges)
 
   // Animated stats bar — labels translated in Telugu mode
   const heroStats = (hst.length ? hst : FB.heroStats).map((s, i) => {

@@ -30,6 +30,12 @@ export default function HomePage() {
     return () => clearTimeout(timer)
   }, [])
 
+
+  // SEO: Set page title
+  useEffect(() => {
+    document.title = 'ChaturbhujaPlots | Premium DTCP & RERA Approved Plots Near Amaravati, AP'
+  }, [])
+
   // Show loader until BOTH the timer has elapsed AND data has loaded
   if ((isLoading && !isError) || showLoader) return <PageLoader />
 
@@ -63,3 +69,4 @@ export default function HomePage() {
     </div>
   )
 }
+

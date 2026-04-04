@@ -57,7 +57,7 @@ export default function Hero({ content, onEnquire }) {
   })
 
   // Director card
-  const dirTitle  = dir.title  || FB.director.title
+  const dirTitle  = (isTe && t('hero.directorTitle')) || dir.title  || FB.director.title
   const dirName   = dir.name   || FB.director.name
   const dirPhone  = dir.phone  || FB.director.phone
   const dirAvatar = dir.avatar || FB.director.avatar
@@ -72,12 +72,12 @@ export default function Hero({ content, onEnquire }) {
   const openProjectsSub   = (isTe && t('urgency.forBooking'))   || urg.openProjectsSub   || FB.urgency.openProjectsSub
   const completedProjects = urg.completedProjects  ?? FB.urgency.completedProjects
   const completedLabel    = (isTe && t('urgency.completed'))    || urg.completedLabel    || FB.urgency.completedLabel
-  const completedSub      = urg.completedSub      || ''
   const happyFamilies     = urg.happyFamilies      || FB.urgency.happyFamilies
   const familiesLabel     = (isTe && t('urgency.happy'))        || urg.familiesLabel     || FB.urgency.familiesLabel
   const familiesSub       = (isTe && t('urgency.families'))     || urg.familiesSub       || FB.urgency.familiesSub
-  const barOpenLabel      = (isTe && t('nav.openForBooking'))   || urg.barOpenLabel      || FB.urgency.barOpenLabel
-  const barClosedLabel    = (isTe && t('nav.completedSoldOut')) || urg.barClosedLabel    || FB.urgency.barClosedLabel
+  const barOpenLabel      = (isTe && t('urgency.barOpenLabel'))  || (isTe && t('nav.openForBooking'))   || urg.barOpenLabel   || FB.urgency.barOpenLabel
+  const barClosedLabel    = (isTe && t('urgency.barClosedLabel')) || (isTe && t('nav.completedSoldOut')) || urg.barClosedLabel || FB.urgency.barClosedLabel
+  const completedSub      = (isTe && t('urgency.completedSub'))  || urg.completedSub || ''
   const ctaButton         = (isTe && t('urgency.exploreCta'))   || urg.ctaButton         || FB.urgency.ctaButton
 
   // Trust stats — translate labels in Telugu

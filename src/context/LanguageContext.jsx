@@ -1,4 +1,4 @@
-import { createContext, useContext, useState, useCallback, useMemo } from 'react'
+import { createContext, useContext, useState, useCallback, useMemo, useEffect } from 'react'
 
 // ── Fallback English translations (used when API is offline) ──────────────────
 // Mirrors i18n.seed.js in the backend. Update both together.
@@ -319,6 +319,17 @@ export function LanguageProvider({ children, dbTranslations }) {
     }
     return base
   }, [dbTranslations])
+
+  // Sync lang-te class on <html> so CSS font overrides activate globally
+  useEffect(() => {
+    if (language === 'te') {
+      document.documentElement.classList.add('lang-te')
+      document.documentElement.setAttribute('lang', 'te')
+    } else {
+      document.documentElement.classList.remove('lang-te')
+      document.documentElement.setAttribute('lang', 'en')
+    }
+  }, [language])
 
   const toggleLanguage = useCallback(() => {
     setLanguage(prev => {

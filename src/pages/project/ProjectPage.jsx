@@ -437,6 +437,17 @@ export default function ProjectPage() {
     )
   }
 
+
+  // SEO: Dynamic title per project page
+  useEffect(() => {
+    if (proj) {
+      document.title = `${proj.name} | DTCP Approved Plots in ${proj.loc} | ChaturbhujaPlots`
+    }
+    return () => {
+      document.title = 'ChaturbhujaPlots | Premium Plots Near Amaravati, AP'
+    }
+  }, [proj])
+
   const tabComponents = {
     home:      <HomeTab      proj={proj} onEnquire={openEnquiry} />,
     overview:  <OverviewTab  proj={proj} onEnquire={openEnquiry} apiPricing={projectPricing} />,
@@ -509,3 +520,4 @@ export default function ProjectPage() {
     </div>
   )
 }
+

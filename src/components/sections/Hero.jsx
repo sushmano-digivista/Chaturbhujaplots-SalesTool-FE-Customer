@@ -75,13 +75,14 @@ export default function Hero({ content, onEnquire }) {
   const openProjectsLabel = (isTe && t('urgency.projectsOpen')) || urg.openProjectsLabel || FB.urgency.openProjectsLabel
   const openProjectsSub   = (isTe && t('urgency.forBooking'))   || urg.openProjectsSub   || FB.urgency.openProjectsSub
   const completedProjects = urg.completedProjects  ?? FB.urgency.completedProjects
-  const completedLabel    = (isTe && t('urgency.completed'))    || urg.completedLabel    || FB.urgency.completedLabel
+  // Box 2 label (noun) reuses projectsOpen = "ప్రాజెక్టులు"; completed = the action "పూర్తయ్యాయి"
+  const completedLabel    = (isTe && t('urgency.projectsOpen')) || urg.completedLabel    || FB.urgency.completedLabel
+  const completedSub      = (isTe && t('urgency.completed'))    || urg.completedSub      || ''
   const happyFamilies     = urg.happyFamilies      || FB.urgency.happyFamilies
   const familiesLabel     = (isTe && t('urgency.happy'))        || urg.familiesLabel     || FB.urgency.familiesLabel
   const familiesSub       = (isTe && t('urgency.families'))     || urg.familiesSub       || FB.urgency.familiesSub
   const barOpenLabel      = (isTe && t('urgency.barOpenLabel'))  || (isTe && t('nav.openForBooking'))   || urg.barOpenLabel   || FB.urgency.barOpenLabel
   const barClosedLabel    = (isTe && t('urgency.barClosedLabel')) || (isTe && t('nav.completedSoldOut')) || urg.barClosedLabel || FB.urgency.barClosedLabel
-  const completedSub      = (isTe && t('urgency.completedSub'))  || urg.completedSub || ''
   const ctaButton         = (isTe && t('urgency.exploreCta'))   || urg.ctaButton         || FB.urgency.ctaButton
 
   // Trust stats — translate labels in Telugu

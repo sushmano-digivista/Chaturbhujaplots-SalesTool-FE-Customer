@@ -229,19 +229,25 @@
 .lcDesc { font-size: 13px; color: rgba(255,255,255,.65); line-height: 1.7; margin-bottom: 20px; }
 
 .lcStatus {
-  display: flex; align-items: center; gap: 0;
+  display: flex; align-items: stretch; gap: 0;
   background: rgba(0,0,0,.2); border-radius: 12px; overflow: hidden;
   margin-bottom: 20px;
 }
-.lcStatusCard { flex: 1; text-align: center; padding: 14px 10px; }
-.lcStatusDiv { width: 1px; background: rgba(255,255,255,.12); height: 60px; flex-shrink: 0; }
+.lcStatusCard {
+  flex: 1; text-align: center; padding: 14px 10px;
+  display: flex; flex-direction: column; align-items: center; justify-content: flex-start;
+}
+.lcStatusDiv { width: 1px; background: rgba(255,255,255,.12); align-self: stretch; flex-shrink: 0; }
 .lcStatusIcon { font-size: 18px; margin-bottom: 3px; }
 .lcStatusNum {
   font-family: 'Cormorant Garamond',serif;
   font-size: 1.55rem; font-weight: 700; color: var(--gold); line-height: 1;
 }
-.lcStatusLabel { font-size: 10px; color: rgba(255,255,255,.6); margin-top: 3px; line-height: 1.4; }
-.lcStatusLabel span { color: rgba(255,255,255,.4); }
+.lcStatusLabel {
+  font-size: 10px; color: rgba(255,255,255,.6); margin-top: 3px; line-height: 1.4;
+  overflow: hidden; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical;
+}
+.lcStatusLabel span { color: rgba(255,255,255,.4); display: block; }
 
 .lcBar { height: 6px; border-radius: 100px; background: rgba(255,255,255,.1); margin-bottom: 8px; overflow: hidden; }
 .lcBarFill { height: 100%; border-radius: 100px; background: linear-gradient(90deg,#C9A84C,#4CAF74); }

@@ -12,6 +12,19 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,600&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
+    <!-- Google Analytics GA4 -->
+    <!-- IMPORTANT: Replace G-XXXXXXXXXX with your actual GA4 Measurement ID -->
+    <!-- Get it from: analytics.google.com -> Admin -> Data Streams -> Web Stream -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-XXXXXXXXXX', {
+        page_title: document.title,
+        page_location: window.location.href
+      });
+    </script>
   </head>
   <body>
     <div id="root">

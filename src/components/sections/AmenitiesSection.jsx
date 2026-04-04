@@ -1,9 +1,9 @@
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
+import { useLanguage } from '@/context/LanguageContext'
 import styles from './Sections.module.css'
 
-const TABS       = ['INFRA', 'LIFESTYLE', 'UTILITIES']
-const TAB_LABELS = { INFRA: 'Infrastructure', LIFESTYLE: 'Lifestyle', UTILITIES: 'Utilities' }
+const TABS = ['INFRA', 'LIFESTYLE', 'UTILITIES']
 
 // ── Static fallback amenities (used when API returns nothing) ─────────────────
 // Sourced from Layout Amenities attachments (Anjana Paradise / Aparna Legacy)
@@ -69,14 +69,21 @@ function FeaturedAmenity({ item, delay }) {
  */
 export default function AmenitiesSection({ content }) {
   const [tab, setTab] = useState('INFRA')
+  const { t } = useLanguage()
+
+  const TAB_LABELS = {
+    INFRA:     t('amenities.infra'),
+    LIFESTYLE: t('amenities.lifestyle'),
+    UTILITIES: t('amenities.utilities'),
+  }
 
   // Always use static fallback — API amenities data is overridden by curated list
   const all   = FALLBACK_AMENITIES
   const items = all.filter((a) => a.tab === tab).sort((a, b) => a.sortOrder - b.sortOrder)
 
   // Count per tab for the badge
-  const countByTab = TABS.reduce((acc, t) => {
-    acc[t] = all.filter((a) => a.tab === t).length
+  const countByTab = TABS.reduce((acc, tabKey) => {
+    acc[tabKey] = all.filter((a) => a.tab === tabKey).length
     return acc
   }, {})
 
@@ -84,21 +91,21 @@ export default function AmenitiesSection({ content }) {
     <section className="section section-cream" id="amenities">
       <div className="sec-hdr">
         <div className="sec-tag">What We Offer</div>
-        <h2 className="sec-title">World-Class <em>Amenities</em></h2>
+        <h2 className="sec-title">{t('sections.amenities').split(' ').slice(0, -1).join(' ')} <em>{t('sections.amenities').split(' ').slice(-1)}</em></h2>
         <p className="sec-sub">Every detail crafted for a refined, future-ready lifestyle.</p>
       </div>
 
       {/* ── Tab selector ────────────────────────────────────────────────── */}
       <div className={styles.amTabs}>
-        {TABS.map((t) => (
+        {TABS.map((tabKey) => (
           <button
-            key={t}
-            className={`${styles.amTab} ${tab === t ? styles.amTabActive : ''}`}
-            onClick={() => setTab(t)}
+            key={tabKey}
+            className={`${styles.amTab} ${tab === tabKey ? styles.amTabActive : ''}`}
+            onClick={() => setTab(tabKey)}
           >
-            {TAB_LABELS[t]}
-            <span className={`${styles.amTabCount} ${tab === t ? styles.amTabCountActive : ''}`}>
-              {countByTab[t]}
+            {TAB_LABELS[tabKey]}
+            <span className={`${styles.amTabCount} ${tab === tabKey ? styles.amTabCountActive : ''}`}>
+              {countByTab[tabKey]}
             </span>
           </button>
         ))}

@@ -1,4 +1,5 @@
 import { motion } from 'framer-motion'
+import { useLanguage } from '@/context/LanguageContext'
 import styles from './Sections.module.css'
 
 const DEFAULT_STATS = [
@@ -14,6 +15,7 @@ const DEFAULT_STATS = [
  *   onEnquire (ctx) => void
  */
 export default function QuoteSection({ content, onEnquire }) {
+  const { t } = useLanguage()
   const q = content?.quote || {}
 
   return (
@@ -49,7 +51,7 @@ export default function QuoteSection({ content, onEnquire }) {
           className="btn btn-gold"
           onClick={() => onEnquire({ source: 'HERO_CTA', label: 'Secure Plot' })}
         >
-          Secure Your Plot Now →
+          {t('quote.ctaBook')} →
         </button>
       </motion.div>
     </section>

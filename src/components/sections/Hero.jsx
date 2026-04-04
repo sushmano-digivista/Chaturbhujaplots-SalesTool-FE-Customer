@@ -4,6 +4,7 @@ import { useState, useEffect, useRef } from 'react'
 import { motion } from 'framer-motion'
 import { MapPin, Calendar, FileText, Phone } from 'lucide-react'
 import { useInView } from 'react-intersection-observer'
+import { useLanguage } from '@/context/LanguageContext'
 import styles from './Hero.module.css'
 
 // ── Lightweight animated counter — no external dep ───────────────────────────
@@ -32,6 +33,7 @@ const FB = FALLBACK
 
 export default function Hero({ content, onEnquire }) {
   const { ref, inView } = useInView({ triggerOnce: true, threshold: 0.2 })
+  const { t } = useLanguage()
 
   // ── Resolve all data from MongoDB API, fall back to FALLBACK_CONTENT ──────
   const hero = content?.hero      || {}
@@ -115,19 +117,19 @@ export default function Hero({ content, onEnquire }) {
           <motion.button className="btn btn-gold" onClick={() => scrollTo('plots')}
             whileHover={{ scale: 1.04 }} whileTap={{ scale: 0.97 }}
             initial={{ opacity:0, y:12 }} animate={{ opacity:1, y:0 }} transition={{ delay:0.1 }}>
-            <MapPin size={15} /> View Available Plots
+            <MapPin size={15} /> {t('hero.enquireCta')}
           </motion.button>
           <motion.button className="btn btn-ghost"
             onClick={() => onEnquire({ source: 'HERO_CTA', label: 'Book Site Visit', type: 'SITE_VISIT' })}
             whileHover={{ scale: 1.04 }} whileTap={{ scale: 0.97 }}
             initial={{ opacity:0, y:12 }} animate={{ opacity:1, y:0 }} transition={{ delay:0.18 }}>
-            <Calendar size={15} /> Book Site Visit
+            <Calendar size={15} /> {t('hero.siteVisitCta')}
           </motion.button>
           <motion.button className="btn btn-ghost"
             whileHover={{ scale: 1.04 }} whileTap={{ scale: 0.97 }}
             initial={{ opacity:0, y:12 }} animate={{ opacity:1, y:0 }} transition={{ delay:0.26 }}
             onClick={() => onEnquire({ source: 'HERO_CTA', label: 'Download Brochure', type: 'BROCHURE' })}>
-            <FileText size={15} /> Get Brochure
+            <FileText size={15} /> {t('hero.brochureCta')}
           </motion.button>
         </div>
 
@@ -176,7 +178,7 @@ export default function Hero({ content, onEnquire }) {
 
           <div className={styles.directorActions}>
             <a href={`tel:${dirPhone}`} className={styles.directorCallBtn} aria-label="Call">
-              <Phone size={13} /><span>Call</span>
+              <Phone size={13} /><span>{t('contact.callUs')}</span>
             </a>
             <a
               href={`https://wa.me/${DEFAULT_WA_NUMBER}?text=${encodeURIComponent(waMsg)}`}
@@ -205,7 +207,7 @@ export default function Hero({ content, onEnquire }) {
             <div className={styles.lcStatusIcon}>🟡</div>
             <div className={styles.lcStatusNum}>{openProjects}</div>
             <div className={styles.lcStatusLabel}>
-              {openProjectsLabel}<br /><span>{openProjectsSub}</span>
+              {openProjectsLabel || t('urgency.projectsOpen')}<br /><span>{openProjectsSub || t('urgency.forBooking')}</span>
             </div>
           </div>
           <div className={styles.lcStatusDiv} />
@@ -213,7 +215,7 @@ export default function Hero({ content, onEnquire }) {
             <div className={styles.lcStatusIcon}>✅</div>
             <div className={styles.lcStatusNum}>{completedProjects}</div>
             <div className={styles.lcStatusLabel}>
-              {completedLabel}<br /><span>{completedSub}</span>
+              {completedLabel || t('urgency.completed')}<br /><span>{completedSub}</span>
             </div>
           </div>
           <div className={styles.lcStatusDiv} />
@@ -221,7 +223,7 @@ export default function Hero({ content, onEnquire }) {
             <div className={styles.lcStatusIcon}>🏠</div>
             <div className={styles.lcStatusNum}>{happyFamilies}</div>
             <div className={styles.lcStatusLabel}>
-              {familiesLabel}<br /><span>{familiesSub}</span>
+              {familiesLabel || t('urgency.happy')}<br /><span>{familiesSub || t('urgency.families')}</span>
             </div>
           </div>
         </div>
@@ -248,7 +250,7 @@ export default function Hero({ content, onEnquire }) {
         {/* ── CTAs ──────────────────────────────────────────────────────── */}
         <div className={styles.lcBtns}>
           <button className={styles.lcBtnGold} onClick={() => scrollTo('portfolio')}>
-            {ctaButton}
+            {ctaButton || t('urgency.exploreCta')}
           </button>
           <a
             href={`https://wa.me/${whatsapp}?text=${encodeURIComponent(waMsg)}`}

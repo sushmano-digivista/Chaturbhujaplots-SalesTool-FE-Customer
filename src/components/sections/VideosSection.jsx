@@ -3,6 +3,7 @@ import { createPortal } from 'react-dom'
 import { motion } from 'framer-motion'
 import { Play, X } from 'lucide-react'
 import { getProjectVideos } from '@/constants/projectGalleries'
+import { useLanguage } from '@/context/LanguageContext'
 import styles from './Sections.module.css'
 
 /**
@@ -21,6 +22,7 @@ const ALL_VIDEOS = [
 
 export default function VideosSection({ content }) {
   const [activeVideo, setActiveVideo] = useState(null)
+  const { t } = useLanguage()
 
   // Use local video files; never show YouTube placeholder IDs
   const videos = ALL_VIDEOS.length > 0
@@ -40,7 +42,7 @@ export default function VideosSection({ content }) {
     <section className={`section ${styles.vidSec}`} id="videos">
       <div className="sec-hdr">
         <div className="sec-tag" style={{ color: 'var(--gold-dark)' }}>Watch &amp; Explore</div>
-        <h2 className="sec-title light">Project <em>Videos</em></h2>
+        <h2 className="sec-title light">{t('sections.videos').split(' ')[0]} <em>{t('sections.videos').split(' ').slice(1).join(' ')}</em></h2>
       </div>
 
       <div className={styles.vidGrid}>

@@ -9,6 +9,7 @@ import { getFacingRows } from '@/constants/facingMap'
 import PricingCard     from '@/components/ui/PricingCard'
 import { openWhatsApp }  from '@/utils/security'
 import { DEFAULT_WA_NUMBER } from '@/constants/config'
+import { useLanguage } from '@/context/LanguageContext'
 import styles from './PortfolioSection.module.css'
 
 const STATS = [
@@ -114,7 +115,9 @@ function ProjectCard({ proj, index, onClick }) {
 }
 
 // ── Project detail popup (portal) ─────────────────────────────────────────────
-function ProjectPopup({ proj, onClose, onNavigate, pricing }) {
+function ProjectPopup({ proj, onClose, onNavigate, pricing, t }) {
+  // Fallback t if not provided (e.g. during testing)
+  const safet = t || ((k) => k)
   const ac = ACCENT[proj.accentClass] || ACCENT.accentGold
 
   const facingRows = getFacingRows(proj.facings || {})
@@ -162,9 +165,9 @@ function ProjectPopup({ proj, onClose, onNavigate, pricing }) {
         {/* Stats row */}
         <div className={styles.popupStats}>
           {[
-            { val: proj.upcoming ? 'Coming Soon' : proj.starting, lab: 'Starting From'  },
-            { val: proj.upcoming ? 'Coming Soon' : proj.total,    lab: 'Total Plots'    },
-            { val: proj.upcoming ? 'Coming Soon' : proj.starting, lab: 'Starting From'  },
+            { val: proj.upcoming ? safet('portfolio.comingSoon') : proj.starting, lab: 'Starting From'  },
+            { val: proj.upcoming ? safet('portfolio.comingSoon') : proj.total,    lab: 'Total Plots'    },
+            { val: proj.upcoming ? safet('portfolio.comingSoon') : proj.starting, lab: 'Starting From'  },
           ].map((s, i) => (
             <div key={i} className={styles.pStat}>
               <div className={styles.pStatVal} style={{ color: ac.color }}>{s.val}</div>
@@ -232,7 +235,7 @@ function ProjectPopup({ proj, onClose, onNavigate, pricing }) {
             style={{ background: ac.color }}
             onClick={onNavigate}
           >
-            Explore Full Project →
+            {safet('portfolio.viewProject')} →
           </button>
           <button
             className={styles.popupWa}
@@ -274,9 +277,18 @@ function CompletedCard({ proj, index }) {
 export default function PortfolioSection({ content, onEnquire, pricingMap }) {
   const navigate = useNavigate()
   const [activeProj, setActiveProj] = useState(null)
+  const { t } = useLanguage()
+
+  // Reactive stats — labels switch when language toggles
+  const STATS_I18N = [
+    { value: '10+',   label: t('portfolio.projectsDelivered'), icon: '\ud83c\udfd7\ufe0f' },
+    { value: '1200+', label: t('portfolio.happyCustomers'),    icon: '\ud83c\udfe0' },
+    { value: '15+',   label: t('portfolio.yearsIndustry'),     icon: '\ud83c\udfc6' },
+    { value: '100%',  label: t('portfolio.apcrdaRera'),        icon: '\u2705' },
+  ]
 
   const { data: dbProjects } = useProjects()
-  const portfolioStats = content?.portfolio?.stats || STATS
+  const portfolioStats = content?.portfolio?.stats || STATS_I18N
   const active    = content?.portfolio?.active    || dbProjects || ACTIVE_PROJECTS
   const completed = content?.portfolio?.completed
     ? content.portfolio.completed.map((p, i) => ({ year: '2022', plots: 48 - i * 6, ...p }))
@@ -290,8 +302,8 @@ export default function PortfolioSection({ content, onEnquire, pricingMap }) {
         <motion.div className={styles.secHead}
           initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }} transition={{ duration: 0.5 }}>
-          <div className={styles.secTag}>Our Portfolio</div>
-          <h2 className={styles.secTitle}>A Legacy of <em>Excellence</em></h2>
+          <div className={styles.secTag}>{t('sections.portfolio')}</div>
+          <h2 className={styles.secTitle}>{t('portfolio.projectsDelivered').split(' ')[0]} <em>{t('portfolio.projectsDelivered').split(' ').slice(1).join(' ')}</em></h2>
           <p className={styles.secSub}>
             10+ projects across the Krishna–Guntur corridor — 1200+ families settled,
             100% CRDA &amp; RERA approved.
@@ -315,7 +327,7 @@ export default function PortfolioSection({ content, onEnquire, pricingMap }) {
         <div className={styles.block}>
           <div className={styles.blockHead}>
             <div className={styles.blockPulse} />
-            <h3 className={styles.blockTitle}>Open for Booking</h3>
+            <h3 className={styles.blockTitle}>{t('nav.openForBooking')}</h3>
             <span className={styles.blockPill}>{active.length} projects</span>
           </div>
 
@@ -335,7 +347,7 @@ export default function PortfolioSection({ content, onEnquire, pricingMap }) {
         <div className={styles.block}>
           <div className={styles.blockHead}>
             <div className={styles.blockCheckDot} />
-            <h3 className={styles.blockTitle}>Completed &amp; Delivered</h3>
+            <h3 className={styles.blockTitle}>{t('nav.completedSoldOut')}</h3>
             <span className={styles.blockPill}>
               {completed.length} projects · {completed.reduce((a, p) => a + (p.plots || 48), 0)}+ plots
             </span>
@@ -358,6 +370,7 @@ export default function PortfolioSection({ content, onEnquire, pricingMap }) {
             onClose={() => setActiveProj(null)}
             pricing={pricingMap?.[activeProj?.id]}
             onNavigate={() => { navigate(`/project/${activeProj.id}`); setActiveProj(null) }}
+            t={t}
           />
         )}
       </AnimatePresence>

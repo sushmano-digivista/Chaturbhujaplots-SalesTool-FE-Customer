@@ -9,6 +9,7 @@ import { BROCHURES, getBrochureUrl } from '@/constants/brochures'
 import { brochureApi, siteVisitApi, leadApi } from '@/api'
 import { openWhatsApp, safeOpenExternal } from '@/utils/security'
 import { DEFAULT_WA_NUMBER }     from '@/constants/config'
+import { useLanguage }           from '@/context/LanguageContext'
 import styles from './LeadModal.module.css'
 
 const ALL_BROCHURE_URLS = [
@@ -27,6 +28,7 @@ export default function LeadModal({ context, onClose, whatsapp, content }) {
   const isSV      = isSiteVisit(context)
   const isPE      = isPlotEnquiry(context)
   const isCB      = isCallback(context)
+  const { t } = useLanguage()
   const { register, handleSubmit, reset, watch, formState: { errors } } = useForm()
   const submitLead  = useSubmitLead()
   const [submitted, setSubmitted]  = useState(false)
@@ -179,16 +181,16 @@ export default function LeadModal({ context, onClose, whatsapp, content }) {
   const renderCommonFields = () => (
     <>
       <div className="form-group">
-        <label className="form-label">Your Name *</label>
+        <label className="form-label">{t('modal.namePlaceholder')} *</label>
         <input className={`form-input ${errors.name ? 'error' : ''}`}
-          placeholder="Full name" autoComplete="name"
+          placeholder={t('contact.namePlaceholder')} autoComplete="name"
           {...register('name', { required: 'Name is required' })} />
         {errors.name && <span className="form-error">{errors.name.message}</span>}
       </div>
       <div className="form-group">
-        <label className="form-label">Mobile Number *</label>
+        <label className="form-label">{t('modal.phonePlaceholder')} *</label>
         <input className={`form-input ${errors.phone ? 'error' : ''}`}
-          placeholder="+91 XXXXX XXXXX" inputMode="tel" autoComplete="tel"
+          placeholder={t('contact.phonePlaceholder')} inputMode="tel" autoComplete="tel"
           {...register('phone', {
             required: 'Phone number is required',
             pattern:  { value:/^[6-9]\d{9}$/, message:'Enter valid 10-digit Indian number' },
@@ -202,7 +204,7 @@ export default function LeadModal({ context, onClose, whatsapp, content }) {
             {isSV ? '(optional — confirmation will be sent)' : '(required for Email Brochure)'}
           </span>
         </label>
-        <input className="form-input" placeholder="you@example.com"
+        <input className="form-input" placeholder={t('contact.emailPlaceholder')}
           inputMode="email" autoComplete="email"
           {...register('email', {
             pattern: { value:/^[^\s@]+@[^\s@]+\.[^\s@]+$/, message:'Enter valid email' },
@@ -257,16 +259,16 @@ export default function LeadModal({ context, onClose, whatsapp, content }) {
 
             <div className={styles.scrollBody}>
             <div className={styles.modalHeader}>
-              <h3 className={styles.title}>{context?.label || 'Get In Touch'}</h3>
+              <h3 className={styles.title}>{context?.label || t('sections.contact')}</h3>
               {context?.category && <span className={styles.catTag}>{context.category}</span>}
               <p className={styles.subtitle}>
                 {isSV
-                  ? 'Book your free site visit — our executive will welcome you on the day and help you choose the right plot.'
+                  ? t('modal.siteVisitTitle')
                   : isPE
-                  ? 'Share your details and our team will call you back with pricing, availability and plot options.'
+                  ? t('modal.enquiryTitle')
                   : isCB
-                  ? 'Leave your number and preferred time — our property advisor will call you back within 30 minutes.'
-                  : 'Fill in your details — we\'ll call you back and send the brochure directly.'}
+                  ? t('modal.callbackTitle')
+                  : t('modal.brochureTitle')}
               </p>
             </div>
 
@@ -274,37 +276,37 @@ export default function LeadModal({ context, onClose, whatsapp, content }) {
             {submitted ? (
               <div className={styles.successBox}>
                 <div className={styles.successIcon}>{isSV ? '🏠' : '✅'}</div>
-                <div className={styles.successTitle}>{isSV ? 'Visit Confirmed!' : 'Thank you!'}</div>
+                <div className={styles.successTitle}>{isSV ? t('modal.scheduleVisit') : t('modal.submit')}</div>
                 <p className={styles.successMsg}>
                   {isSV
                     ? 'Confirmation sent to your phone/email. Our team will call you a day before to confirm the time.'
                     : isCB
                     ? 'Our property advisor will call you within 30 minutes during business hours (9am–7pm).'
-                    : 'Our team will call you within 30 minutes.'}
+                    : t('modal.successMessage')}
                 </p>
                 {!isSV && (brochureUrl || isAny) && (
                   <button type="button" className={styles.downloadBtn} onClick={handleDownload}>
-                    <Download size={15} /> {isAny ? 'Download All Brochures' : 'Download Brochure'}
+                    <Download size={15} /> {isAny ? 'Download All Brochures' : t('modal.sendBrochure')}
                   </button>
                 )}
-                <button className="btn btn-green btn-full" onClick={onClose} style={{ marginTop:8 }}>Close</button>
+                <button className="btn btn-green btn-full" onClick={onClose} style={{ marginTop:8 }}>{t('modal.close')}</button>
               </div>
 
             ) : isCB ? (
               /* ══ CALLBACK FORM ══ */
               <form onSubmit={handleSubmit(onBrochureSubmit)} noValidate className={styles.form}>
                 <div className="form-group">
-                  <label className="form-label">Your Name *</label>
+                  <label className="form-label">{t('modal.namePlaceholder')} *</label>
                   <input className={`form-input ${errors.name ? 'error' : ''}`}
-                    placeholder="Full name" autoComplete="name"
+                    placeholder={t('contact.namePlaceholder')} autoComplete="name"
                     {...register('name', { required: 'Name is required' })} />
                   {errors.name && <span className="form-error">{errors.name.message}</span>}
                 </div>
 
                 <div className="form-group">
-                  <label className="form-label">Mobile Number *</label>
+                  <label className="form-label">{t('modal.phonePlaceholder')} *</label>
                   <input className={`form-input ${errors.phone ? 'error' : ''}`}
-                    placeholder="+91 XXXXX XXXXX" inputMode="tel" autoComplete="tel"
+                    placeholder={t('contact.phonePlaceholder')} inputMode="tel" autoComplete="tel"
                     {...register('phone', {
                       required: 'Phone number is required',
                       pattern:  { value:/^[6-9]\d{9}$/, message:'Enter valid 10-digit Indian number' },
@@ -341,7 +343,7 @@ export default function LeadModal({ context, onClose, whatsapp, content }) {
                 <div className={styles.actions}>
                   <button type="submit" className="btn btn-green btn-full"
                     disabled={submitLead.isPending}>
-                    {submitLead.isPending ? 'Requesting…' : '📞 Call Me Back'}
+                    {submitLead.isPending ? 'Requesting…' : '📞 ' + t('modal.requestCallback')}
                   </button>
                   <button type="button" className={styles.waBtn}
                     onClick={() => setWaStep(1)}>
@@ -488,7 +490,7 @@ export default function LeadModal({ context, onClose, whatsapp, content }) {
                 <div className={styles.actions}>
                   <button type="submit" className="btn btn-green btn-full"
                     disabled={submitLead.isPending}>
-                    {submitLead.isPending ? 'Sending…' : 'Request Callback'}
+                    {submitLead.isPending ? t('common.loading') : '📞 ' + t('modal.requestCallback')}
                   </button>
                   <button type="button" className={styles.waBtn} style={{marginTop:0}}
                     onClick={() => {
@@ -530,7 +532,7 @@ export default function LeadModal({ context, onClose, whatsapp, content }) {
                 <div className={styles.actions}>
                   <button type="submit" className="btn btn-green btn-full"
                     disabled={submitLead.isPending}>
-                    {submitLead.isPending ? 'Booking…' : 'Confirm Visit'}
+                    {submitLead.isPending ? t('common.loading') : '🗓️ ' + t('modal.scheduleVisit')}
                   </button>
                 </div>
               </form>
@@ -586,7 +588,7 @@ export default function LeadModal({ context, onClose, whatsapp, content }) {
                   <div className={styles.divider}><span>or</span></div>
 
                   <button type="submit" className="btn btn-green btn-full" disabled={submitLead.isPending}>
-                    {submitLead.isPending ? 'Sending…' : 'Request Callback'}
+                    {submitLead.isPending ? t('common.loading') : '📞 ' + t('modal.requestCallback')}
                   </button>
                 </div>
               </form>

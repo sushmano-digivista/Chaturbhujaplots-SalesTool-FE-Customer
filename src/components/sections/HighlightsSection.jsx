@@ -1,12 +1,9 @@
 import { motion } from 'framer-motion'
+import { useLanguage } from '@/context/LanguageContext'
 import styles from './Sections.module.css'
 
-/**
- * HighlightsSection — "Why Chaturbhuja" location advantages grid.
- * Props:
- *   content  { highlights: Array<{ icon, title, description, sortOrder }> }
- */
 export default function HighlightsSection({ content }) {
+  const { t } = useLanguage()
   const highlights = (content?.highlights || []).sort((a, b) => a.sortOrder - b.sortOrder)
 
   return (
@@ -14,7 +11,7 @@ export default function HighlightsSection({ content }) {
       <div className="sec-hdr">
         <div className="sec-tag" style={{ color: 'var(--gold-light)' }}>Why Chaturbhuja</div>
         <h2 className="sec-title" style={{ color: '#fff' }}>
-          Location <em>Advantages</em>
+          {t('sections.highlights').split(' ').slice(0, -1).join(' ')} <em>{t('sections.highlights').split(' ').slice(-1)}</em>
         </h2>
         <p className="sec-sub" style={{ color: 'rgba(255,255,255,0.55)' }}>
           Four premium ventures across the Krishna–NTR–Guntur corridor — each APCRDA approved, RERA registered, 100% clear title.

@@ -9,20 +9,11 @@ import LeadModal           from '@/components/ui/LeadModal'
 import PricingCard         from '@/components/ui/PricingCard'
 import { openWhatsApp, openMaps } from '@/utils/security'
 import { DEFAULT_WA_NUMBER }      from '@/constants/config'
+import { useLanguage }            from '@/context/LanguageContext'
 import styles              from './ProjectPage.module.css'
 
-const TABS = [
-  { id: 'home',      label: 'Home'      },
-  { id: 'overview',  label: 'Overview'  },
-  { id: 'amenities', label: 'Amenities' },
-  { id: 'gallery',   label: 'Gallery'   },
-  { id: 'videos',    label: 'Videos'    },
-  { id: 'location',  label: 'Location'  },
-  { id: 'contact',   label: 'Contact'   },
-]
-
 function HomeTab({ proj, onEnquire }) {
-  const total = proj.facings ? Object.values(proj.facings).reduce((a, b) => a + b, 0) : proj.total
+  const { t } = useLanguage()
   return (
     <div className={styles.homeTab}>
       <div className={styles.heroBanner + ' ' + styles[proj.accentClass]}
@@ -35,26 +26,26 @@ function HomeTab({ proj, onEnquire }) {
           <div className={styles.heroBtns}>
             <button className='btn btn-gold'
               onClick={() => onEnquire({ source: 'PROJECT_HOME', label: 'Enquire Now', category: proj.name })}>
-              Enquire Now →
+              {t('nav.enquireNow')} →
             </button>
             <button className='btn btn-ghost'
               onClick={() => openWhatsApp(
                 proj.contact?.whatsapp || DEFAULT_WA_NUMBER,
                 proj.contact?.whatsappMessage || 'Hi! I am interested in ' + proj.name + '. Can I book a free site visit? 🏡',
               )}>
-              💬 WhatsApp
+              💬 {t('contact.sendWhatsApp')}
             </button>
           </div>
         </div>
         <div className={styles.heroStats}>
           <div className={styles.heroStat}>
-            <div className={styles.hsNum}>{proj.upcoming ? 'Coming Soon' : proj.total}</div>
-            <div className={styles.hsLabel}>Total Plots</div>
+            <div className={styles.hsNum}>{proj.upcoming ? t('portfolio.comingSoon') : proj.total}</div>
+            <div className={styles.hsLabel}>{t('portfolio.totalPlots')}</div>
           </div>
           <div className={styles.hsDivider} />
           <div className={styles.heroStat}>
-            <div className={styles.hsNum}>{proj.upcoming ? 'Coming Soon' : proj.starting}</div>
-            <div className={styles.hsLabel}>Starting From</div>
+            <div className={styles.hsNum}>{proj.upcoming ? t('portfolio.comingSoon') : proj.starting}</div>
+            <div className={styles.hsLabel}>{t('portfolio.startingFrom')}</div>
           </div>
         </div>
       </div>
@@ -76,31 +67,28 @@ function HomeTab({ proj, onEnquire }) {
 }
 
 function OverviewTab({ proj, onEnquire, apiPricing }) {
+  const { t } = useLanguage()
   const facingRows  = getFacingRows(proj.facings || {})
   const totalFacing = facingRows.reduce((s, r) => s + r.value, 0)
   return (
     <div className={styles.tabContent}>
-      <h2 className={styles.tabTitle}>Project Overview</h2>
+      <h2 className={styles.tabTitle}>{t('project.overview')}</h2>
       {proj.upcoming ? (
         <div className={styles.upcomingOverview}>
-          <div className={styles.upcomingBadge}>🔜 Upcoming Project</div>
-          <h3 className={styles.upcomingHeading}>{proj.name} — Coming Soon</h3>
-          <p className={styles.upcomingText}>
-            Plot distribution details, pricing and availability for {proj.name} will be
-            published shortly. Register your interest now to be notified first when
-            bookings open.
-          </p>
+          <div className={styles.upcomingBadge}>🔜 {t('portfolio.upcomingProject')}</div>
+          <h3 className={styles.upcomingHeading}>{proj.name} — {t('portfolio.comingSoon')}</h3>
+          <p className={styles.upcomingText}>{t('project.notifyDesc')}</p>
           <button className='btn btn-gold'
             onClick={() => onEnquire({ source: 'UPCOMING_INTEREST', label: 'Notify Me', category: proj.name, type: 'NOTIFY_ME' })}>
-            Notify Me When Available →
+            {t('portfolio.notifyMe')}
           </button>
         </div>
       ) : (
         <>
           <div className={styles.facingCard}>
             <div className={styles.facingHeader}>
-              <h3 className={styles.facingTitle}>Plot Distribution</h3>
-              <span className={styles.facingTotal}>{proj.total} total plots</span>
+              <h3 className={styles.facingTitle}>{t('portfolio.plotDistribution')}</h3>
+              <span className={styles.facingTotal}>{proj.total} {t('portfolio.totalPlotsLabel')}</span>
             </div>
             <div className={styles.facingRows}>
               {facingRows.map((row) => (
@@ -128,9 +116,9 @@ function OverviewTab({ proj, onEnquire, apiPricing }) {
           {(apiPricing || proj.pricing) && <div style={{marginBottom:'20px'}}><PricingCard pricing={apiPricing || proj.pricing} /></div>}
           <div className={styles.factsGrid}>
             {[
-              { label: 'Total Plots',    value: proj.total },
-              { label: 'Starting Price', value: proj.starting },
-              { label: 'Project Status', value: 'Open for Booking' },
+              { label: t('portfolio.totalPlots'),    value: proj.total },
+              { label: t('portfolio.startingPrice'), value: proj.starting },
+              { label: t('portfolio.projectStatus'), value: t('portfolio.openForBooking') },
             ].map((f) => (
               <div key={f.label} className={styles.factCard}>
                 <div className={styles.factVal}>{f.value}</div>
@@ -140,7 +128,7 @@ function OverviewTab({ proj, onEnquire, apiPricing }) {
           </div>
           <button className='btn btn-gold'
             onClick={() => onEnquire({ source: 'CONTACT_FORM', label: 'Get Plot Details', category: proj.name })}>
-            Get Detailed Plot Information →
+            {t('portfolio.getDetails')}
           </button>
         </>
       )}
@@ -150,18 +138,23 @@ function OverviewTab({ proj, onEnquire, apiPricing }) {
 
 function AmenitiesTab({ proj }) {
   const [tab, setTab] = useState('INFRA')
-  const tabs      = [...new Set((proj.amenities || []).map((a) => a.tab))]
-  const tabLabels = { INFRA: 'Infrastructure', LIFESTYLE: 'Lifestyle', UTILITIES: 'Utilities' }
-  const items     = (proj.amenities || []).filter((a) => a.tab === tab)
+  const { t } = useLanguage()
+  const tabs = [...new Set((proj.amenities || []).map((a) => a.tab))]
+  const tabLabels = {
+    INFRA:     t('amenities.infra'),
+    LIFESTYLE: t('amenities.lifestyle'),
+    UTILITIES: t('amenities.utilities'),
+  }
+  const items = (proj.amenities || []).filter((a) => a.tab === tab)
   return (
     <div className={styles.tabContent}>
-      <h2 className={styles.tabTitle}>Amenities</h2>
+      <h2 className={styles.tabTitle}>{t('sections.amenities')}</h2>
       <div className={styles.amTabs}>
-        {tabs.map((t) => (
-          <button key={t}
-            className={styles.amTab + ' ' + (tab === t ? styles.amTabActive : '')}
-            onClick={() => setTab(t)}>
-            {tabLabels[t] || t}
+        {tabs.map((tabKey) => (
+          <button key={tabKey}
+            className={styles.amTab + ' ' + (tab === tabKey ? styles.amTabActive : '')}
+            onClick={() => setTab(tabKey)}>
+            {tabLabels[tabKey] || tabKey}
           </button>
         ))}
       </div>
@@ -194,6 +187,7 @@ function AmenitiesTab({ proj }) {
 
 function GalleryTab({ proj }) {
   const [lightbox, setLightbox] = useState(null)
+  const { t } = useLanguage()
   const localImages = getProjectGallery(proj.id)
   const hasRealImages = localImages.length > 0
   const items = hasRealImages ? localImages : (proj.gallery || [])
@@ -212,18 +206,18 @@ function GalleryTab({ proj }) {
   }, [lightbox])
   if (!hasRealImages) return (
     <div className={styles.tabContent}>
-      <h2 className={styles.tabTitle}>Gallery</h2>
+      <h2 className={styles.tabTitle}>{t('sections.gallery')}</h2>
       <div style={{ textAlign:'center', padding:'60px 0' }}>
         <div style={{ fontSize:'3rem', marginBottom:12 }}>📷</div>
         <div style={{ fontSize:'1.2rem', fontFamily:"'Cormorant Garamond',serif", color:'rgba(0,0,0,0.5)' }}>
-          Gallery <em style={{ color:'var(--gold-dark)' }}>Coming Soon</em>
+          {t('sections.gallery')} <em style={{ color:'var(--gold-dark)' }}>{t('portfolio.comingSoon')}</em>
         </div>
       </div>
     </div>
   )
   return (
     <div className={styles.tabContent}>
-      <h2 className={styles.tabTitle}>Gallery</h2>
+      <h2 className={styles.tabTitle}>{t('sections.gallery')}</h2>
       <div className={styles.galGrid}>
         {items.map((item, idx) => (
           <motion.div key={idx}
@@ -259,6 +253,7 @@ function GalleryTab({ proj }) {
 
 function VideosTab({ proj }) {
   const [active, setActive] = useState(null)
+  const { t } = useLanguage()
   const localVids   = getProjectVideos(proj.id)
   const youtubeVids = (proj.videos || []).filter(v => v.type === 'youtube' && v.id && !v.id.includes('dQw4w9WgXcY'))
   const videos = localVids.length > 0
@@ -272,18 +267,18 @@ function VideosTab({ proj }) {
   }, [active])
   if (!videos.length) return (
     <div className={styles.tabContent}>
-      <h2 className={styles.tabTitle}>Videos</h2>
+      <h2 className={styles.tabTitle}>{t('sections.videos')}</h2>
       <div style={{ textAlign:'center', padding:'60px 0' }}>
         <div style={{ fontSize:'3rem', marginBottom:12 }}>🎬</div>
         <div style={{ fontSize:'1.2rem', fontFamily:"'Cormorant Garamond',serif", color:'rgba(0,0,0,0.5)' }}>
-          Videos <em style={{ color:'var(--gold-dark)' }}>Coming Soon</em>
+          {t('sections.videos')} <em style={{ color:'var(--gold-dark)' }}>{t('portfolio.comingSoon')}</em>
         </div>
       </div>
     </div>
   )
   return (
     <div className={styles.tabContent}>
-      <h2 className={styles.tabTitle}>Videos</h2>
+      <h2 className={styles.tabTitle}>{t('sections.videos')}</h2>
       <div className={styles.vidGrid}>
         {videos.map((v, i) => (
           <motion.div key={i} className={styles.vidCard}
@@ -330,10 +325,11 @@ function VideosTab({ proj }) {
 }
 
 function LocationTab({ proj }) {
+  const { t } = useLanguage()
   const distances = proj.distances || []
   return (
     <div className={styles.tabContent}>
-      <h2 className={styles.tabTitle}>Location & Connectivity</h2>
+      <h2 className={styles.tabTitle}>{t('project.location')}</h2>
       <div className={styles.mapWrap}>
         {proj.mapEmbedUrl && (
           <iframe src={proj.mapEmbedUrl} className={styles.iframe}
@@ -342,7 +338,7 @@ function LocationTab({ proj }) {
         )}
         <button className={styles.mapOpenBtn}
           onClick={() => openMaps(proj.mapOpenUrl)}>
-          <Navigation size={14} /> Open in Google Maps
+          <Navigation size={14} /> {t('contact.getDirections')}
         </button>
       </div>
       <div className={styles.distGrid}>
@@ -364,6 +360,7 @@ function LocationTab({ proj }) {
 }
 
 function ContactTab({ proj, onEnquire, ownerSettings }) {
+  const { t } = useLanguage()
   const c = proj.contact || {}
   const address = (proj.id === 'aparna' && ownerSettings?.aparna_contact_address)
     ? ownerSettings.aparna_contact_address
@@ -374,11 +371,11 @@ function ContactTab({ proj, onEnquire, ownerSettings }) {
   )
   return (
     <div className={styles.tabContent}>
-      <h2 className={styles.tabTitle}>Contact Us</h2>
+      <h2 className={styles.tabTitle}>{t('sections.contact')}</h2>
       <div className={styles.contactGrid}>
         <div className={styles.contactInfo}>
           {c.phone    && <a href={'tel:' + c.phone}       className={styles.contactRow}><Phone size={16} />{c.phone}</a>}
-          {c.whatsapp && <button className={styles.contactRow} onClick={openWA}><MessageCircle size={16} />WhatsApp Chat</button>}
+          {c.whatsapp && <button className={styles.contactRow} onClick={openWA}><MessageCircle size={16} />{t('contact.sendWhatsApp')}</button>}
           {c.email    && <a href={'mailto:' + c.email}    className={styles.contactRow}>✉️ {c.email}</a>}
           {address    && <div className={styles.contactRow}>📍 {address}</div>}
           {c.website  && <a href={'https://' + c.website} target='_blank' rel='noreferrer' className={styles.contactRow}>🌐 {c.website}</a>}
@@ -386,14 +383,14 @@ function ContactTab({ proj, onEnquire, ownerSettings }) {
         <div className={styles.contactCtas}>
           <button className='btn btn-gold btn-full'
             onClick={() => onEnquire({ source: 'CONTACT_FORM', label: 'Request Callback', type: 'CALLBACK', category: proj.name })}>
-            📞 Request Callback
+            📞 {t('modal.requestCallback')}
           </button>
           <button className='btn btn-green btn-full' style={{ marginTop: 10 }}
             onClick={() => onEnquire({ source: 'CONTACT_FORM', label: 'Schedule Site Visit', type: 'SITE_VISIT', category: proj.name })}>
-            🗓️ Schedule Site Visit
+            🗓️ {t('hero.siteVisitCta')}
           </button>
           <button className={styles.waBtn} onClick={openWA}>
-            💬 Chat on WhatsApp
+            💬 {t('contact.sendWhatsApp')}
           </button>
         </div>
       </div>
@@ -404,11 +401,11 @@ function ContactTab({ proj, onEnquire, ownerSettings }) {
 export default function ProjectPage() {
   const { id }      = useParams()
   const navigate    = useNavigate()
+  const { t }       = useLanguage()
   const [activeTab, setActiveTab]   = useState('home')
   const [leadCtx,   setLeadCtx]     = useState(null)
   const [mobileNav, setMobileNav]   = useState(false)
 
-  // Fetch project data from MongoDB, fallback to projects.js
   const { data: proj, isLoading } = useProject(id)
   const { data: ownerSettings }   = useContactSettings()
   const { data: apiPricing }      = usePricing()
@@ -418,6 +415,17 @@ export default function ProjectPage() {
   const closeEnquiry = useCallback(() => setLeadCtx(null),   [])
 
   useEffect(() => { window.scrollTo(0, 0) }, [id])
+
+  // Tabs built inside render so labels react to language changes
+  const TABS = [
+    { id: 'home',      label: t('project.tabs.home')     },
+    { id: 'overview',  label: t('project.tabs.overview') },
+    { id: 'amenities', label: t('nav.amenities')         },
+    { id: 'gallery',   label: t('nav.gallery')           },
+    { id: 'videos',    label: t('nav.videos')            },
+    { id: 'location',  label: t('nav.location')          },
+    { id: 'contact',   label: t('nav.contact')           },
+  ]
 
   if (isLoading) {
     return (
@@ -432,16 +440,14 @@ export default function ProjectPage() {
       <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'column', gap: 16 }}>
         <div style={{ fontSize: '3rem' }}>🏗️</div>
         <h2 style={{ fontFamily: 'Cormorant Garamond,serif' }}>Project not found</h2>
-        <button className='btn btn-gold' onClick={() => navigate('/')}>← Back to Home</button>
+        <button className='btn btn-gold' onClick={() => navigate('/')}>{t('portfolio.backHome')}</button>
       </div>
     )
   }
 
-
-  // SEO: Dynamic title per project page
   useEffect(() => {
     if (proj) {
-      document.title = `${proj.name} | DTCP Approved Plots in ${proj.loc} | ChaturbhujaPlots`
+      document.title = proj.name + ' | DTCP Approved Plots in ' + proj.loc + ' | ChaturbhujaPlots'
     }
     return () => {
       document.title = 'ChaturbhujaPlots | Premium Plots Near Amaravati, AP'
@@ -463,7 +469,7 @@ export default function ProjectPage() {
       <header className={styles.header + ' ' + styles[proj.accentClass]}>
         <div className={styles.headerTop}>
           <button className={styles.backBtn} onClick={() => navigate('/')}>
-            <ArrowLeft size={16} /> Back
+            <ArrowLeft size={16} /> {t('portfolio.backHome').replace('\u2190 ', '')}
           </button>
           <div className={styles.headerTitle}>
             <span className={styles.headerName}>{proj.name}</span>
@@ -471,18 +477,18 @@ export default function ProjectPage() {
           </div>
           <button className={styles.enquireBtn}
             onClick={() => openEnquiry({ source: 'CONTACT_FORM', label: 'Enquire Now', category: proj.name })}>
-            Enquire Now →
+            {t('nav.enquireNow')} →
           </button>
           <button className={styles.mobileNavBtn} onClick={() => setMobileNav((v) => !v)}>
             <Menu size={18} />
           </button>
         </div>
         <nav className={styles.tabBar}>
-          {TABS.map((t) => (
-            <button key={t.id}
-              className={styles.tabBtn + ' ' + (activeTab === t.id ? styles.tabBtnActive : '')}
-              onClick={() => { setActiveTab(t.id); setMobileNav(false) }}>
-              {t.label}
+          {TABS.map((tab) => (
+            <button key={tab.id}
+              className={styles.tabBtn + ' ' + (activeTab === tab.id ? styles.tabBtnActive : '')}
+              onClick={() => { setActiveTab(tab.id); setMobileNav(false) }}>
+              {tab.label}
             </button>
           ))}
         </nav>
@@ -490,11 +496,11 @@ export default function ProjectPage() {
           {mobileNav && (
             <motion.nav className={styles.mobileTabMenu}
               initial={{ opacity: 0, y: -8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}>
-              {TABS.map((t) => (
-                <button key={t.id}
-                  className={styles.mobileTabBtn + ' ' + (activeTab === t.id ? styles.mobileTabActive : '')}
-                  onClick={() => { setActiveTab(t.id); setMobileNav(false) }}>
-                  {t.label}
+              {TABS.map((tab) => (
+                <button key={tab.id}
+                  className={styles.mobileTabBtn + ' ' + (activeTab === tab.id ? styles.mobileTabActive : '')}
+                  onClick={() => { setActiveTab(tab.id); setMobileNav(false) }}>
+                  {tab.label}
                 </button>
               ))}
             </motion.nav>
@@ -520,4 +526,3 @@ export default function ProjectPage() {
     </div>
   )
 }
-

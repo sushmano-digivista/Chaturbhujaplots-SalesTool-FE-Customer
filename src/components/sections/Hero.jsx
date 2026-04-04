@@ -33,7 +33,8 @@ const FB = FALLBACK
 
 export default function Hero({ content, onEnquire }) {
   const { ref, inView } = useInView({ triggerOnce: true, threshold: 0.2 })
-  const { t } = useLanguage()
+  const { t, language } = useLanguage()
+  const isTe = language === 'te'
 
   // ── Resolve all data from MongoDB API, fall back to FALLBACK_CONTENT ──────
   const hero = content?.hero      || {}
@@ -42,14 +43,18 @@ export default function Hero({ content, onEnquire }) {
   const lcs  = content?.lcStats   || []
   const hst  = content?.heroStats || []
 
-  // Hero left panel
-  const headline    = hero.headline    || FB.hero.headline
-  const subheadline = hero.subheadline || FB.hero.subheadline
-  const description = hero.description || FB.hero.description
+  // Hero left panel — prefer t() in Telugu mode (DB content is English only)
+  const headline    = (isTe && t('content.hero.headline'))    || hero.headline    || FB.hero.headline
+  const subheadline = (isTe && t('content.hero.subheadline')) || hero.subheadline || FB.hero.subheadline
+  const description = (isTe && t('content.hero.description')) || hero.description || FB.hero.description
   const badges      = hero.approvalBadges?.length ? hero.approvalBadges : FB.hero.approvalBadges
 
-  // Animated stats bar — from DB heroStats, fallback to FALLBACK_CONTENT.heroStats
-  const heroStats = hst.length ? hst : FB.heroStats
+  // Animated stats bar — labels translated in Telugu mode
+  const heroStats = (hst.length ? hst : FB.heroStats).map((s, i) => {
+    if (!isTe) return s
+    const teLabels = [t('portfolio.yearsIndustry'), t('portfolio.projectsDelivered'), t('portfolio.happyCustomers')]
+    return { ...s, label: teLabels[i] || s.label }
+  })
 
   // Director card
   const dirTitle  = dir.title  || FB.director.title
@@ -57,26 +62,30 @@ export default function Hero({ content, onEnquire }) {
   const dirPhone  = dir.phone  || FB.director.phone
   const dirAvatar = dir.avatar || FB.director.avatar
 
-  // Urgency card
-  const tagline           = urg.tagline           || FB.urgency.tagline
-  const urgHeadline       = urg.headline          || FB.urgency.headline
-  const urgSubheadline    = urg.subheadline       || FB.urgency.subheadline
-  const urgDesc           = urg.description       || FB.urgency.description
+  // Urgency card — use t() in Telugu for all text (DB stores English only)
+  const tagline           = (isTe && t('urgency.limitedOffer'))  || urg.tagline           || FB.urgency.tagline
+  const urgHeadline       = (isTe && t('urgency.plotsClosing'))  || urg.headline          || FB.urgency.headline
+  const urgSubheadline    = (isTe && t('urgency.lockInRates'))   || urg.subheadline       || FB.urgency.subheadline
+  const urgDesc           = (isTe && t('urgency.pricesRising'))  || urg.description       || FB.urgency.description
   const openProjects      = urg.openProjects      ?? FB.urgency.openProjects
-  const openProjectsLabel = urg.openProjectsLabel || FB.urgency.openProjectsLabel
-  const openProjectsSub   = urg.openProjectsSub   || FB.urgency.openProjectsSub
+  const openProjectsLabel = (isTe && t('urgency.projectsOpen')) || urg.openProjectsLabel || FB.urgency.openProjectsLabel
+  const openProjectsSub   = (isTe && t('urgency.forBooking'))   || urg.openProjectsSub   || FB.urgency.openProjectsSub
   const completedProjects = urg.completedProjects  ?? FB.urgency.completedProjects
-  const completedLabel    = urg.completedLabel    || FB.urgency.completedLabel
-  const completedSub      = urg.completedSub      || FB.urgency.completedSub
+  const completedLabel    = (isTe && t('urgency.completed'))    || urg.completedLabel    || FB.urgency.completedLabel
+  const completedSub      = urg.completedSub      || ''
   const happyFamilies     = urg.happyFamilies      || FB.urgency.happyFamilies
-  const familiesLabel     = urg.familiesLabel     || FB.urgency.familiesLabel
-  const familiesSub       = urg.familiesSub       || FB.urgency.familiesSub
-  const barOpenLabel      = urg.barOpenLabel      || FB.urgency.barOpenLabel
-  const barClosedLabel    = urg.barClosedLabel    || FB.urgency.barClosedLabel
-  const ctaButton         = urg.ctaButton         || FB.urgency.ctaButton
+  const familiesLabel     = (isTe && t('urgency.happy'))        || urg.familiesLabel     || FB.urgency.familiesLabel
+  const familiesSub       = (isTe && t('urgency.families'))     || urg.familiesSub       || FB.urgency.familiesSub
+  const barOpenLabel      = (isTe && t('nav.openForBooking'))   || urg.barOpenLabel      || FB.urgency.barOpenLabel
+  const barClosedLabel    = (isTe && t('nav.completedSoldOut')) || urg.barClosedLabel    || FB.urgency.barClosedLabel
+  const ctaButton         = (isTe && t('urgency.exploreCta'))   || urg.ctaButton         || FB.urgency.ctaButton
 
-  // Trust stats (bottom 3 boxes)
-  const lcStats = lcs.length ? lcs : FB.lcStats
+  // Trust stats — translate labels in Telugu
+  const lcStats = (lcs.length ? lcs : FB.lcStats).map((s, i) => {
+    if (!isTe) return s
+    const teLabels = [t('common.yearsOfTrust'), t('common.clearTitle'), t('common.reraRegistered')]
+    return { ...s, label: teLabels[i] || s.label }
+  })
 
   const whatsapp = content?.contact?.whatsapp || DEFAULT_WA_NUMBER
   const waMsg    = content?.contact?.whatsappMessage || 'Hi, I am interested in Chaturbhuja Properties plots. Please share more details.'

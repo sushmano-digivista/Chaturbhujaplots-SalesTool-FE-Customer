@@ -64,7 +64,8 @@ function FacingPills({ facings }) {
 }
 
 // ── Project card (2×2 grid) ───────────────────────────────────────────────────
-function ProjectCard({ proj, index, onClick }) {
+function ProjectCard({ proj, index, onClick, t }) {
+  const safet = t || ((k) => k)
   const ac = ACCENT[proj.accentClass] || ACCENT.accentGold
   return (
     <motion.div
@@ -105,10 +106,10 @@ function ProjectCard({ proj, index, onClick }) {
       {/* Footer */}
       <div className={styles.cardFoot}>
         <div>
-          <div className={styles.priceLabel}>Starting from</div>
+          <div className={styles.priceLabel}>{safet('portfolio.startingFrom')}</div>
           <div className={styles.price}>{proj.starting}</div>
         </div>
-        <div className={styles.viewHint}>Tap for details →</div>
+        <div className={styles.viewHint}>{safet('portfolio.tapForDetails')}</div>
       </div>
     </motion.div>
   )
@@ -165,9 +166,9 @@ function ProjectPopup({ proj, onClose, onNavigate, pricing, t }) {
         {/* Stats row */}
         <div className={styles.popupStats}>
           {[
-            { val: proj.upcoming ? safet('portfolio.comingSoon') : proj.starting, lab: 'Starting From'  },
-            { val: proj.upcoming ? safet('portfolio.comingSoon') : proj.total,    lab: 'Total Plots'    },
-            { val: proj.upcoming ? safet('portfolio.comingSoon') : proj.starting, lab: 'Starting From'  },
+            { val: proj.upcoming ? safet('portfolio.comingSoon') : proj.starting, lab: safet('portfolio.startingFrom') },
+            { val: proj.upcoming ? safet('portfolio.comingSoon') : proj.total,    lab: safet('portfolio.totalPlots')   },
+            { val: proj.upcoming ? safet('portfolio.comingSoon') : proj.starting, lab: safet('portfolio.startingFrom') },
           ].map((s, i) => (
             <div key={i} className={styles.pStat}>
               <div className={styles.pStatVal} style={{ color: ac.color }}>{s.val}</div>
@@ -181,7 +182,7 @@ function ProjectPopup({ proj, onClose, onNavigate, pricing, t }) {
 
           {/* Plot distribution */}
           <div className={styles.popupSection}>
-            <div className={styles.popupSectionLabel}>Plot Distribution</div>
+            <div className={styles.popupSectionLabel}>{safet('portfolio.plotDistribution')}</div>
             <div className={styles.popupFacings}>
               {facingRows.map((row) => (
                 <div key={row.label} className={styles.pfRow}>
@@ -206,7 +207,7 @@ function ProjectPopup({ proj, onClose, onNavigate, pricing, t }) {
 
           {/* Highlights */}
           <div className={styles.popupSection}>
-            <div className={styles.popupSectionLabel}>Key Highlights</div>
+            <div className={styles.popupSectionLabel}>{safet('portfolio.keyHighlights')}</div>
             <div className={styles.popupHls}>
               {proj.highlights.map((h) => (
                 <div key={h} className={styles.popupHl}>
@@ -338,6 +339,7 @@ export default function PortfolioSection({ content, onEnquire, pricingMap }) {
                 proj={proj}
                 index={i}
                 onClick={setActiveProj}
+                t={t}
               />
             ))}
           </div>

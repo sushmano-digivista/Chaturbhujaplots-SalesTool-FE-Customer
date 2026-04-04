@@ -26,7 +26,7 @@ function AppWithLanguage() {
   const { data: dbTranslations } = useQuery({
     queryKey: ['i18n'],
     queryFn:  i18nApi.getAll,
-    staleTime: 10 * 60_000,
+    staleTime: 0,
     retry: 1,
     placeholderData: null,
   })

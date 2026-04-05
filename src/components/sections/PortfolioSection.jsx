@@ -82,7 +82,8 @@ function translateApproval(label, t) {
   const key = APPROVAL_KEY_MAP[label]
   if (!key) return label
   const translated = t(key)
-  return translated !== key ? translated : label
+  // If t() returns the key itself (not found), fall back to original label
+  return (translated && translated !== key) ? translated : label
 }
 
 // ── Project card (2×2 grid) ───────────────────────────────────────────────────
@@ -105,7 +106,9 @@ function ProjectCard({ proj, index, onClick, t }) {
 
       {/* Tag */}
       <div className={styles.cardHead}>
-        <span className={styles.cardTag}>{safet('tags.' + proj.tag?.toLowerCase()) || proj.tag}</span>
+        <span className={styles.cardTag}>
+          {(() => { const k = 'tags.' + (proj.tag || '').toLowerCase(); const v = safet(k); return v !== k ? v : proj.tag })()} 
+        </span>
       </div>
 
       {/* Name + location */}
@@ -174,7 +177,9 @@ function ProjectPopup({ proj, onClose, onNavigate, pricing, t }) {
         {/* Header */}
         <div className={styles.popupHead}>
           <div className={styles.popupLeft}>
-            <div className={styles.popupTag}>{safet('tags.' + proj.tag?.toLowerCase()) || proj.tag}</div>
+            <div className={styles.popupTag}>
+              {(() => { const k = 'tags.' + (proj.tag || '').toLowerCase(); const v = safet(k); return v !== k ? v : proj.tag })()}
+            </div>
             <h2 className={styles.popupName}>{proj.name}</h2>
             <p className={styles.popupLoc}>📍 {proj.loc}</p>
           </div>

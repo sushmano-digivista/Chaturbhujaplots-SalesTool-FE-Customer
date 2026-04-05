@@ -89,6 +89,7 @@ function translateApproval(label, t) {
 // ── Project card (2×2 grid) ───────────────────────────────────────────────────
 function ProjectCard({ proj, index, onClick, t }) {
   const safet = t || ((k) => k)
+  const tProj = (field) => { const k = 'projects.' + proj.id + '.' + field; const v = safet(k); return (v && v !== k) ? v : null }
   const ac = ACCENT[proj.accentClass] || ACCENT.accentGold
   return (
     <motion.div
@@ -114,7 +115,7 @@ function ProjectCard({ proj, index, onClick, t }) {
       {/* Name + location */}
       <div className={styles.cardIdentity}>
         <h3 className={styles.cardName}>{proj.name}</h3>
-        <p className={styles.cardLoc}>📍 {proj.loc}</p>
+        <p className={styles.cardLoc}>📍 {tProj('loc') || proj.loc}</p>
       </div>
 
       {/* Facing pills */}
@@ -143,6 +144,7 @@ function ProjectCard({ proj, index, onClick, t }) {
 function ProjectPopup({ proj, onClose, onNavigate, pricing, t }) {
   // Fallback t if not provided (e.g. during testing)
   const safet = t || ((k) => k)
+  const tProj = (field) => { const k = 'projects.' + proj.id + '.' + field; const v = safet(k); return (v && v !== k) ? v : null }
   const ac = ACCENT[proj.accentClass] || ACCENT.accentGold
 
   const facingRows = getFacingRows(proj.facings || {})
@@ -181,13 +183,13 @@ function ProjectPopup({ proj, onClose, onNavigate, pricing, t }) {
               {(() => { const k = 'tags.' + (proj.tag || '').toLowerCase(); const v = safet(k); return v !== k ? v : proj.tag })()}
             </div>
             <h2 className={styles.popupName}>{proj.name}</h2>
-            <p className={styles.popupLoc}>📍 {proj.loc}</p>
+            <p className={styles.popupLoc}>📍 {tProj('loc') || proj.loc}</p>
           </div>
           
         </div>
 
         {/* Description */}
-        <p className={styles.popupDesc}>{proj.description}</p>
+        <p className={styles.popupDesc}>{tProj('description') || proj.description}</p>
 
         {/* Stats row */}
         <div className={styles.popupStats}>
@@ -235,7 +237,7 @@ function ProjectPopup({ proj, onClose, onNavigate, pricing, t }) {
           <div className={styles.popupSection}>
             <div className={styles.popupSectionLabel}>{safet('portfolio.keyHighlights')}</div>
             <div className={styles.popupHls}>
-              {proj.highlights.map((h) => (
+              {(Array.isArray(tProj('highlights')) ? tProj('highlights') : proj.highlights).map((h) => (
                 <div key={h} className={styles.popupHl}>
                   <span className={styles.popupHlCheck} style={{ color: ac.color }}>✓</span>
                   {h}

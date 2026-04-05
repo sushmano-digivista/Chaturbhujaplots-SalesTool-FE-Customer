@@ -14,6 +14,7 @@ import styles              from './ProjectPage.module.css'
 
 function HomeTab({ proj, onEnquire }) {
   const { t } = useLanguage()
+  const tProj = (field) => { const k = 'projects.' + proj.id + '.' + field; const v = t(k); return (v && v !== k) ? v : null }
   return (
     <div className={styles.homeTab}>
       <div className={styles.heroBanner + ' ' + styles[proj.accentClass]}
@@ -21,8 +22,8 @@ function HomeTab({ proj, onEnquire }) {
         <div className={styles.heroContent}>
           <div className={styles.heroTag}>{proj.tag}</div>
           <h1 className={styles.heroName}>{proj.name}</h1>
-          <p className={styles.heroLoc}>📍 {proj.loc}</p>
-          <p className={styles.heroDesc}>{proj.description}</p>
+          <p className={styles.heroLoc}>📍 {tProj('loc') || proj.loc}</p>
+          <p className={styles.heroDesc}>{tProj('description') || proj.description}</p>
           <div className={styles.heroBtns}>
             <button className='btn btn-gold'
               onClick={() => onEnquire({ source: 'PROJECT_HOME', label: 'Enquire Now', category: proj.name })}>
@@ -55,7 +56,7 @@ function HomeTab({ proj, onEnquire }) {
         ))}
       </div>
       <div className={styles.hlGrid}>
-        {(proj.highlights || []).map((h) => (
+        {(Array.isArray(tProj('highlights')) ? tProj('highlights') : (proj.highlights || [])).map((h) => (
           <div key={h} className={styles.hlCard}>
             <span className={styles.hlCheck}>✓</span>
             <span>{h}</span>
@@ -68,6 +69,7 @@ function HomeTab({ proj, onEnquire }) {
 
 function OverviewTab({ proj, onEnquire, apiPricing }) {
   const { t } = useLanguage()
+  const tProj = (field) => { const k = 'projects.' + proj.id + '.' + field; const v = t(k); return (v && v !== k) ? v : null }
   const facingRows  = getFacingRows(proj.facings || {})
   const totalFacing = facingRows.reduce((s, r) => s + r.value, 0)
   return (
@@ -408,6 +410,7 @@ export default function ProjectPage() {
 
   const { data: proj, isLoading } = useProject(id)
   const { data: ownerSettings }   = useContactSettings()
+  const tProj = (field) => { if (!proj) return null; const k = 'projects.' + proj.id + '.' + field; const v = t(k); return (v && v !== k) ? v : null }
   const { data: apiPricing }      = usePricing()
   const projectPricing = Array.isArray(apiPricing) ? (apiPricing.find(p => p.projectId === id) || null) : null
 
@@ -447,7 +450,7 @@ export default function ProjectPage() {
 
   useEffect(() => {
     if (proj) {
-      document.title = proj.name + ' | DTCP Approved Plots in ' + proj.loc + ' | ChaturbhujaPlots'
+      document.title = proj.name + ' | DTCP Approved Plots in ' + (tProj('loc') || proj.loc) + ' | ChaturbhujaPlots'
     }
     return () => {
       document.title = 'ChaturbhujaPlots | Premium Plots Near Amaravati, AP'
@@ -473,7 +476,7 @@ export default function ProjectPage() {
           </button>
           <div className={styles.headerTitle}>
             <span className={styles.headerName}>{proj.name}</span>
-            <span className={styles.headerLoc}>📍 {proj.loc}</span>
+            <span className={styles.headerLoc}>📍 {tProj('loc') || proj.loc}</span>
           </div>
           <button className={styles.enquireBtn}
             onClick={() => openEnquiry({ source: 'CONTACT_FORM', label: 'Enquire Now', category: proj.name })}>

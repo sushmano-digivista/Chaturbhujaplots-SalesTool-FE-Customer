@@ -214,7 +214,7 @@ function ProjectPopup({ proj, onClose, onNavigate, pricing, t }) {
                 <div key={row.label} className={styles.pfRow}>
                   <div className={styles.pfLabel}>
                     <div className={styles.pfDot} style={{ background: row.color }} />
-                    {row.label}
+                    {(() => { const k = 'facings.' + row.key; const v = safet(k); return v !== k ? v : row.label })()} 
                   </div>
                   <div className={styles.pfBar}>
                     <motion.div

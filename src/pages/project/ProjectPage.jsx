@@ -96,7 +96,7 @@ function OverviewTab({ proj, onEnquire, apiPricing }) {
                   <div className={styles.facingLabel}>
                     <span style={{ marginRight: 4 }}>{row.icon}</span>
                     <div className={styles.facingDot} style={{ background: row.color }} />
-                    {row.label}
+                    {(() => { const k = 'facings.' + row.key; const v = t(k); return v !== k ? v : row.label })()}
                   </div>
                   <div className={styles.facingBar}>
                     <motion.div

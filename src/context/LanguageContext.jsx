@@ -115,6 +115,77 @@ export const FALLBACK_TRANSLATIONS = {
         ],
       },
     },
+    tags: {
+      featured:  'Featured',
+      upcoming:  'Upcoming',
+      limited:   'Limited',
+      hot:       'Hot',
+    },
+
+    facings: {
+      east:      '☀️ East',
+      west:      '🌙 West',
+      corner:    '◣ Corner',
+      north:     '▲ North',
+      south:     '▼ South',
+      eastNorth: '↗ East-North',
+      eastSouth: '↘ East-South',
+      eastWest:  '↔ Double Frontage',
+      westNorth: '↖ West-North',
+      westSouth: '↙ West-South',
+      northEast: '↗ North-East',
+      northWest: '↖ North-West',
+      southEast: '↘ South-East',
+      southWest: '↙ South-West',
+    },
+
+    approvals: {
+      crdaProposed:    'CRDA Proposed Layout',
+      apReraRegistered:'AP RERA Registered',
+      clearTitle:      '100% Clear Title',
+      vastuCompliant:  '100% Vastu Compliant',
+      nh16Frontage:    'NH-16 Frontage',
+      crdaApproved:    'CRDA Approved',
+      reraRegistered:  'RERA Registered',
+      apcrda:          'APCRDA Proposed Layout',
+    },
+
+    tags: {
+      featured:  'ముఖ్యమైనది',
+      upcoming:  'రాబోతోంది',
+      limited:   'పరిమితం',
+      hot:       'హాట్',
+    },
+
+    facings: {
+      east:      '☀️ తూర్పు',
+      west:      '🌙 పడమర',
+      corner:    '◣ మూల',
+      north:     '▲ ఉత్తరం',
+      south:     '▼ దక్షిణం',
+      eastNorth: '↗ తూర్పు-ఉత్తరం',
+      eastSouth: '↘ తూర్పు-దక్షిణం',
+      eastWest:  '↔ డబల్ ఫ్రంటేజ్',
+      westNorth: '↖ పడమర-ఉత్తరం',
+      westSouth: '↙ పడమర-దక్షిణం',
+      northEast: '↗ ఉత్తర-తూర్పు',
+      northWest: '↖ ఉత్తర-పడమర',
+      southEast: '↘ దక్షిణ-తూర్పు',
+      southWest: '↙ దక్షిణ-పడమర',
+    },
+
+    approvals: {
+      crdaProposed:    'CRDA ప్రతిపాదిత లేఅవుట్',
+      apReraRegistered:'AP RERA నమోదు',
+      clearTitle:      '100% క్లియర్ టైటిల్',
+      vastuCompliant:  '100% వాస్తు అనుకూలం',
+      nh16Frontage:    'NH-16 ఫ్రంటేజ్',
+      crdaApproved:    'CRDA ఆమోదితం',
+      reraRegistered:  'RERA నమోదు',
+      apcrda:          'APCRDA ప్రతిపాదిత లేఅవుట్',
+    },
+
+
     quote: {
       ctaBook:     'Book Your Plot Now',
       ctaCallback: 'Request Free Callback',

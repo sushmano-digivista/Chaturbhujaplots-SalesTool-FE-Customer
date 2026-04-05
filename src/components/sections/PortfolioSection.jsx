@@ -44,12 +44,13 @@ function AvailBadge({ available, total, color, large = false }) {
 }
 
 // ── Facing pills (card) ───────────────────────────────────────────────────────
-function FacingPills({ facings }) {
+function FacingPills({ facings, t }) {
   if (!facings) return null
+  const safet = t || ((k) => k)
   const pills = [
-    { label: '☀️ East',   value: facings.east,   color: '#C9A84C' },
-    { label: '🌙 West',   value: facings.west,   color: '#64B5F6' },
-    { label: '◣ Corner', value: facings.corner, color: '#9B7B2E' },
+    { label: safet('facings.east'),   value: facings.east,   color: '#C9A84C' },
+    { label: safet('facings.west'),   value: facings.west,   color: '#64B5F6' },
+    { label: safet('facings.corner'), value: facings.corner, color: '#9B7B2E' },
   ].filter((p) => p.value > 0)
   return (
     <div className={styles.facingRow}>
@@ -61,6 +62,27 @@ function FacingPills({ facings }) {
       ))}
     </div>
   )
+}
+
+// Map common approval strings to translation keys
+const APPROVAL_KEY_MAP = {
+  'CRDA Proposed Layout':   'approvals.crdaProposed',
+  'AP RERA Registered':     'approvals.apReraRegistered',
+  '100% Clear Title':       'approvals.clearTitle',
+  'Clear Title':            'approvals.clearTitle',
+  '100% Vastu Compliant':   'approvals.vastuCompliant',
+  '100% Vaastu':            'approvals.vastuCompliant',
+  'NH-16 Frontage':         'approvals.nh16Frontage',
+  'CRDA Approved':          'approvals.crdaApproved',
+  'RERA Registered':        'approvals.reraRegistered',
+  'APCRDA Proposed Layout': 'approvals.apcrda',
+}
+
+function translateApproval(label, t) {
+  const key = APPROVAL_KEY_MAP[label]
+  if (!key) return label
+  const translated = t(key)
+  return translated !== key ? translated : label
 }
 
 // ── Project card (2×2 grid) ───────────────────────────────────────────────────
@@ -81,10 +103,9 @@ function ProjectCard({ proj, index, onClick, t }) {
       {/* Accent top bar */}
       <div className={styles.cardBar} />
 
-      {/* Tag + ring */}
+      {/* Tag */}
       <div className={styles.cardHead}>
-        <span className={styles.cardTag}>{proj.tag}</span>
-        
+        <span className={styles.cardTag}>{safet('tags.' + proj.tag?.toLowerCase()) || proj.tag}</span>
       </div>
 
       {/* Name + location */}
@@ -94,12 +115,12 @@ function ProjectCard({ proj, index, onClick, t }) {
       </div>
 
       {/* Facing pills */}
-      <FacingPills facings={proj.facings} />
+      <FacingPills facings={proj.facings} t={t} />
 
       {/* Approvals */}
       <div className={styles.cardApprovals}>
         {proj.approvals.slice(0, 3).map((a) => (
-          <span key={a} className={styles.approval}>{a}</span>
+          <span key={a} className={styles.approval}>{translateApproval(a, safet)}</span>
         ))}
       </div>
 
@@ -153,7 +174,7 @@ function ProjectPopup({ proj, onClose, onNavigate, pricing, t }) {
         {/* Header */}
         <div className={styles.popupHead}>
           <div className={styles.popupLeft}>
-            <div className={styles.popupTag}>{proj.tag}</div>
+            <div className={styles.popupTag}>{safet('tags.' + proj.tag?.toLowerCase()) || proj.tag}</div>
             <h2 className={styles.popupName}>{proj.name}</h2>
             <p className={styles.popupLoc}>📍 {proj.loc}</p>
           </div>
@@ -217,10 +238,10 @@ function ProjectPopup({ proj, onClose, onNavigate, pricing, t }) {
               ))}
             </div>
 
-            <div className={styles.popupSectionLabel} style={{ marginTop: 20 }}>Approvals</div>
+            <div className={styles.popupSectionLabel} style={{ marginTop: 20 }}>{safet('portfolio.approvals')}</div>
             <div className={styles.popupApprovals}>
               {proj.approvals.map((a) => (
-                <span key={a} className={styles.popupApproval}>{a}</span>
+                <span key={a} className={styles.popupApproval}>{translateApproval(a, safet)}</span>
               ))}
             </div>
           </div>

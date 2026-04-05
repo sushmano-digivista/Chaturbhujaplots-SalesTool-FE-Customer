@@ -43,14 +43,15 @@ export default function Hero({ content, onEnquire }) {
   const lcs  = content?.lcStats   || []
   const hst  = content?.heroStats || []
 
-  // Hero left panel — prefer t() in Telugu mode (DB content is English only)
-  const headline    = (isTe && t('content.hero.headline'))    || hero.headline    || FB.hero.headline
-  const subheadline = (isTe && t('content.hero.subheadline')) || hero.subheadline || FB.hero.subheadline
-  const description = (isTe && t('content.hero.description')) || hero.description || FB.hero.description
-  // Approval badges — use translated array in Telugu mode
-  const teBadges = isTe ? t('content.hero.approvalBadges') : null
-  const badges   = (Array.isArray(teBadges) && teBadges.length)
-    ? teBadges
+  // Hero copy — always read from translations DB (both EN and TE)
+  // Falls back to project_content hero fields, then to hardcoded fallback
+  const headline    = t('content.hero.headline')    || hero.headline    || FB.hero.headline
+  const subheadline = t('content.hero.subheadline') || hero.subheadline || FB.hero.subheadline
+  const description = t('content.hero.description') || hero.description || FB.hero.description
+  // Approval badges — always from translations DB for both languages
+  const dbBadges = t('content.hero.approvalBadges')
+  const badges   = (Array.isArray(dbBadges) && dbBadges.length)
+    ? dbBadges
     : (hero.approvalBadges?.length ? hero.approvalBadges : FB.hero.approvalBadges)
 
   // Animated stats bar — labels translated in Telugu mode

@@ -304,7 +304,9 @@ export default function PortfolioSection({ content, onEnquire, pricingMap }) {
           initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }} transition={{ duration: 0.5 }}>
           <div className={styles.secTag}>{t('sections.portfolio')}</div>
-          <h2 className={styles.secTitle}>{t('portfolio.sectionTitle')} <em>{t('portfolio.sectionTitleEm')}</em></h2>
+          <h2 className={styles.secTitle}>
+            {t('portfolio.sectionTitle').split(' ').slice(0, -1).join(' ')} <em>{t('portfolio.sectionTitle').split(' ').slice(-1)}</em>
+          </h2>
           <p className={styles.secSub}>{t('portfolio.sectionSub')}</p>
         </motion.div>
 

@@ -304,11 +304,8 @@ export default function PortfolioSection({ content, onEnquire, pricingMap }) {
           initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }} transition={{ duration: 0.5 }}>
           <div className={styles.secTag}>{t('sections.portfolio')}</div>
-          <h2 className={styles.secTitle}>{t('portfolio.projectsDelivered').split(' ')[0]} <em>{t('portfolio.projectsDelivered').split(' ').slice(1).join(' ')}</em></h2>
-          <p className={styles.secSub}>
-            10+ projects across the Krishna–Guntur corridor — 1200+ families settled,
-            100% CRDA &amp; RERA approved.
-          </p>
+          <h2 className={styles.secTitle}>{t('portfolio.sectionTitle')} <em>{t('portfolio.sectionTitleEm')}</em></h2>
+          <p className={styles.secSub}>{t('portfolio.sectionSub')}</p>
         </motion.div>
 
         {/* ── Stats bar ───────────────────────────────────────────── */}

@@ -21,9 +21,9 @@ const PROJECTS = [
 
 // Social media links
 const SOCIAL_LINKS = [
-  { icon: 'f', label: 'Facebook', url: 'https://www.facebook.com/profile.php?id=61575447640354', color: '#1877F2' },
+  { icon: 'f',  label: 'Facebook', url: 'https://www.facebook.com/profile.php?id=61575447640354', color: '#1877F2' },
+  { icon: 'yt', label: 'YouTube',  url: 'https://www.youtube.com/@Chaturbhujaplots',              color: '#FF0000' },
   // { icon: 'in', label: 'Instagram', url: 'https://www.instagram.com/chaturbhujaproperties', color: '#E1306C' },
-  // { icon: 'yt', label: 'YouTube', url: 'https://www.youtube.com/@chaturbhujaproperties', color: '#FF0000' },
 ]
 
 // Scroll to section with offset for sticky header

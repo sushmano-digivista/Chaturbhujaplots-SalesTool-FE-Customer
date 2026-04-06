@@ -9,6 +9,7 @@ import { getFacingRows } from '@/constants/facingMap'
 import PricingCard     from '@/components/ui/PricingCard'
 import { openWhatsApp }  from '@/utils/security'
 import { DEFAULT_WA_NUMBER } from '@/constants/config'
+import { useLanguage } from '@/context/LanguageContext'
 import styles from './PortfolioSection.module.css'
 
 const STATS = [
@@ -43,12 +44,13 @@ function AvailBadge({ available, total, color, large = false }) {
 }
 
 // ── Facing pills (card) ───────────────────────────────────────────────────────
-function FacingPills({ facings }) {
+function FacingPills({ facings, t }) {
   if (!facings) return null
+  const safet = t || ((k) => k)
   const pills = [
-    { label: '☀️ East',   value: facings.east,   color: '#C9A84C' },
-    { label: '🌙 West',   value: facings.west,   color: '#64B5F6' },
-    { label: '◣ Corner', value: facings.corner, color: '#9B7B2E' },
+    { label: safet('facings.east'),   value: facings.east,   color: '#C9A84C' },
+    { label: safet('facings.west'),   value: facings.west,   color: '#64B5F6' },
+    { label: safet('facings.corner'), value: facings.corner, color: '#9B7B2E' },
   ].filter((p) => p.value > 0)
   return (
     <div className={styles.facingRow}>
@@ -62,8 +64,32 @@ function FacingPills({ facings }) {
   )
 }
 
+// Map common approval strings to translation keys
+const APPROVAL_KEY_MAP = {
+  'CRDA Proposed Layout':   'approvals.crdaProposed',
+  'AP RERA Registered':     'approvals.apReraRegistered',
+  '100% Clear Title':       'approvals.clearTitle',
+  'Clear Title':            'approvals.clearTitle',
+  '100% Vastu Compliant':   'approvals.vastuCompliant',
+  '100% Vaastu':            'approvals.vastuCompliant',
+  'NH-16 Frontage':         'approvals.nh16Frontage',
+  'CRDA Approved':          'approvals.crdaApproved',
+  'RERA Registered':        'approvals.reraRegistered',
+  'APCRDA Proposed Layout': 'approvals.apcrda',
+}
+
+function translateApproval(label, t) {
+  const key = APPROVAL_KEY_MAP[label]
+  if (!key) return label
+  const translated = t(key)
+  // If t() returns the key itself (not found), fall back to original label
+  return (translated && translated !== key) ? translated : label
+}
+
 // ── Project card (2×2 grid) ───────────────────────────────────────────────────
-function ProjectCard({ proj, index, onClick }) {
+function ProjectCard({ proj, index, onClick, t }) {
+  const safet = t || ((k) => k)
+  const tProj = (field) => { const k = 'projects.' + proj.id + '.' + field; const v = safet(k); return (v && v !== k) ? v : null }
   const ac = ACCENT[proj.accentClass] || ACCENT.accentGold
   return (
     <motion.div
@@ -79,42 +105,46 @@ function ProjectCard({ proj, index, onClick }) {
       {/* Accent top bar */}
       <div className={styles.cardBar} />
 
-      {/* Tag + ring */}
+      {/* Tag */}
       <div className={styles.cardHead}>
-        <span className={styles.cardTag}>{proj.tag}</span>
-        
+        <span className={styles.cardTag}>
+          {(() => { const k = 'tags.' + (proj.tag || '').toLowerCase(); const v = safet(k); return v !== k ? v : proj.tag })()} 
+        </span>
       </div>
 
       {/* Name + location */}
       <div className={styles.cardIdentity}>
         <h3 className={styles.cardName}>{proj.name}</h3>
-        <p className={styles.cardLoc}>📍 {proj.loc}</p>
+        <p className={styles.cardLoc}>📍 {tProj('loc') || proj.loc}</p>
       </div>
 
       {/* Facing pills */}
-      <FacingPills facings={proj.facings} />
+      <FacingPills facings={proj.facings} t={t} />
 
       {/* Approvals */}
       <div className={styles.cardApprovals}>
         {proj.approvals.slice(0, 3).map((a) => (
-          <span key={a} className={styles.approval}>{a}</span>
+          <span key={a} className={styles.approval}>{translateApproval(a, safet)}</span>
         ))}
       </div>
 
       {/* Footer */}
       <div className={styles.cardFoot}>
         <div>
-          <div className={styles.priceLabel}>Starting from</div>
+          <div className={styles.priceLabel}>{safet('portfolio.startingFrom')}</div>
           <div className={styles.price}>{proj.starting}</div>
         </div>
-        <div className={styles.viewHint}>Tap for details →</div>
+        <div className={styles.viewHint}>{safet('portfolio.tapForDetails')}</div>
       </div>
     </motion.div>
   )
 }
 
 // ── Project detail popup (portal) ─────────────────────────────────────────────
-function ProjectPopup({ proj, onClose, onNavigate, pricing }) {
+function ProjectPopup({ proj, onClose, onNavigate, pricing, t }) {
+  // Fallback t if not provided (e.g. during testing)
+  const safet = t || ((k) => k)
+  const tProj = (field) => { const k = 'projects.' + proj.id + '.' + field; const v = safet(k); return (v && v !== k) ? v : null }
   const ac = ACCENT[proj.accentClass] || ACCENT.accentGold
 
   const facingRows = getFacingRows(proj.facings || {})
@@ -149,22 +179,24 @@ function ProjectPopup({ proj, onClose, onNavigate, pricing }) {
         {/* Header */}
         <div className={styles.popupHead}>
           <div className={styles.popupLeft}>
-            <div className={styles.popupTag}>{proj.tag}</div>
+            <div className={styles.popupTag}>
+              {(() => { const k = 'tags.' + (proj.tag || '').toLowerCase(); const v = safet(k); return v !== k ? v : proj.tag })()}
+            </div>
             <h2 className={styles.popupName}>{proj.name}</h2>
-            <p className={styles.popupLoc}>📍 {proj.loc}</p>
+            <p className={styles.popupLoc}>📍 {tProj('loc') || proj.loc}</p>
           </div>
           
         </div>
 
         {/* Description */}
-        <p className={styles.popupDesc}>{proj.description}</p>
+        <p className={styles.popupDesc}>{tProj('description') || proj.description}</p>
 
         {/* Stats row */}
         <div className={styles.popupStats}>
           {[
-            { val: proj.upcoming ? 'Coming Soon' : proj.starting, lab: 'Starting From'  },
-            { val: proj.upcoming ? 'Coming Soon' : proj.total,    lab: 'Total Plots'    },
-            { val: proj.upcoming ? 'Coming Soon' : proj.starting, lab: 'Starting From'  },
+            { val: proj.upcoming ? safet('portfolio.comingSoon') : proj.starting, lab: safet('portfolio.startingFrom') },
+            { val: proj.upcoming ? safet('portfolio.comingSoon') : proj.total,    lab: safet('portfolio.totalPlots')   },
+            { val: proj.upcoming ? safet('portfolio.comingSoon') : proj.starting, lab: safet('portfolio.startingFrom') },
           ].map((s, i) => (
             <div key={i} className={styles.pStat}>
               <div className={styles.pStatVal} style={{ color: ac.color }}>{s.val}</div>
@@ -178,13 +210,13 @@ function ProjectPopup({ proj, onClose, onNavigate, pricing }) {
 
           {/* Plot distribution */}
           <div className={styles.popupSection}>
-            <div className={styles.popupSectionLabel}>Plot Distribution</div>
+            <div className={styles.popupSectionLabel}>{safet('portfolio.plotDistribution')}</div>
             <div className={styles.popupFacings}>
               {facingRows.map((row) => (
                 <div key={row.label} className={styles.pfRow}>
                   <div className={styles.pfLabel}>
                     <div className={styles.pfDot} style={{ background: row.color }} />
-                    {row.label}
+                    {(() => { const k = 'facings.' + row.key; const v = safet(k); return v !== k ? v : row.label })()} 
                   </div>
                   <div className={styles.pfBar}>
                     <motion.div
@@ -203,9 +235,9 @@ function ProjectPopup({ proj, onClose, onNavigate, pricing }) {
 
           {/* Highlights */}
           <div className={styles.popupSection}>
-            <div className={styles.popupSectionLabel}>Key Highlights</div>
+            <div className={styles.popupSectionLabel}>{safet('portfolio.keyHighlights')}</div>
             <div className={styles.popupHls}>
-              {proj.highlights.map((h) => (
+              {(Array.isArray(tProj('highlights')) ? tProj('highlights') : proj.highlights).map((h) => (
                 <div key={h} className={styles.popupHl}>
                   <span className={styles.popupHlCheck} style={{ color: ac.color }}>✓</span>
                   {h}
@@ -213,10 +245,10 @@ function ProjectPopup({ proj, onClose, onNavigate, pricing }) {
               ))}
             </div>
 
-            <div className={styles.popupSectionLabel} style={{ marginTop: 20 }}>Approvals</div>
+            <div className={styles.popupSectionLabel} style={{ marginTop: 20 }}>{safet('portfolio.approvals')}</div>
             <div className={styles.popupApprovals}>
               {proj.approvals.map((a) => (
-                <span key={a} className={styles.popupApproval}>{a}</span>
+                <span key={a} className={styles.popupApproval}>{translateApproval(a, safet)}</span>
               ))}
             </div>
           </div>
@@ -232,7 +264,7 @@ function ProjectPopup({ proj, onClose, onNavigate, pricing }) {
             style={{ background: ac.color }}
             onClick={onNavigate}
           >
-            Explore Full Project →
+            {safet('portfolio.viewProject')} →
           </button>
           <button
             className={styles.popupWa}
@@ -274,9 +306,18 @@ function CompletedCard({ proj, index }) {
 export default function PortfolioSection({ content, onEnquire, pricingMap }) {
   const navigate = useNavigate()
   const [activeProj, setActiveProj] = useState(null)
+  const { t } = useLanguage()
+
+  // Reactive stats — labels switch when language toggles
+  const STATS_I18N = [
+    { value: '10+',   label: t('portfolio.projectsDelivered'), icon: '\ud83c\udfd7\ufe0f' },
+    { value: '1200+', label: t('portfolio.happyCustomers'),    icon: '\ud83c\udfe0' },
+    { value: '15+',   label: t('portfolio.yearsIndustry'),     icon: '\ud83c\udfc6' },
+    { value: '100%',  label: t('portfolio.apcrdaRera'),        icon: '\u2705' },
+  ]
 
   const { data: dbProjects } = useProjects()
-  const portfolioStats = content?.portfolio?.stats || STATS
+  const portfolioStats = content?.portfolio?.stats || STATS_I18N
   const active    = content?.portfolio?.active    || dbProjects || ACTIVE_PROJECTS
   const completed = content?.portfolio?.completed
     ? content.portfolio.completed.map((p, i) => ({ year: '2022', plots: 48 - i * 6, ...p }))
@@ -290,12 +331,11 @@ export default function PortfolioSection({ content, onEnquire, pricingMap }) {
         <motion.div className={styles.secHead}
           initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }} transition={{ duration: 0.5 }}>
-          <div className={styles.secTag}>Our Portfolio</div>
-          <h2 className={styles.secTitle}>A Legacy of <em>Excellence</em></h2>
-          <p className={styles.secSub}>
-            10+ projects across the Krishna–Guntur corridor — 1200+ families settled,
-            100% CRDA &amp; RERA approved.
-          </p>
+          <div className={styles.secTag}>{t('sections.portfolio')}</div>
+          <h2 className={styles.secTitle}>
+            {t('portfolio.sectionTitle').split(' ').slice(0, -1).join(' ')} <em>{t('portfolio.sectionTitle').split(' ').slice(-1)}</em>
+          </h2>
+          <p className={styles.secSub}>{t('portfolio.sectionSub')}</p>
         </motion.div>
 
         {/* ── Stats bar ───────────────────────────────────────────── */}
@@ -315,7 +355,7 @@ export default function PortfolioSection({ content, onEnquire, pricingMap }) {
         <div className={styles.block}>
           <div className={styles.blockHead}>
             <div className={styles.blockPulse} />
-            <h3 className={styles.blockTitle}>Open for Booking</h3>
+            <h3 className={styles.blockTitle}>{t('nav.openForBooking')}</h3>
             <span className={styles.blockPill}>{active.length} projects</span>
           </div>
 
@@ -326,6 +366,7 @@ export default function PortfolioSection({ content, onEnquire, pricingMap }) {
                 proj={proj}
                 index={i}
                 onClick={setActiveProj}
+                t={t}
               />
             ))}
           </div>
@@ -335,7 +376,7 @@ export default function PortfolioSection({ content, onEnquire, pricingMap }) {
         <div className={styles.block}>
           <div className={styles.blockHead}>
             <div className={styles.blockCheckDot} />
-            <h3 className={styles.blockTitle}>Completed &amp; Delivered</h3>
+            <h3 className={styles.blockTitle}>{t('nav.completedSoldOut')}</h3>
             <span className={styles.blockPill}>
               {completed.length} projects · {completed.reduce((a, p) => a + (p.plots || 48), 0)}+ plots
             </span>
@@ -358,6 +399,7 @@ export default function PortfolioSection({ content, onEnquire, pricingMap }) {
             onClose={() => setActiveProj(null)}
             pricing={pricingMap?.[activeProj?.id]}
             onNavigate={() => { navigate(`/project/${activeProj.id}`); setActiveProj(null) }}
+            t={t}
           />
         )}
       </AnimatePresence>

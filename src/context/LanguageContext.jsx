@@ -1,0 +1,596 @@
+import { createContext, useContext, useState, useCallback, useMemo, useEffect } from 'react'
+
+// ── Fallback English translations (used when API is offline) ──────────────────
+// Mirrors i18n.seed.js in the backend. Update both together.
+export const FALLBACK_TRANSLATIONS = {
+  en: {
+    nav: {
+      portfolio:        'Portfolio',
+      gallery:          'Gallery',
+      videos:           'Videos',
+      amenities:        'Amenities',
+      location:         'Location',
+      contact:          'Contact',
+      enquireNow:       'Enquire Now',
+      openForBooking:   'Open for Booking',
+      completedSoldOut: 'Completed \u0026 Sold Out',
+      viewAllProjects:  'View all projects overview',
+      ourPortfolio:     'Our Portfolio',
+      projectsSettled:  '10+ projects \u00b7 1200+ families settled',
+    },
+    sections: {
+      highlights: 'Why Invest With Us?',
+      amenities:  'World-Class Amenities',
+      location:   'Our Locations',
+      gallery:    'Photo Gallery',
+      videos:     'Project Videos',
+      portfolio:  'Our Portfolio',
+      contact:    'Get In Touch',
+      quote:      'Your Investment, Your Future',
+    },
+    hero: {
+      enquireCta:   'Enquire Now',
+      brochureCta:  'Download Brochure',
+      siteVisitCta: 'Schedule Site Visit',
+      callbackCta:  'Request Callback',
+      scrollDown:   'Scroll to explore',
+      watchVideo:   'Watch Video',
+      trustedBy:    'Trusted by 1200+ families',
+      directorTitle: 'Marketing Director',
+    },
+    amenities: {
+      infra:     'Infrastructure',
+      lifestyle: 'Lifestyle',
+      utilities: 'Utilities',
+    },
+    contact: {
+      callUs:            'Call Us',
+      emailUs:           'Email Us',
+      ourOffice:         'Our Office',
+      getDirections:     'Get Directions',
+      sendWhatsApp:      'Send WhatsApp',
+      writeUs:           'Write to Us',
+      sendMessage:       'Send Message',
+      namePlaceholder:   'Your Full Name',
+      phonePlaceholder:  'Your Phone Number',
+      emailPlaceholder:  'Your Email (optional)',
+      messagePlaceholder:'Your message...',
+    },
+    modal: {
+      siteVisitTitle:  'Schedule a Free Site Visit',
+      callbackTitle:   'Request a Callback',
+      enquiryTitle:    'Plot Enquiry',
+      brochureTitle:   'Download Brochure',
+      namePlaceholder: 'Your Name',
+      phonePlaceholder:'Phone Number',
+      submit:          'Submit',
+      scheduleVisit:   'Schedule My Visit',
+      requestCallback: 'Request Callback',
+      sendBrochure:    'Send Brochure',
+      close:           'Close',
+      whatsappNote:    'We will send the brochure to your WhatsApp',
+      successMessage:  'Thank you! Our team will contact you shortly.',
+    },
+    portfolio: {
+      yearsIndustry:    'Years in Industry',
+      projectsDelivered:'Projects Delivered',
+      happyCustomers:   'Happy Customers',
+      apcrdaRera:       'APCRDA / RERA',
+      openForBooking:   'Open for Booking',
+      upcomingProject:  'Upcoming Project',
+      viewProject:      'View Project',
+      comingSoon:       'Coming Soon',
+      interestedBtn:    "I'm Interested",
+      startingFrom:     'Starting from',
+      tapForDetails:    'Tap for details \u2192',
+      totalPlots:       'Total Plots',
+      totalPlotsLabel:  'total plots',
+      plotDistribution: 'Plot Distribution',
+      keyHighlights:    'Key Highlights',
+      approvals:        'Approvals',
+      startingPrice:    'Starting Price',
+      projectStatus:    'Project Status',
+      notifyMe:         'Notify Me When Available \u2192',
+      getDetails:       'Get Detailed Plot Information \u2192',
+      backHome:         '\u2190 Back to Home',
+      sectionTitle:     'A Legacy of Excellence',
+      sectionSub:       '10+ projects across the Krishna\u2013Guntur corridor \u2014 1200+ families settled, 100% CRDA & RERA approved.',
+    },
+    project: {
+      tabs: { home: 'Home', overview: 'Overview' },
+      overview:         'Project Overview',
+      location:         'Location \u0026 Connectivity',
+      comingSoonBanner: 'Coming Soon',
+      notifyDesc:       'Plot distribution details, pricing and availability will be shared soon. Register your interest below.',
+    },
+    content: {
+      hero: {
+        headline:    'Premium Plots in',
+        subheadline: 'Andhra Pradesh',
+        description: "A name rooted in integrity \u2014 Chaturbhuja Properties & Infra has been shaping Andhra Pradesh's real estate landscape for 25 years. Under the leadership of Mr. Donepudi Durga Prasad, we have placed 1200+ families in homes they are proud of, across 15+ APCRDA & RERA approved ventures in the Krishna\u2013NTR\u2013Guntur corridor.",
+        approvalBadges: [
+          'APCRDA Proposed Layout \u00b7 LP No: 35/2025',
+          'AP RERA \u00b7 P06060125894',
+          '25 Years \u00b7 15+ Projects \u00b7 1200+ Families',
+        ],
+      },
+    },
+    tags: {
+      featured:  'Featured',
+      upcoming:  'Upcoming',
+      limited:   'Limited',
+      hot:       'Hot',
+    },
+
+    facings: {
+      east:      '☀️ East',
+      west:      '🌙 West',
+      corner:    '◣ Corner',
+      north:     '▲ North',
+      south:     '▼ South',
+      eastNorth: '↗ East-North',
+      eastSouth: '↘ East-South',
+      eastWest:  '↔ Double Frontage',
+      westNorth: '↖ West-North',
+      westSouth: '↙ West-South',
+      northEast: '↗ North-East',
+      northWest: '↖ North-West',
+      southEast: '↘ South-East',
+      southWest: '↙ South-West',
+    },
+
+    approvals: {
+      crdaProposed:    'CRDA Proposed Layout',
+      apReraRegistered:'AP RERA Registered',
+      clearTitle:      '100% Clear Title',
+      vastuCompliant:  '100% Vastu Compliant',
+      nh16Frontage:    'NH-16 Frontage',
+      crdaApproved:    'CRDA Approved',
+      reraRegistered:  'RERA Registered',
+      apcrda:          'APCRDA Proposed Layout',
+    },
+
+    quote: {
+      ctaBook:     'Book Your Plot Now',
+      ctaCallback: 'Request Free Callback',
+    },
+    projects: {
+      anjana: {
+        loc:         'Paritala, Near Amaravati',
+        description: 'Premium open plots in Paritala \u2014 adjacent to NH-16, just 8 km from Amaravati, the new capital of Andhra Pradesh. CRDA Proposed Layout with 100% clear title, avenue-lined roads, 24/7 water pipeline and overhead electricity on every plot. Ready for immediate construction.',
+        highlights: [
+          'Adjacent to National Highway (NH-16)',
+          '8 km from Amaravati \u2014 New State Capital',
+          'Govt. Proposed Railway Connectivity to Paritala',
+          'Proposed Logistic Hub in Paritala',
+          'Near Engineering Colleges (Amrita Sai, MVR, MIC)',
+          'Close to Nimra Medical College',
+          'Near Mulapadu International Cricket Stadium',
+          'Proposed Cine Studio near Nandigama',
+        ],
+      },
+      trimbak: {
+        loc:         'Penamaluru, Near Vijayawada',
+        description: 'Gated community plots offering excellent connectivity to Vijayawada city via NH-16. CRDA approved with all modern infrastructure \u2014 water, electricity, drainage and security \u2014 ready for immediate construction.',
+        highlights: [
+          '5 km from Vijayawada City Centre',
+          'NH-16 Direct Access',
+          'Gated Community with 24/7 Security',
+          'Water & Electricity on every plot',
+          'Ready for immediate construction',
+          'Housing loans available',
+        ],
+      },
+      aparna: {
+        loc:         'Chevitikallu, Gateway of Amaravati Capital Region',
+        description: 'Premium APCRDA proposed layout plots at Chevitikallu, NTR District \u2014 located near the Outer Ring Road with outstanding connectivity to Amaravati. Vastu-compliant plots available. Phase II now open for booking.',
+        highlights: [
+          'Near ORR \u2014 excellent AP Capital connectivity',
+          '12 km from Amaravati Capital City',
+          'Govt. Proposed Railway Connectivity from Amaravati',
+          'Near Amrita Sai, MVR & MIC Engineering Colleges',
+          'Close to Nimra Medical College',
+          'Near Mulapadu International Cricket Stadium',
+          'Proposed Logistic Hub at Paritala',
+          'Govt. Proposed Cine Studio near Nandigama',
+        ],
+      },
+      varaha: {
+        loc:         'Pamarru, Krishna District',
+        description: 'Strategic investment opportunity on the NH-16 corridor at Pamarru, Krishna District. APCRDA proposed layout with 132 meticulously planned plots \u2014 prime NH-16 frontage, near Bandar Port, BEL defence complex and upcoming 6-lane highway. Exceptional appreciation potential.',
+        highlights: [
+          'Directly Adjacent to NH-16 National Highway',
+          '15 km from Kathipudi-Ongole Highway',
+          '5 km to BEL Company (Defence PSU)',
+          '20 km to Bandar Port',
+          'Adjacent to Proposed 6-Lane Vijayawada-Machilipatnam Road',
+          'Near World-Renowned Bharatanatyam Institution (6 km)',
+          'Near Prestigious Engineering Colleges',
+          'Ready-to-Build Housing Project',
+        ],
+      },
+    },
+
+    footer: {
+      tagline:      'Building Dreams Across Andhra Pradesh',
+      rights:       'All rights reserved.',
+      privacyPolicy:'Privacy Policy',
+      quickLinks:   'Quick Links',
+      ourProjects:  'Our Projects',
+      followUs:     'Follow Us',
+    },
+    common: {
+      learnMore:      'Learn More',
+      readMore:       'Read More',
+      viewAll:        'View All',
+      close:          'Close',
+      loading:        'Loading...',
+      available:      'Available',
+      soldOut:        'Sold Out',
+      upcoming:       'Upcoming',
+      perSqYd:        '/ sq.yd',
+      sqYd:           'Sq.Yd',
+      plots:          'Plots',
+      plotsAvailable: 'plots available',
+      from:           'From',
+      yearsOfTrust:   'Years of Trust',
+      clearTitle:     'Clear Title',
+      reraRegistered: 'RERA Registered',
+    },
+    urgency: {
+      limitedOffer: 'Limited Time Offer',
+      plotsClosing: 'Plots Closing Fast!',
+      lockInRates:  'Lock In Current Rates',
+      pricesRising: 'Prices are set to rise next quarter. Secure your plot today before the revision hits.',
+      projectsOpen: 'Projects Open',
+      forBooking:   'For Booking',
+      completed:    'Completed',
+      happy:        'Happy',
+      families:     'Families',
+      exploreCta:    'Explore All Projects',
+      barOpenLabel:  'Open for Booking',
+      barClosedLabel: 'Completed & Sold',
+      completedSub:  'Completed',
+    },
+  },
+  te: {
+    nav: {
+      portfolio:        '\u0c2a\u0c4b\u0c30\u0c4d\u200c\u0c1f\u0c4d\u200c\u0c2b\u0c4b\u0c32\u0c3f\u0c2f\u0c4b',
+      gallery:          '\u0c17\u0c4d\u0c2f\u0c3e\u0c32\u0c30\u0c40',
+      videos:           '\u0c35\u0c40\u0c21\u0c3f\u0c2f\u0c4b\u0c32\u0c41',
+      amenities:        '\u0c38\u0c4c\u0c15\u0c30\u0c4d\u0c2f\u0c3e\u0c32\u0c41',
+      location:         '\u0c32\u0c4b\u0c15\u0c47\u0c37\u0c28\u0c4d',
+      contact:          '\u0c38\u0c02\u0c2a\u0c4d\u0c30\u0c26\u0c3f\u0c02\u0c1a\u0c02\u0c21\u0c3f',
+      enquireNow:       '\u0c07\u0c2a\u0c4d\u0c2a\u0c41\u0c21\u0c47 \u0c38\u0c02\u0c2a\u0c4d\u0c30\u0c26\u0c3f\u0c02\u0c1a\u0c02\u0c21\u0c3f',
+      openForBooking:   '\u0c2c\u0c41\u0c15\u0c3f\u0c02\u0c17\u0c4d\u200c\u0c15\u0c41 \u0c05\u0c02\u0c26\u0c41\u0c2c\u0c3e\u0c1f\u0c41\u0c32\u0c4b',
+      completedSoldOut: '\u0c2a\u0c42\u0c30\u0c4d\u0c24\u0c2f\u0c3f \u0c05\u0c2e\u0c4d\u0c2e\u0c41\u0c21\u0c2f\u0c3f\u0c28\u0c35\u0c3f',
+      viewAllProjects:  '\u0c05\u0c28\u0c4d\u0c28\u0c3f \u0c2a\u0c4d\u0c30\u0c3e\u0c1c\u0c46\u0c15\u0c4d\u0c1f\u0c41\u0c32\u0c41 \u0c1a\u0c42\u0c21\u0c02\u0c21\u0c3f',
+      ourPortfolio:     '\u0c2e\u0c3e \u0c2a\u0c4b\u0c30\u0c4d\u200c\u0c1f\u0c4d\u200c\u0c2b\u0c4b\u0c32\u0c3f\u0c2f\u0c4b',
+      projectsSettled:  '10+ \u0c2a\u0c4d\u0c30\u0c3e\u0c1c\u0c46\u0c15\u0c4d\u0c1f\u0c41\u0c32\u0c41 \u00b7 1200+ \u0c15\u0c41\u0c1f\u0c41\u0c02\u0c2c\u0c3e\u0c32\u0c41',
+    },
+    sections: {
+      highlights: '\u0c2e\u0c3e\u0c24\u0c4b \u0c0e\u0c02\u0c26\u0c41\u0c15\u0c41 \u0c2a\u0c46\u0c1f\u0c4d\u0c1f\u0c41\u0c2c\u0c21\u0c3f \u0c2a\u0c46\u0c1f\u0c4d\u0c1f\u0c3e\u0c32\u0c3f?',
+      amenities:  '\u0c05\u0c24\u0c4d\u0c2f\u0c3e\u0c27\u0c41\u0c28\u0c3f\u0c15 \u0c38\u0c4c\u0c15\u0c30\u0c4d\u0c2f\u0c3e\u0c32\u0c41',
+      location:   '\u0c2e\u0c3e \u0c38\u0c4d\u0c25\u0c3e\u0c28\u0c3e\u0c32\u0c41',
+      gallery:    '\u0c2b\u0c4b\u0c1f\u0c4b \u0c17\u0c4d\u0c2f\u0c3e\u0c32\u0c30\u0c40',
+      videos:     '\u0c2a\u0c4d\u0c30\u0c3e\u0c1c\u0c46\u0c15\u0c4d\u0c1f\u0c4d \u0c35\u0c40\u0c21\u0c3f\u0c2f\u0c4b\u0c32\u0c41',
+      portfolio:  '\u0c2e\u0c3e \u0c2a\u0c4b\u0c30\u0c4d\u200c\u0c1f\u0c4d\u200c\u0c2b\u0c4b\u0c32\u0c3f\u0c2f\u0c4b',
+      contact:    '\u0c2e\u0c3e\u0c24\u0c4b \u0c38\u0c02\u0c2a\u0c4d\u0c30\u0c26\u0c3f\u0c02\u0c1a\u0c02\u0c21\u0c3f',
+      quote:      '\u0c2e\u0c40 \u0c2a\u0c46\u0c1f\u0c4d\u0c1f\u0c41\u0c2c\u0c21\u0c3f, \u0c2e\u0c40 \u0c2d\u0c35\u0c3f\u0c37\u0c4d\u0c2f\u0c24\u0c4d\u0c24\u0c41',
+    },
+    hero: {
+      enquireCta:   '\u0c07\u0c2a\u0c4d\u0c2a\u0c41\u0c21\u0c47 \u0c38\u0c02\u0c2a\u0c4d\u0c30\u0c26\u0c3f\u0c02\u0c1a\u0c02\u0c21\u0c3f',
+      brochureCta:  '\u0c2c\u0c4d\u0c30\u0c4b\u0c1a\u0c30\u0c4d \u0c21\u0c4c\u0c28\u0c4d\u200c\u0c32\u0c4b\u0c21\u0c4f \u0c1a\u0c47\u0c2f\u0c02\u0c21\u0c3f',
+      siteVisitCta: '\u0c38\u0c48\u0c1f\u0c4d \u0c35\u0c3f\u0c1c\u0c3f\u0c1f\u0c4d \u0c37\u0c46\u0c21\u0c4d\u0c2f\u0c42\u0c32\u0c4d \u0c1a\u0c47\u0c2f\u0c02\u0c21\u0c3f',
+      callbackCta:  '\u0c15\u0c3e\u0c32\u0c4d\u200c\u0c2c\u0c4d\u0c2f\u0c3e\u0c15\u0c4d \u0c15\u0c4b\u0c30\u0c02\u0c21\u0c3f',
+      scrollDown:   '\u0c15\u0c3f\u0c02\u0c26 \u0c38\u0c4d\u0c15\u0c4d\u0c30\u0c4b\u0c32\u0c4d \u0c1a\u0c47\u0c2f\u0c02\u0c21\u0c3f',
+      watchVideo:   '\u0c35\u0c40\u0c21\u0c3f\u0c2f\u0c4b \u0c1a\u0c42\u0c21\u0c02\u0c21\u0c3f',
+      trustedBy:    '1200+ \u0c15\u0c41\u0c1f\u0c41\u0c02\u0c2c\u0c3e\u0c32\u0c41 \u0c28\u0c2e\u0c4d\u0c2e\u0c41\u0c24\u0c41\u0c28\u0c4d\u0c28\u0c3e\u0c2f\u0c3f',
+      directorTitle:   '\u0c2e\u0c3e\u0c30\u0c4d\u0c15\u0c46\u0c1f\u0c3f\u0c02\u0c17\u0c4d \u0c21\u0c48\u0c30\u0c46\u0c15\u0c4d\u0c1f\u0c30\u0c4f',
+    },
+    amenities: {
+      infra:     '\u0c2e\u0c4c\u0c32\u0c3f\u0c15 \u0c38\u0c26\u0c41\u0c2a\u0c3e\u0c2f\u0c3e\u0c32\u0c41',
+      lifestyle: '\u0c1c\u0c40\u0c35\u0c28 \u0c35\u0c3f\u0c27\u0c3e\u0c28\u0c02',
+      utilities: '\u0c2f\u0c41\u0c1f\u0c3f\u0c32\u0c3f\u0c1f\u0c40\u0c32\u0c41',
+    },
+    contact: {
+      callUs:            '\u0c2e\u0c3e\u0c15\u0c41 \u0c15\u0c3e\u0c32\u0c4d \u0c1a\u0c47\u0c2f\u0c02\u0c21\u0c3f',
+      emailUs:           '\u0c07\u0c2e\u0c46\u0c2f\u0c3f\u0c32\u0c4d \u0c1a\u0c47\u0c2f\u0c02\u0c21\u0c3f',
+      ourOffice:         '\u0c2e\u0c3e \u0c15\u0c3e\u0c30\u0c4d\u0c2f\u0c3e\u0c32\u0c2f\u0c02',
+      getDirections:     '\u0c26\u0c3e\u0c30\u0c3f \u0c35\u0c3f\u0c35\u0c30\u0c3e\u0c32\u0c41',
+      sendWhatsApp:      '\u0c35\u0c3e\u0c1f\u0c4d\u0c38\u0c3e\u0c2a\u0c4d \u0c2a\u0c02\u0c2a\u0c02\u0c21\u0c3f',
+      writeUs:           '\u0c2e\u0c3e\u0c15\u0c41 \u0c30\u0c3e\u0c2f\u0c02\u0c21\u0c3f',
+      sendMessage:       '\u0c38\u0c02\u0c26\u0c47\u0c36\u0c02 \u0c2a\u0c02\u0c2a\u0c02\u0c21\u0c3f',
+      namePlaceholder:   '\u0c2e\u0c40 \u0c2a\u0c42\u0c30\u0c4d\u0c24\u0c3f \u0c2a\u0c47\u0c30\u0c41',
+      phonePlaceholder:  '\u0c2e\u0c40 \u0c2b\u0c4b\u0c28\u0c4d \u0c28\u0c02\u0c2c\u0c30\u0c4d',
+      emailPlaceholder:  '\u0c2e\u0c40 \u0c07\u0c2e\u0c46\u0c2f\u0c3f\u0c32\u0c4d (\u0c10\u0c1a\u0c4d\u0c1b\u0c3f\u0c15\u0c02)',
+      messagePlaceholder:'\u0c2e\u0c40 \u0c38\u0c02\u0c26\u0c47\u0c36\u0c02...',
+    },
+    modal: {
+      siteVisitTitle:  '\u0c09\u0c1a\u0c3f\u0c24 \u0c38\u0c48\u0c1f\u0c4d \u0c35\u0c3f\u0c1c\u0c3f\u0c1f\u0c4d \u0c37\u0c46\u0c21\u0c4d\u0c2f\u0c42\u0c32\u0c4d \u0c1a\u0c47\u0c2f\u0c02\u0c21\u0c3f',
+      callbackTitle:   '\u0c15\u0c3e\u0c32\u0c4d\u200c\u0c2c\u0c4d\u0c2f\u0c3e\u0c15\u0c4d \u0c15\u0c4b\u0c30\u0c02\u0c21\u0c3f',
+      enquiryTitle:    '\u0c2a\u0c4d\u0c32\u0c3e\u0c1f\u0c4d \u0c35\u0c3f\u0c1a\u0c3e\u0c30\u0c23',
+      brochureTitle:   '\u0c2c\u0c4d\u0c30\u0c4b\u0c1a\u0c30\u0c4d \u0c21\u0c4c\u0c28\u0c4d\u200c\u0c32\u0c4f\u0c21\u0c4d',
+      namePlaceholder: '\u0c2e\u0c40 \u0c2a\u0c47\u0c30\u0c41',
+      phonePlaceholder:'\u0c2b\u0c4b\u0c28\u0c4d \u0c28\u0c02\u0c2c\u0c30\u0c4d',
+      submit:          '\u0c38\u0c2e\u0c30\u0c4d\u0c2a\u0c3f\u0c02\u0c1a\u0c02\u0c21\u0c3f',
+      scheduleVisit:   '\u0c28\u0c3e \u0c35\u0c3f\u0c1c\u0c3f\u0c1f\u0c4d \u0c37\u0c46\u0c21\u0c4d\u0c2f\u0c42\u0c32\u0c4d \u0c1a\u0c47\u0c2f\u0c02\u0c21\u0c3f',
+      requestCallback: '\u0c15\u0c3e\u0c32\u0c4d\u200c\u0c2c\u0c4d\u0c2f\u0c3e\u0c15\u0c4d \u0c15\u0c4b\u0c30\u0c02\u0c21\u0c3f',
+      sendBrochure:    '\u0c2c\u0c4d\u0c30\u0c4b\u0c1a\u0c30\u0c4d \u0c2a\u0c02\u0c2a\u0c02\u0c21\u0c3f',
+      close:           '\u0c2e\u0c42\u0c38\u0c3f\u0c35\u0c47\u0c2f\u0c3f',
+      whatsappNote:    '\u0c2e\u0c40 \u0c35\u0c3e\u0c1f\u0c4d\u0c38\u0c3e\u0c2a\u0c4d\u200c\u0c15\u0c41 \u0c2c\u0c4d\u0c30\u0c4b\u0c1a\u0c30\u0c4d \u0c2a\u0c02\u0c2a\u0c41\u0c24\u0c3e\u0c2e\u0c41',
+      successMessage:  '\u0c27\u0c28\u0c4d\u0c2f\u0c35\u0c3e\u0c26\u0c3e\u0c32\u0c41! \u0c2e\u0c3e \u0c1f\u0c40\u0c2e\u0c4d \u0c24\u0c4d\u0c35\u0c30\u0c32\u0c4b \u0c2e\u0c3f\u0c2e\u0c4d\u0c2e\u0c32\u0c4d\u0c28\u0c3f \u0c38\u0c02\u0c2a\u0c4d\u0c30\u0c26\u0c3f\u0c38\u0c4d\u0c24\u0c41\u0c02\u0c26\u0c3f.',
+    },
+    portfolio: {
+      yearsIndustry:    '\u0c2a\u0c30\u0c3f\u0c36\u0c4d\u0c30\u0c2e\u0c32\u0c4b \u0c05\u0c28\u0c41\u0c2d\u0c35\u0c02',
+      projectsDelivered:'\u0c2a\u0c4d\u0c30\u0c3e\u0c1c\u0c46\u0c15\u0c4d\u0c1f\u0c41\u0c32\u0c41 \u0c2a\u0c42\u0c30\u0c4d\u0c24\u0c3f \u0c1a\u0c47\u0c36\u0c3e\u0c30\u0c41',
+      happyCustomers:   '\u0c38\u0c02\u0c24\u0c4b\u0c37\u0c15\u0c30 \u0c15\u0c38\u0c4d\u0c1f\u0c2e\u0c30\u0c4d\u0c32\u0c41',
+      apcrdaRera:       '\u0c0e\u0c2a\u0c3f\u0c38\u0c3f\u0c06\u0c30\u0c4d\u0c21\u0c47\u0c0f / \u0c30\u0c47\u0c30\u0c3e',
+      openForBooking:   '\u0c2c\u0c41\u0c15\u0c3f\u0c02\u0c17\u0c4d\u200c\u0c15\u0c41 \u0c05\u0c02\u0c26\u0c41\u0c2c\u0c3e\u0c1f\u0c41\u0c32\u0c4b',
+      upcomingProject:  '\u0c30\u0c3e\u0c2c\u0c4b\u0c2f\u0c47 \u0c2a\u0c4d\u0c30\u0c3e\u0c1c\u0c46\u0c15\u0c4d\u0c1f\u0c4d',
+      viewProject:      '\u0c2a\u0c4d\u0c30\u0c3e\u0c1c\u0c46\u0c15\u0c4d\u0c1f\u0c4d \u0c1a\u0c42\u0c21\u0c02\u0c21\u0c3f',
+      comingSoon:       '\u0c24\u0c4d\u0c35\u0c30\u0c32\u0c4b \u0c35\u0c38\u0c4d\u0c24\u0c41\u0c02\u0c26\u0c3f',
+      interestedBtn:    '\u0c28\u0c3e\u0c15\u0c41 \u0c06\u0c38\u0c15\u0c4d\u0c24\u0c3f \u0c09\u0c02\u0c26\u0c3f',
+      startingFrom:     '\u0c27\u0c30 \u0c2e\u0c4a\u0c26\u0c32\u0c41',
+      tapForDetails:    '\u0c35\u0c3f\u0c35\u0c30\u0c3e\u0c32\u0c15\u0c41 \u0c28\u0c4a\u0c15\u0c4d\u0c15\u0c02\u0c21\u0c3f \u2192',
+      totalPlots:       '\u0c2e\u0c4a\u0c24\u0c4d\u0c24\u0c02 \u0c2a\u0c4d\u0c32\u0c3e\u0c1f\u0c4d\u0c32\u0c41',
+      totalPlotsLabel:  '\u0c2e\u0c4a\u0c24\u0c4d\u0c24\u0c02 \u0c2a\u0c4d\u0c32\u0c3e\u0c1f\u0c4d\u0c32\u0c41',
+      plotDistribution: '\u0c2a\u0c4d\u0c32\u0c3e\u0c1f\u0c4d \u0c2a\u0c02\u0c2a\u0c3f\u0c23\u0c40',
+      keyHighlights:    '\u0c2e\u0c41\u0c16\u0c4d\u0c2f \u0c35\u0c3f\u0c36\u0c47\u0c37\u0c3e\u0c32\u0c41',
+      approvals:        '\u0c06\u0c2e\u0c4b\u0c26\u0c3e\u0c32\u0c41',
+      startingPrice:    '\u0c2e\u0c4a\u0c26\u0c32\u0c2f\u0c4d\u0c2f\u0c47 \u0c27\u0c30',
+      projectStatus:    '\u0c2a\u0c4d\u0c30\u0c3e\u0c1c\u0c46\u0c15\u0c4d\u0c1f\u0c4d \u0c38\u0c4d\u0c25\u0c3f\u0c24\u0c3f',
+      notifyMe:         '\u0c05\u0c02\u0c26\u0c41\u0c2c\u0c3e\u0c1f\u0c41\u0c32\u0c4b\u0c15\u0c3f \u0c35\u0c1a\u0c4d\u0c1a\u0c3f\u0c28\u0c2a\u0c41\u0c21\u0c41 \u0c24\u0c46\u0c32\u0c3f\u0c2f\u0c1c\u0c47\u0c2f\u0c02\u0c21\u0c3f \u2192',
+      getDetails:       '\u0c35\u0c3f\u0c35\u0c30\u0c2e\u0c48\u0c28 \u0c2a\u0c4d\u0c32\u0c3e\u0c1f\u0c4d \u0c38\u0c2e\u0c3e\u0c1a\u0c3e\u0c30\u0c02 \u0c2a\u0c4a\u0c02\u0c26\u0c02\u0c21\u0c3f \u2192',
+      backHome:         '\u2190 \u0c39\u0c4b\u0c2e\u0c4d\u200c\u0c15\u0c41 \u0c24\u0c3f\u0c30\u0c3f\u0c17\u0c3f',
+      sectionTitle:     '\u0c35\u0c3e\u0c30\u0c38\u0c24\u0c4d\u0c35\u0c02\u0c17\u0c3e \u0c09\u0c24\u0c4d\u0c15\u0c43\u0c37\u0c4d\u0c1f\u0c24',
+      sectionSub:       '10+ \u0c2a\u0c4d\u0c30\u0c3e\u0c1c\u0c46\u0c15\u0c4d\u0c1f\u0c41\u0c32\u0c41 \u0c15\u0c43\u0c37\u0c4d\u0c23\u0c3e\u2013\u0c17\u0c41\u0c02\u0c1f\u0c42\u0c30\u0c41 \u0c15\u0c3e\u0c30\u0c3f\u0c21\u0c3e\u0c30\u0c4d\u0c32\u0c4b \u2014 1200+ \u0c15\u0c41\u0c1f\u0c41\u0c02\u0c2c\u0c3e\u0c32\u0c41 \u0c38\u0c4d\u0c25\u0c3f\u0c30\u0c2a\u0c21\u0c4d\u0c21\u0c3e\u0c2f\u0c3f, 100% CRDA & RERA \u0c06\u0c2e\u0c4b\u0c26\u0c3f\u0c24\u0c02.',
+    },
+    project: {
+      tabs: { home: '\u0c39\u0c4b\u0c2e\u0c4d', overview: '\u0c35\u0c3f\u0c35\u0c30\u0c23' },
+      overview:         '\u0c2a\u0c4d\u0c30\u0c3e\u0c1c\u0c46\u0c15\u0c4d\u0c1f\u0c4d \u0c35\u0c3f\u0c35\u0c30\u0c23',
+      location:         '\u0c38\u0c4d\u0c25\u0c3e\u0c28\u0c02 & \u0c15\u0c28\u0c46\u0c15\u0c4d\u0c1f\u0c3f\u0c35\u0c3f\u0c1f\u0c40',
+      comingSoonBanner: '\u0c24\u0c4d\u0c35\u0c30\u0c32\u0c4b \u0c35\u0c38\u0c4d\u0c24\u0c41\u0c02\u0c26\u0c3f',
+      notifyDesc:       '\u0c2a\u0c4d\u0c32\u0c3e\u0c1f\u0c4d \u0c35\u0c3f\u0c35\u0c30\u0c23\u0c3e\u0c32\u0c41, \u0c27\u0c30 \u0c2e\u0c30\u0c3f\u0c2f\u0c41 \u0c05\u0c02\u0c26\u0c41\u0c2c\u0c3e\u0c1f\u0c41 \u0c24\u0c4d\u0c35\u0c30\u0c32\u0c4b \u0c24\u0c46\u0c32\u0c3f\u0c2f\u0c1c\u0c47\u0c38\u0c4d\u0c24\u0c3e\u0c02. \u0c15\u0c4d\u0c30\u0c3f\u0c02\u0c26 \u0c2e\u0c40 \u0c06\u0c38\u0c15\u0c4d\u0c24\u0c3f \u0c28\u0c2e\u0c4b\u0c26\u0c41 \u0c1a\u0c47\u0c2f\u0c02\u0c21\u0c3f.',
+    },
+    content: {
+      hero: {
+        headline:    '\u0c06\u0c02\u0c27\u0c4d\u0c30\u0c2a\u0c4d\u0c30\u0c26\u0c47\u0c36\u0c4d\u200c\u0c32\u0c4b \u0c2a\u0c4d\u0c30\u0c40\u0c2e\u0c3f\u0c2f\u0c02',
+        subheadline: '\u0c2a\u0c4d\u0c32\u0c3e\u0c1f\u0c4d\u0c32\u0c41',
+        description: '\u0c28\u0c2e\u0c4d\u0c2e\u0c15\u0c3e\u0c28\u0c3f\u0c15\u0c3f \u0c2a\u0c4d\u0c30\u0c24\u0c40\u0c15\u0c17\u0c3e \u0c28\u0c3f\u0c32\u0c3f\u0c1a\u0c3f\u0c28 \u0c1a\u0c24\u0c41\u0c30\u0c4d\u0c2d\u0c41\u0c1c \u0c2a\u0c4d\u0c30\u0c3e\u0c2a\u0c30\u0c4d\u0c1f\u0c40\u0c38\u0c4d & \u0c07\u0c28\u0c4d\u200c\u0c2b\u0c4d\u0c30\u0c3e \u0c17\u0c24 25 \u0c38\u0c02\u0c35\u0c24\u0c4d\u0c38\u0c30\u0c3e\u0c32\u0c41\u0c17\u0c3e \u0c06\u0c02\u0c27\u0c4d\u0c30\u0c2a\u0c4d\u0c30\u0c26\u0c47\u0c36\u0c4d \u0c30\u0c3f\u0c2f\u0c32\u0c4d \u0c0e\u0c38\u0c4d\u0c1f\u0c47\u0c1f\u0c4d \u0c30\u0c02\u0c17\u0c3e\u0c28\u0c4d\u0c28\u0c3f \u0c05\u0c2d\u0c3f\u0c35\u0c43\u0c26\u0c4d\u0c27\u0c3f \u0c1a\u0c47\u0c38\u0c4d\u0c24\u0c4b\u0c02\u0c26\u0c3f. \u0c36\u0c4d\u0c30\u0c40 \u0c26\u0c4b\u0c28\u0c47\u0c2a\u0c42\u0c21\u0c3f \u0c26\u0c41\u0c30\u0c4d\u0c17 \u0c2a\u0c4d\u0c30\u0c38\u0c3e\u0c26\u0c4d \u0c17\u0c3e\u0c30\u0c3f \u0c28\u0c3e\u0c2f\u0c15\u0c24\u0c4d\u0c35\u0c02\u0c32\u0c4b, \u0c15\u0c43\u0c37\u0c4d\u0c23\u0c3e\u2013\u0c0e\u0c28\u0c4d\u200c\u0c1f\u0c40\u0c06\u0c30\u0c4d\u2013\u0c17\u0c41\u0c02\u0c1f\u0c42\u0c30\u0c41 \u0c15\u0c3e\u0c30\u0c3f\u0c21\u0c3e\u0c30\u0c4d\u200c\u0c32\u0c4b\u0c28\u0c3f 15+ APCRDA & RERA \u0c06\u0c2e\u0c4b\u0c26\u0c3f\u0c24 \u0c2a\u0c4d\u0c30\u0c3e\u0c1c\u0c46\u0c15\u0c4d\u0c1f\u0c41\u0c32 \u0c26\u0c4d\u0c35\u0c3e\u0c30\u0c3e 1200+ \u0c15\u0c41\u0c1f\u0c41\u0c02\u0c2c\u0c3e\u0c32\u0c15\u0c41 \u0c17\u0c30\u0c4d\u0c35\u0c02\u0c17\u0c3e \u0c28\u0c3f\u0c35\u0c38\u0c3f\u0c02\u0c1a\u0c47 \u0c07\u0c33\u0c4d\u0c33\u0c28\u0c41 \u0c05\u0c02\u0c26\u0c3f\u0c02\u0c1a\u0c3e\u0c2e\u0c41.',
+        approvalBadges: [
+          'APCRDA \u0c2a\u0c4d\u0c30\u0c24\u0c3f\u0c2a\u0c3e\u0c26\u0c3f\u0c24 \u0c32\u0c47\u0c05\u0c35\u0c41\u0c1f\u0c4d - LP \u0c28\u0c02: 35/2025',
+          'AP RERA - P06060125894',
+          '25 \u0c38\u0c02\u0c35\u0c24\u0c4d\u0c38\u0c30\u0c3e\u0c32\u0c41 \u00b7 15+ \u0c2a\u0c4d\u0c30\u0c3e\u0c1c\u0c46\u0c15\u0c4d\u0c1f\u0c41\u0c32\u0c41 \u00b7 1200+ \u0c15\u0c41\u0c1f\u0c41\u0c02\u0c2c\u0c3e\u0c32\u0c41',
+        ],
+      },
+    },
+    tags: {
+      featured:  '\u0c2e\u0c41\u0c16\u0c4d\u0c2f\u0c2e\u0c48\u0c28\u0c26\u0c3f',
+      upcoming:  '\u0c30\u0c3e\u0c2c\u0c4b\u0c24\u0c4b\u0c02\u0c26\u0c3f',
+      limited:   '\u0c2a\u0c30\u0c3f\u0c2e\u0c3f\u0c24\u0c02',
+      hot:       '\u0c39\u0c3e\u0c1f\u0c4d',
+    },
+    facings: {
+      east:      '\u2600\ufe0f \u0c24\u0c42\u0c30\u0c4d\u0c2a\u0c41',
+      west:      '\U0001f319 \u0c2a\u0c21\u0c2e\u0c30',
+      corner:    '\u25e3 \u0c2e\u0c42\u0c32',
+      north:     '\u25b2 \u0c09\u0c24\u0c4d\u0c24\u0c30\u0c02',
+      south:     '\u25bc \u0c26\u0c15\u0c4d\u0c37\u0c3f\u0c23\u0c02',
+      eastNorth: '\u2197 \u0c24\u0c42\u0c30\u0c4d\u0c2a\u0c41-\u0c09\u0c24\u0c4d\u0c24\u0c30\u0c02',
+      eastSouth: '\u2198 \u0c24\u0c42\u0c30\u0c4d\u0c2a\u0c41-\u0c26\u0c15\u0c4d\u0c37\u0c3f\u0c23\u0c02',
+      eastWest:  '\u2194 \u0c21\u0c2c\u0c32\u0c4d \u0c2b\u0c4d\u0c30\u0c02\u0c1f\u0c47\u0c1c\u0c4d',
+      westNorth: '\u2196 \u0c2a\u0c21\u0c2e\u0c30-\u0c09\u0c24\u0c4d\u0c24\u0c30\u0c02',
+      westSouth: '\u2199 \u0c2a\u0c21\u0c2e\u0c30-\u0c26\u0c15\u0c4d\u0c37\u0c3f\u0c23\u0c02',
+      northEast: '\u2197 \u0c09\u0c24\u0c4d\u0c24\u0c30-\u0c24\u0c42\u0c30\u0c4d\u0c2a\u0c41',
+      northWest: '\u2196 \u0c09\u0c24\u0c4d\u0c24\u0c30-\u0c2a\u0c21\u0c2e\u0c30',
+      southEast: '\u2198 \u0c26\u0c15\u0c4d\u0c37\u0c3f\u0c23-\u0c24\u0c42\u0c30\u0c4d\u0c2a\u0c41',
+      southWest: '\u2199 \u0c26\u0c15\u0c4d\u0c37\u0c3f\u0c23-\u0c2a\u0c21\u0c2e\u0c30',
+    },
+    approvals: {
+      crdaProposed:    'CRDA \u0c2a\u0c4d\u0c30\u0c24\u0c3f\u0c2a\u0c3e\u0c26\u0c3f\u0c24 \u0c32\u0c47\u0c05\u0c35\u0c41\u0c1f\u0c4d',
+      apReraRegistered:'AP RERA \u0c28\u0c2e\u0c4b\u0c26\u0c41',
+      clearTitle:      '100% \u0c15\u0c4d\u0c32\u0c3f\u0c2f\u0c30\u0c4d \u0c1f\u0c48\u0c1f\u0c3f\u0c32\u0c4d',
+      vastuCompliant:  '100% \u0c35\u0c3e\u0c38\u0c4d\u0c24\u0c41 \u0c05\u0c28\u0c41\u0c15\u0c42\u0c32\u0c02',
+      nh16Frontage:    'NH-16 \u0c2b\u0c4d\u0c30\u0c02\u0c1f\u0c47\u0c1c\u0c4d',
+      crdaApproved:    'CRDA \u0c06\u0c2e\u0c4b\u0c26\u0c3f\u0c24\u0c02',
+      reraRegistered:  'RERA \u0c28\u0c2e\u0c4b\u0c26\u0c41',
+      apcrda:          'APCRDA \u0c2a\u0c4d\u0c30\u0c24\u0c3f\u0c2a\u0c3e\u0c26\u0c3f\u0c24 \u0c32\u0c47\u0c05\u0c35\u0c41\u0c1f\u0c4d',
+    },
+    quote: {
+      ctaBook:     '\u0c07\u0c2a\u0c4d\u0c2a\u0c41\u0c21\u0c47 \u0c2a\u0c4d\u0c32\u0c3e\u0c1f\u0c4d \u0c2c\u0c41\u0c15\u0c4d \u0c1a\u0c47\u0c2f\u0c02\u0c21\u0c3f',
+      ctaCallback: '\u0c09\u0c1a\u0c3f\u0c24 \u0c15\u0c3e\u0c32\u0c4d\u200c\u0c2c\u0c4d\u0c2f\u0c3e\u0c15\u0c4d \u0c15\u0c4b\u0c30\u0c02\u0c21\u0c3f',
+    },
+    projects: {
+      anjana: {
+        loc:         'పారిటాల, అమరావతి సమీపంలో',
+        description: 'పారిటాలలో ప్రీమియం ఓపెన్ ప్లాట్లు — NH-16కి ప్రక్కన, ఆంధ్రప్రదేశ్ కొత్త రాజధాని అమరావతి నుండి కేవలం 8 కి.మీ. దూరంలో. CRDA ప్రతిపాదిత లేఅవుట్, 100% క్లియర్ టైటిల్, అవెన్యూ రోడ్లు, 24/7 నీటి పైప్లైన్ మరియు ప్రతి ప్లాట్కు విద్యుత్ సదుపాయం. వెంటనే నిర్మాణానికి సిద్ధంగా ఉంది.',
+        highlights: [
+          'NH-16 జాతీయ రహదారికి ప్రక్కన',
+          'అమరావతి నుండి 8 కి.మీ. — కొత్త రాజధాని నగరం',
+          'పారిటాలకు ప్రభుత్వ ప్రతిపాదిత రైల్వే కనెక్టివిటీ',
+          'పారిటాలలో ప్రతిపాదిత లాజిస్టిక్ హబ్',
+          'ఇంజీనీరింగ్ కళాశాలలకు సమీపంలో (అమృత సాయి, MVR, MIC)',
+          'నిమ్రా మెడికల్ కళాశాలకు సమీపంలో',
+          'ములపాడు అంతర్జాతీయ క్రికెట్ స్టేడియం సమీపంలో',
+          'నందిగామ సమీపంలో ప్రతిపాదిత సినిమా స్టూడియో',
+        ],
+      },
+      trimbak: {
+        loc:         'పేనమలూరు, విజయవాడ సమీపంలో',
+        description: 'NH-16 ద్వారా విజయవాడ నగరానికి అద్భుతమైన కనెక్టివిటీతో గేటెడ్ కమ్యూనిటీ ప్లాట్లు. CRDA ఆమోదితం — నీరు, విద్యుత్, డ్రైనేజీ మరియు భద్రత వంటి అన్ని ఆధునిక మౌలిక సదుపాయాలతో వెంటనే నిర్మాణానికి సిద్ధంగా ఉంది.',
+        highlights: [
+          'విజయవాడ నగర కేంద్రం నుండి 5 కి.మీ.',
+          'NH-16 నేరు ప్రవేశం',
+          '24/7 భద్రతతో గేటెడ్ కమ్యూనిటీ',
+          'ప్రతి ప్లాట్కు నీరు మరియు విద్యుత్',
+          'వెంటనే నిర్మాణానికి సిద్ధం',
+          'గృహ రుణాలు అందుబాటులో',
+        ],
+      },
+      aparna: {
+        loc:         'చేవిటికల్లు, అమరావతి క్యాపిటల్ రీజన్ గేట్వే',
+        description: 'NTR జిల్లా చేవిటికల్లులో ప్రీమియం APCRDA ప్రతిపాదిత లేఅవుట్ ప్లాట్లు — అమరావతికి అద్భుతమైన కనెక్టివిటీతో ఆక్టర్ రింగ్ రోడ్డు సమీపంలో ఉన్నాయి. వాస్తు అనుకూల ప్లాట్లు అందుబాటులో. ఫేజ్ II బుకింగ్కు తెరచి ఉంది.',
+        highlights: [
+          'ORR సమీపంలో — AP రాజధాని అద్భుత కనెక్టివిటీ',
+          'అమరావతి రాజధాని నుండి 12 కి.మీ.',
+          'అమరావతి నుండి ప్రభుత్వ ప్రతిపాదిత రైల్వే కనెక్టివిటీ',
+          'అమృత సాయి, MVR & MIC ఇంజీనీరింగ్ కళాశాలలకు సమీపంలో',
+          'నిమ్రా మెడికల్ కళాశాలకు సమీపంలో',
+          'ములపాడు అంతర్జాతీయ క్రికెట్ స్టేడియం సమీపంలో',
+          'పారిటాలలో ప్రతిపాదిత లాజిస్టిక్ హబ్',
+          'నందిగామ సమీపంలో ప్రభుత్వ ప్రతిపాదిత సినిమా స్టూడియో',
+        ],
+      },
+      varaha: {
+        loc:         'పామర్రు, కృష్ణా జిల్లా',
+        description: 'పామర్రు, కృష్ణా జిల్లాలో NH-16 కారిడార్‌పై వ్యూహాత్మక పెట్టుబడి అవకాశం. 132 జాగ్రత్తగా ప్లాన్ చేయబడ్డ ప్లాట్లతో APCRDA ప్రతిపాదిత లేఅవుట్ — ప్రైమ్ NH-16 ఫ్రంటేజ్, బందరు పోర్టు, BEL డిఫెన్స్ కాంప్లెక్స్ మరియు రాబోయే 6-లేన్ హైవే సమీపంలో. అసాధారణ మూల్యాభివృద్ధి అవకాశం.',
+        highlights: [
+          'NH-16 జాతీయ రహదారికి నేరుగా ప్రక్కన',
+          'కటిపూడి-ఒంగోలు హైవే నుండి 15 కి.మీ.',
+          'BEL కంపెనీకి (డిఫెన్స్ PSU) 5 కి.మీ.',
+          'బందరు పోర్టుకు 20 కి.మీ.',
+          'ప్రతిపాదిత 6-లేన్ విజయవాడ-మచిలీపట్నం రోడ్డుకు ప్రక్కన',
+          'ప్రపంచ ప్రసిద్ధ భరతనాట్యం సంస్థకు సమీపంలో (6 కి.మీ.)',
+          'ప్రతిష్ఠాత్మక ఇంజీనీరింగ్ కళాశాలలకు సమీపంలో',
+          'నిర్మాణానికి సిద్ధమైన హౌసింగ్ ప్రాజెక్ట్',
+        ],
+      },
+    },
+
+    footer: {
+      tagline:      '\u0c06\u0c02\u0c27\u0c4d\u0c30\u0c2a\u0c4d\u0c30\u0c26\u0c47\u0c36\u0c4d \u0c05\u0c02\u0c24\u0c1f\u0c3e \u0c15\u0c32\u0c32\u0c41 \u0c28\u0c46\u0c30\u0c35\u0c47\u0c30\u0c4d\u0c1a\u0c41\u0c24\u0c41\u0c28\u0c4d\u0c28\u0c3e\u0c02',
+      rights:       '\u0c38\u0c30\u0c4d\u0c35\u0c39\u0c15\u0c4d\u0c15\u0c41\u0c32\u0c41 \u0c38\u0c02\u0c30\u0c15\u0c4d\u0c37\u0c3f\u0c24\u0c02.',
+      privacyPolicy:'\u0c17\u0c4b\u0c2a\u0c4d\u0c2f\u0c24\u0c3e \u0c35\u0c3f\u0c27\u0c3e\u0c28\u0c02',
+      quickLinks:   '\u0c24\u0c4d\u0c35\u0c30\u0c3f\u0c24 \u0c32\u0c3f\u0c02\u0c15\u0c41\u0c32\u0c41',
+      ourProjects:  '\u0c2e\u0c3e \u0c2a\u0c4d\u0c30\u0c3e\u0c1c\u0c46\u0c15\u0c4d\u0c1f\u0c41\u0c32\u0c41',
+      followUs:     '\u0c2e\u0c3e\u0c28\u0c41 \u0c05\u0c28\u0c41\u0c38\u0c30\u0c3f\u0c02\u0c1a\u0c02\u0c21\u0c3f',
+    },
+    common: {
+      learnMore:      '\u0c2e\u0c30\u0c3f\u0c02\u0c24 \u0c24\u0c46\u0c32\u0c41\u0c38\u0c41\u0c15\u0c4b\u0c02\u0c21\u0c3f',
+      readMore:       '\u0c2e\u0c30\u0c3f\u0c02\u0c24 \u0c1a\u0c26\u0c35\u0c02\u0c21\u0c3f',
+      viewAll:        '\u0c05\u0c28\u0c4d\u0c28\u0c40 \u0c1a\u0c42\u0c21\u0c02\u0c21\u0c3f',
+      close:          '\u0c2e\u0c42\u0c38\u0c3f\u0c35\u0c47\u0c2f\u0c3f',
+      loading:        '\u0c32\u0c4b\u0c21\u0c4d \u0c05\u0c35\u0c41\u0c24\u0c4b\u0c02\u0c26\u0c3f...',
+      available:      '\u0c05\u0c02\u0c26\u0c41\u0c2c\u0c3e\u0c1f\u0c41\u0c32\u0c4b',
+      soldOut:        '\u0c05\u0c2e\u0c4d\u0c2e\u0c41\u0c21\u0c2f\u0c3f\u0c02\u0c26\u0c3f',
+      upcoming:       '\u0c30\u0c3e\u0c2c\u0c4b\u0c24\u0c4b\u0c02\u0c26\u0c3f',
+      perSqYd:        '/ \u0c1a.\u0c17.',
+      sqYd:           '\u0c1a.\u0c17.',
+      plots:          '\u0c2a\u0c4d\u0c32\u0c3e\u0c1f\u0c4d\u0c32\u0c41',
+      plotsAvailable: '\u0c2a\u0c4d\u0c32\u0c3e\u0c1f\u0c4d\u0c32\u0c41 \u0c05\u0c02\u0c26\u0c41\u0c2c\u0c3e\u0c1f\u0c41\u0c32\u0c4b',
+      from:           '\u0c28\u0c41\u0c02\u0c21\u0c3f',
+      yearsOfTrust:   '\u0c38\u0c02\u0c35\u0c24\u0c4d\u0c38\u0c30\u0c3e\u0c32 \u0c28\u0c2e\u0c4d\u0c2e\u0c15\u0c02',
+      clearTitle:     '\u0c15\u0c4d\u0c32\u0c3f\u0c2f\u0c30\u0c4d \u0c1f\u0c48\u0c1f\u0c3f\u0c32\u0c4d',
+      reraRegistered: 'RERA \u0c28\u0c2e\u0c4b\u0c26\u0c41 \u0c1a\u0c47\u0c2f\u0c2c\u0c21\u0c3f\u0c02\u0c26\u0c3f',
+    },
+    urgency: {
+      limitedOffer: '\u0c2a\u0c30\u0c3f\u0c2e\u0c3f\u0c24 \u0c15\u0c3e\u0c32 \u0c06\u0c2b\u0c30\u0c4d',
+      plotsClosing: '\u0c2a\u0c4d\u0c32\u0c3e\u0c1f\u0c4d\u0c32\u0c41 \u0c35\u0c47\u0c17\u0c02\u0c17\u0c3e \u0c2e\u0c41\u0c17\u0c41\u0c38\u0c4d\u0c24\u0c41\u0c28\u0c4d\u0c28\u0c3e\u0c2f\u0c3f',
+      lockInRates:  '\u0c2a\u0c4d\u0c30\u0c38\u0c4d\u0c24\u0c41\u0c24 \u0c27\u0c30\u0c32\u0c28\u0c41 \u0c07\u0c2a\u0c4d\u0c2a\u0c41\u0c21\u0c47 \u0c32\u0c3e\u0c15\u0c4d \u0c1a\u0c47\u0c38\u0c41\u0c15\u0c4b\u0c02\u0c21\u0c3f',
+      pricesRising: '\u0c35\u0c1a\u0c4d\u0c1a\u0c47 \u0c24\u0c4d\u0c30\u0c48\u0c2e\u0c3e\u0c38\u0c3f\u0c15\u0c02\u0c32\u0c4b \u0c27\u0c30\u0c32\u0c41 \u0c2a\u0c46\u0c30\u0c42\u0c24\u0c41\u0c28\u0c4d\u0c28\u0c3e\u0c2f\u0c3f. \u0c08 \u0c30\u0c4b\u0c1c\u0c47 \u0c2e\u0c40 \u0c2a\u0c4d\u0c32\u0c3e\u0c1f\u0c4d \u0c38\u0c41\u0c30\u0c15\u0c4d\u0c37\u0c3f\u0c24\u0c02 \u0c1a\u0c47\u0c38\u0c41\u0c15\u0c4b\u0c02\u0c21\u0c3f.',
+      projectsOpen: '\u0c2a\u0c4d\u0c30\u0c3e\u0c1c\u0c46\u0c15\u0c4d\u0c1f\u0c41\u0c32\u0c41',
+      forBooking:   '\u0c05\u0c02\u0c26\u0c41\u0c2c\u0c3e\u0c1f\u0c41\u0c32\u0c4b\u0c28\u0c3f\u0c35\u0c3f',
+      completed:    '\u0c2a\u0c42\u0c30\u0c4d\u0c24\u0c2f\u0c4d\u0c2f\u0c3e\u0c2f\u0c3f',
+      happy:        '\u0c38\u0c02\u0c24\u0c4b\u0c37\u0c15\u0c30',
+      families:     '\u0c15\u0c41\u0c1f\u0c41\u0c02\u0c2c\u0c3e\u0c32\u0c41',
+      exploreCta:   '\u0c05\u0c28\u0c4d\u0c28\u0c3f \u0c2a\u0c4d\u0c30\u0c3e\u0c1c\u0c46\u0c15\u0c4d\u0c1f\u0c41\u0c32\u0c28\u0c41 \u0c1a\u0c42\u0c21\u0c02\u0c21\u0c3f',
+      barOpenLabel:  '\u0c2a\u0c4d\u0c30\u0c3e\u0c1c\u0c46\u0c15\u0c4d\u0c1f\u0c41\u0c32\u0c41 \u0c2c\u0c41\u0c15\u0c3f\u0c02\u0c17\u0c4d\u200c\u0c15\u0c41 \u0c05\u0c02\u0c26\u0c41\u0c2c\u0c3e\u0c1f\u0c41\u0c32\u0c4b',
+      barClosedLabel: '\u0c2a\u0c42\u0c30\u0c4d\u0c24\u0c3f \u0c1a\u0c47\u0c38\u0c3f \u0c05\u0c2e\u0c4d\u0c2e\u0c41\u0c21\u0c2f\u0c3f\u0c28\u0c35\u0c3f',
+      completedSub:  '\u0c2a\u0c42\u0c30\u0c4d\u0c24\u0c2f\u0c4d\u0c2f\u0c3e\u0c2f\u0c3f',
+    },
+  },
+}
+
+// ── Context ───────────────────────────────────────────────────────────────────
+
+const LanguageContext = createContext(null)
+
+const STORAGE_KEY = 'cbp_lang'
+
+export function LanguageProvider({ children, dbTranslations }) {
+  const [language, setLanguage] = useState(() => {
+    try { return localStorage.getItem(STORAGE_KEY) || 'en' } catch { return 'en' }
+  })
+
+  // Merge DB translations over fallback (DB wins; fallback fills gaps)
+  const translations = useMemo(() => {
+    const base = { ...FALLBACK_TRANSLATIONS }
+    if (dbTranslations) {
+      if (dbTranslations.en) base.en = deepMerge(base.en, dbTranslations.en)
+      if (dbTranslations.te) base.te = deepMerge(base.te, dbTranslations.te)
+    }
+    return base
+  }, [dbTranslations])
+
+  // Sync lang-te class on <html> so CSS font overrides activate globally
+  useEffect(() => {
+    if (language === 'te') {
+      document.documentElement.classList.add('lang-te')
+      document.documentElement.setAttribute('lang', 'te')
+    } else {
+      document.documentElement.classList.remove('lang-te')
+      document.documentElement.setAttribute('lang', 'en')
+    }
+  }, [language])
+
+  const toggleLanguage = useCallback(() => {
+    setLanguage(prev => {
+      const next = prev === 'en' ? 'te' : 'en'
+      try { localStorage.setItem(STORAGE_KEY, next) } catch {}
+      return next
+    })
+  }, [])
+
+  // t('nav.portfolio') — traverse nested key
+  const t = useCallback((key, fallback = '') => {
+    const parts = key.split('.')
+    let node = translations[language]
+    for (const part of parts) {
+      if (!node || typeof node !== 'object') return fallback || key
+      node = node[part]
+    }
+    return (node != null && node !== '') ? node : (translations.en && getNestedKey(translations.en, parts)) || fallback || key
+  }, [language, translations])
+
+  return (
+    <LanguageContext.Provider value={{ language, toggleLanguage, t, translations }}>
+      {children}
+    </LanguageContext.Provider>
+  )
+}
+
+export function useLanguage() {
+  const ctx = useContext(LanguageContext)
+  if (!ctx) throw new Error('useLanguage must be used inside <LanguageProvider>')
+  return ctx
+}
+
+// ── Helpers ───────────────────────────────────────────────────────────────────
+
+function getNestedKey(obj, parts) {
+  let node = obj
+  for (const p of parts) {
+    if (!node || typeof node !== 'object') return undefined
+    node = node[p]
+  }
+  return node
+}
+
+function deepMerge(base, override) {
+  const result = { ...base }
+  for (const key of Object.keys(override || {})) {
+    if (
+      override[key] &&
+      typeof override[key] === 'object' &&
+      !Array.isArray(override[key]) &&
+      base[key] &&
+      typeof base[key] === 'object'
+    ) {
+      result[key] = deepMerge(base[key], override[key])
+    } else {
+      result[key] = override[key]
+    }
+  }
+  return result
+}

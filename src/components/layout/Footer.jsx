@@ -1,5 +1,6 @@
 import { DEFAULT_WA_NUMBER } from '@/constants/config'
 import { useContactSettings } from '@/hooks/useData'
+import { useLanguage } from '@/context/LanguageContext'
 import styles from './Footer.module.css'
 
 const QUICK_LINKS = [
@@ -35,6 +36,17 @@ function scrollTo(id) {
 
 export default function Footer({ content }) {
   const { data: ownerSettings } = useContactSettings()
+  const { t } = useLanguage()
+
+  // Build translated quick links so labels switch with language
+  const QUICK_LINKS_I18N = [
+    [t('nav.portfolio'), 'portfolio'],
+    [t('nav.gallery'),   'gallery'  ],
+    [t('nav.videos'),    'videos'   ],
+    [t('nav.amenities'), 'amenities'],
+    [t('nav.location'),  'location' ],
+    [t('nav.contact'),   'contact'  ],
+  ]
 
   const contact  = content?.contact || {}
   const phone    = ownerSettings?.ownerPhone
@@ -59,11 +71,8 @@ export default function Footer({ content }) {
               className={styles.footerLogo}
             />
             <p className={styles.tagline}>
-              Building trust in Andhra Pradesh's real estate sector for over
-              25 years. Founded by <strong>Mr. Donepudi Durga Prasad</strong>,
-              we have delivered 15+ successful ventures — open plots, houses
-              and apartments — with 1200+ happy families settled across the
-              Krishna–NTR–Guntur corridor.
+              {t('footer.tagline')} — 25 {t('common.yearsOfTrust')}.{' '}
+              15+ {t('portfolio.projectsDelivered')}, 1200+ {t('portfolio.happyCustomers')}.
             </p>
             <div className={styles.badges}>
               <span className={styles.badge}>APCRDA Approved</span>
@@ -85,8 +94,8 @@ export default function Footer({ content }) {
 
           {/* ── Quick Links ───────────────────────────────────── */}
           <div>
-            <h5 className={styles.colTitle}>Quick Links</h5>
-            {QUICK_LINKS.map(([label, id]) => (
+            <h5 className={styles.colTitle}>{t('footer.quickLinks')}</h5>
+            {QUICK_LINKS_I18N.map(([label, id]) => (
               <button key={id} className={styles.link} onClick={() => scrollTo(id)}>
                 <span className={styles.linkArrow}>›</span>{label}
               </button>
@@ -95,7 +104,7 @@ export default function Footer({ content }) {
 
           {/* ── Ongoing Projects ──────────────────────────────── */}
           <div>
-            <h5 className={styles.colTitle}>Ongoing Projects</h5>
+            <h5 className={styles.colTitle}>{t('footer.ourProjects')}</h5>
             {PROJECTS.map((p) => (
               <div key={p} className={styles.projectItem}>
                 <span className={styles.projectDot} />
@@ -109,7 +118,7 @@ export default function Footer({ content }) {
 
           {/* ── Contact ───────────────────────────────────────── */}
           <div>
-            <h5 className={styles.colTitle}>Contact Us</h5>
+            <h5 className={styles.colTitle}>{t('contact.callUs').replace('Call Us', t('contact.callUs'))}</h5>
 
             <a href={`tel:${phone}`} className={styles.contactRow}>
               <span className={styles.contactIcon}>📞</span>
@@ -122,7 +131,7 @@ export default function Footer({ content }) {
               className={styles.contactRow}
             >
               <span className={styles.contactIcon}>💬</span>
-              <span>WhatsApp Us</span>
+              <span>{t('contact.sendWhatsApp')}</span>
             </a>
 
             <a href={`mailto:${email}`} className={styles.contactRow}>
@@ -145,8 +154,8 @@ export default function Footer({ content }) {
 
         {/* ── Bottom bar ────────────────────────────────────────── */}
         <div className={styles.bottom}>
-          <span>© {new Date().getFullYear()} Chaturbhuja Properties &amp; Infra. All rights reserved.</span>
-          <span>APCRDA Approved · RERA Registered · 100% Clear Title</span>
+          <span>© {new Date().getFullYear()} Chaturbhuja Properties &amp; Infra. {t('footer.rights')}</span>
+          <span>APCRDA Approved · RERA Registered · 100% {t('common.clearTitle')}</span>
         </div>
       </div>
     </footer>

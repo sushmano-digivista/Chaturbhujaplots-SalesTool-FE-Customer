@@ -59,3 +59,8 @@ export const projectsApi = {
   getAll: () => dashApi.get('/projects').then(r => r.data),
   getOne: (id) => dashApi.get('/projects/' + id).then(r => r.data),
 }
+// -- i18n API -----------------------------------------------------------
+// Fetches all translations (en + te) from MongoDB via DashboardServices
+export const i18nApi = {
+  getAll: () => dashApi.get('/i18n').then(r => r.data),
+}

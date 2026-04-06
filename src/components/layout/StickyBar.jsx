@@ -1,15 +1,12 @@
 import { Phone, MessageCircle, Map } from 'lucide-react'
 import { openWhatsApp }    from '@/utils/security'
 import { DEFAULT_WA_NUMBER, DEFAULT_PHONE } from '@/constants/config'
+import { useLanguage } from '@/context/LanguageContext'
 import styles from './Footer.module.css'
 
-/**
- * StickyBar -- fixed bottom action bar shown on mobile.
- * Props:
- *   contact   { phone, whatsapp, whatsappMessage }
- *   onEnquire (ctx) => void
- */
 export default function StickyBar({ contact, onEnquire }) {
+  const { t } = useLanguage()
+
   const openWA = () => {
     const num = contact?.whatsapp || DEFAULT_WA_NUMBER
     const msg = contact?.whatsappMessage ||
@@ -21,12 +18,12 @@ export default function StickyBar({ contact, onEnquire }) {
     <div className={styles.stickyBar}>
       <a href={'tel:' + (contact?.phone || DEFAULT_PHONE)} className={styles.sbBtn}>
         <Phone size={20} />
-        <span>Call</span>
+        <span>{t('contact.callUs')}</span>
       </a>
 
       <button className={styles.sbBtn + ' ' + styles.sbWa} onClick={openWA}>
         <MessageCircle size={20} />
-        <span>WhatsApp</span>
+        <span>{t('contact.sendWhatsApp')}</span>
       </button>
 
       <button
@@ -34,7 +31,7 @@ export default function StickyBar({ contact, onEnquire }) {
         onClick={() => onEnquire({ source: 'STICKY_BAR', label: 'Enquire Now' })}
       >
         <Map size={20} />
-        <span>Enquire</span>
+        <span>{t('nav.enquireNow')}</span>
       </button>
     </div>
   )

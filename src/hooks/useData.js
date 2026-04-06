@@ -1,5 +1,5 @@
 import { useQuery, useMutation } from '@tanstack/react-query'
-import { contentApi, plotSummaryApi, leadApi, pricingApi, settingsApi, projectsApi } from '@/api'
+import { contentApi, plotSummaryApi, leadApi, pricingApi, settingsApi, projectsApi, i18nApi } from '@/api'
 import { ACTIVE_PROJECTS } from '@/constants/projects'
 import toast from 'react-hot-toast'
 
@@ -85,4 +85,16 @@ export function useProject(id) {
   const { data: projects, isLoading, error } = useProjects()
   const project = projects?.find(p => p.id === id) || null
   return { data: project, isLoading, error }
+}
+
+// -- Translations -------------------------------------------------------
+// Fetches all language translations from MongoDB. Falls back gracefully.
+export function useTranslations() {
+  return useQuery({
+    queryKey: ['i18n'],
+    queryFn:  i18nApi.getAll,
+    staleTime: 10 * 60_000,   // translations rarely change — cache for 10 min
+    retry: 1,
+    placeholderData: null,
+  })
 }

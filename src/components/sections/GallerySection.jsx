@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { createPortal } from 'react-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import { X, ChevronLeft, ChevronRight } from 'lucide-react'
+import { useLanguage } from '@/context/LanguageContext'
 import styles from './Sections.module.css'
 
 /**
@@ -32,6 +33,7 @@ const ALL_IMAGES = Object.keys(allImageModules)
 
 export default function GallerySection({ content }) {
   const [lightbox, setLightbox] = useState(null)
+  const { t } = useLanguage()
 
   const apiGallery = content?.gallery || []
   const items = apiGallery.length > 0
@@ -60,7 +62,7 @@ export default function GallerySection({ content }) {
     <section className={`section ${styles.galSec}`} id="gallery">
       <div className="sec-hdr">
         <div className="sec-tag" style={{ color: 'var(--gold-dark)' }}>Visual Tour</div>
-        <h2 className="sec-title light">Project <em>Gallery</em></h2>
+        <h2 className="sec-title light">{t('sections.gallery').split(' ')[0]} <em>{t('sections.gallery').split(' ').slice(1).join(' ')}</em></h2>
       </div>
 
       <div className={styles.galGrid}>

@@ -106,3 +106,55 @@ input, select, textarea { font-family:'DM Sans',sans-serif; }
 @keyframes pulse    { 0%,100%{box-shadow:0 0 0 3px rgba(76,175,116,0.3)} 50%{box-shadow:0 0 0 6px rgba(76,175,116,0.1)} }
 
 @media (max-width:768px) { .section { padding:36px 5%; } .hide-mobile{display:none!important;} }
+
+/* ── Telugu typography — activated via html.lang-te class ──────────────── */
+/* Applied by LanguageContext when language === 'te'                         */
+
+/* Base: Noto Sans Telugu for all body/UI text */
+html.lang-te body,
+html.lang-te input,
+html.lang-te button,
+html.lang-te select,
+html.lang-te textarea {
+  font-family: 'Noto Sans Telugu', 'DM Sans', sans-serif;
+  line-height: 1.85;
+}
+
+/* Display headings: Noto Serif Telugu — elegant, matches Cormorant Garamond feel */
+html.lang-te h1,
+html.lang-te h2,
+html.lang-te h3,
+html.lang-te h4,
+html.lang-te .sec-title,
+html.lang-te [class*="title"]:not([class*="subtitle"]),
+html.lang-te [class*="Title"]:not([class*="SubTitle"]),
+html.lang-te [class*="heading"],
+html.lang-te [class*="Heading"],
+html.lang-te [class*="name"],
+html.lang-te [class*="Name"] {
+  font-family: 'Noto Serif Telugu', 'Cormorant Garamond', serif;
+  font-weight: 700;
+  line-height: 1.45;
+  letter-spacing: 0;
+}
+
+/* Labels, tags, badges stay sans */
+html.lang-te [class*="label"],
+html.lang-te [class*="Label"],
+html.lang-te [class*="tag"],
+html.lang-te [class*="Tag"],
+html.lang-te [class*="badge"],
+html.lang-te [class*="Badge"],
+html.lang-te [class*="stat"],
+html.lang-te [class*="Stat"],
+html.lang-te [class*="num"],
+html.lang-te [class*="Num"] {
+  font-family: 'Noto Sans Telugu', 'DM Sans', sans-serif;
+}
+
+/* Bump line-height globally for Telugu — vowel marks need vertical room */
+html.lang-te p,
+html.lang-te span,
+html.lang-te div {
+  line-height: inherit;
+}

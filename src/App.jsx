@@ -1,10 +1,12 @@
 import { Routes, Route } from 'react-router-dom'
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { QueryClient, QueryClientProvider, useQuery } from '@tanstack/react-query'
 import { Toaster } from 'react-hot-toast'
 import HomePage           from '@/pages/HomePage'
 import ProjectPage        from '@/pages/project/ProjectPage'
 import RegressionTestPage from '@/pages/RegressionTestPage'
 import ScrollToTop        from '@/components/common/ScrollToTop'
+import { LanguageProvider } from '@/context/LanguageContext'
+import { i18nApi } from '@/api'
 import '@/styles/globals.css'
 
 const queryClient = new QueryClient({
@@ -19,9 +21,18 @@ const queryClient = new QueryClient({
   },
 })
 
-export default function App() {
+// Inner component so useQuery runs inside QueryClientProvider
+function AppWithLanguage() {
+  const { data: dbTranslations } = useQuery({
+    queryKey: ['i18n'],
+    queryFn:  i18nApi.getAll,
+    staleTime: 0,
+    retry: 1,
+    placeholderData: null,
+  })
+
   return (
-    <QueryClientProvider client={queryClient}>
+    <LanguageProvider dbTranslations={dbTranslations}>
       <Toaster
         position="bottom-center"
         toastOptions={{
@@ -40,6 +51,14 @@ export default function App() {
         <Route path="/regression-test"   element={<RegressionTestPage />} />
       </Routes>
       <ScrollToTop />
+    </LanguageProvider>
+  )
+}
+
+export default function App() {
+  return (
+    <QueryClientProvider client={queryClient}>
+      <AppWithLanguage />
     </QueryClientProvider>
   )
 }

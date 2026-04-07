@@ -44,8 +44,8 @@
   font-family: 'Cormorant Garamond', serif;
   font-size: clamp(100px, 18vw, 160px);
   font-weight: 700;
-  color: var(--green);
-  opacity: 0.08;
+  color: var(--gold);
+  opacity: 0.25;
   line-height: 1;
   letter-spacing: -4px;
   user-select: none;

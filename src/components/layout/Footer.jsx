@@ -174,6 +174,9 @@ export default function Footer({ content }) {
           <span>© {new Date().getFullYear()} Chaturbhuja Properties &amp; Infra. {t('footer.rights')}</span>
           <span>APCRDA Approved · RERA Registered · 100% {t('common.clearTitle')}</span>
         </div>
+        <div className={styles.devCredit}>
+          Developed by <a href="https://www.smsolutionstech.com" target="_blank" rel="noreferrer">SM Solutions &amp; Technologies</a>
+        </div>
       </div>
     </footer>
   )

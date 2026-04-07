@@ -142,3 +142,23 @@
   .grid      { grid-template-columns: 1fr; gap: 28px; }
   .bottom    { flex-direction: column; gap: 8px; text-align: center; }
 }
+
+/* ── Developer Credit ──────────────────────────────────────── */
+.devCredit {
+  text-align: center;
+  padding: 10px 0 6px;
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.35);
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  margin-top: 6px;
+}
+
+.devCredit a {
+  color: rgba(201, 168, 76, 0.7);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.devCredit a:hover {
+  color: #C9A84C;
+}

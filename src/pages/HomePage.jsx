@@ -33,7 +33,7 @@ export default function HomePage() {
 
   // SEO: Set page title
   useEffect(() => {
-    document.title = 'ChaturbhujaPlots | Premium DTCP & RERA Approved Plots Near Amaravati, AP'
+    document.title = 'ChaturbhujaPlots | Premium APCRDA & RERA Approved Plots Near Amaravati, AP'
   }, [])
 
   // Show loader until BOTH the timer has elapsed AND data has loaded

@@ -450,7 +450,7 @@ export default function ProjectPage() {
 
   useEffect(() => {
     if (proj) {
-      document.title = proj.name + ' | DTCP Approved Plots in ' + (tProj('loc') || proj.loc) + ' | ChaturbhujaPlots'
+      document.title = proj.name + ' | APCRDA Approved Plots in ' + (tProj('loc') || proj.loc) + ' | ChaturbhujaPlots'
     }
     return () => {
       document.title = 'ChaturbhujaPlots | Premium Plots Near Amaravati, AP'

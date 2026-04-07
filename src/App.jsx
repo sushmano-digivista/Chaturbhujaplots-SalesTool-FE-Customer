@@ -4,6 +4,7 @@ import { Toaster } from 'react-hot-toast'
 import HomePage           from '@/pages/HomePage'
 import ProjectPage        from '@/pages/project/ProjectPage'
 import RegressionTestPage from '@/pages/RegressionTestPage'
+import NotFoundPage       from '@/pages/NotFoundPage'
 import ScrollToTop        from '@/components/common/ScrollToTop'
 import { LanguageProvider } from '@/context/LanguageContext'
 import { i18nApi } from '@/api'
@@ -49,6 +50,7 @@ function AppWithLanguage() {
         <Route path="/project/:id"       element={<ProjectPage />} />
         <Route path="/project/:id/:tab"  element={<ProjectPage />} />
         <Route path="/regression-test"   element={<RegressionTestPage />} />
+        <Route path="*"                  element={<NotFoundPage />} />
       </Routes>
       <ScrollToTop />
     </LanguageProvider>

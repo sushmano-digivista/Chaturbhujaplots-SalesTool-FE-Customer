@@ -52,7 +52,7 @@ export default function NotFoundPage() {
           <button className="btn btn-gold" onClick={() => navigate('/')}>
             ← Back to Home
           </button>
-          <button className="btn btn-ghost" onClick={() => {
+          <button className="btn btn-green" onClick={() => {
             navigate('/')
             setTimeout(() => document.getElementById('portfolio')?.scrollIntoView({ behavior: 'smooth' }), 300)
           }}>

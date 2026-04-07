@@ -65,8 +65,7 @@ export const ACTIVE_PROJECTS = [
       { label: 'Overhead Tank & Pipeline',  icon: '💧' },
     ],
     videos: [
-      { id: 'dQw4w9WgXcY', type: 'youtube', title: 'Anjana Paradise — Project Overview', subtitle: 'Full property walkthrough & amenities' },
-      { id: 'dQw4w9WgXcY', type: 'youtube', title: 'Location & Connectivity',            subtitle: 'Paritala to Amaravati route explained' },
+      { id: '55zBpY_j-lo', type: 'youtube', title: 'Anjana Paradise — Project Overview', subtitle: 'Full property walkthrough & amenities' },
     ],
     distances: [
       { icon: '🏛', name: 'Amaravati Capital',      subtitle: 'New AP State Capital',         distance: '8 km'  },
@@ -123,7 +122,7 @@ export const ACTIVE_PROJECTS = [
       { label: 'Plot Overview',      icon: '🏞' },
     ],
     videos: [
-      { id: 'dQw4w9WgXcY', type: 'youtube', title: 'Trimbak Oaks — Project Overview', subtitle: 'Walkthrough & amenities' },
+      { id: '', type: 'youtube', title: 'Trimbak Oaks — Project Overview', subtitle: 'Coming Soon' },
     ],
     distances: [
       { icon: '🏙', name: 'Vijayawada City',    subtitle: 'Business & commercial hub', distance: '5 km'  },
@@ -194,7 +193,7 @@ export const ACTIVE_PROJECTS = [
       { label: 'Modern Park',             icon: '🌸' },
     ],
     videos: [
-      { id: 'dQw4w9WgXcY', type: 'youtube', title: 'Aparna Legacy — Project Overview', subtitle: 'Chevitikallu layout walkthrough' },
+      { id: 'ccUqV-C1rZQ', type: 'youtube', title: 'Aparna Legacy — Project Overview', subtitle: 'Chevitikallu layout walkthrough' },
     ],
     distances: [
       { icon: '🏛', name: 'Amaravati Capital',    subtitle: 'New AP State Capital',       distance: '12 km'    },
@@ -269,7 +268,7 @@ export const ACTIVE_PROJECTS = [
       { label: 'Walking Track',             icon: '🏃' },
     ],
     videos: [
-      { id: 'dQw4w9WgXcY', type: 'youtube', title: 'Varaha Virtue — Project Overview', subtitle: 'NH-16 corridor investment opportunity' },
+      { id: 'TSUf2Pd5LGw', type: 'youtube', title: 'Varaha Virtue — Project Overview', subtitle: 'NH-16 corridor investment opportunity' },
     ],
     distances: [
       { icon: '🛣', name: 'NH-16 National Highway',    subtitle: 'Directly Adjacent',                  distance: '0 km'  },

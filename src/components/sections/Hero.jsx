@@ -84,7 +84,10 @@ export default function Hero({ content, onEnquire }) {
   const familiesSub       = (isTe && t('urgency.families'))     || urg.familiesSub       || FB.urgency.familiesSub
   const barOpenLabel      = (isTe && t('urgency.barOpenLabel'))  || (isTe && t('nav.openForBooking'))   || urg.barOpenLabel   || FB.urgency.barOpenLabel
   const barClosedLabel    = (isTe && t('urgency.barClosedLabel')) || (isTe && t('nav.completedSoldOut')) || urg.barClosedLabel || FB.urgency.barClosedLabel
-  const ctaButton         = (isTe && t('urgency.exploreCta'))   || urg.ctaButton         || FB.urgency.ctaButton
+  const ctaButton = (() => {
+    if (isTe) { const v = t('urgency.exploreCta'); if (v && v !== 'urgency.exploreCta') return v }
+    return urg.ctaButton || FB.urgency.ctaButton
+  })()
 
   // Trust stats — translate labels in Telugu
   const lcStats = (lcs.length ? lcs : FB.lcStats).map((s, i) => {
@@ -265,7 +268,7 @@ export default function Hero({ content, onEnquire }) {
         {/* ── CTAs ──────────────────────────────────────────────────────── */}
         <div className={styles.lcBtns}>
           <button className={styles.lcBtnGold} onClick={() => scrollTo('portfolio')}>
-            {ctaButton || t('urgency.exploreCta')}
+            {ctaButton}
           </button>
           <a
             href={`https://wa.me/${whatsapp}?text=${encodeURIComponent(waMsg)}`}

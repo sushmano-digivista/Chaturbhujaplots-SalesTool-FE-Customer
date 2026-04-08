@@ -185,7 +185,7 @@ export default function PlotGrid({ onEnquire, pricingMap }) {
               onClick={() => { setVentureKey(k); setActiveCategory(null); setPriceOpen(false) }}
             >
               <span className={styles.ventureBtnName} style={{ color: isActive ? '#fff' : VENTURE_COLORS[k] }}>{v.label}</span>
-              <span className={styles.ventureBtnSub}  style={{ color: isActive ? 'rgba(255,255,255,.75)' : 'var(--text-light)' }}>{v.short}</span>
+              <span className={styles.ventureBtnSub}  style={{ color: isActive ? 'rgba(255,255,255,.75)' : 'var(--text-light)' }}>{(() => { const locKey = 'projects.' + k + '.locShort'; const locV = t(locKey); return (locV && locV !== locKey) ? locV : v.short })()}</span>
               <span className={styles.ventureBtnCount} style={isActive ? { background: 'rgba(255,255,255,.2)', color: '#fff' } : { background: `${VENTURE_COLORS[k]}22`, color: VENTURE_COLORS[k] }}>
                 {v.upcoming ? '🔜 Upcoming' : `${v.totalPlots} plots`}
               </span>
@@ -363,7 +363,7 @@ export default function PlotGrid({ onEnquire, pricingMap }) {
                   >
                     <div className={styles.dimNum}>{d.count}</div>
                     <div className={styles.dimLabel}>{d.dimension} ft</div>
-                    <div className={styles.dimArea}>{d.areaLabel}</div>
+                    <div className={styles.dimArea}>{d.areaLabel.replace('Sq Yd', tv('project.sqYdFull', 'Sq Yd'))}</div>
                     <div className={styles.dimPrice} style={{ color }}>{d.priceFrom === 'Contact us' ? tv('sections.contactUs', 'Contact us') : d.priceFrom}</div>
                     <button
                       className={`btn btn-green btn-sm ${styles.dimBtn}`}

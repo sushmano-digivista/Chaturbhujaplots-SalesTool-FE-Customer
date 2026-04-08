@@ -52,6 +52,16 @@ const AMENITY_KEY_MAP = {
   'Name & Number Display Board':                  'nameBoard2',
   'Overhead Electricity Connection':              'overheadElec2',
   'Avenue Plantation':                            'avenuePlain',
+  'Avenue Lined Roads':                           'avenueLinedRoads',
+  'BT Road Layout':                               'btRoadLayout',
+  'Grand Entrance & Security':                    'grandEntranceSec',
+  'Grand Entrance Arch':                          'grandEntranceArch',
+  'Internal Roads':                               'internalRoads',
+  'Jogging Track':                                'jogTrackSimple',
+  'Main Entrance Gate':                           'mainEntranceGate',
+  'NH-16 Frontage':                               'nh16Frontage',
+  'Overhead Tank & Pipeline':                     'overheadTankSimple',
+  "Children's Tot Lot & Green Equipped Parks":    'childrenspark',
 }
 function translateAmenity(label, t) {
   const key = AMENITY_KEY_MAP[label]
@@ -100,7 +110,7 @@ function HomeTab({ proj, onEnquire }) {
       </div>
       <div className={styles.approvalRow}>
         {(proj.approvals || []).map((a) => (
-          <span key={a} className={styles.approvalChip}>✓ {a}</span>
+          <span key={a} className={styles.approvalChip}>✓ {translateApproval(a, t)}</span>
         ))}
       </div>
       <div className={styles.hlGrid}>

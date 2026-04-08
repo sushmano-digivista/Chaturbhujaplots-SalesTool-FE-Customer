@@ -237,8 +237,8 @@ export default function PlotGrid({ onEnquire, pricingMap }) {
                 >
                   <span className={styles.priceBannerLabel} style={{ color: 'rgba(255,255,255,0.75)' }}>{tv('project.priceRange', 'Price Range')}</span>
                   <span className={styles.priceBannerValue} style={{ color: '#fff', fontSize: '15px' }}>
-                    East: ₹{vp.east.base.toLocaleString('en-IN')} &nbsp;|&nbsp; West: ₹{vp.west.base.toLocaleString('en-IN')}
-                    <span style={{fontSize:'12px',opacity:.8}}> + ₹{vp.east.dev.toLocaleString('en-IN')} Dev.</span>
+                    {tv('project.eastShort', 'East')}: ₹{vp.east.base.toLocaleString('en-IN')} &nbsp;|&nbsp; {tv('project.westShort', 'West')}: ₹{vp.west.base.toLocaleString('en-IN')}
+                    <span style={{fontSize:'12px',opacity:.8}}> + ₹{vp.east.dev.toLocaleString('en-IN')} {tv('project.dev', 'Dev.')}</span>
                   </span>
                   <span className={styles.priceBannerNote} style={{ color: 'rgba(255,255,255,0.85)', fontWeight: 600 }}>
                     {priceOpen ? tv('sections.hidePricing', 'Hide pricing ▲') : tv('sections.viewPricing', 'View full pricing ▼')}

@@ -5,6 +5,39 @@ import styles from './Sections.module.css'
 
 const TABS = ['INFRA', 'LIFESTYLE', 'UTILITIES']
 
+// Amenity label → translation key
+const AMENITY_KEY_MAP = {
+  'Grand Entrance Arch':         'grandEntranceArch',
+  '60ft & 40ft CC Roads':        'roads60ft40ft',
+  'BT Roads':                    'btRoads',
+  'Compound Wall':               'compoundWall',
+  'Security Arch':               'securityArch2',
+  'Name & Number Display Board': 'nameBoard2',
+  'Drainage System':             'drainageSystem',
+  'Underground Electricity':     'undergroundElec',
+  'Designed LED Street Lights':  'designedLED',
+  'Avenue Plantation':           'avenuePlain',
+  'Visitor Parking':             'visitorParking',
+  'CRDA Proposed Layout':        'crdaProposedSimple',
+  'Modern Park':                 'modernPark',
+  'Walking Track':               'walkingTrack',
+  "Children's Play Area":        'childrensPlayArea',
+  '100% Vastu Compliance':       'complianceVastu',
+  'Green Landscaping':           'greenLandscaping',
+  'Pure Drinking Water':         'pureWater',
+  'Water Tank':                  'waterTank2',
+  'Water Pipeline':              'waterPipeline',
+  'Electricity':                 'electricity',
+  'Gated Security':              'gatedSecurity',
+  'Underground Cabling':         'undergroundCabling',
+}
+function translateAmenity(label, t) {
+  const key = AMENITY_KEY_MAP[label]
+  if (!key) return label
+  const v = t('amenityLabels.' + key)
+  return (v && v !== 'amenityLabels.' + key) ? v : label
+}
+
 // ── Static fallback amenities (used when API returns nothing) ─────────────────
 // Sourced from Layout Amenities attachments (Anjana Paradise / Aparna Legacy)
 const FALLBACK_AMENITIES = [
@@ -90,9 +123,9 @@ export default function AmenitiesSection({ content }) {
   return (
     <section className="section section-cream" id="amenities">
       <div className="sec-hdr">
-        <div className="sec-tag">What We Offer</div>
+        <div className="sec-tag">{t('sections.whatWeOffer') || 'What We Offer'}</div>
         <h2 className="sec-title">{t('sections.amenities').split(' ').slice(0, -1).join(' ')} <em>{t('sections.amenities').split(' ').slice(-1)}</em></h2>
-        <p className="sec-sub">Every detail crafted for a refined, future-ready lifestyle.</p>
+        <p className="sec-sub">{t('sections.amenitiesSub') || 'Every detail crafted for a refined, future-ready lifestyle.'}</p>
       </div>
 
       {/* ── Tab selector ────────────────────────────────────────────────── */}
@@ -134,7 +167,7 @@ export default function AmenitiesSection({ content }) {
                 whileHover={{ borderColor: 'var(--gold)', boxShadow: 'var(--shadow)' }}
               >
                 <div className={styles.amIcon}>{item.icon}</div>
-                <span>{item.label}</span>
+                <span>{translateAmenity(item.label, t)}</span>
               </motion.div>
             ),
           )}

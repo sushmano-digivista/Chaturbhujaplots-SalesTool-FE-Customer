@@ -4,6 +4,7 @@ import { useInView }   from 'react-intersection-observer'
 import { Navigation }  from 'lucide-react'
 import { openMaps }    from '@/utils/security'
 import { useContactSettings } from '@/hooks/useData'
+import { useLanguage } from '@/context/LanguageContext'
 import styles from './Sections.module.css'
 
 // ── Per-venture colour palette ────────────────────────────────────────────────
@@ -97,6 +98,50 @@ export default function LocationSection({ content }) {
   const [active, setActive] = useState(0)
   const { ref, inView }     = useInView({ triggerOnce: true, threshold: 0.25 })
   const { data: ownerSettings } = useContactSettings()
+  const { t } = useLanguage()
+
+  const tloc = (val, key) => {
+    if (!key) return val
+    const v = t('locationLabels.' + key)
+    return (v && v !== 'locationLabels.' + key) ? v : val
+  }
+  const LOC_NAME_KEYS = {
+    'NH-16 National Hwy':        'nh16Highway',
+    'NH-16 National Highway':    'nh16Highway',
+    'Amaravati Capital':         'amaravatiCapital',
+    'Engineering Colleges':      'engineeringColleges',
+    'Nimra Medical College':     'nimraMedical',
+    'Mulapadu Cricket Stadium':  'mulapaduStadium',
+    'Cine Studio':               'cineStudio',
+    'Railway Connectivity':      'railwayConn',
+    'Logistic Hub':              'logisticHub',
+    'Hanuman Temple':            'hanumanTemple',
+    'Outer Ring Road (ORR)':     'outerRingRoad',
+    'BEL Company (Defence PSU)': 'belCompany',
+    'Bandar Port':               'bandarPort',
+    'Bharatanatyam Institution': 'bharatanatyam',
+    'Vijayawada Airport':        'vijayawadaAirport',
+    'Vijayawada':                'vijayawadaCity',
+  }
+  const LOC_SUB_KEYS = {
+    'Adjacent — direct access':           'nh16Sub',
+    'A.P. State Capital':                 'amaravatiCapitalSub',
+    'New AP State Capital':               'amaravatiCapitalSub',
+    'Amrita Sai, MVR, MIC':              'engineeringColSub2',
+    'Healthcare hub':                     'healthcareHub',
+    'International Cricket':              'intlCricket',
+    'Govt. proposed, Nandigama':          'cineStudioSub',
+    'Govt. proposed, Amaravati-Paritala': 'railwayConnSub',
+    'Govt. proposed, Paritala':           'logisticHubSub',
+    'Just minutes away':                  'hanumanTempleSub2',
+    'Proposed — excellent access':        'orrSub',
+    'Bharat Electronics Limited':         'belSub',
+    'Major commercial seaport':           'bandarSub',
+    'World-renowned arts centre':         'bharatanatyamSub',
+    'Air connectivity':                   'airConnectivity',
+    'Commercial capital of AP':           'vijayawadaSub',
+    'Directly Adjacent':                  'nh16Sub2',
+  }
 
   const venture = {
     ...VENTURES[active],
@@ -109,9 +154,9 @@ export default function LocationSection({ content }) {
   return (
     <section className="section section-cream" id="location">
       <div className="sec-hdr">
-        <div className="sec-tag">Find Us</div>
-        <h2 className="sec-title">Location & <em>Connectivity</em></h2>
-        <p className="sec-sub">All ventures located in prime corridors of Andhra Pradesh.</p>
+        <div className="sec-tag">{t('sections.findUs') || 'Find Us'}</div>
+        <h2 className="sec-title">{t('sections.locationTitle') || 'Location'} & <em>{t('sections.locationEm') || 'Connectivity'}</em></h2>
+        <p className="sec-sub">{t('sections.locationSub') || 'All ventures located in prime corridors of Andhra Pradesh.'}</p>
       </div>
 
       {/* ── Venture tab selector ─────────────────────────────────────────── */}
@@ -168,16 +213,25 @@ export default function LocationSection({ content }) {
             <div className={styles.popupTitle} style={{ color: palette.color }}>📍 {venture.name}</div>
             <div className={styles.popupSub}>{venture.address}</div>
             <div className={styles.popupBadges}>
-              {venture.badges.map(b => (
-                <span key={b} className={styles.badgeGreen}
+              {venture.badges.map(b => {
+                const BADGE_MAP = {
+                  'CRDA Approved':  'approvals.crdaApproved',
+                  'RERA Registered':'approvals.reraRegistered',
+                }
+                const k = BADGE_MAP[b]
+                const v = k ? t(k) : null
+                const label = (v && v !== k) ? v : b
+                return (
+                  <span key={b} className={styles.badgeGreen}
                   style={{ background: palette.light, color: palette.text, borderColor: `${palette.color}44` }}>
-                  {b}
+                  {label}
                 </span>
-              ))}
+                )
+              })}
             </div>
             <button className={styles.popupBtn} style={{ background: palette.color }}
               onClick={() => openMaps(venture.openUrl)}>
-              Open in Maps
+              {t('sections.openInMaps') || 'Open in Maps'}
             </button>
             <div className={styles.popupArrow} />
           </motion.div>
@@ -193,7 +247,7 @@ export default function LocationSection({ content }) {
             </div>
             <button className="btn btn-gold btn-sm"
               onClick={() => openMaps(venture.openUrl)}>
-              <Navigation size={14} /> Get Directions
+              <Navigation size={14} /> {t('contact.getDirections')}
             </button>
           </div>
         </motion.div>
@@ -220,8 +274,8 @@ export default function LocationSection({ content }) {
             >
               <div className={styles.distIcon} style={{ background: palette.light }}>{d.icon}</div>
               <div className={styles.distBody}>
-                <div className={styles.distName}>{d.name}</div>
-                <div className={styles.distSub}>{d.subtitle}</div>
+                <div className={styles.distName}>{tloc(d.name, LOC_NAME_KEYS[d.name] || '')}</div>
+                <div className={styles.distSub}>{tloc(d.subtitle, LOC_SUB_KEYS[d.subtitle] || '')}</div>
               </div>
               <div className={styles.distBadge} style={{ background: palette.light, color: palette.text }}>
                 {d.distance}

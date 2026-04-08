@@ -12,6 +12,54 @@ import { DEFAULT_WA_NUMBER }      from '@/constants/config'
 import { useLanguage }            from '@/context/LanguageContext'
 import styles              from './ProjectPage.module.css'
 
+// ── Amenity label → translation key map ──────────────────────────────────────
+const AMENITY_KEY_MAP = {
+  'Architecturally Imposing Grand Entrance Arch': 'grandEntrance',
+  'Avenue Plantation on Both Sides of Roads':     'avenuePlantation',
+  'Overhead Tank — Pipeline to Every Plot':       'overheadTank',
+  'Overhead Electricity Lines':                   'overheadElec',
+  'Security Arch with CCTV Surveillance':         'securityCctv',
+  'Name & Number Display Board per Plot':         'nameBoard',
+  'BT Roads Throughout Layout':                   'btRoads',
+  'CC Roads Throughout Layout':                   'ccRoads',
+  '100% Vastu Compliant Layout':                  'vastu',
+  'Gated Entrance with Security Arch':            'gatedEntrance',
+  '40ft Internal CC Roads':                       'roads40ft',
+  'Borewell & Pipeline Water Supply':             'borewellWater',
+  'Gated Security 24/7':                          'gatedSecurity',
+  'Tree-Lined Avenues':                           'treeLinedAve',
+  'LED Street Lights':                            'ledStreetLights',
+  'Drainage System':                              'drainageSystem',
+  'Electricity Connection':                       'elecConnection',
+  'Pure Drinking Water':                          'pureWater',
+  'Walking Track':                                'walkingTrack',
+  'Modern Park':                                  'modernPark',
+  'Modern Park — Open Space (0.45 Ac)':           'modernPark',
+  'CRDA Proposed Layout — Ready for Construction':'crdaLayout',
+  'Housing Loans Available Through Banks':        'housingLoans',
+  'Water Tank & Pipeline Connection':             'waterTank',
+  'Compound Wall':                                'compoundWall',
+  'Avenue Plantation on All Road Sides':          'avenuePlantation2',
+  'Jogging Track Around Central Garden':          'jogTrack',
+  'Security Arch — Grand Entrance':               'securityArch',
+  'Hanuman Temple — Just Minutes Away':           'hanumanTemple',
+  'Designed LED Street Lights':                   'designedLED',
+  'CCTV Surveillance':                            'cctvSurveillance',
+  'Ample Water Availability Round the Clock':     'ampleWater',
+  '100% Vastu Compliance':                        'complianceVastu',
+  '100% Vaastu Compliant':                        'vastu2',
+  '100% Vaastu Compliant Layout':                 'vastuLayout',
+  'Name & Number Display Board':                  'nameBoard2',
+  'Overhead Electricity Connection':              'overheadElec2',
+  'Avenue Plantation':                            'avenuePlain',
+}
+function translateAmenity(label, t) {
+  const key = AMENITY_KEY_MAP[label]
+  if (!key) return label
+  const v = t('amenityLabels.' + key)
+  return (v && v !== 'amenityLabels.' + key) ? v : label
+}
+
 function HomeTab({ proj, onEnquire }) {
   const { t } = useLanguage()
   const tProj = (field) => { const k = 'projects.' + proj.id + '.' + field; const v = t(k); return (v && v !== k) ? v : null }
@@ -20,7 +68,7 @@ function HomeTab({ proj, onEnquire }) {
       <div className={styles.heroBanner + ' ' + styles[proj.accentClass]}
         style={proj.heroImage ? { '--hero-img': 'linear-gradient(rgba(10,30,18,.75),rgba(10,30,18,.75)), url(' + proj.heroImage + ')' } : {}}>
         <div className={styles.heroContent}>
-          <div className={styles.heroTag}>{proj.tag}</div>
+          <div className={styles.heroTag}>{(() => { const k = 'tags.' + (proj.tag || '').toLowerCase(); const v = t(k); return (v && v !== k) ? v : proj.tag })()}</div>
           <h1 className={styles.heroName}>{proj.name}</h1>
           <p className={styles.heroLoc}>📍 {tProj('loc') || proj.loc}</p>
           <p className={styles.heroDesc}>{tProj('description') || proj.description}</p>
@@ -168,7 +216,7 @@ function AmenitiesTab({ proj }) {
               <div key={item.label} className={styles.amFeatured}>
                 <div className={styles.amFeatIcon}>{item.icon}</div>
                 <div>
-                  <div className={styles.amFeatLabel}>{item.label}</div>
+                  <div className={styles.amFeatLabel}>{translateAmenity(item.label, t)}</div>
                   <div className={styles.amFeatDesc}>{item.featuredDesc}</div>
                 </div>
                 <span className={styles.amNearby}>Nearby</span>
@@ -177,7 +225,7 @@ function AmenitiesTab({ proj }) {
               <motion.div key={item.label} className={styles.amItem}
                 whileHover={{ borderColor: 'var(--gold)' }}>
                 <div className={styles.amIcon}>{item.icon}</div>
-                <span>{item.label}</span>
+                <span>{translateAmenity(item.label, t)}</span>
               </motion.div>
             )
           ))}

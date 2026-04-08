@@ -28,6 +28,7 @@ function AppWithLanguage() {
     queryKey: ['i18n'],
     queryFn:  i18nApi.getAll,
     staleTime: 0,
+    gcTime:    0,
     retry: 1,
     placeholderData: null,
   })

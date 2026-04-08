@@ -213,16 +213,16 @@ export default function LeadModal({ context, onClose, whatsapp, content }) {
       </div>
       <div className="form-group">
         <label className="form-label">
-          Project Interest
-          {!isSV && <span style={{ color:'rgba(0,0,0,0.4)', fontWeight:400, marginLeft:6 }}>(required for Download)</span>}
+          {t('modal.projectInterest') || 'Project Interest'}
+          {!isSV && <span style={{ color:'rgba(0,0,0,0.4)', fontWeight:400, marginLeft:6 }}>({t('modal.requiredForDownload') || 'required for Download'})</span>}
         </label>
         <select className="form-input" {...register('project')}
           onChange={e => { clearCtaError('download'); register('project').onChange(e) }}>
-          <option value="">Select a project</option>
+          <option value="">{t('modal.selectProject') || 'Select a project'}</option>
           {ACTIVE_PROJECTS.map(p => (
             <option key={p.id} value={p.name}>{p.name} — {p.loc}</option>
           ))}
-          <option value="Any Project">{isSV ? 'Any / Not Sure Yet' : 'Any / Not Sure Yet — Download All'}</option>
+          <option value="Any Project">{isSV ? (t('modal.anyNotSure') || 'Any / Not Sure Yet') : (t('modal.anyNotSureAll') || 'Any / Not Sure Yet — Download All')}</option>
         </select>
         {/* Dynamic note from MongoDB when selected project has no brochure */}
         {!isSV && brochureNote && (
@@ -327,7 +327,7 @@ export default function LeadModal({ context, onClose, whatsapp, content }) {
                 <div className="form-group">
                   <label className="form-label">Project Interest</label>
                   <select className="form-input" {...register('project')}>
-                    <option value="">Select a project (optional)</option>
+                    <option value="">{t('modal.selectProjectOptional') || 'Select a project (optional)'}</option>
                     {ACTIVE_PROJECTS.map(p => (
                       <option key={p.id} value={p.name}>{p.name} — {p.loc}</option>
                     ))}
@@ -544,14 +544,18 @@ export default function LeadModal({ context, onClose, whatsapp, content }) {
 
                 {!context?.category && (
                   <div className="form-group">
-                    <label className="form-label">Plot Interest</label>
+                    <label className="form-label">{t('modal.plotInterest') || 'Plot Interest'}</label>
                     <select className="form-input" {...register('category')}>
-                      <option value="">Select preference</option>
-                      <option>East-Facing</option><option>West-Facing</option>
-                      <option>North-Facing</option><option>South-Facing</option>
-                      <option>Corner Plots</option><option>30×40 ft</option>
-                      <option>33×50 ft</option><option>40×60 ft</option>
-                      <option>Other</option>
+                      <option value="">{t('modal.selectPreference') || 'Select preference'}</option>
+                      <option>{t('facings.east') || 'East-Facing'}</option>
+                      <option>{t('facings.west') || 'West-Facing'}</option>
+                      <option>{t('facings.north') || 'North-Facing'}</option>
+                      <option>{t('facings.south') || 'South-Facing'}</option>
+                      <option>{t('sections.cornerPlots') || 'Corner Plots'}</option>
+                      <option>30×40 ft</option>
+                      <option>33×50 ft</option>
+                      <option>40×60 ft</option>
+                      <option>{t('modal.other') || 'Other'}</option>
                     </select>
                   </div>
                 )}

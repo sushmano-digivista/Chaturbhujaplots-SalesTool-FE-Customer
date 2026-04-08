@@ -223,7 +223,7 @@ export default function PlotGrid({ onEnquire, pricingMap }) {
             const vp = VENTURE_PRICING[ventureKey]
             if (!vp) return (
               <div className={styles.priceBanner} style={{ background: color }}>
-                <span className={styles.priceBannerLabel}>Price Range</span>
+                <span className={styles.priceBannerLabel}>{tv('project.priceRange', 'Price Range')}</span>
                 <span className={styles.priceBannerValue}>{venture.priceRangeLabel}</span>
                 <span className={styles.priceBannerNote}>{tv('sections.contactForPricing', 'Contact us for exact plot pricing')}</span>
               </div>
@@ -235,7 +235,7 @@ export default function PlotGrid({ onEnquire, pricingMap }) {
                   style={{ background: color, cursor: 'pointer', width: '100%', textAlign: 'left' }}
                   onClick={() => setPriceOpen(o => !o)}
                 >
-                  <span className={styles.priceBannerLabel} style={{ color: 'rgba(255,255,255,0.75)' }}>Price Range</span>
+                  <span className={styles.priceBannerLabel} style={{ color: 'rgba(255,255,255,0.75)' }}>{tv('project.priceRange', 'Price Range')}</span>
                   <span className={styles.priceBannerValue} style={{ color: '#fff', fontSize: '15px' }}>
                     East: ₹{vp.east.base.toLocaleString('en-IN')} &nbsp;|&nbsp; West: ₹{vp.west.base.toLocaleString('en-IN')}
                     <span style={{fontSize:'12px',opacity:.8}}> + ₹{vp.east.dev.toLocaleString('en-IN')} Dev.</span>
@@ -255,30 +255,36 @@ export default function PlotGrid({ onEnquire, pricingMap }) {
                   >
                     <div className={styles.priceGrid}>
                       <div className={styles.priceRow}>
-                        <span className={styles.priceDir}>☀ East Facing</span>
+                        <span className={styles.priceDir}>☀ {tv('facings.east', 'East Facing')}</span>
                         <span className={styles.priceVal}>
-                          ₹{vp.east.base.toLocaleString('en-IN')} + ₹{vp.east.dev.toLocaleString('en-IN')} Dev. Charges
-                          <strong> = ₹{(vp.east.base + vp.east.dev).toLocaleString('en-IN')}/sq.yd</strong>
+                          ₹{vp.east.base.toLocaleString('en-IN')} + ₹{vp.east.dev.toLocaleString('en-IN')} {tv('project.dev', 'Dev.')} {tv('project.charges', 'Charges')}
+                          <strong> = ₹{(vp.east.base + vp.east.dev).toLocaleString('en-IN')}/{tv('project.sqYdShort', 'sq.yd')}</strong>
                         </span>
                       </div>
                       <div className={styles.priceRow}>
-                        <span className={styles.priceDir}>🌙 West Facing</span>
+                        <span className={styles.priceDir}>🌙 {tv('facings.west', 'West Facing')}</span>
                         <span className={styles.priceVal}>
-                          ₹{vp.west.base.toLocaleString('en-IN')} + ₹{vp.west.dev.toLocaleString('en-IN')} Dev. Charges
-                          <strong> = ₹{(vp.west.base + vp.west.dev).toLocaleString('en-IN')}/sq.yd</strong>
+                          ₹{vp.west.base.toLocaleString('en-IN')} + ₹{vp.west.dev.toLocaleString('en-IN')} {tv('project.dev', 'Dev.')} {tv('project.charges', 'Charges')}
+                          <strong> = ₹{(vp.west.base + vp.west.dev).toLocaleString('en-IN')}/{tv('project.sqYdShort', 'sq.yd')}</strong>
                         </span>
                       </div>
-                      <div className={styles.priceDivider}>Corner Charges (Extra)</div>
-                      {vp.corners.map((c, i) => (
-                        <div key={i} className={styles.priceRow}>
-                          <span className={styles.priceDir}>{c.type}</span>
-                          <span className={styles.priceVal}>₹{c.extra.toLocaleString('en-IN')}/sq.yd extra</span>
-                        </div>
-                      ))}
+                      <div className={styles.priceDivider}>{tv('project.cornerCharges', 'Corner Charges (Extra)')}</div>
+                      {vp.corners.map((c, i) => {
+                        const CORNER_MAP = {
+                          'North-East Corner': tv('project.cornerNE', 'North-East Corner'),
+                          'Other Corners':     tv('project.cornerOther', 'Other Corners'),
+                        }
+                        return (
+                          <div key={i} className={styles.priceRow}>
+                            <span className={styles.priceDir}>{CORNER_MAP[c.type] || c.type}</span>
+                            <span className={styles.priceVal}>₹{c.extra.toLocaleString('en-IN')}/{tv('project.sqYdShort', 'sq.yd')} {tv('project.extra', 'extra')}</span>
+                          </div>
+                        )
+                      })}
                       {vp.corpus && (
                         <div className={styles.priceRow}>
-                          <span className={styles.priceDir}>Corpus Fund</span>
-                          <span className={styles.priceVal}>₹{vp.corpus.amount}/sq.yd</span>
+                          <span className={styles.priceDir}>{tv('project.corpusFund', 'Corpus Fund')}</span>
+                          <span className={styles.priceVal}>₹{vp.corpus.amount}/{tv('project.sqYdShort', 'sq.yd')}</span>
                         </div>
                       )}
                     </div>

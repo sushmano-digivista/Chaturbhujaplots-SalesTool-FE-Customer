@@ -122,6 +122,16 @@ export default function LocationSection({ content }) {
     'Bharatanatyam Institution': 'bharatanatyam',
     'Vijayawada Airport':        'vijayawadaAirport',
     'Vijayawada':                'vijayawadaCity',
+    'ORR (Ring Road)':           'orrRingRoad',
+    'Kathipudi\u2013Ongole Hwy':     'kathipudiOngole',
+    '6-Lane Vja\u2013Mtm Road':      'sixLaneRoad',
+    'National Highway':          'nationalHighway',
+    'Housing Project':           'housingProject',
+    'Vijayawada Centre':         'vijayawadaCentre',
+    'NH-65 National Hwy':        'nh65Highway',
+    'VIT-AP University':         'vitUniversity',
+    'Manipal Hospital':          'manipalHospital',
+    'Vijayawada Junction':       'vijayawadaJunction',
   }
   const LOC_SUB_KEYS = {
     'Adjacent — direct access':           'nh16Sub',
@@ -141,6 +151,19 @@ export default function LocationSection({ content }) {
     'Air connectivity':                   'airConnectivity',
     'Commercial capital of AP':           'vijayawadaSub',
     'Directly Adjacent':                  'nh16Sub2',
+    'Very near, excellent connectivity':  'veryNearExcellent',
+    'Secondary highway access':           'secondaryHighway',
+    'Proposed Vijayawada\u2013Machilipatnam': 'proposedVjaMtm',
+    'Ready to build':                     'readyToBuild',
+    'City core \u2014 15 min drive':           'cityCore',
+    'Direct highway access':              'directHighwayAccess',
+    'Premier engineering campus':         'premierEngineering',
+    'Penamaluru healthcare':              'penamaluruHealthcare',
+    'Major railway hub':                  'majorRailwayHub',
+    'Near proximity':                     'nearProximity',
+    'Machilipatnam port':                 'machilipatnamPort',
+    'World renowned dance school':        'worldDanceSchool',
+    'Govt. proposed, from Amaravati':     'govtProposedAmaravati',
   }
 
   const venture = {

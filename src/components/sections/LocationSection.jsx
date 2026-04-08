@@ -199,7 +199,7 @@ export default function LocationSection({ content }) {
             >
               <span className={styles.ventureTabDot} style={{ background: isActive ? '#fff' : p.color }} />
               <span className={styles.ventureTabName} style={{ color: isActive ? '#fff' : p.color }}>{v.name}</span>
-              <span className={styles.ventureTabShort} style={{ color: isActive ? 'rgba(255,255,255,.75)' : 'var(--text-light)' }}>{v.short}</span>
+              <span className={styles.ventureTabShort} style={{ color: isActive ? 'rgba(255,255,255,.75)' : 'var(--text-light)' }}>{(() => { const k = 'projects.' + v.id + '.locShort'; const val = t(k); return (val && val !== k) ? val : v.short })()} </span>
             </button>
           )
         })}

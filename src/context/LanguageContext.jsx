@@ -205,7 +205,7 @@ export const FALLBACK_TRANSLATIONS = {
     projects: {
       anjana: {
         loc:         'Paritala, Near Amaravati',
-        locShort:    'పారిటాల',
+        locShort:    'Paritala',
         description: 'Premium open plots in Paritala \u2014 adjacent to NH-16, just 8 km from Amaravati, the new capital of Andhra Pradesh. CRDA Proposed Layout with 100% clear title, avenue-lined roads, 24/7 water pipeline and overhead electricity on every plot. Ready for immediate construction.',
         highlights: [
           'Adjacent to National Highway (NH-16)',
@@ -220,7 +220,7 @@ export const FALLBACK_TRANSLATIONS = {
       },
       trimbak: {
         loc:         'Penamaluru, Near Vijayawada',
-        locShort:    'పేనమలూరు',
+        locShort:    'Penamaluru',
         description: 'Gated community plots offering excellent connectivity to Vijayawada city via NH-16. CRDA approved with all modern infrastructure \u2014 water, electricity, drainage and security \u2014 ready for immediate construction.',
         highlights: [
           '5 km from Vijayawada City Centre',
@@ -233,7 +233,7 @@ export const FALLBACK_TRANSLATIONS = {
       },
       aparna: {
         loc:         'Chevitikallu, Gateway of Amaravati Capital Region',
-        locShort:    'చెవిటికల్లు',
+        locShort:    'Chevitikallu',
         description: 'Premium APCRDA proposed layout plots at Chevitikallu, NTR District \u2014 located near the Outer Ring Road with outstanding connectivity to Amaravati. Vastu-compliant plots available. Phase II now open for booking.',
         highlights: [
           'Near ORR \u2014 excellent AP Capital connectivity',
@@ -248,7 +248,7 @@ export const FALLBACK_TRANSLATIONS = {
       },
       varaha: {
         loc:         'Pamarru, Krishna District',
-        locShort:    'పామర్రు',
+        locShort:    'Pamarru',
         description: 'Strategic investment opportunity on the NH-16 corridor at Pamarru, Krishna District. APCRDA proposed layout with 132 meticulously planned plots \u2014 prime NH-16 frontage, near Bandar Port, BEL defence complex and upcoming 6-lane highway. Exceptional appreciation potential.',
         highlights: [
           'Directly Adjacent to NH-16 National Highway',
@@ -323,8 +323,6 @@ export const FALLBACK_TRANSLATIONS = {
       sixLaneRoad: '6-Lane Vja–Mtm Road',
       nationalHighway: 'National Highway',
       housingProject: 'Housing Project',
-      vijayawadaCentre: 'Vijayawada Centre',
-      nh65Highway: 'NH-65 National Hwy',
       vitUniversity: 'VIT-AP University',
       manipalHospital: 'Manipal Hospital',
       vijayawadaJunction: 'Vijayawada Junction',
@@ -385,6 +383,8 @@ export const FALLBACK_TRANSLATIONS = {
       bharatanatyamSub:   'World-renowned arts centre',
       vijayawadaCity:     'Vijayawada',
       vijayawadaSub:      'Commercial capital of AP',
+      vijayawadaCentre:   'Vijayawada Centre',
+      nh65Highway:        'NH-65 National Hwy',
     },
 
     highlights: {
@@ -655,6 +655,7 @@ export const FALLBACK_TRANSLATIONS = {
     projects: {
       anjana: {
         loc:         'పారిటాల, అమరావతి సమీపంలో',
+        locShort:    'పారిటాల',
         description: 'పారిటాలలో ప్రీమియం ఓపెన్ ప్లాట్లు — NH-16కి ప్రక్కన, ఆంధ్రప్రదేశ్ కొత్త రాజధాని అమరావతి నుండి కేవలం 8 కి.మీ. దూరంలో. CRDA ప్రతిపాదిత లేఅవుట్, 100% క్లియర్ టైటిల్, అవెన్యూ రోడ్లు, 24/7 నీటి పైప్లైన్ మరియు ప్రతి ప్లాట్కు విద్యుత్ సదుపాయం. వెంటనే నిర్మాణానికి సిద్ధంగా ఉంది.',
         highlights: [
           'NH-16 జాతీయ రహదారికి ప్రక్కన',
@@ -669,6 +670,7 @@ export const FALLBACK_TRANSLATIONS = {
       },
       trimbak: {
         loc:         'పేనమలూరు, విజయవాడ సమీపంలో',
+        locShort:    'పేనమలూరు',
         description: 'NH-16 ద్వారా విజయవాడ నగరానికి అద్భుతమైన కనెక్టివిటీతో గేటెడ్ కమ్యూనిటీ ప్లాట్లు. CRDA ఆమోదితం — నీరు, విద్యుత్, డ్రైనేజీ మరియు భద్రత వంటి అన్ని ఆధునిక మౌలిక సదుపాయాలతో వెంటనే నిర్మాణానికి సిద్ధంగా ఉంది.',
         highlights: [
           'విజయవాడ నగర కేంద్రం నుండి 5 కి.మీ.',
@@ -681,6 +683,7 @@ export const FALLBACK_TRANSLATIONS = {
       },
       aparna: {
         loc:         'చేవిటికల్లు, అమరావతి క్యాపిటల్ రీజన్ గేట్వే',
+        locShort:    'చెవిటికల్లు',
         description: 'NTR జిల్లా చేవిటికల్లులో ప్రీమియం APCRDA ప్రతిపాదిత లేఅవుట్ ప్లాట్లు — అమరావతికి అద్భుతమైన కనెక్టివిటీతో ఆక్టర్ రింగ్ రోడ్డు సమీపంలో ఉన్నాయి. వాస్తు అనుకూల ప్లాట్లు అందుబాటులో. ఫేజ్ II బుకింగ్కు తెరచి ఉంది.',
         highlights: [
           'ORR సమీపంలో — AP రాజధాని అద్భుత కనెక్టివిటీ',
@@ -695,6 +698,7 @@ export const FALLBACK_TRANSLATIONS = {
       },
       varaha: {
         loc:         'పామర్రు, కృష్ణా జిల్లా',
+        locShort:    'పామర్రు',
         description: 'పామర్రు, కృష్ణా జిల్లాలో NH-16 కారిడార్‌పై వ్యూహాత్మక పెట్టుబడి అవకాశం. 132 జాగ్రత్తగా ప్లాన్ చేయబడ్డ ప్లాట్లతో APCRDA ప్రతిపాదిత లేఅవుట్ — ప్రైమ్ NH-16 ఫ్రంటేజ్, బందరు పోర్టు, BEL డిఫెన్స్ కాంప్లెక్స్ మరియు రాబోయే 6-లేన్ హైవే సమీపంలో. అసాధారణ మూల్యాభివృద్ధి అవకాశం.',
         highlights: [
           'NH-16 జాతీయ రహదారికి నేరుగా ప్రక్కన',
@@ -832,6 +836,8 @@ export const FALLBACK_TRANSLATIONS = {
       bharatanatyam:      'భరతనాట్యం సంస్థ',
       bharatanatyamSub:   'ప్రపంచ ప్రసిద్ధ కళా సంస్థ',
       vijayawadaCity:     'విజయవాడ',
+      vijayawadaCentre:    'విజయవాడ కేంద్రం',
+      nh65Highway:         'NH-65 జాతీయ హైవే',
       vijayawadaSub:      'AP వాణిజ్య రాజధాని',
     },
 

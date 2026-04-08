@@ -142,6 +142,7 @@ export const FALLBACK_TRANSLATIONS = {
       featured:         'FEATURED',
       priceRange:   'Price Range',
       eastShort:    'East',
+      sqYdFull:     'Sq Yd',
       westShort:    'West',
       charges:      'Charges',
       sqYdShort:    'sq.yd',
@@ -204,6 +205,7 @@ export const FALLBACK_TRANSLATIONS = {
     projects: {
       anjana: {
         loc:         'Paritala, Near Amaravati',
+        locShort:    'పారిటాల',
         description: 'Premium open plots in Paritala \u2014 adjacent to NH-16, just 8 km from Amaravati, the new capital of Andhra Pradesh. CRDA Proposed Layout with 100% clear title, avenue-lined roads, 24/7 water pipeline and overhead electricity on every plot. Ready for immediate construction.',
         highlights: [
           'Adjacent to National Highway (NH-16)',
@@ -218,6 +220,7 @@ export const FALLBACK_TRANSLATIONS = {
       },
       trimbak: {
         loc:         'Penamaluru, Near Vijayawada',
+        locShort:    'పేనమలూరు',
         description: 'Gated community plots offering excellent connectivity to Vijayawada city via NH-16. CRDA approved with all modern infrastructure \u2014 water, electricity, drainage and security \u2014 ready for immediate construction.',
         highlights: [
           '5 km from Vijayawada City Centre',
@@ -230,6 +233,7 @@ export const FALLBACK_TRANSLATIONS = {
       },
       aparna: {
         loc:         'Chevitikallu, Gateway of Amaravati Capital Region',
+        locShort:    'చెవిటికల్లు',
         description: 'Premium APCRDA proposed layout plots at Chevitikallu, NTR District \u2014 located near the Outer Ring Road with outstanding connectivity to Amaravati. Vastu-compliant plots available. Phase II now open for booking.',
         highlights: [
           'Near ORR \u2014 excellent AP Capital connectivity',
@@ -244,6 +248,7 @@ export const FALLBACK_TRANSLATIONS = {
       },
       varaha: {
         loc:         'Pamarru, Krishna District',
+        locShort:    'పామర్రు',
         description: 'Strategic investment opportunity on the NH-16 corridor at Pamarru, Krishna District. APCRDA proposed layout with 132 meticulously planned plots \u2014 prime NH-16 frontage, near Bandar Port, BEL defence complex and upcoming 6-lane highway. Exceptional appreciation potential.',
         highlights: [
           'Directly Adjacent to NH-16 National Highway',
@@ -563,6 +568,7 @@ export const FALLBACK_TRANSLATIONS = {
       featured:         '\u0c2e\u0c41\u0c16\u0c4d\u0c2f\u0c2e\u0c48\u0c28\u0c26\u0c3f',
       priceRange:       '\u0c27\u0c30 \u0c35\u0c3f\u0c35\u0c30\u0c23',
       eastShort:        '\u0c24\u0c42\u0c30\u0c4d\u0c2a\u0c41',
+      sqYdFull:         '\u0c1a.\u0c17\u0c3e. \u0c2f\u0c3e\u0c30\u0c4d\u0c21\u0c4d',
       westShort:        '\u0c2a\u0c21\u0c2e\u0c30',
       charges:          '\u0c1a\u0c3e\u0c30\u0c4d\u0c1c\u0c40\u0c32\u0c41',
       sqYdShort:        '\u0c1a.\u0c17\u0c3e.',

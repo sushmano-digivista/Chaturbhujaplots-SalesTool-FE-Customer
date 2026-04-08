@@ -42,12 +42,18 @@ export default function PricingCard({ pricing, compact = false, dark = false }) 
       {/* Corner charges */}
       <div className={styles.cornerSection}>
         <div className={styles.cornerTitle}>{tv('project.cornerCharges', 'Corner Charges (Extra)')}</div>
-        {pricing.corners.map((c, i) => (
-          <div key={i} className={styles.cornerRow}>
-            <span className={styles.cornerType}>{c.type}</span>
-            <span className={styles.cornerExtra}>{c.label}</span>
-          </div>
-        ))}
+        {pricing.corners.map((c, i) => {
+          const CORNER_MAP = {
+            'North-East Corner': tv('project.cornerNE', 'North-East Corner'),
+            'Other Corners':     tv('project.cornerOther', 'Other Corners'),
+          }
+          return (
+            <div key={i} className={styles.cornerRow}>
+              <span className={styles.cornerType}>{CORNER_MAP[c.type] || c.type}</span>
+              <span className={styles.cornerExtra}>{c.label}</span>
+            </div>
+          )
+        })}
         {pricing.corpus && (
           <div className={styles.cornerRow}>
             <span className={styles.cornerType}>{tv('project.corpusFund', 'Corpus Fund')}</span>

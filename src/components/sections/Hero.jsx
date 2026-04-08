@@ -84,10 +84,10 @@ export default function Hero({ content, onEnquire }) {
   const familiesSub       = (isTe && t('urgency.families'))     || urg.familiesSub       || FB.urgency.familiesSub
   const barOpenLabel      = (isTe && t('urgency.barOpenLabel'))  || (isTe && t('nav.openForBooking'))   || urg.barOpenLabel   || FB.urgency.barOpenLabel
   const barClosedLabel    = (isTe && t('urgency.barClosedLabel')) || (isTe && t('nav.completedSoldOut')) || urg.barClosedLabel || FB.urgency.barClosedLabel
-  const ctaButton = (() => {
-    if (isTe) { const v = t('urgency.exploreCta'); if (v && v !== 'urgency.exploreCta') return v }
-    return urg.ctaButton || FB.urgency.ctaButton
-  })()
+  // In Telugu always use translations DB; in English use project_content DB
+  const ctaButton = isTe
+    ? (() => { const v = t('urgency.exploreCta'); return (v && v !== 'urgency.exploreCta') ? v : 'అన్ని ప్రాజెక్టులను చూడండి' })()
+    : (urg.ctaButton || FB.urgency.ctaButton)
 
   // Trust stats — translate labels in Telugu
   const lcStats = (lcs.length ? lcs : FB.lcStats).map((s, i) => {

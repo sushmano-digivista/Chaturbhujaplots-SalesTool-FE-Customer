@@ -323,8 +323,6 @@ export const FALLBACK_TRANSLATIONS = {
       sixLaneRoad: '6-Lane Vja–Mtm Road',
       nationalHighway: 'National Highway',
       housingProject: 'Housing Project',
-      vijayawadaCentre: 'Vijayawada Centre',
-      nh65Highway: 'NH-65 National Hwy',
       vitUniversity: 'VIT-AP University',
       manipalHospital: 'Manipal Hospital',
       vijayawadaJunction: 'Vijayawada Junction',

@@ -70,6 +70,26 @@ function translateAmenity(label, t) {
   return (v && v !== 'amenityLabels.' + key) ? v : label
 }
 
+// ── Approval label → translation key map ─────────────────────────────────────
+const APPROVAL_KEY_MAP = {
+  'CRDA Proposed Layout':   'approvals.crdaProposed',
+  'AP RERA Registered':     'approvals.apReraRegistered',
+  '100% Clear Title':       'approvals.clearTitle',
+  'Clear Title':            'approvals.clearTitle',
+  '100% Vastu Compliant':   'approvals.vastuCompliant',
+  '100% Vaastu':            'approvals.vastuCompliant',
+  'NH-16 Frontage':         'approvals.nh16Frontage',
+  'CRDA Approved':          'approvals.crdaApproved',
+  'RERA Registered':        'approvals.reraRegistered',
+  'APCRDA Proposed Layout': 'approvals.apcrda',
+}
+function translateApproval(label, t) {
+  const key = APPROVAL_KEY_MAP[label]
+  if (!key) return label
+  const v = t(key)
+  return (v && v !== key) ? v : label
+}
+
 function HomeTab({ proj, onEnquire }) {
   const { t } = useLanguage()
   const tProj = (field) => { const k = 'projects.' + proj.id + '.' + field; const v = t(k); return (v && v !== k) ? v : null }

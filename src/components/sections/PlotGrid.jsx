@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Sun, Sunset, ArrowUp, ArrowDown, Maximize2 } from 'lucide-react'
-
+import { useLanguage } from '@/context/LanguageContext'
 import CategoryCard   from '@/components/ui/CategoryCard'
 import PlotVisualGrid from '@/components/ui/PlotVisualGrid'
 import styles         from './PlotGrid.module.css'
@@ -152,6 +152,8 @@ export default function PlotGrid({ onEnquire, pricingMap }) {
   const [activeCategory, setActiveCategory] = useState(null)
   const [hoveredPlot,    setHoveredPlot]    = useState(null)
   const [priceOpen,      setPriceOpen]      = useState(false)
+  const { t } = useLanguage()
+  const tv = (key, fallback) => { const v = t(key); return (v && v !== key) ? v : fallback }
   const VENTURE_PRICING = pricingMap || LOCAL_PRICING
 
   const venture    = VENTURE_PLOTS[ventureKey]
@@ -161,12 +163,12 @@ export default function PlotGrid({ onEnquire, pricingMap }) {
   return (
     <section className="section section-cream" id="plots">
       <div className="sec-hdr">
-        <div className="sec-tag">Plot Categories</div>
-        <h2 className="sec-title">Explore <em>Available Plots</em></h2>
+        <div className="sec-tag">{tv('sections.plotCategories', 'Plot Categories')}</div>
+        <h2 className="sec-title">{tv('sections.explorePlots', 'Explore')} <em>{tv('sections.availablePlots', 'Available Plots')}</em></h2>
         <p className="sec-sub">
           {venture.upcoming
-            ? 'Details coming soon — register your interest to be notified first.'
-            : `${venture.totalPlots} plots across ${categories.length} categories. Click any category to see plot numbers and enquire directly.`}
+            ? tv('sections.plotsComingSoon', 'Details coming soon — register your interest to be notified first.')
+            : `${venture.totalPlots} ${tv('sections.plotsAcross', 'plots across')} ${categories.length} ${tv('sections.plotCategories2', 'categories. Click any category to see plot numbers and enquire directly.')}`}
         </p>
       </div>
 
@@ -203,16 +205,15 @@ export default function PlotGrid({ onEnquire, pricingMap }) {
           style={{ borderColor: `${color}44` }}
         >
           <div className={styles.upcomingIcon}>🔜</div>
-          <div className={styles.upcomingTitle} style={{ color }}>Trimbak Oaks — Coming Soon</div>
+          <div className={styles.upcomingTitle} style={{ color }}>Trimbak Oaks — {tv('portfolio.comingSoon', 'Coming Soon')}</div>
           <p className={styles.upcomingDesc}>
-            Plot details for Trimbak Oaks, Penamaluru will be available shortly.
-            Register your interest now and be the first to know when bookings open.
+            {tv('sections.trimbakUpcomingDesc', 'Plot details for Trimbak Oaks, Penamaluru will be available shortly. Register your interest now and be the first to know when bookings open.')}
           </p>
           <button
             className="btn btn-gold"
             onClick={() => onEnquire({ source: 'UPCOMING_INTEREST', venture: 'Trimbak Oaks', type: 'NOTIFY_ME' })}
           >
-            Notify Me When Available →
+            {tv('portfolio.notifyMe', 'Notify Me When Available →')}
           </button>
         </motion.div>
       ) : (
@@ -224,7 +225,7 @@ export default function PlotGrid({ onEnquire, pricingMap }) {
               <div className={styles.priceBanner} style={{ background: color }}>
                 <span className={styles.priceBannerLabel}>Price Range</span>
                 <span className={styles.priceBannerValue}>{venture.priceRangeLabel}</span>
-                <span className={styles.priceBannerNote}>Contact us for exact plot pricing</span>
+                <span className={styles.priceBannerNote}>{tv('sections.contactForPricing', 'Contact us for exact plot pricing')}</span>
               </div>
             )
             return (
@@ -240,7 +241,7 @@ export default function PlotGrid({ onEnquire, pricingMap }) {
                     <span style={{fontSize:'12px',opacity:.8}}> + ₹{vp.east.dev.toLocaleString('en-IN')} Dev.</span>
                   </span>
                   <span className={styles.priceBannerNote} style={{ color: 'rgba(255,255,255,0.85)', fontWeight: 600 }}>
-                    {priceOpen ? 'Hide pricing ▲' : 'View full pricing ▼'}
+                    {priceOpen ? tv('sections.hidePricing', 'Hide pricing ▲') : tv('sections.viewPricing', 'View full pricing ▼')}
                   </span>
                 </button>
 
@@ -299,12 +300,31 @@ export default function PlotGrid({ onEnquire, pricingMap }) {
             >
               {categories.map(({ key, data }) => {
                 const meta   = CATEGORY_META[key]
+                const CAT_LABEL_KEYS = {
+                  'East-Facing':  'sections.eastFacing',
+                  'West-Facing':  'sections.westFacing',
+                  'Corner Plots': 'sections.cornerPlots',
+                  'North-Facing': 'sections.northFacing',
+                  'South-Facing': 'sections.southFacing',
+                }
+                const CAT_DESC_KEYS = {
+                  'East-Facing':  'sections.eastFacingDesc',
+                  'West-Facing':  'sections.westFacingDesc',
+                  'Corner Plots': 'sections.cornerPlotsDesc',
+                }
+                const lk = CAT_LABEL_KEYS[data.label]; const lv = t(lk||'')
+                const dk = CAT_DESC_KEYS[data.label];  const dv = t(dk||'')
+                const translatedData = {
+                  ...data,
+                  label:       (lv && lv !== lk) ? lv : data.label,
+                  description: (dv && dv !== dk) ? dv : data.description,
+                }
                 const isOpen = activeCategory === key
                 return (
                   <motion.div key={key} layout>
                     <CategoryCard
                       meta={meta}
-                      data={data}
+                      data={translatedData}
                       isOpen={isOpen}
                       onToggle={() => setActiveCategory(isOpen ? null : key)}
                       onEnquire={onEnquire}
@@ -319,7 +339,7 @@ export default function PlotGrid({ onEnquire, pricingMap }) {
 
           {/* By Plot Size breakdown */}
           <div className={styles.dimSection}>
-            <h3 className={styles.dimTitle}>By Plot Size</h3>
+            <h3 className={styles.dimTitle}>{tv('sections.byPlotSize', 'By Plot Size')}</h3>
             <AnimatePresence mode="wait">
               <motion.div
                 key={`dim-${ventureKey}`}
@@ -338,12 +358,12 @@ export default function PlotGrid({ onEnquire, pricingMap }) {
                     <div className={styles.dimNum}>{d.count}</div>
                     <div className={styles.dimLabel}>{d.dimension} ft</div>
                     <div className={styles.dimArea}>{d.areaLabel}</div>
-                    <div className={styles.dimPrice} style={{ color }}>{d.priceFrom}</div>
+                    <div className={styles.dimPrice} style={{ color }}>{d.priceFrom === 'Contact us' ? tv('sections.contactUs', 'Contact us') : d.priceFrom}</div>
                     <button
                       className={`btn btn-green btn-sm ${styles.dimBtn}`}
                       onClick={() => onEnquire({ category: d.dimension, source: 'DIMENSION_ENQUIRY', venture: venture.label })}
                     >
-                      Enquire
+                      {tv('nav.enquireNow', 'Enquire')}
                     </button>
                   </motion.div>
                 ))}

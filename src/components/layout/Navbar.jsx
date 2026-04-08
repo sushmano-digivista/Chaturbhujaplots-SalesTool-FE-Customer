@@ -88,6 +88,9 @@ export default function Navbar({ contact, onEnquire }) {
                   {NAV_PROJECTS.map((p, i) => {
                     const colors = ['#C9A84C','#4CAF74','#64B5F6','#FFB74D']
                     const color  = colors[i] || '#C9A84C'
+                    const locKey = 'projects.' + p.id + '.loc'
+                    const locVal = t(locKey)
+                    const loc    = (locVal && locVal !== locKey) ? locVal : p.sub
                     return (
                       <button
                         key={p.id}
@@ -98,7 +101,7 @@ export default function Navbar({ contact, onEnquire }) {
                         <div className={styles.dropCardBar} />
                         <div className={styles.dropCardContent}>
                           <div className={styles.dropCardName}>{p.name}</div>
-                          <div className={styles.dropCardSub}>📍 {p.sub}</div>
+                          <div className={styles.dropCardSub}>📍 {loc}</div>
                         </div>
                         <div className={styles.dropCardArrow}>›</div>
                       </button>
@@ -158,16 +161,21 @@ export default function Navbar({ contact, onEnquire }) {
             <span className={styles.dropPulse} />
             {t('nav.ourPortfolio')}
           </div>
-          {NAV_PROJECTS.map((p) => (
-            <button
-              key={p.id}
-              className={styles.mobileProjectCard}
-              onClick={() => { setMenuOpen(false); navigate('/project/' + p.id) }}
-            >
-              <div className={styles.mobileProjectName}>{p.name}</div>
-              <div className={styles.mobileProjectSub}>📍 {p.sub}</div>
-            </button>
-          ))}
+          {NAV_PROJECTS.map((p) => {
+            const locKey = 'projects.' + p.id + '.loc'
+            const locVal = t(locKey)
+            const loc    = (locVal && locVal !== locKey) ? locVal : p.sub
+            return (
+              <button
+                key={p.id}
+                className={styles.mobileProjectCard}
+                onClick={() => { setMenuOpen(false); navigate('/project/' + p.id) }}
+              >
+                <div className={styles.mobileProjectName}>{p.name}</div>
+                <div className={styles.mobileProjectSub}>📍 {loc}</div>
+              </button>
+            )
+          })}
           <div className={styles.mobileCompletedSection}>
             <div className={styles.mobileCompletedHeader}>
               <span className={styles.dropCheckDot} />

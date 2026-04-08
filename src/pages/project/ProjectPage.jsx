@@ -62,6 +62,7 @@ const AMENITY_KEY_MAP = {
   'NH-16 Frontage':                               'nh16Frontage',
   'Overhead Tank & Pipeline':                     'overheadTankSimple',
   "Children's Tot Lot & Green Equipped Parks":    'childrenspark',
+  "Children's Play Area":                         'childrensPlayArea',
 }
 function translateAmenity(label, t) {
   const key = AMENITY_KEY_MAP[label]
@@ -407,6 +408,45 @@ function VideosTab({ proj }) {
 function LocationTab({ proj }) {
   const { t } = useLanguage()
   const distances = proj.distances || []
+
+  // Translate landmark name/subtitle via locationLabels namespace
+  const tloc = (val, key) => {
+    const v = t('locationLabels.' + key)
+    return (v && v !== 'locationLabels.' + key) ? v : val
+  }
+  const LOC_NAME_KEYS = {
+    'Amaravati Capital':         'amaravatiCapital',
+    'NH-16 National Highway':    'nh16Highway',
+    'NH-16 Highway':             'nh16Highway2',
+    'Engineering Colleges':      'engineeringColleges',
+    'Nimra Medical College':     'nimraMedical',
+    'Mulapadu Stadium':          'mulapaduStadium',
+    'Vijayawada Airport':        'vijayawadaAirport',
+    'Hanuman Temple':            'hanumanTemple',
+    'Outer Ring Road (ORR)':     'outerRingRoad',
+    'BEL Company (Defence PSU)': 'belCompany',
+    'Bandar Port':               'bandarPort',
+    'Bharatanatyam Institution': 'bharatanatyam',
+    'Vijayawada':                'vijayawadaCity',
+  }
+  const LOC_SUB_KEYS = {
+    'New AP State Capital':               'amaravatiCapitalSub',
+    'Adjacent — direct access':           'nh16Sub',
+    'Directly Adjacent':                  'nh16Sub2',
+    'Direct access':                      'nh16Sub3',
+    'Amrita Sai, MVR, MIC College':       'engineeringColSub',
+    'Amrita Sai, MVR, MIC':              'engineeringColSub2',
+    'Multiple prestigious institutions':  'engineeringColSub3',
+    'Healthcare hub':                     'healthcareHub',
+    'International Cricket':              'intlCricket',
+    'Air connectivity':                   'airConnectivity',
+    'Shri Paritala Hanuman Temple':       'hanumanTempleSub',
+    'Proposed — excellent access':        'orrSub',
+    'Bharat Electronics Limited':         'belSub',
+    'Major commercial seaport':           'bandarSub',
+    'World-renowned arts centre':         'bharatanatyamSub',
+    'Commercial capital of AP':           'vijayawadaSub',
+  }
   return (
     <div className={styles.tabContent}>
       <h2 className={styles.tabTitle}>{t('project.location')}</h2>
@@ -428,8 +468,8 @@ function LocationTab({ proj }) {
             viewport={{ once: true }} transition={{ delay: i * 0.07 }}>
             <div className={styles.distIcon}>{d.icon}</div>
             <div className={styles.distBody}>
-              <div className={styles.distName}>{d.name}</div>
-              <div className={styles.distSub}>{d.subtitle}</div>
+              <div className={styles.distName}>{tloc(d.name, LOC_NAME_KEYS[d.name] || '')}</div>
+              <div className={styles.distSub}>{tloc(d.subtitle, LOC_SUB_KEYS[d.subtitle] || '')}</div>
             </div>
             <div className={styles.distBadge}>{d.distance}</div>
           </motion.div>

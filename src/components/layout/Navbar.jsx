@@ -14,6 +14,9 @@ export const NAV_PROJECTS = [
 export const NAV_COMPLETED = [
   'Nandana Vihar', 'County', 'Pearl', 'Empire', 'Pride', 'Prime',
 ]
+export const NAV_COMPLETED_TE = [
+  'నందన విహార్', 'కౌంటీ', 'పర్ల్', 'ఎంపైర్', 'ప్రైడ్', 'ప్రైమ్',
+]
 
 export default function Navbar({ contact, onEnquire }) {
   const navigate   = useNavigate()
@@ -119,7 +122,7 @@ export default function Navbar({ contact, onEnquire }) {
                   {t('nav.completedSoldOut')}
                 </div>
                 <button className={styles.dropCompletedLine} onClick={() => { setPortOpen(false); scrollTo('portfolio') }}>
-                  {NAV_COMPLETED.join(' · ')}
+                  {(language === 'te' ? NAV_COMPLETED_TE : NAV_COMPLETED).join(' · ')}
                 </button>
 
                 <button className={styles.dropViewAll} onClick={() => { setPortOpen(false); scrollTo('portfolio') }}>
@@ -188,7 +191,7 @@ export default function Navbar({ contact, onEnquire }) {
               {t('nav.completedSoldOut')}
             </div>
             <div className={styles.mobileCompletedList}>
-              {NAV_COMPLETED.join(' · ')}
+              {(language === 'te' ? NAV_COMPLETED_TE : NAV_COMPLETED).join(' · ')}
             </div>
           </div>
 

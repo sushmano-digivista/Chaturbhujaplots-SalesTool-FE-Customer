@@ -8,7 +8,10 @@ export default function QRCard({ waNumber, title, subtitle, size = 160 }) {
   const isTe = language === 'te'
   const svgRef = useRef(null)
 
-  const waUrl = 'https://wa.me/' + waNumber
+  const shortMsg = isTe
+    ? 'నమస్కారం! ప్లాట్ వివరాలు కావాలి.'
+    : 'Hi! Interested in Chaturbhuja plots.'
+  const waUrl = 'https://wa.me/' + waNumber + '?text=' + encodeURIComponent(shortMsg)
 
   const downloadQR = () => {
     const svg = svgRef.current && svgRef.current.querySelector('svg')

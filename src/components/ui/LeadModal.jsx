@@ -317,23 +317,23 @@ export default function LeadModal({ context, onClose, whatsapp, content }) {
                 </div>
 
                 <div className="form-group">
-                  <label className="form-label">Best Time to Call</label>
+                  <label className="form-label">{language === 'te' ? 'కాల్ చేయడానికి సరైన సమయం' : 'Best Time to Call'}</label>
                   <select className="form-input" {...register('callTime')}>
-                    <option value="">Anytime during business hours</option>
-                    <option value="Morning (9am–12pm)">Morning (9am–12pm)</option>
-                    <option value="Afternoon (12pm–4pm)">Afternoon (12pm–4pm)</option>
-                    <option value="Evening (4pm–7pm)">Evening (4pm–7pm)</option>
+                    <option value="">{language === 'te' ? 'వ్యాపార వేళల్లో ఎప్పుడైనా' : 'Anytime during business hours'}</option>
+                    <option value="Morning (9am–12pm)">{language === 'te' ? 'ఉదయం (9am–12pm)' : 'Morning (9am–12pm)'}</option>
+                    <option value="Afternoon (12pm–4pm)">{language === 'te' ? 'మధ్యాహ్నం (12pm–4pm)' : 'Afternoon (12pm–4pm)'}</option>
+                    <option value="Evening (4pm–7pm)">{language === 'te' ? 'సాయంత్రం (4pm–7pm)' : 'Evening (4pm–7pm)'}</option>
                   </select>
                 </div>
 
                 <div className="form-group">
-                  <label className="form-label">Project Interest</label>
+                  <label className="form-label">{language === 'te' ? 'ప్రాజెక్ట్ ఆసక్తి' : 'Project Interest'}</label>
                   <select className="form-input" {...register('project')}>
                     <option value="">{t('modal.selectProjectOptional') || 'Select a project (optional)'}</option>
                     {ACTIVE_PROJECTS.map(p => (
                       <option key={p.id} value={p.name}>{p.name} — {p.loc}</option>
                     ))}
-                    <option value="Any Project">Any / Not Sure Yet</option>
+                    <option value="Any Project">{language === 'te' ? 'ఏదైనా / ఇంకా నిర్ణయించలేదు' : 'Any / Not Sure Yet'}</option>
                   </select>
                 </div>
 
@@ -393,8 +393,8 @@ export default function LeadModal({ context, onClose, whatsapp, content }) {
                     </div>
                     <p className={styles.waStepDesc}>Would you like to schedule a free site visit?</p>
                     {[
-                      { id: 'morning',   label: 'Morning (9am–12pm)' },
-                      { id: 'afternoon', label: 'Afternoon (12pm–4pm)' },
+                      { id: 'morning',   label: language === 'te' ? 'ఉదయం (9am–12pm)' : 'Morning (9am–12pm)' },
+                      { id: 'afternoon', label: language === 'te' ? 'మధ్యాహ్నం (12pm–4pm)' : 'Afternoon (12pm–4pm)' },
                       { id: 'skip',      label: 'Skip for now' },
                     ].map((t, i) => (
                       <button key={t.id} className={styles.waOption}
@@ -415,8 +415,8 @@ export default function LeadModal({ context, onClose, whatsapp, content }) {
                     </div>
                     <p className={styles.waStepDesc}>When is the best time for our advisor to call you?</p>
                     {[
-                      { id: 'morning',   label: 'Morning (9am–12pm)' },
-                      { id: 'afternoon', label: 'Afternoon (12pm–4pm)' },
+                      { id: 'morning',   label: language === 'te' ? 'ఉదయం (9am–12pm)' : 'Morning (9am–12pm)' },
+                      { id: 'afternoon', label: language === 'te' ? 'మధ్యాహ్నం (12pm–4pm)' : 'Afternoon (12pm–4pm)' },
                       { id: 'skip',      label: 'Skip for now' },
                     ].map((t, i) => (
                       <button key={t.id} className={styles.waOption}

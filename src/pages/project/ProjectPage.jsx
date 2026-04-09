@@ -9,6 +9,7 @@ import LeadModal           from '@/components/ui/LeadModal'
 import PricingCard         from '@/components/ui/PricingCard'
 import { openWhatsApp, openMaps } from '@/utils/security'
 import { DEFAULT_WA_NUMBER }      from '@/constants/config'
+import LaunchBanner               from '@/components/ui/LaunchBanner'
 import { useLanguage }            from '@/context/LanguageContext'
 import styles              from './ProjectPage.module.css'
 
@@ -587,6 +588,7 @@ export default function ProjectPage() {
 
   return (
     <div className={styles.page}>
+      {proj.id === 'trimbak' && <LaunchBanner compact />}
       <header className={styles.header + ' ' + styles[proj.accentClass]}>
         <div className={styles.headerTop}>
           <button className={styles.backBtn} onClick={() => navigate('/')}>

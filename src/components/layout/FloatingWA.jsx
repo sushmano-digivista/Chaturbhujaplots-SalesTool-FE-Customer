@@ -4,7 +4,7 @@ import { useLanguage } from '@/context/LanguageContext'
 import styles from './Footer.module.css'
 
 export default function FloatingWA({ contact }) {
-  const { t } = useLanguage()
+  const { t, language } = useLanguage()
   const openWA = () => {
     openWhatsApp(contact?.whatsapp || DEFAULT_WA_NUMBER, language === 'te' ? t('contact.whatsappMessage') : (contact?.whatsappMessage || t('contact.whatsappMessage')))
   }

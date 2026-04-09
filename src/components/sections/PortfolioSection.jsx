@@ -271,7 +271,7 @@ function ProjectPopup({ proj, onClose, onNavigate, pricing, t, language }) {
             onClick={() => openWhatsApp(
               proj.contact?.whatsapp || DEFAULT_WA_NUMBER,
               language === 'te'
-              ? t('contact.waProjectMsg').replace('{name}', tProj('name') || proj.name)
+              ? t('contact.waProjectMsg').replace('{name}', (language === 'te' && tProj('name')) ? tProj('name') : proj.name)
               : (proj.contact?.whatsappMessage || ('Hi! I am interested in ' + proj.name + '. Can I book a free site visit? 🏡')),
             )}
           >

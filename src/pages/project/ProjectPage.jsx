@@ -101,7 +101,7 @@ function HomeTab({ proj, onEnquire }) {
         style={proj.heroImage ? { '--hero-img': 'linear-gradient(rgba(10,30,18,.75),rgba(10,30,18,.75)), url(' + proj.heroImage + ')' } : {}}>
         <div className={styles.heroContent}>
           <div className={styles.heroTag}>{(() => { const k = 'tags.' + (proj.tag || '').toLowerCase(); const v = t(k); return (v && v !== k) ? v : proj.tag })()}</div>
-          <h1 className={styles.heroName}>{proj.name}</h1>
+          <h1 className={styles.heroName}>{tProj('name') || proj.name}</h1>
           <p className={styles.heroLoc}>📍 {tProj('loc') || proj.loc}</p>
           <p className={styles.heroDesc}>{tProj('description') || proj.description}</p>
           <div className={styles.heroBtns}>
@@ -158,7 +158,7 @@ function OverviewTab({ proj, onEnquire, apiPricing }) {
       {proj.upcoming ? (
         <div className={styles.upcomingOverview}>
           <div className={styles.upcomingBadge}>🔜 {t('portfolio.upcomingProject')}</div>
-          <h3 className={styles.upcomingHeading}>{proj.name} — {t('portfolio.comingSoon')}</h3>
+          <h3 className={styles.upcomingHeading}>{tProj('name') || proj.name} — {t('portfolio.comingSoon')}</h3>
           <p className={styles.upcomingText}>{t('project.notifyDesc')}</p>
           <button className='btn btn-gold'
             onClick={() => onEnquire({ source: 'UPCOMING_INTEREST', label: 'Notify Me', category: proj.name, type: 'NOTIFY_ME' })}>
@@ -595,7 +595,7 @@ export default function ProjectPage() {
             <ArrowLeft size={16} /> {t('portfolio.backHome').replace('\u2190 ', '')}
           </button>
           <div className={styles.headerTitle}>
-            <span className={styles.headerName}>{proj.name}</span>
+            <span className={styles.headerName}>{(() => { const k = 'projects.' + proj.id + '.name'; const v = t(k); return (v && v !== k) ? v : proj.name })()} </span>
             <span className={styles.headerLoc}>📍 {tProj('loc') || proj.loc}</span>
           </div>
           <button className={styles.enquireBtn}

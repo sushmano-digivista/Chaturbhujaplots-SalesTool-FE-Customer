@@ -3,6 +3,7 @@ import { openWhatsApp }    from '@/utils/security'
 import { DEFAULT_WA_NUMBER } from '@/constants/config'
 import { useLanguage } from '@/context/LanguageContext'
 import styles from './Sections.module.css'
+import QRCard from '@/components/ui/QRCard'
 
 const PERKS_EN = [
   'Free site visit with transport',
@@ -98,6 +99,15 @@ export default function ContactSection({ content, onEnquire }) {
 
           <div className={styles.ctaNote}>
             {t('contact.respondNote') || 'We typically respond within'} <strong>30 {t('contact.respondMinutes') || 'minutes'}</strong> {t('contact.respondHours') || 'during business hours (9am–7pm).'}
+          </div>
+
+          <div style={{ display: 'flex', justifyContent: 'center', marginTop: 24 }}>
+            <QRCard
+              waNumber={contact.whatsapp || '919948709041'}
+              waMessage={language === 'te' ? t('contact.whatsappMessage') : (contact.whatsappMessage || t('contact.whatsappMessage'))}
+              title={language === 'te' ? 'వాట్సాప్ QR స్కాన్' : 'Scan & Chat on WhatsApp'}
+              subtitle={language === 'te' ? 'ఈ QR స్కాన్ చేసి నేరుగా మాతో మాట్లాడండి' : 'Scan this QR to start a WhatsApp chat instantly'}
+            />
           </div>
         </motion.div>
       </div>

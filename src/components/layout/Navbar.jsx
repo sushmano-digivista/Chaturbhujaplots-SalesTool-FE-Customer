@@ -90,7 +90,10 @@ export default function Navbar({ contact, onEnquire }) {
                     const color  = colors[i] || '#C9A84C'
                     const locKey = 'projects.' + p.id + '.loc'
                     const locVal = t(locKey)
-                    const loc    = (locVal && locVal !== locKey) ? locVal : p.sub
+                    const loc      = (locVal && locVal !== locKey) ? locVal : p.sub
+                    const nameKey  = 'projects.' + p.id + '.name'
+                    const nameVal  = t(nameKey)
+                    const projName = (nameVal && nameVal !== nameKey) ? nameVal : p.name
                     return (
                       <button
                         key={p.id}
@@ -100,7 +103,7 @@ export default function Navbar({ contact, onEnquire }) {
                       >
                         <div className={styles.dropCardBar} />
                         <div className={styles.dropCardContent}>
-                          <div className={styles.dropCardName}>{p.name}</div>
+                          <div className={styles.dropCardName}>{projName}</div>
                           <div className={styles.dropCardSub}>📍 {loc}</div>
                         </div>
                         <div className={styles.dropCardArrow}>›</div>
@@ -164,14 +167,17 @@ export default function Navbar({ contact, onEnquire }) {
           {NAV_PROJECTS.map((p) => {
             const locKey = 'projects.' + p.id + '.loc'
             const locVal = t(locKey)
-            const loc    = (locVal && locVal !== locKey) ? locVal : p.sub
+            const loc      = (locVal && locVal !== locKey) ? locVal : p.sub
+            const nameKey  = 'projects.' + p.id + '.name'
+            const nameVal  = t(nameKey)
+            const projName = (nameVal && nameVal !== nameKey) ? nameVal : p.name
             return (
               <button
                 key={p.id}
                 className={styles.mobileProjectCard}
                 onClick={() => { setMenuOpen(false); navigate('/project/' + p.id) }}
               >
-                <div className={styles.mobileProjectName}>{p.name}</div>
+                <div className={styles.mobileProjectName}>{projName}</div>
                 <div className={styles.mobileProjectSub}>📍 {loc}</div>
               </button>
             )

@@ -204,6 +204,7 @@ export const FALLBACK_TRANSLATIONS = {
     },
     projects: {
       anjana: {
+        name:        'అంజన పారడైజ్',
         loc:         'Paritala, Near Amaravati',
         locShort:    'Paritala',
         description: 'Premium open plots in Paritala \u2014 adjacent to NH-16, just 8 km from Amaravati, the new capital of Andhra Pradesh. CRDA Proposed Layout with 100% clear title, avenue-lined roads, 24/7 water pipeline and overhead electricity on every plot. Ready for immediate construction.',
@@ -219,6 +220,7 @@ export const FALLBACK_TRANSLATIONS = {
         ],
       },
       trimbak: {
+        name:        'ట్రింబక్ ఓక్స్',
         loc:         'Penamaluru, Near Vijayawada',
         locShort:    'Penamaluru',
         description: 'Gated community plots offering excellent connectivity to Vijayawada city via NH-16. CRDA approved with all modern infrastructure \u2014 water, electricity, drainage and security \u2014 ready for immediate construction.',
@@ -232,6 +234,7 @@ export const FALLBACK_TRANSLATIONS = {
         ],
       },
       aparna: {
+        name:        'అపర్ణ లెగసీ',
         loc:         'Chevitikallu, Gateway of Amaravati Capital Region',
         locShort:    'Chevitikallu',
         description: 'Premium APCRDA proposed layout plots at Chevitikallu, NTR District \u2014 located near the Outer Ring Road with outstanding connectivity to Amaravati. Vastu-compliant plots available. Phase II now open for booking.',
@@ -247,6 +250,7 @@ export const FALLBACK_TRANSLATIONS = {
         ],
       },
       varaha: {
+        name:        'వరాహ వర్చ్యూ',
         loc:         'Pamarru, Krishna District',
         locShort:    'Pamarru',
         description: 'Strategic investment opportunity on the NH-16 corridor at Pamarru, Krishna District. APCRDA proposed layout with 132 meticulously planned plots \u2014 prime NH-16 frontage, near Bandar Port, BEL defence complex and upcoming 6-lane highway. Exceptional appreciation potential.',
@@ -637,13 +641,13 @@ export const FALLBACK_TRANSLATIONS = {
     },
     approvals: {
       crdaProposed:    'CRDA \u0c2a\u0c4d\u0c30\u0c24\u0c3f\u0c2a\u0c3e\u0c26\u0c3f\u0c24 \u0c32\u0c47\u0c05\u0c35\u0c41\u0c1f\u0c4d',
-      apReraRegistered:'AP RERA \u0c28\u0c2e\u0c4b\u0c26\u0c41',
-      clearTitle:      '100% \u0c15\u0c4d\u0c32\u0c3f\u0c2f\u0c30\u0c4d \u0c1f\u0c48\u0c1f\u0c3f\u0c32\u0c4d',
-      vastuCompliant:  '100% \u0c35\u0c3e\u0c38\u0c4d\u0c24\u0c41 \u0c05\u0c28\u0c41\u0c15\u0c42\u0c32\u0c02',
-      nh16Frontage:    'NH-16 \u0c2b\u0c4d\u0c30\u0c02\u0c1f\u0c47\u0c1c\u0c4d',
-      crdaApproved:    'CRDA \u0c06\u0c2e\u0c4b\u0c26\u0c3f\u0c24\u0c02',
-      reraRegistered:  'RERA \u0c28\u0c2e\u0c4b\u0c26\u0c41',
-      apcrda:          'APCRDA \u0c2a\u0c4d\u0c30\u0c24\u0c3f\u0c2a\u0c3e\u0c26\u0c3f\u0c24 \u0c32\u0c47\u0c05\u0c35\u0c41\u0c1f\u0c4d',
+      apReraRegistered:'ఏపి రేరా నమోదు',
+      clearTitle:      '100% క్లియర్ టైటిల్',
+      vastuCompliant:  '100% వాస్తు అనుకూలం',
+      nh16Frontage:    'NH-16 ఫ్రంటేజ్',
+      crdaApproved:    'ఏపిసిఆర్డేఏ ఆమోదితం',
+      reraRegistered:  'రేరా నమోదు',
+      apcrda:          'ఏపిసిఆర్డేఏ ప్రతిపాదిత లేఅవుట్',
     },
     quote: {
       ctaBook:     '\u0c07\u0c2a\u0c4d\u0c2a\u0c41\u0c21\u0c47 \u0c2a\u0c4d\u0c32\u0c3e\u0c1f\u0c4d \u0c2c\u0c41\u0c15\u0c4d \u0c1a\u0c47\u0c2f\u0c02\u0c21\u0c3f',

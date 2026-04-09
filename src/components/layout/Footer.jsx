@@ -151,7 +151,7 @@ export default function Footer({ content }) {
             </a>
 
             <a
-              href={`https://wa.me/${whatsapp}?text=${encodeURIComponent(language === 'te' ? t('contact.whatsappMessage') : 'Hi, I am interested in Chaturbhuja plots. Please share details.')}`}
+              href={`https://wa.me/${whatsapp}?text=${encodeURIComponent(language === 'te' ? t('contact.whatsappMessage') : (contact.whatsappMessage || t('contact.whatsappMessage')))}`}
               target="_blank" rel="noreferrer"
               className={styles.contactRow}
             >

@@ -9,7 +9,7 @@ export default function QRCard({ waNumber, title, subtitle, size = 160 }) {
   const svgRef = useRef(null)
 
   const shortMsg = isTe
-    ? 'నమస్కారం! ప్లాట్ వివరాలు కావాలి.'
+    ? 'నమస్కారం! చతుర్భుజ ప్లాట్స్ వివరాలు కావాలి.'
     : 'Hi! Interested in Chaturbhuja plots.'
   const waUrl = 'https://wa.me/' + waNumber + '?text=' + encodeURIComponent(shortMsg)
 

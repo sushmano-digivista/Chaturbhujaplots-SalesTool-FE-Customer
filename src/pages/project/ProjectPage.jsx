@@ -94,7 +94,8 @@ function translateApproval(label, t) {
 
 function HomeTab({ proj, onEnquire }) {
   const { t } = useLanguage()
-  const tProj = (field) => { const k = 'projects.' + proj.id + '.' + field; const v = t(k); return (v && v !== k) ? v : null }
+  const { language } = useLanguage()
+  const tProj = (field) => { const k = 'projects.' + proj.id + '.' + field; const v = t(k); if (field === 'name' && language !== 'te') return null; return (v && v !== k) ? v : null }
   return (
     <div className={styles.homeTab}>
       <div className={styles.heroBanner + ' ' + styles[proj.accentClass]}
@@ -529,7 +530,7 @@ export default function ProjectPage() {
 
   const { data: proj, isLoading } = useProject(id)
   const { data: ownerSettings }   = useContactSettings()
-  const tProj = (field) => { if (!proj) return null; const k = 'projects.' + proj.id + '.' + field; const v = t(k); return (v && v !== k) ? v : null }
+  const tProj = (field) => { if (!proj) return null; const k = 'projects.' + proj.id + '.' + field; const v = t(k); if (field === 'name' && language !== 'te') return null; return (v && v !== k) ? v : null }
   const { data: apiPricing }      = usePricing()
   const projectPricing = Array.isArray(apiPricing) ? (apiPricing.find(p => p.projectId === id) || null) : null
 

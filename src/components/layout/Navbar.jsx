@@ -20,7 +20,7 @@ export const NAV_COMPLETED_TE = [
 
 export default function Navbar({ contact, onEnquire }) {
   const navigate   = useNavigate()
-  const { t }      = useLanguage()
+  const { t, language } = useLanguage()
   const [scrolled,  setScrolled]  = useState(false)
   const [menuOpen,  setMenuOpen]  = useState(false)
   const [portOpen,  setPortOpen]  = useState(false)

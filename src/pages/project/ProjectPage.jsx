@@ -482,11 +482,14 @@ function LocationTab({ proj }) {
 }
 
 function ContactTab({ proj, onEnquire, ownerSettings }) {
-  const { t } = useLanguage()
+  const { t, language } = useLanguage()
   const c = proj.contact || {}
-  const address = (proj.id === 'aparna' && ownerSettings?.aparna_contact_address)
+  const rawAddress = (proj.id === 'aparna' && ownerSettings?.aparna_contact_address)
     ? ownerSettings.aparna_contact_address
     : c.address
+  const addrKey = 'projects.' + proj.id + '.address'
+  const addrVal = t(addrKey)
+  const address = (language === 'te' && addrVal && addrVal !== addrKey) ? addrVal : rawAddress
   const openWA = () => openWhatsApp(
     c.whatsapp || DEFAULT_WA_NUMBER,
     c.whatsappMessage || 'Hi! I am interested in ' + proj.name + '. Can I book a free site visit? 🏡'

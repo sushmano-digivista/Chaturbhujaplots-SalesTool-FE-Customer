@@ -209,7 +209,8 @@ export const FALLBACK_TRANSLATIONS = {
     },
     projects: {
       anjana: {
-        name:        'అంజన పారడైజ్',
+        name:        'Anjana Paradise',
+        address:     'Paritala, Krishna District, AP 521180',
         loc:         'Paritala, Near Amaravati',
         locShort:    'Paritala',
         description: 'Premium open plots in Paritala \u2014 adjacent to NH-16, just 8 km from Amaravati, the new capital of Andhra Pradesh. CRDA Proposed Layout with 100% clear title, avenue-lined roads, 24/7 water pipeline and overhead electricity on every plot. Ready for immediate construction.',
@@ -225,7 +226,8 @@ export const FALLBACK_TRANSLATIONS = {
         ],
       },
       trimbak: {
-        name:        'ట్రింబక్ ఓక్స్',
+        name:        'Trimbak Oaks',
+        address:     'Penamaluru, Krishna District, AP 521139',
         loc:         'Penamaluru, Near Vijayawada',
         locShort:    'Penamaluru',
         description: 'Gated community plots offering excellent connectivity to Vijayawada city via NH-16. CRDA approved with all modern infrastructure \u2014 water, electricity, drainage and security \u2014 ready for immediate construction.',
@@ -239,7 +241,8 @@ export const FALLBACK_TRANSLATIONS = {
         ],
       },
       aparna: {
-        name:        'అపర్ణ లెగసీ',
+        name:        'Aparna Legacy',
+        address:     'Chevitikallu, NTR District, AP 521212',
         loc:         'Chevitikallu, Gateway of Amaravati Capital Region',
         locShort:    'Chevitikallu',
         description: 'Premium APCRDA proposed layout plots at Chevitikallu, NTR District \u2014 located near the Outer Ring Road with outstanding connectivity to Amaravati. Vastu-compliant plots available. Phase II now open for booking.',
@@ -255,7 +258,8 @@ export const FALLBACK_TRANSLATIONS = {
         ],
       },
       varaha: {
-        name:        'వరాహ వర్చ్యూ',
+        name:        'Varaha Virtue',
+        address:     'Pamarru, Krishna District, AP 521157',
         loc:         'Pamarru, Krishna District',
         locShort:    'Pamarru',
         description: 'Strategic investment opportunity on the NH-16 corridor at Pamarru, Krishna District. APCRDA proposed layout with 132 meticulously planned plots \u2014 prime NH-16 frontage, near Bandar Port, BEL defence complex and upcoming 6-lane highway. Exceptional appreciation potential.',

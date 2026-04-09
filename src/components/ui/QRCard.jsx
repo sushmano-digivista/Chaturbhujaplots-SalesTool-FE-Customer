@@ -8,10 +8,11 @@ export default function QRCard({ waNumber, title, subtitle, size = 160 }) {
   const isTe = language === 'te'
   const svgRef = useRef(null)
 
-  const shortMsg = isTe
-    ? 'నమస్కారం! చతుర్భుజ ప్లాట్స్ వివరాలు కావాలి.'
-    : 'Hi! Interested in Chaturbhuja plots.'
-  const waUrl = 'https://wa.me/' + waNumber + '?text=' + encodeURIComponent(shortMsg)
+  const enMsg = "🏡 Hello! I'm interested in owning a dream plot with Chaturbhuja Properties & Infra. 🏡 Kindly share details on available plots, pricing and location. Looking forward to hearing from you!"
+  const teMsg = "🏡 నమస్కారం! చతుర్భుజ ప్రాపర్టీస్ & ఇన్‌ఫ్రాలో ప్లాట్లు కొనాలని ఆసక్తిగా ఉన్నాను. అందుబాటులో ఉన్న ప్లాట్లు, ధరలు మరియు లొకేషన్ వివరాలు తెలుపగలరు. ధన్యవాదాలు!"
+  const fullMsg = isTe ? teMsg : enMsg
+  const qrLevel = isTe ? 'L' : 'M'
+  const waUrl = 'https://wa.me/' + waNumber + '?text=' + encodeURIComponent(fullMsg)
 
   const downloadQR = () => {
     const svg = svgRef.current && svgRef.current.querySelector('svg')
@@ -56,7 +57,7 @@ export default function QRCard({ waNumber, title, subtitle, size = 160 }) {
           size={size}
           bgColor="#ffffff"
           fgColor="#0a1e12"
-          level="M"
+          level={qrLevel}
           includeMargin={true}
         />
       </div>

@@ -113,7 +113,9 @@ function HomeTab({ proj, onEnquire }) {
             <button className='btn btn-ghost'
               onClick={() => openWhatsApp(
                 proj.contact?.whatsapp || DEFAULT_WA_NUMBER,
-                proj.contact?.whatsappMessage || (t('contact.whatsappMessage') || 'Hi! I am interested in ' + proj.name + '. Can I book a free site visit? 🏡'),
+                language === 'te'
+                ? t('contact.waProjectMsg').replace('{name}', tProj('name') || proj.name)
+                : (proj.contact?.whatsappMessage || ('Hi! I am interested in ' + proj.name + '. Can I book a free site visit? 🏡')),
               )}>
               💬 {t('contact.sendWhatsApp')}
             </button>
@@ -492,7 +494,9 @@ function ContactTab({ proj, onEnquire, ownerSettings }) {
   const address = (language === 'te' && addrVal && addrVal !== addrKey) ? addrVal : rawAddress
   const openWA = () => openWhatsApp(
     c.whatsapp || DEFAULT_WA_NUMBER,
-    c.whatsappMessage || (t('contact.whatsappMessage') || 'Hi! I am interested in ' + proj.name + '. Can I book a free site visit? 🏡')
+    language === 'te'
+    ? t('contact.waProjectMsg').replace('{name}', proj.name)
+    : (c.whatsappMessage || ('Hi! I am interested in ' + proj.name + '. Can I book a free site visit? 🏡'))
   )
   return (
     <div className={styles.tabContent}>

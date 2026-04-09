@@ -97,7 +97,7 @@ export default function ContactSection({ content, onEnquire }) {
           </div>
 
           <div className={styles.ctaNote}>
-            We typically respond within <strong>30 minutes</strong> during business hours (9am–7pm).
+            {t('contact.respondNote') || 'We typically respond within'} <strong>30 {t('contact.respondMinutes') || 'minutes'}</strong> {t('contact.respondHours') || 'during business hours (9am–7pm).'}
           </div>
         </motion.div>
       </div>

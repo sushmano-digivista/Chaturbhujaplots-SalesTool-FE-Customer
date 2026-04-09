@@ -63,7 +63,8 @@ export default function Hero({ content, onEnquire }) {
 
   // Director card
   const dirTitle  = (isTe && t('hero.directorTitle')) || dir.title  || FB.director.title
-  const dirName   = dir.name   || FB.director.name
+  const dirNameTe = t('hero.directorName')
+  const dirName   = (isTe && dirNameTe && dirNameTe !== 'hero.directorName') ? dirNameTe : (dir.name || FB.director.name)
   const dirPhone  = dir.phone  || FB.director.phone
   const dirAvatar = dir.avatar || FB.director.avatar
 

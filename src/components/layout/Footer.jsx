@@ -166,7 +166,7 @@ export default function Footer({ content }) {
 
             <div className={styles.contactRow}>
               <span className={styles.contactIcon}>📍</span>
-              <span>Vijayawada, Andhra Pradesh</span>
+              <span>{t('contact.officeLocation') || 'Vijayawada, Andhra Pradesh'}</span>
             </div>
 
             <a href="https://www.chaturbhujaplots.in" target="_blank" rel="noreferrer" className={styles.contactRow}>

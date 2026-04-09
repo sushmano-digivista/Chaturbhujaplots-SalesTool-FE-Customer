@@ -9,9 +9,9 @@ export default function QRCard({ waNumber, title, subtitle, size = 160 }) {
   const svgRef = useRef(null)
 
   const enMsg = "🏡 Hello! I'm interested in owning a dream plot with Chaturbhuja Properties & Infra. 🏡 Kindly share details on available plots, pricing and location. Looking forward to hearing from you!"
-  const teMsg = "🏡 నమస్కారం! చతుర్భుజ ప్రాపర్టీస్ & ఇన్‌ఫ్రాలో ప్లాట్లు కొనాలని ఆసక్తిగా ఉన్నాను. అందుబాటులో ఉన్న ప్లాట్లు, ధరలు మరియు లొకేషన్ వివరాలు తెలుపగలరు. ధన్యవాదాలు!"
+  const teMsg = "నమస్కారం! చతుర్భుజ ప్రాపర్టీస్ ప్లాట్ వివరాలు కావాలి. ధన్యవాదాలు!"
   const fullMsg = isTe ? teMsg : enMsg
-  const qrLevel = isTe ? 'L' : 'M'
+  const qrLevel = 'M'
   const waUrl = 'https://wa.me/' + waNumber + '?text=' + encodeURIComponent(fullMsg)
 
   const downloadQR = () => {

@@ -1,15 +1,12 @@
 import { openWhatsApp }    from '@/utils/security'
 import { DEFAULT_WA_NUMBER } from '@/constants/config'
+import { useLanguage } from '@/context/LanguageContext'
 import styles from './Footer.module.css'
 
-/**
- * FloatingWA — persistent WhatsApp floating action button.
- * Props:
- *   contact  { whatsapp }
- */
 export default function FloatingWA({ contact }) {
+  const { t } = useLanguage()
   const openWA = () => {
-    openWhatsApp(contact?.whatsapp || DEFAULT_WA_NUMBER, contact?.whatsappMessage || 'Hi, I am interested in Chaturbhuja Properties plots. Please share more details.')
+    openWhatsApp(contact?.whatsapp || DEFAULT_WA_NUMBER, contact?.whatsappMessage || t('contact.whatsappMessage') || 'Hi! Interested in Chaturbhuja plots.')
   }
 
   return (

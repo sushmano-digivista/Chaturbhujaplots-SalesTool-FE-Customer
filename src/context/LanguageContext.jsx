@@ -84,6 +84,7 @@ export const FALLBACK_TRANSLATIONS = {
       respondMinutes:   'minutes',
       respondHours:     'during business hours (9am–7pm).',
       sendWhatsApp:      'Send WhatsApp',
+      whatsappMessage:   'Hi! I am interested in Chaturbhuja Properties & Infra plots. 🏡 Please share available plots, pricing & location details. Thank you!',
       writeUs:           'Write to Us',
       sendMessage:       'Send Message',
       namePlaceholder:   'Your Full Name',

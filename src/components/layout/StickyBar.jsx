@@ -10,7 +10,7 @@ export default function StickyBar({ contact, onEnquire }) {
   const openWA = () => {
     const num = contact?.whatsapp || DEFAULT_WA_NUMBER
     const msg = contact?.whatsappMessage ||
-      'Hi! I am interested in Chaturbhuja Properties plots. Please share more details.'
+      t('contact.whatsappMessage') || 'Hi! Interested in Chaturbhuja plots.'
     openWhatsApp(num, msg)
   }
 

@@ -114,7 +114,7 @@ function HomeTab({ proj, onEnquire }) {
               onClick={() => openWhatsApp(
                 proj.contact?.whatsapp || DEFAULT_WA_NUMBER,
                 language === 'te'
-                ? t('contact.waProjectMsg').replace('{name}', tProj('name') || proj.name)
+                ? t('contact.waProjectMsg').replace('{name}', (language === 'te' && tProj('name')) ? tProj('name') : proj.name)
                 : (proj.contact?.whatsappMessage || ('Hi! I am interested in ' + proj.name + '. Can I book a free site visit? 🏡')),
               )}>
               💬 {t('contact.sendWhatsApp')}
@@ -495,7 +495,7 @@ function ContactTab({ proj, onEnquire, ownerSettings }) {
   const openWA = () => openWhatsApp(
     c.whatsapp || DEFAULT_WA_NUMBER,
     language === 'te'
-    ? t('contact.waProjectMsg').replace('{name}', proj.name)
+    ? t('contact.waProjectMsg').replace('{name}', (language === 'te' && tProj && tProj('name')) ? tProj('name') : proj.name)
     : (c.whatsappMessage || ('Hi! I am interested in ' + proj.name + '. Can I book a free site visit? 🏡'))
   )
   return (

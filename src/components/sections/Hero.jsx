@@ -95,7 +95,7 @@ export default function Hero({ content, onEnquire }) {
   })
 
   const whatsapp = content?.contact?.whatsapp || DEFAULT_WA_NUMBER
-  const waMsg    = content?.contact?.whatsappMessage || 'Hi, I am interested in Chaturbhuja Properties plots. Please share more details.'
+  const waMsg    = language === 'te' ? t('contact.whatsappMessage') : (content?.contact?.whatsappMessage || t('contact.whatsappMessage'))
   const barWidth = `${Math.round((openProjects / (openProjects + completedProjects)) * 100)}%`
   const scrollTo = id => document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' })
   const headBase   = urgHeadline.replace(/!+$/, '')

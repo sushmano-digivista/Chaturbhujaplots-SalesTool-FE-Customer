@@ -5,12 +5,11 @@ import { useLanguage } from '@/context/LanguageContext'
 import styles from './Footer.module.css'
 
 export default function StickyBar({ contact, onEnquire }) {
-  const { t } = useLanguage()
+  const { t, language } = useLanguage()
 
   const openWA = () => {
     const num = contact?.whatsapp || DEFAULT_WA_NUMBER
-    const msg = contact?.whatsappMessage ||
-      t('contact.whatsappMessage') || 'Hi! Interested in Chaturbhuja plots.'
+    const msg = language === 'te' ? t('contact.whatsappMessage') : (contact?.whatsappMessage || t('contact.whatsappMessage'))
     openWhatsApp(num, msg)
   }
 

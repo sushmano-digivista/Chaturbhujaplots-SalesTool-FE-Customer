@@ -24,7 +24,7 @@ export default function ContactSection({ content, onEnquire }) {
 
   const openWA = () => {
     const num = contact.whatsapp || DEFAULT_WA_NUMBER
-    openWhatsApp(num, contact?.whatsappMessage || t('contact.whatsappMessage') || 'Hi! Interested in Chaturbhuja plots.')
+    openWhatsApp(num, language === 'te' ? t('contact.whatsappMessage') : (contact?.whatsappMessage || t('contact.whatsappMessage')))
   }
 
   return (

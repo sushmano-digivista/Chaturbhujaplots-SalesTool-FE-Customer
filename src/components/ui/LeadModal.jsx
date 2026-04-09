@@ -28,7 +28,7 @@ export default function LeadModal({ context, onClose, whatsapp, content }) {
   const isSV      = isSiteVisit(context)
   const isPE      = isPlotEnquiry(context)
   const isCB      = isCallback(context)
-  const { t } = useLanguage()
+  const { t, language } = useLanguage()
   const { register, handleSubmit, reset, watch, formState: { errors } } = useForm()
   const submitLead  = useSubmitLead()
   const [submitted, setSubmitted]  = useState(false)
@@ -156,7 +156,9 @@ export default function LeadModal({ context, onClose, whatsapp, content }) {
       setWaSent(true)
     } catch {
       const num  = whatsapp || DEFAULT_WA_NUMBER
-      const text = `Hi, I am interested in ${selectedProject || 'Chaturbhuja Properties'} plots. Please share details.`
+      const text = language === 'te'
+        ? t('contact.waLeadFallback').replace('{project}', selectedProject || 'Chaturbhuja Properties')
+        : `Hi, I am interested in ${selectedProject || 'Chaturbhuja Properties'} plots. Please share details.`
       openWhatsApp(num, text)
       setWaSent(true)
     } finally { setSending(null) }
@@ -423,7 +425,8 @@ export default function LeadModal({ context, onClose, whatsapp, content }) {
                           const proj = waAnswers.project || 'Any Project'
                           const visit = waAnswers.visit ? `\n📅 Site Visit: ${waAnswers.visit}` : ''
                           const callback = cb ? `\n📞 Callback: ${cb}` : ''
-                          const msg = `🏡 Hi! I am interested in Chaturbhuja Properties & Infra.\n\n` +
+                          const baseMsg = language === 'te' ? t('contact.waBrochureMsg') : '🏡 Hi! I am interested in Chaturbhuja Properties & Infra.'
+                          const msg = `${baseMsg}\n\n` +
                             `🏘️ Project: ${proj}` + visit + callback +
                             `\n\nPlease share more details and brochure. Thank you!`
                           openWhatsApp(whatsapp || DEFAULT_WA_NUMBER, msg)
@@ -495,7 +498,9 @@ export default function LeadModal({ context, onClose, whatsapp, content }) {
                   <button type="button" className={styles.waBtn} style={{marginTop:0}}
                     onClick={() => {
                       const num = whatsapp || DEFAULT_WA_NUMBER
-                      const txt = `Hi, I am interested in a ${context?.plotSize || context?.category} plot (${context?.plotArea}) in ${context?.venture || 'Chaturbhuja Properties'}. Price: ${context?.priceFrom}. Please share details.`
+                      const txt = language === 'te'
+                        ? t('contact.waPlotMsg').replace('{size}', context?.plotSize || context?.category || '').replace('{area}', context?.plotArea || '').replace('{venture}', context?.venture || 'చతుర్భుజ').replace('{price}', context?.priceFrom || '')
+                        : `Hi, I am interested in a ${context?.plotSize || context?.category} plot (${context?.plotArea}) in ${context?.venture || 'Chaturbhuja Properties'}. Price: ${context?.priceFrom}. Please share details.`
                       openWhatsApp(num, txt)
                     }}>
                     <MessageCircle size={15} /> WhatsApp Us

@@ -9,7 +9,8 @@ import {
   HighlightsSection, AmenitiesSection, QuoteSection, LocationSection, ContactSection,
 } from '@/components/sections'
 import { LeadModal } from '@/components/ui'
-import PageLoader from '@/components/common/PageLoader'
+import PageLoader    from '@/components/common/PageLoader'
+import LaunchBanner  from '@/components/ui/LaunchBanner'
 
 // Animation duration in ms -- must match CSS animation total in PageLoader
 const LOADER_MIN_MS = 2800
@@ -44,6 +45,7 @@ export default function HomePage() {
 
   return (
     <div style={{ paddingTop: 'var(--nav-h)' }}>
+      <LaunchBanner />
       <Navbar contact={contact} onEnquire={openEnquiry} />
       <main>
         <Hero              content={activeContent} onEnquire={openEnquiry} />

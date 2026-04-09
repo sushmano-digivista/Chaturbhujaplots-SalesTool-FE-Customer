@@ -492,10 +492,11 @@ function ContactTab({ proj, onEnquire, ownerSettings }) {
   const addrKey = 'projects.' + proj.id + '.address'
   const addrVal = t(addrKey)
   const address = (language === 'te' && addrVal && addrVal !== addrKey) ? addrVal : rawAddress
+  const tProj = (field) => { const k = 'projects.' + proj.id + '.' + field; const v = t(k); if (field === 'name' && language !== 'te') return null; return (v && v !== k) ? v : null }
   const openWA = () => openWhatsApp(
     c.whatsapp || DEFAULT_WA_NUMBER,
     language === 'te'
-    ? t('contact.waProjectMsg').replace('{name}', (language === 'te' && tProj && tProj('name')) ? tProj('name') : proj.name)
+    ? t('contact.waProjectMsg').replace('{name}', tProj('name') || proj.name)
     : (c.whatsappMessage || ('Hi! I am interested in ' + proj.name + '. Can I book a free site visit? 🏡'))
   )
   return (

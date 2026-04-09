@@ -123,13 +123,16 @@ export default function Footer({ content }) {
           <div>
             <h5 className={styles.colTitle}>{t('footer.ourProjects')}</h5>
             {PROJECT_IDS.map((p) => {
-              const locKey = `projects.${p.id}.loc`
-              const locVal = t(locKey)
-              const loc    = (locVal && locVal !== locKey) ? locVal : ''
+              const nameKey  = `projects.${p.id}.name`
+              const nameVal  = t(nameKey)
+              const projName = (nameVal && nameVal !== nameKey) ? nameVal : p.name
+              const locKey   = `projects.${p.id}.locShort`
+              const locVal   = t(locKey)
+              const loc      = (locVal && locVal !== locKey) ? locVal : ''
               return (
                 <div key={p.id} className={styles.projectItem}>
                   <span className={styles.projectDot} />
-                  {p.name}{loc ? ` @ ${loc.split(',')[0]}` : ''}
+                  {projName}{loc ? ` @ ${loc}` : ''}
                 </div>
               )
             })}

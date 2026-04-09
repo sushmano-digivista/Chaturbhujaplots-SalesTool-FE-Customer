@@ -87,9 +87,9 @@ function translateApproval(label, t) {
 }
 
 // ── Project card (2×2 grid) ───────────────────────────────────────────────────
-function ProjectCard({ proj, index, onClick, t }) {
+function ProjectCard({ proj, index, onClick, t, language }) {
   const safet = t || ((k) => k)
-  const tProj = (field) => { const k = 'projects.' + proj.id + '.' + field; const v = safet(k); return (v && v !== k) ? v : null }
+  const tProj = (field) => { const k = 'projects.' + proj.id + '.' + field; const v = safet(k); if (field === 'name' && language !== 'te') return null; return (v && v !== k) ? v : null }
   const ac = ACCENT[proj.accentClass] || ACCENT.accentGold
   return (
     <motion.div
@@ -114,7 +114,7 @@ function ProjectCard({ proj, index, onClick, t }) {
 
       {/* Name + location */}
       <div className={styles.cardIdentity}>
-        <h3 className={styles.cardName}>{proj.name}</h3>
+        <h3 className={styles.cardName}>{tProj('name') || proj.name}</h3>
         <p className={styles.cardLoc}>📍 {tProj('loc') || proj.loc}</p>
       </div>
 
@@ -141,10 +141,10 @@ function ProjectCard({ proj, index, onClick, t }) {
 }
 
 // ── Project detail popup (portal) ─────────────────────────────────────────────
-function ProjectPopup({ proj, onClose, onNavigate, pricing, t }) {
+function ProjectPopup({ proj, onClose, onNavigate, pricing, t, language }) {
   // Fallback t if not provided (e.g. during testing)
   const safet = t || ((k) => k)
-  const tProj = (field) => { const k = 'projects.' + proj.id + '.' + field; const v = safet(k); return (v && v !== k) ? v : null }
+  const tProj = (field) => { const k = 'projects.' + proj.id + '.' + field; const v = safet(k); if (field === 'name' && language !== 'te') return null; return (v && v !== k) ? v : null }
   const ac = ACCENT[proj.accentClass] || ACCENT.accentGold
 
   const facingRows = getFacingRows(proj.facings || {})
@@ -182,7 +182,7 @@ function ProjectPopup({ proj, onClose, onNavigate, pricing, t }) {
             <div className={styles.popupTag}>
               {(() => { const k = 'tags.' + (proj.tag || '').toLowerCase(); const v = safet(k); return v !== k ? v : proj.tag })()}
             </div>
-            <h2 className={styles.popupName}>{proj.name}</h2>
+            <h2 className={styles.popupName}>{tProj('name') || proj.name}</h2>
             <p className={styles.popupLoc}>📍 {tProj('loc') || proj.loc}</p>
           </div>
           
@@ -284,7 +284,7 @@ function ProjectPopup({ proj, onClose, onNavigate, pricing, t }) {
 }
 
 // ── Completed card ────────────────────────────────────────────────────────────
-function CompletedCard({ proj, index }) {
+function CompletedCard({ proj, index, language, t }) {
   return (
     <motion.div
       className={styles.compCard}
@@ -295,7 +295,11 @@ function CompletedCard({ proj, index }) {
       whileHover={{ y: -3 }}
     >
       <div className={styles.compCheck}>✓</div>
-      <div className={styles.compName}>{proj.name}</div>
+      <div className={styles.compName}>{(() => {
+        if (language !== 'te') return proj.name
+        const names = {'Nandana Vihar': 'నందన విహార్', 'County': 'కౌంటీ', 'Pearl': 'పర్ల్', 'Empire': 'ఎంపైర్', 'Pride': 'ప్రైడ్', 'Prime': 'ప్రైమ్'}
+        return names[proj.name] || proj.name
+      })()}</div>
       <div className={styles.compLoc}>📍 {proj.loc}</div>
       <div className={styles.compMeta}>{proj.plots} plots · {proj.year}</div>
     </motion.div>
@@ -306,7 +310,7 @@ function CompletedCard({ proj, index }) {
 export default function PortfolioSection({ content, onEnquire, pricingMap }) {
   const navigate = useNavigate()
   const [activeProj, setActiveProj] = useState(null)
-  const { t } = useLanguage()
+  const { t, language } = useLanguage()
 
   // Reactive stats — labels switch when language toggles
   const STATS_I18N = [
@@ -367,6 +371,7 @@ export default function PortfolioSection({ content, onEnquire, pricingMap }) {
                 index={i}
                 onClick={setActiveProj}
                 t={t}
+                language={language}
               />
             ))}
           </div>
@@ -383,7 +388,7 @@ export default function PortfolioSection({ content, onEnquire, pricingMap }) {
           </div>
           <div className={styles.compGrid}>
             {completed.map((p, i) => (
-              <CompletedCard key={p.name} proj={p} index={i} />
+              <CompletedCard key={p.name} proj={p} index={i} language={language} t={t} />
             ))}
           </div>
         </div>
@@ -400,6 +405,7 @@ export default function PortfolioSection({ content, onEnquire, pricingMap }) {
             pricing={pricingMap?.[activeProj?.id]}
             onNavigate={() => { navigate(`/project/${activeProj.id}`); setActiveProj(null) }}
             t={t}
+            language={language}
           />
         )}
       </AnimatePresence>

@@ -45,7 +45,7 @@ export default function LaunchBanner({ compact = false }) {
           </div>
           <div className={styles.meta}>
             <span>📅 {isTe ? 'ఏప్రిల్ 11, 2026' : '11th April 2026'} &nbsp;|&nbsp; 10:00 AM</span>
-            <span>📍 {isTe ? 'చతుర్భుజ మార్కెటింగ్ ఆఫీస్, 5వ అంతస్తు' : 'Chaturbhuja Marketing Office, 5th Floor'}</span>
+            <span>📍 {isTe ? 'పద్మావతి ఐకాన్, పంట కాలువ రోడ్, విజయవాడ' : 'Padmavathi Icon, Panta Kaluva Rd, Vijayawada'}</span>
             <span>🍽️ {isTe ? 'భోజనం ఉంటుంది' : 'Lunch follows'}</span>
           </div>
         </div>

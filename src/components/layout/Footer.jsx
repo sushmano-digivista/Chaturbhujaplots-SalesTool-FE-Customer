@@ -12,11 +12,11 @@ const QUICK_LINKS = [
   ['Contact',    'contact'  ],
 ]
 
-const PROJECTS = [
-  'Anjana Paradise @ Paritala',
-  'Trimbak Oaks @ Penamaluru',
-  'Aparna Legacy @ Chevitikallu',
-  'Varaha Virtue @ Pamarru',
+const PROJECT_IDS = [
+  { id: 'anjana',  name: 'Anjana Paradise' },
+  { id: 'trimbak', name: 'Trimbak Oaks'    },
+  { id: 'aparna',  name: 'Aparna Legacy'   },
+  { id: 'varaha',  name: 'Varaha Virtue'   },
 ]
 
 // Social media links
@@ -75,8 +75,8 @@ export default function Footer({ content }) {
               15+ {t('portfolio.projectsDelivered')}, 1200+ {t('portfolio.happyCustomers')}.
             </p>
             <div className={styles.badges}>
-              <span className={styles.badge}>APCRDA Approved</span>
-              <span className={styles.badge}>AP RERA Registered</span>
+              <span className={styles.badge}>{t('approvals.crdaApproved') || 'APCRDA Approved'}</span>
+              <span className={styles.badge}>{t('approvals.apReraRegistered') || 'AP RERA Registered'}</span>
               <span className={styles.badge}>25 Yrs · 15+ Projects</span>
             </div>
             <div className={styles.socialLinks}>
@@ -122,12 +122,17 @@ export default function Footer({ content }) {
           {/* ── Ongoing Projects ──────────────────────────────── */}
           <div>
             <h5 className={styles.colTitle}>{t('footer.ourProjects')}</h5>
-            {PROJECTS.map((p) => (
-              <div key={p} className={styles.projectItem}>
-                <span className={styles.projectDot} />
-                {p}
-              </div>
-            ))}
+            {PROJECT_IDS.map((p) => {
+              const locKey = `projects.${p.id}.loc`
+              const locVal = t(locKey)
+              const loc    = (locVal && locVal !== locKey) ? locVal : ''
+              return (
+                <div key={p.id} className={styles.projectItem}>
+                  <span className={styles.projectDot} />
+                  {p.name}{loc ? ` @ ${loc.split(',')[0]}` : ''}
+                </div>
+              )
+            })}
             <div className={styles.projectItem} style={{ opacity: 0.45, marginTop: 10, fontSize: 11 }}>
               + VSR Grand @ Thadigadapa
             </div>
@@ -172,7 +177,7 @@ export default function Footer({ content }) {
         {/* ── Bottom bar ────────────────────────────────────────── */}
         <div className={styles.bottom}>
           <span>© {new Date().getFullYear()} Chaturbhuja Properties &amp; Infra. {t('footer.rights')}</span>
-          <span>APCRDA Approved · RERA Registered · 100% {t('common.clearTitle')}</span>
+          <span>{t('approvals.crdaApproved') || 'APCRDA Approved'} · {t('approvals.reraRegistered') || 'RERA Registered'} · 100% {t('common.clearTitle')}</span>
         </div>
         <div className={styles.devCredit}>
           Developed by <a href="https://www.smsolutionstech.com" target="_blank" rel="noreferrer">SM Solutions &amp; Technologies</a>

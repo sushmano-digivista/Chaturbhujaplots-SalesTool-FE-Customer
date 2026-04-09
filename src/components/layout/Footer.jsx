@@ -36,7 +36,7 @@ function scrollTo(id) {
 
 export default function Footer({ content }) {
   const { data: ownerSettings } = useContactSettings()
-  const { t } = useLanguage()
+  const { t, language } = useLanguage()
 
   // Build translated quick links so labels switch with language
   const QUICK_LINKS_I18N = [
@@ -125,7 +125,7 @@ export default function Footer({ content }) {
             {PROJECT_IDS.map((p) => {
               const nameKey  = `projects.${p.id}.name`
               const nameVal  = t(nameKey)
-              const projName = (nameVal && nameVal !== nameKey) ? nameVal : p.name
+              const projName = (language === 'te' && nameVal && nameVal !== nameKey) ? nameVal : p.name
               const locKey   = `projects.${p.id}.locShort`
               const locVal   = t(locKey)
               const loc      = (locVal && locVal !== locKey) ? locVal : ''

@@ -522,7 +522,7 @@ function ContactTab({ proj, onEnquire, ownerSettings }) {
 export default function ProjectPage() {
   const { id }      = useParams()
   const navigate    = useNavigate()
-  const { t }       = useLanguage()
+  const { t, language } = useLanguage()
   const [activeTab, setActiveTab]   = useState('home')
   const [leadCtx,   setLeadCtx]     = useState(null)
   const [mobileNav, setMobileNav]   = useState(false)
@@ -595,7 +595,7 @@ export default function ProjectPage() {
             <ArrowLeft size={16} /> {t('portfolio.backHome').replace('\u2190 ', '')}
           </button>
           <div className={styles.headerTitle}>
-            <span className={styles.headerName}>{(() => { const k = 'projects.' + proj.id + '.name'; const v = t(k); return (v && v !== k) ? v : proj.name })()} </span>
+            <span className={styles.headerName}>{(() => { const k = 'projects.' + proj.id + '.name'; const v = t(k); return (language === 'te' && v && v !== k) ? v : proj.name })()} </span>
             <span className={styles.headerLoc}>📍 {tProj('loc') || proj.loc}</span>
           </div>
           <button className={styles.enquireBtn}

@@ -96,7 +96,7 @@ export default function Navbar({ contact, onEnquire }) {
                     const loc      = (locVal && locVal !== locKey) ? locVal : p.sub
                     const nameKey  = 'projects.' + p.id + '.name'
                     const nameVal  = t(nameKey)
-                    const projName = (nameVal && nameVal !== nameKey) ? nameVal : p.name
+                    const projName = (language === 'te' && nameVal && nameVal !== nameKey) ? nameVal : p.name
                     return (
                       <button
                         key={p.id}
@@ -173,7 +173,7 @@ export default function Navbar({ contact, onEnquire }) {
             const loc      = (locVal && locVal !== locKey) ? locVal : p.sub
             const nameKey  = 'projects.' + p.id + '.name'
             const nameVal  = t(nameKey)
-            const projName = (nameVal && nameVal !== nameKey) ? nameVal : p.name
+            const projName = (language === 'te' && nameVal && nameVal !== nameKey) ? nameVal : p.name
             return (
               <button
                 key={p.id}

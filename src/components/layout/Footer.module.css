@@ -141,6 +141,7 @@
   .floatWA   { bottom: 72px; }
   .grid      { grid-template-columns: 1fr; gap: 28px; }
   .bottom    { flex-direction: column; gap: 8px; text-align: center; }
+  .devCredit { padding-bottom: 70px; }
 }
 
 /* ── Developer Credit ──────────────────────────────────────── */

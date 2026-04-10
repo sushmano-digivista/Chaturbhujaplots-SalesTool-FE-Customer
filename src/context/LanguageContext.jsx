@@ -590,6 +590,15 @@ export const FALLBACK_TRANSLATIONS = {
       close:           '\u0c2e\u0c42\u0c38\u0c3f\u0c35\u0c47\u0c2f\u0c3f',
       whatsappNote:    '\u0c2e\u0c40 \u0c35\u0c3e\u0c1f\u0c4d\u0c38\u0c3e\u0c2a\u0c4d\u200c\u0c15\u0c41 \u0c2c\u0c4d\u0c30\u0c4b\u0c1a\u0c30\u0c4d \u0c2a\u0c02\u0c2a\u0c41\u0c24\u0c3e\u0c2e\u0c41',
       successMessage:  '\u0c27\u0c28\u0c4d\u0c2f\u0c35\u0c3e\u0c26\u0c3e\u0c32\u0c41! \u0c2e\u0c3e \u0c1f\u0c40\u0c2e\u0c4d \u0c24\u0c4d\u0c35\u0c30\u0c32\u0c4b \u0c2e\u0c3f\u0c2e\u0c4d\u0c2e\u0c32\u0c4d\u0c28\u0c3f \u0c38\u0c02\u0c2a\u0c4d\u0c30\u0c26\u0c3f\u0c38\u0c4d\u0c24\u0c41\u0c02\u0c26\u0c3f.',
+      anyNotSure:          '\u0c0f\u0c26\u0c48\u0c28\u0c3e \u0c15\u0c3e\u0c26\u0c41 / \u0c07\u0c02\u0c15\u0c3e \u0c28\u0c3f\u0c30\u0c4d\u0c23\u0c2f\u0c3f\u0c02\u0c1a\u0c32\u0c47\u0c26\u0c41',
+      anyNotSureAll:       '\u0c0f\u0c26\u0c48\u0c28\u0c3e \u0c15\u0c3e\u0c26\u0c41 / \u0c07\u0c02\u0c15\u0c3e \u0c28\u0c3f\u0c30\u0c4d\u0c23\u0c2f\u0c3f\u0c02\u0c1a\u0c32\u0c47\u0c26\u0c41 \u2014 \u0c05\u0c28\u0c4d\u0c28\u0c40 \u0c21\u0c4c\u0c28\u0c4d\u200c\u0c32\u0c4b\u0c21\u0c4d',
+      other:               '\u0c07\u0c24\u0c30\u0c02',
+      plotInterest:        '\u0c2a\u0c4d\u0c32\u0c3e\u0c1f\u0c4d \u0c06\u0c38\u0c15\u0c4d\u0c24\u0c3f',
+      projectInterest:     '\u0c2a\u0c4d\u0c30\u0c3e\u0c1c\u0c46\u0c15\u0c4d\u0c1f\u0c4d \u0c06\u0c38\u0c15\u0c4d\u0c24\u0c3f',
+      requiredForDownload: '\u0c21\u0c4c\u0c28\u0c4d\u200c\u0c32\u0c4b\u0c21\u0c4d\u200c\u0c15\u0c41 \u0c05\u0c35\u0c38\u0c30\u0c02',
+      selectPreference:    '\u0c2e\u0c40 \u0c06\u0c38\u0c15\u0c4d\u0c24\u0c3f \u0c0e\u0c02\u0c1a\u0c41\u0c15\u0c4b\u0c02\u0c21\u0c3f',
+      selectProject:       '\u0c2a\u0c4d\u0c30\u0c3e\u0c1c\u0c46\u0c15\u0c4d\u0c1f\u0c4d \u0c0e\u0c02\u0c1a\u0c41\u0c15\u0c4b\u0c02\u0c21\u0c3f',
+      selectProjectOptional: '\u0c2a\u0c4d\u0c30\u0c3e\u0c1c\u0c46\u0c15\u0c4d\u0c1f\u0c4d \u0c0e\u0c02\u0c1a\u0c41\u0c15\u0c4b\u0c02\u0c21\u0c3f (\u0c10\u0c1a\u0c4d\u0c1b\u0c3f\u0c15)',
     },
     portfolio: {
       yearsIndustry:    '\u0c2a\u0c30\u0c3f\u0c36\u0c4d\u0c30\u0c2e\u0c32\u0c4b \u0c05\u0c28\u0c41\u0c2d\u0c35\u0c02',
@@ -908,18 +917,6 @@ export const FALLBACK_TRANSLATIONS = {
       educationalmedicalDesc:     'SRM, NRI మెడికల్ కళాశాల 10 కి.మీ. లోపల.',
       mulapadustadium:            'ములపాడు స్టేడియం',
       mulapadustadiumDesc:        'అంతర్జాతీయ క్రికెట్ స్టేడియం సమీపంలో.',
-    },
-
-    modal: {
-      projectInterest:     'ప్రాజెక్ట్ ఆసక్తి',
-      requiredForDownload: 'డౌన్లోడ౏కు అవసరం',
-      selectProject:       'ప్రాజెక్ట్ ఎంచుకొండి',
-      selectProjectOptional:'ప్రాజెక్ట్ ఎంచుకొండి (ఐచ్చిక)',
-      anyNotSure:          'ఎస్వైనా / ఇంకా నిర్ణయించలేదు',
-      anyNotSureAll:       'ఎస్వైనా / ఇంకా నిర్ణయించలేదు — అన్నీ డౌన్లోడ౏',
-      plotInterest:        'ప్లాట్ ఆసక్తి',
-      selectPreference:    'మీ ఆసక్తి ఎంచుకొండి',
-      other:               'ఇతరం',
     },
 
     footer: {

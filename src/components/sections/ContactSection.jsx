@@ -45,7 +45,9 @@ export default function ContactSection({ content, onEnquire }) {
             {t('contact.writeUs')} — <em>{t('contact.sendMessage')}</em>
           </h2>
           <p style={{ color: 'rgba(255,255,255,0.62)', fontSize: 15, lineHeight: 1.75, marginBottom: 28 }}>
-            Our team is available 7 days a week. {t('contact.callUs')}, {t('contact.sendWhatsApp')} or fill the form.
+            {language === 'te'
+              ? `మా టీమ్ వారంలో 7 రోజులు అందుబాటులో ఉంటుంది. ${t('contact.callUs')}, ${t('contact.sendWhatsApp')} లేదా ఫారం నింపండి.`
+              : `Our team is available 7 days a week. ${t('contact.callUs')}, ${t('contact.sendWhatsApp')} or fill the form.`}
           </p>
 
           <div className={styles.perks}>

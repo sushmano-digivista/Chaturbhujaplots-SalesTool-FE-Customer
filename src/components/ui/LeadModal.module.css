@@ -20,11 +20,7 @@
   overflow-x: hidden;
 }
 .handle {
-  width: 40px; height: 5px;
-  background: rgba(0,0,0,0.15); border-radius: 3px;
-  flex: 1;
-  align-self: center;
-  margin: 0 auto;
+  display: none;
 }
 /* Close button — lives in overlay, always visible */
 .topBar {

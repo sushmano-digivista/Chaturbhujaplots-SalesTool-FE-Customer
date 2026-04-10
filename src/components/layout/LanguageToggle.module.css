@@ -11,7 +11,7 @@
   cursor:          pointer;
   user-select:     none;
   flex-shrink:     0;
-  overflow:        hidden;
+  overflow:        visible;
   transition:      border-color 0.25s, box-shadow 0.25s, background 0.25s;
 }
 
@@ -86,18 +86,31 @@
   color: rgba(232, 213, 163, 0.7);
 }
 
-/* ── Glow pulse animation to draw attention ───────────────────────── */
-@keyframes glowPulse {
-  0%, 100% { box-shadow: 0 0 4px rgba(201,168,76,0.4), 0 0 8px rgba(201,168,76,0.2); }
-  50%      { box-shadow: 0 0 10px rgba(201,168,76,0.8), 0 0 20px rgba(201,168,76,0.4), 0 0 30px rgba(201,168,76,0.2); }
+/* ── Ripple ring animation to draw attention ───────────────────────── */
+@keyframes rippleRing {
+  0%   { transform: scale(1); opacity: 0.8; }
+  100% { transform: scale(1.8); opacity: 0; }
 }
 
-.toggle {
-  animation: glowPulse 2s ease-in-out infinite;
+.toggle::before,
+.toggle::after {
+  content: '';
+  position: absolute;
+  inset: -3px;
+  border-radius: 100px;
+  border: 2px solid #C9A84C;
+  pointer-events: none;
+  animation: rippleRing 2s ease-out infinite;
 }
 
-.toggle:hover {
+.toggle::after {
+  animation-delay: 1s;
+}
+
+.toggle:hover::before,
+.toggle:hover::after {
   animation: none;
+  opacity: 0;
 }
 
 /* ── Mobile ────────────────────────────────────────────────────────── */

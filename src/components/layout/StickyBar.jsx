@@ -21,7 +21,9 @@ export default function StickyBar({ contact, onEnquire }) {
         <span>{t('contact.callUs')}</span>
       </a>
 
-      <WhatsAppIcon size={44} onClick={openWA} title={t('contact.sendWhatsApp')} />
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+        <WhatsAppIcon size={44} onClick={openWA} title={t('contact.sendWhatsApp')} />
+      </div>
 
       <button
         className={styles.sbBtn + ' ' + styles.sbMain}

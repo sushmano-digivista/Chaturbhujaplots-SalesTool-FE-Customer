@@ -17,6 +17,7 @@ const DEFAULT_STATS = [
 export default function QuoteSection({ content, onEnquire }) {
   const { t } = useLanguage()
   const q = content?.quote || {}
+  const tv = (key, fallback) => { const v = t(key); return (v && v !== key) ? v : fallback }
 
   return (
     <section className={`section ${styles.quoteSec}`}>
@@ -27,15 +28,15 @@ export default function QuoteSection({ content, onEnquire }) {
         viewport={{ once: true }}
         transition={{ duration: 0.6 }}
       >
-        <span className={styles.quoteTag}>{t('sections.investmentOpportunity') || 'Investment Opportunity'}</span>
+        <span className={styles.quoteTag}>{tv('sections.investmentOpportunity', 'Investment Opportunity')}</span>
 
-        <h2 className={styles.quoteH}>{q.investLine1 || 'Invest ₹2 Today —'}</h2>
-        <h2 className={styles.quoteH}>{q.investLine2 || 'Receive ₹20 Tomorrow'}</h2>
+        <h2 className={styles.quoteH}>{tv('quote.investLine1', q.investLine1 || 'Invest ₹2 Today —')}</h2>
+        <h2 className={styles.quoteH}>{tv('quote.investLine2', q.investLine2 || 'Receive ₹20 Tomorrow')}</h2>
 
         <div className={styles.quoteDivider} />
 
         <p className={styles.quoteText}>
-          &ldquo;{q.quote || 'If you invest 2 rupees now, in a few years it will be 10 times your investment.'}&rdquo;
+          &ldquo;{tv('quote.quoteText', q.quote || 'If you invest 2 rupees now, in a few years it will be 10 times your investment.')}&rdquo;
         </p>
 
         <div className={styles.quoteStats}>
@@ -45,10 +46,14 @@ export default function QuoteSection({ content, onEnquire }) {
               'Years Horizon':   'quote.yearsHorizon',
               'CRDA + RERA':     'quote.crdaRera',
             }
+            const VAL_KEYS = {
+              'Safe': 'quote.safe',
+            }
             const k = STAT_KEYS[s.label]; const v = t(k || '')
+            const vk = VAL_KEYS[s.value]; const translatedVal = vk ? tv(vk, s.value) : s.value
             return (
             <div key={s.label} className={styles.quoteStat}>
-              <div className={styles.quoteStatNum}>{s.value}</div>
+              <div className={styles.quoteStatNum}>{translatedVal}</div>
               <div className={styles.quoteStatLabel}>{(v && v !== k) ? v : s.label}</div>
             </div>
             )

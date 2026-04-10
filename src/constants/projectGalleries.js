@@ -40,7 +40,7 @@ const FOLDER_LABELS = {
   paritala:     'Anjana Paradise @ Paritala',
   varaha:       'Varaha Virtue @ Pamarru',
   chevitikallu: 'Aparna Legacy @ Chevitikallu',
-  trimbak:      'Trimbak Oaks @ Penamaluru',
+  trimbak:      'Trimbak Oaks Phase I @ Penamaluru',
 }
 
 function buildMap(modules) {

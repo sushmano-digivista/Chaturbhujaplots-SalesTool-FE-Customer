@@ -42,6 +42,14 @@ const LOCAL_PRICING = {
     ],
     corpus:  { amount: 100 },
   },
+  trimbak: {
+    east:    { base: 29000, dev: 1000 },
+    west:    { base: 28500, dev: 1000 },
+    corners: [
+      { type: 'North-East Corner', extra: 1500 },
+      { type: 'Other Corners',     extra: 1000 },
+    ],
+  },
 }
 
 // ── Static plot data per venture (from Excel registers) ───────────────────────
@@ -136,6 +144,7 @@ const VENTURE_PLOTS = {
     label:    'Trimbak Oaks',
     short:    'Penamaluru',
     color:    '#C0522A',
+    totalPlots: null,
     upcoming: true,
   },
 }
@@ -184,10 +193,10 @@ export default function PlotGrid({ onEnquire, pricingMap }) {
               style={isActive ? { background: VENTURE_COLORS[k], borderColor: VENTURE_COLORS[k] } : { '--vbtn-color': VENTURE_COLORS[k] }}
               onClick={() => { setVentureKey(k); setActiveCategory(null); setPriceOpen(false) }}
             >
-              <span className={styles.ventureBtnName} style={{ color: isActive ? '#fff' : VENTURE_COLORS[k] }}>{v.label}</span>
+              <span className={styles.ventureBtnName} style={{ color: isActive ? '#fff' : VENTURE_COLORS[k] }}>{(() => { const nk = 'projects.' + k + '.name'; const nv = t(nk); return (nv && nv !== nk) ? nv : v.label })()}</span>
               <span className={styles.ventureBtnSub}  style={{ color: isActive ? 'rgba(255,255,255,.75)' : 'var(--text-light)' }}>{(() => { const locKey = 'projects.' + k + '.locShort'; const locV = t(locKey); return (locV && locV !== locKey) ? locV : v.short })()}</span>
               <span className={styles.ventureBtnCount} style={isActive ? { background: 'rgba(255,255,255,.2)', color: '#fff' } : { background: `${VENTURE_COLORS[k]}22`, color: VENTURE_COLORS[k] }}>
-                {v.upcoming ? '🔜 Upcoming' : `${v.totalPlots} plots`}
+                {v.upcoming ? `🔜 ${tv('common.upcoming', 'Upcoming')}` : v.totalPlots ? `${v.totalPlots} ${tv('common.plots', 'plots')}` : tv('common.upcoming', 'Upcoming')}
               </span>
             </button>
           )
@@ -204,16 +213,62 @@ export default function PlotGrid({ onEnquire, pricingMap }) {
           transition={{ duration: 0.3 }}
           style={{ borderColor: `${color}44` }}
         >
-          <div className={styles.upcomingIcon}>🔜</div>
-          <div className={styles.upcomingTitle} style={{ color }}>Trimbak Oaks — {tv('portfolio.comingSoon', 'Coming Soon')}</div>
-          <p className={styles.upcomingDesc}>
-            {tv('sections.trimbakUpcomingDesc', 'Plot details for Trimbak Oaks, Penamaluru will be available shortly. Register your interest now and be the first to know when bookings open.')}
-          </p>
+          {/* Show pricing if available even for upcoming */}
+          {VENTURE_PRICING[ventureKey] ? (
+            <>
+              {(() => {
+                const vp = VENTURE_PRICING[ventureKey]
+                if (!vp) return null
+                return (
+                  <div className={styles.priceGrid}>
+                    <div className={styles.priceRow}>
+                      <span className={styles.priceDir}>☀ {tv('facings.east', 'East Facing')}</span>
+                      <span className={styles.priceVal}>
+                        ₹{vp.east.base.toLocaleString('en-IN')} + ₹{vp.east.dev.toLocaleString('en-IN')} {tv('project.dev', 'Dev.')} {tv('project.charges', 'Charges')}
+                        <strong> = ₹{(vp.east.base + vp.east.dev).toLocaleString('en-IN')}/{tv('project.sqYdShort', 'sq.yd')}</strong>
+                      </span>
+                    </div>
+                    <div className={styles.priceRow}>
+                      <span className={styles.priceDir}>🌙 {tv('facings.west', 'West Facing')}</span>
+                      <span className={styles.priceVal}>
+                        ₹{vp.west.base.toLocaleString('en-IN')} + ₹{vp.west.dev.toLocaleString('en-IN')} {tv('project.dev', 'Dev.')} {tv('project.charges', 'Charges')}
+                        <strong> = ₹{(vp.west.base + vp.west.dev).toLocaleString('en-IN')}/{tv('project.sqYdShort', 'sq.yd')}</strong>
+                      </span>
+                    </div>
+                    <div className={styles.priceDivider}>{tv('project.cornerCharges', 'Corner Charges (Extra)')}</div>
+                    {vp.corners.map((c, i) => {
+                      const CORNER_MAP = {
+                        'North-East Corner': tv('project.cornerNE', 'North-East Corner'),
+                        'Other Corners':     tv('project.cornerOther', 'Other Corners'),
+                      }
+                      return (
+                        <div key={i} className={styles.priceRow}>
+                          <span className={styles.priceDir}>{CORNER_MAP[c.type] || c.type}</span>
+                          <span className={styles.priceVal}>₹{c.extra.toLocaleString('en-IN')}/{tv('project.sqYdShort', 'sq.yd')} {tv('project.extra', 'extra')}</span>
+                        </div>
+                      )
+                    })}
+                  </div>
+                )
+              })()}
+              <p className={styles.upcomingDesc} style={{ marginTop: 12 }}>
+                {tv('sections.trimbakUpcomingDesc', 'Plot details for Trimbak Oaks, Penamaluru will be available shortly. Register your interest now and be the first to know when bookings open.')}
+              </p>
+            </>
+          ) : (
+            <>
+              <div className={styles.upcomingIcon}>🔜</div>
+              <div className={styles.upcomingTitle} style={{ color }}>{(() => { const nk = 'projects.trimbak.name'; const nv = t(nk); return (nv && nv !== nk) ? nv : 'Trimbak Oaks' })()} — {tv('portfolio.comingSoon', 'Coming Soon')}</div>
+              <p className={styles.upcomingDesc}>
+                {tv('sections.trimbakUpcomingDesc', 'Plot details for Trimbak Oaks, Penamaluru will be available shortly. Register your interest now and be the first to know when bookings open.')}
+              </p>
+            </>
+          )}
           <button
             className="btn btn-gold"
             onClick={() => onEnquire({ source: 'UPCOMING_INTEREST', venture: 'Trimbak Oaks', type: 'NOTIFY_ME' })}
           >
-            {tv('portfolio.notifyMe', 'Notify Me When Available →')}
+            {tv('portfolio.interestedBtn', 'Register Interest →')}
           </button>
         </motion.div>
       ) : (

@@ -16,33 +16,41 @@ import LaunchOverlay from '@/components/ui/LaunchOverlay'
 // Animation duration in ms -- must match CSS animation total in PageLoader
 const LOADER_MIN_MS = 2800
 
-// Track whether we've already shown the intro loader at least once this session
-let _hasShownLoader = false
+// Use a window-level flag to distinguish real page loads from SPA navigations.
+// On real page load (refresh/new tab): flag is absent → clear overlay, set flag.
+// On SPA nav back to Home: flag is present → skip.
+if (!window.__chaturbhuja_loaded) {
+  window.__chaturbhuja_loaded = true
+  try {
+    sessionStorage.removeItem('home_loader_shown')
+    sessionStorage.removeItem('launch_overlay_shown')
+  } catch {}
+}
+
+function loaderWasShown() { try { return sessionStorage.getItem('home_loader_shown') === '1' } catch { return false } }
+function markLoaderShown() { try { sessionStorage.setItem('home_loader_shown', '1') } catch {} }
 
 export default function HomePage() {
   const { data: content, isLoading, isError } = useContent()
   const { data: pricingMap } = usePricing()
   const [leadCtx,     setLeadCtx]     = useState(null)
-  const isFirstVisit = !_hasShownLoader
+  const [isFirstVisit] = useState(() => !loaderWasShown())
   const [showLoader,  setShowLoader]  = useState(isFirstVisit)
 
   const openEnquiry  = useCallback((ctx) => setLeadCtx(ctx), [])
   const closeEnquiry = useCallback(() => setLeadCtx(null),   [])
 
+  // Mark loader as shown immediately so any navigation away + back skips it
+  useEffect(() => {
+    markLoaderShown()
+  }, [])
+
   // Guarantee the PageLoader shows for at least LOADER_MIN_MS on first visit
   // so the full SVG animation always completes before content appears
   useEffect(() => {
     if (!isFirstVisit) return
-    const timer = setTimeout(() => {
-      setShowLoader(false)
-      _hasShownLoader = true
-    }, LOADER_MIN_MS)
+    const timer = setTimeout(() => setShowLoader(false), LOADER_MIN_MS)
     return () => clearTimeout(timer)
-  }, [])
-
-  // Mark loader as shown once data arrives (for non-first-visit case)
-  useEffect(() => {
-    if (!isFirstVisit) _hasShownLoader = true
   }, [])
 
   // SEO: Set page title

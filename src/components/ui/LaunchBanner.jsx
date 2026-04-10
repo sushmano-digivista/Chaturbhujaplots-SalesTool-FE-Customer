@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { useLanguage } from '@/context/LanguageContext'
 import styles from './LaunchBanner.module.css'
 
@@ -19,6 +20,7 @@ function getTimeLeft() {
 function pad(n) { return String(n).padStart(2, '0') }
 
 export default function LaunchBanner({ compact = false }) {
+  const navigate = useNavigate()
   const { language } = useLanguage()
   const isTe = language === 'te'
   const [timeLeft, setTimeLeft] = useState(getTimeLeft())
@@ -144,9 +146,10 @@ export default function LaunchBanner({ compact = false }) {
             >
               {isTe ? 'ఆసక్తి నమోదు చేయండి →' : 'Register Interest →'}
             </a>
-            <a href="/project/trimbak" className={styles.btnOutline}>
+            <button className={styles.btnOutline}
+              onClick={(e) => { e.stopPropagation(); navigate('/project/trimbak'); }}>
               {isTe ? 'ప్రాజెక్ట్ చూడండి' : 'View Project'}
-            </a>
+            </button>
           </div>
 
           <span className={styles.close} style={{ pointerEvents: 'none' }}>▲</span>

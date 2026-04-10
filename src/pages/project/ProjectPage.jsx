@@ -124,12 +124,12 @@ function HomeTab({ proj, onEnquire }) {
         </div>
         <div className={styles.heroStats}>
           <div className={styles.heroStat}>
-            <div className={styles.hsNum}>{proj.upcoming ? t('portfolio.comingSoon') : proj.total}</div>
+            <div className={styles.hsNum}>{proj.total || t('portfolio.comingSoon')}</div>
             <div className={styles.hsLabel}>{t('portfolio.totalPlots')}</div>
           </div>
           <div className={styles.hsDivider} />
           <div className={styles.heroStat}>
-            <div className={styles.hsNum}>{proj.upcoming ? t('portfolio.comingSoon') : proj.starting}</div>
+            <div className={styles.hsNum}>{(!proj.starting || proj.starting === 'Coming Soon') ? t('portfolio.comingSoon') : proj.starting}</div>
             <div className={styles.hsLabel}>{t('portfolio.startingFrom')}</div>
           </div>
         </div>
@@ -159,65 +159,63 @@ function OverviewTab({ proj, onEnquire, apiPricing }) {
   return (
     <div className={styles.tabContent}>
       <h2 className={styles.tabTitle}>{t('project.overview')}</h2>
-      {proj.upcoming ? (
-        <div className={styles.upcomingOverview}>
-          <div className={styles.upcomingBadge}>🔜 {t('portfolio.upcomingProject')}</div>
-          <h3 className={styles.upcomingHeading}>{tProj('name') || proj.name} — {t('portfolio.comingSoon')}</h3>
-          <p className={styles.upcomingText}>{t('project.notifyDesc')}</p>
-          <button className='btn btn-gold'
-            onClick={() => onEnquire({ source: 'UPCOMING_INTEREST', label: 'Notify Me', category: proj.name, type: 'NOTIFY_ME' })}>
-            {t('portfolio.notifyMe')}
-          </button>
+      {/* Pricing card — show if pricing exists, even for upcoming projects */}
+      {(apiPricing || proj.pricing) && (
+        <div style={{ marginBottom: 20 }}>
+          <PricingCard pricing={apiPricing || proj.pricing} />
         </div>
-      ) : (
-        <>
-          <div className={styles.facingCard}>
-            <div className={styles.facingHeader}>
-              <h3 className={styles.facingTitle}>{t('portfolio.plotDistribution')}</h3>
-              <span className={styles.facingTotal}>{proj.total} {t('portfolio.totalPlotsLabel')}</span>
-            </div>
-            <div className={styles.facingRows}>
-              {facingRows.map((row) => (
-                <div key={row.label} className={styles.facingRow}>
-                  <div className={styles.facingLabel}>
-                    <span style={{ marginRight: 4 }}>{row.icon}</span>
-                    <div className={styles.facingDot} style={{ background: row.color }} />
-                    {(() => { const k = 'facings.' + row.key; const v = t(k); return v !== k ? v : row.label })()}
-                  </div>
-                  <div className={styles.facingBar}>
-                    <motion.div
-                      className={styles.facingFill}
-                      style={{ background: row.color }}
-                      initial={{ width: 0 }}
-                      whileInView={{ width: (row.value / totalFacing * 100) + '%' }}
-                      viewport={{ once: true }}
-                      transition={{ duration: 0.8, ease: 'easeOut' }}
-                    />
-                  </div>
-                  <div className={styles.facingCount}>{row.value}</div>
-                </div>
-              ))}
-            </div>
+      )}
+
+      {/* Plot distribution — only for non-upcoming projects with facings */}
+      {!proj.upcoming && facingRows.length > 0 && (
+        <div className={styles.facingCard}>
+          <div className={styles.facingHeader}>
+            <h3 className={styles.facingTitle}>{t('portfolio.plotDistribution')}</h3>
+            <span className={styles.facingTotal}>{proj.total} {t('portfolio.totalPlotsLabel')}</span>
           </div>
-          {(apiPricing || proj.pricing) && <div style={{marginBottom:'20px'}}><PricingCard pricing={apiPricing || proj.pricing} /></div>}
-          <div className={styles.factsGrid}>
-            {[
-              { label: t('portfolio.totalPlots'),    value: proj.total },
-              { label: t('portfolio.startingPrice'), value: proj.starting },
-              { label: t('portfolio.projectStatus'), value: t('portfolio.openForBooking') },
-            ].map((f) => (
-              <div key={f.label} className={styles.factCard}>
-                <div className={styles.factVal}>{f.value}</div>
-                <div className={styles.factLabel}>{f.label}</div>
+          <div className={styles.facingRows}>
+            {facingRows.map((row) => (
+              <div key={row.label} className={styles.facingRow}>
+                <div className={styles.facingLabel}>
+                  <span style={{ marginRight: 4 }}>{row.icon}</span>
+                  <div className={styles.facingDot} style={{ background: row.color }} />
+                  {(() => { const k = 'facings.' + row.key; const v = t(k); return v !== k ? v : row.label })()}
+                </div>
+                <div className={styles.facingBar}>
+                  <motion.div
+                    className={styles.facingFill}
+                    style={{ background: row.color }}
+                    initial={{ width: 0 }}
+                    whileInView={{ width: (row.value / totalFacing * 100) + '%' }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.8, ease: 'easeOut' }}
+                  />
+                </div>
+                <div className={styles.facingCount}>{row.value}</div>
               </div>
             ))}
           </div>
-          <button className='btn btn-gold'
-            onClick={() => onEnquire({ source: 'CONTACT_FORM', label: 'Get Plot Details', category: proj.name })}>
-            {t('portfolio.getDetails')}
-          </button>
-        </>
+        </div>
       )}
+
+      {/* Facts grid */}
+      <div className={styles.factsGrid}>
+        {[
+          proj.total && { label: t('portfolio.totalPlots'),    value: proj.total },
+          proj.starting && { label: t('portfolio.startingPrice'), value: proj.starting === 'Coming Soon' ? t('portfolio.comingSoon') : proj.starting },
+          { label: t('portfolio.projectStatus'), value: proj.upcoming ? t('portfolio.comingSoon') : t('portfolio.openForBooking') },
+        ].filter(Boolean).map((f) => (
+          <div key={f.label} className={styles.factCard}>
+            <div className={styles.factVal}>{f.value}</div>
+            <div className={styles.factLabel}>{f.label}</div>
+          </div>
+        ))}
+      </div>
+
+      <button className='btn btn-gold'
+        onClick={() => onEnquire({ source: proj.upcoming ? 'UPCOMING_INTEREST' : 'CONTACT_FORM', label: proj.upcoming ? 'Register Interest' : 'Get Plot Details', category: proj.name, type: proj.upcoming ? 'NOTIFY_ME' : undefined })}>
+        {proj.upcoming ? t('portfolio.interestedBtn') : t('portfolio.getDetails')}
+      </button>
     </div>
   )
 }
@@ -458,7 +456,7 @@ function LocationTab({ proj }) {
       <div className={styles.mapWrap}>
         {proj.mapEmbedUrl && (
           <iframe src={proj.mapEmbedUrl} className={styles.iframe}
-            allowFullScreen loading='lazy' referrerPolicy='no-referrer-when-downgrade'
+            allowFullScreen loading='eager' referrerPolicy='no-referrer-when-downgrade'
             title={proj.name + ' Location'} />
         )}
         <button className={styles.mapOpenBtn}
@@ -492,7 +490,7 @@ function ContactTab({ proj, onEnquire, ownerSettings }) {
     : c.address
   const addrKey = 'projects.' + proj.id + '.address'
   const addrVal = t(addrKey)
-  const address = (language === 'te' && addrVal && addrVal !== addrKey) ? addrVal : rawAddress
+  const address = (() => { let a = (language === 'te' && addrVal && addrVal !== addrKey) ? addrVal : rawAddress; if (language === 'te' && a) a = a.replace(/\bAP\b/g, 'ఆంధ్రప్రదేశ్'); return a })()
   const tProj = (field) => { const k = 'projects.' + proj.id + '.' + field; const v = t(k); if (field === 'name' && language !== 'te') return null; return (v && v !== k) ? v : null }
   const openWA = () => openWhatsApp(
     c.whatsapp || DEFAULT_WA_NUMBER,
@@ -666,15 +664,26 @@ export default function ProjectPage() {
         </AnimatePresence>
       </header>
       <main className={styles.main}>
-        <AnimatePresence mode='wait'>
-          <motion.div key={activeTab}
-            initial={{ opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.22 }}>
-            {tabComponents[activeTab]}
-          </motion.div>
-        </AnimatePresence>
+        {/* Location tab always mounted (iframe preloaded), hidden when not active */}
+        <div style={{ display: activeTab === 'location' ? 'block' : 'none' }}>
+          <LocationTab proj={proj} />
+        </div>
+        {/* Contact tab always mounted (QR preloaded), hidden when not active */}
+        <div style={{ display: activeTab === 'contact' ? 'block' : 'none' }}>
+          <ContactTab proj={proj} onEnquire={openEnquiry} ownerSettings={ownerSettings} />
+        </div>
+        {/* Other tabs use AnimatePresence as before */}
+        {activeTab !== 'location' && activeTab !== 'contact' && (
+          <AnimatePresence mode='wait'>
+            <motion.div key={activeTab}
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.22 }}>
+              {tabComponents[activeTab]}
+            </motion.div>
+          </AnimatePresence>
+        )}
       </main>
       <LeadModal
         context={leadCtx}

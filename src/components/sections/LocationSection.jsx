@@ -98,7 +98,7 @@ export default function LocationSection({ content }) {
   const [active, setActive] = useState(0)
   const { ref, inView }     = useInView({ triggerOnce: true, threshold: 0.25 })
   const { data: ownerSettings } = useContactSettings()
-  const { t } = useLanguage()
+  const { t, language } = useLanguage()
 
   const tloc = (val, key) => {
     if (!key) return val
@@ -198,83 +198,96 @@ export default function LocationSection({ content }) {
               onClick={() => setActive(i)}
             >
               <span className={styles.ventureTabDot} style={{ background: isActive ? '#fff' : p.color }} />
-              <span className={styles.ventureTabName} style={{ color: isActive ? '#fff' : p.color }}>{v.name}</span>
+              <span className={styles.ventureTabName} style={{ color: isActive ? '#fff' : p.color }}>{(() => { const k = 'projects.' + v.id + '.name'; const val = t(k); return (val && val !== k) ? val : v.name })()}</span>
               <span className={styles.ventureTabShort} style={{ color: isActive ? 'rgba(255,255,255,.75)' : 'var(--text-light)' }}>{(() => { const k = 'projects.' + v.id + '.locShort'; const val = t(k); return (val && val !== k) ? val : v.short })()} </span>
             </button>
           )
         })}
       </div>
 
-      {/* ── Map embed ────────────────────────────────────────────────────── */}
-      <AnimatePresence mode="wait">
-        <motion.div
-          key={venture.id}
-          className={styles.mapWrap}
-          ref={ref}
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: -10 }}
-          transition={{ duration: 0.3 }}
-          style={{ borderColor: palette.color }}
-        >
-          <iframe
-            src={venture.mapUrl}
-            className={styles.iframe}
-            allowFullScreen
-            loading="lazy"
-            referrerPolicy="no-referrer-when-downgrade"
-            title={`${venture.name} Location`}
-          />
+      {/* ── Map embeds — all preloaded, show/hide by active ───────────── */}
+      <div style={{ position: 'relative' }} ref={ref}>
+        {VENTURES.map((v, i) => {
+          const isActive = i === active
+          const p = PALETTE[i]
+          const tName = (() => { const k = 'projects.' + v.id + '.name'; const val = t(k); return (val && val !== k) ? val : v.name })()
+          const tAddr = (() => { const k = 'projects.' + v.id + '.address'; const val = t(k); let addr = (val && val !== k) ? val : v.address; if (language === 'te') addr = addr.replace(/\bAP\b/g, 'ఆంధ్రప్రదేశ్'); return addr })()
+          return (
+            <div
+              key={v.id}
+              className={styles.mapWrap}
+              style={{
+                borderColor: p.color,
+                position: isActive ? 'relative' : 'absolute',
+                top: 0, left: 0, width: '100%',
+                opacity: isActive ? 1 : 0,
+                pointerEvents: isActive ? 'auto' : 'none',
+                zIndex: isActive ? 1 : 0,
+                transition: 'opacity 0.25s ease',
+              }}
+            >
+              <iframe
+                src={v.mapUrl}
+                className={styles.iframe}
+                allowFullScreen
+                loading="eager"
+                referrerPolicy="no-referrer-when-downgrade"
+                title={`${tName} Location`}
+              />
 
-          {/* Popup pin */}
-          <motion.div
-            className={styles.popup}
-            initial={{ opacity: 0, scale: 0.5 }}
-            animate={inView ? { opacity: 1, scale: 1 } : {}}
-            transition={{ delay: 0.3, duration: 0.5, ease: [0.34, 1.56, 0.64, 1] }}
-          >
-            <div className={styles.popupTitle} style={{ color: palette.color }}>📍 {venture.name}</div>
-            <div className={styles.popupSub}>{venture.address}</div>
-            <div className={styles.popupBadges}>
-              {venture.badges.map(b => {
-                const BADGE_MAP = {
-                  'CRDA Approved':  'approvals.crdaApproved',
-                  'RERA Registered':'approvals.reraRegistered',
-                }
-                const k = BADGE_MAP[b]
-                const v = k ? t(k) : null
-                const label = (v && v !== k) ? v : b
-                return (
-                  <span key={b} className={styles.badgeGreen}
-                  style={{ background: palette.light, color: palette.text, borderColor: `${palette.color}44` }}>
-                  {label}
-                </span>
-                )
-              })}
-            </div>
-            <button className={styles.popupBtn} style={{ background: palette.color }}
-              onClick={() => openMaps(venture.openUrl)}>
-              {t('sections.openInMaps') || 'Open in Maps'}
-            </button>
-            <div className={styles.popupArrow} />
-          </motion.div>
+              {/* Popup pin */}
+              {isActive && (
+                <motion.div
+                  className={styles.popup}
+                  initial={{ opacity: 0, scale: 0.5 }}
+                  animate={inView ? { opacity: 1, scale: 1 } : {}}
+                  transition={{ delay: 0.2, duration: 0.4, ease: [0.34, 1.56, 0.64, 1] }}
+                >
+                  <div className={styles.popupTitle} style={{ color: p.color }}>📍 {tName}</div>
+                  <div className={styles.popupSub}>{tAddr}</div>
+                  <div className={styles.popupBadges}>
+                    {v.badges.map(b => {
+                      const BADGE_MAP = {
+                        'CRDA Approved':  'approvals.crdaApproved',
+                        'RERA Registered':'approvals.reraRegistered',
+                      }
+                      const bk = BADGE_MAP[b]
+                      const bv = bk ? t(bk) : null
+                      const label = (bv && bv !== bk) ? bv : b
+                      return (
+                        <span key={b} className={styles.badgeGreen}
+                          style={{ background: p.light, color: p.text, borderColor: `${p.color}44` }}>
+                          {label}
+                        </span>
+                      )
+                    })}
+                  </div>
+                  <button className={styles.popupBtn} style={{ background: p.color }}
+                    onClick={() => openMaps(v.openUrl)}>
+                    {t('sections.openInMaps') || 'Open in Maps'}
+                  </button>
+                  <div className={styles.popupArrow} />
+                </motion.div>
+              )}
 
-          {/* Bottom info bar */}
-          <div className={styles.mapBar} style={{ background: `${palette.color}E6` }}>
-            <div className={styles.barLeft}>
-              <div className={styles.liveDot} />
-              <div>
-                <div className={styles.barName}>{venture.name}</div>
-                <div className={styles.barAddr}>{venture.address}</div>
+              {/* Bottom info bar */}
+              <div className={styles.mapBar} style={{ background: `${p.color}E6` }}>
+                <div className={styles.barLeft}>
+                  <div className={styles.liveDot} />
+                  <div>
+                    <div className={styles.barName}>{tName}</div>
+                    <div className={styles.barAddr}>{tAddr}</div>
+                  </div>
+                </div>
+                <button className="btn btn-gold btn-sm"
+                  onClick={() => openMaps(v.openUrl)}>
+                  <Navigation size={14} /> {t('contact.getDirections')}
+                </button>
               </div>
             </div>
-            <button className="btn btn-gold btn-sm"
-              onClick={() => openMaps(venture.openUrl)}>
-              <Navigation size={14} /> {t('contact.getDirections')}
-            </button>
-          </div>
-        </motion.div>
-      </AnimatePresence>
+          )
+        })}
+      </div>
 
       {/* ── Distance cards — switch per venture ─────────────────────────── */}
       <AnimatePresence mode="wait">

@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { useLanguage } from '@/context/LanguageContext'
 
 const LAUNCH_DATE = new Date('2026-04-11T10:00:00+05:30')
@@ -16,7 +17,9 @@ function getTimeLeft() {
   }
 }
 
-let _overlayShown = false
+// Persist across mounts via sessionStorage so SPA navigations never re-trigger
+function wasShown() { try { return sessionStorage.getItem('launch_overlay_shown') === '1' } catch { return false } }
+function markShown() { try { sessionStorage.setItem('launch_overlay_shown', '1') } catch {} }
 
 /**
  * LaunchOverlay — "big boom" fullscreen splash that auto-shrinks into the banner.
@@ -24,15 +27,16 @@ let _overlayShown = false
  * Phase 2 (5-5.6s): Card shrinks + flies to top → overlay fades out
  */
 export default function LaunchOverlay() {
+  const navigate = useNavigate()
   const { language } = useLanguage()
   const isTe = language === 'te'
-  const [phase, setPhase] = useState(() => _overlayShown ? 'done' : 'boom')
+  const [phase, setPhase] = useState(() => wasShown() ? 'done' : 'boom')
   const [timeLeft, setTimeLeft] = useState(getTimeLeft())
   const cardRef = useRef(null)
 
   useEffect(() => {
     if (phase === 'done') return
-    _overlayShown = true
+    markShown()
     const timer = setInterval(() => setTimeLeft(getTimeLeft()), 1000)
     return () => clearInterval(timer)
   }, [phase])
@@ -130,10 +134,10 @@ export default function LaunchOverlay() {
             onClick={(e) => e.stopPropagation()}>
             {isTe ? 'ఆసక్తి నమోదు చేయండి →' : 'Register Interest →'}
           </a>
-          <a href="/project/trimbak" style={btnOutlineStyle}
-            onClick={(e) => e.stopPropagation()}>
+          <button style={btnOutlineStyle}
+            onClick={(e) => { e.stopPropagation(); setPhase('done'); navigate('/project/trimbak'); }}>
             {isTe ? 'ప్రాజెక్ట్ చూడండి →' : 'View Project →'}
-          </a>
+          </button>
         </div>
 
         <p style={dismissStyle}>{isTe ? 'మూసివేయడానికి ఎక్కడైనా క్లిక్ చేయండి' : 'Click anywhere to dismiss'}</p>

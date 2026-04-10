@@ -146,19 +146,20 @@ export default function Footer({ content }) {
           <div>
             <h5 className={styles.colTitle}>{t('contact.callUs').replace('Call Us', t('contact.callUs'))}</h5>
 
-            <a href={`tel:${phone}`} className={styles.contactRow} style={{ display: 'inline-flex', alignItems: 'center', gap: 8 }}>
-              <span className={styles.contactIcon}>📞</span>
-              <span>{phone}</span>
+            <div className={styles.contactRow} style={{ display: 'inline-flex', alignItems: 'center', gap: 8 }}>
+              <a href={`tel:${phone}`} style={{ display: 'inline-flex', alignItems: 'center', gap: 8, color: 'inherit', textDecoration: 'none' }}>
+                <span className={styles.contactIcon}>📞</span>
+                <span>{phone}</span>
+              </a>
               <a
                 href={`https://wa.me/${whatsapp}?text=${encodeURIComponent(language === 'te' ? t('contact.whatsappMessage') : (contact.whatsappMessage || t('contact.whatsappMessage')))}`}
                 target="_blank" rel="noreferrer"
                 aria-label={t('contact.sendWhatsApp')}
-                onClick={(e) => e.stopPropagation()}
                 style={{ display: 'inline-flex', marginLeft: 4 }}
               >
                 <WhatsAppIcon size={28} title={t('contact.sendWhatsApp')} />
               </a>
-            </a>
+            </div>
 
             <a href={`mailto:${email}`} className={styles.contactRow}>
               <span className={styles.contactIcon}>✉</span>
@@ -184,7 +185,7 @@ export default function Footer({ content }) {
           <span>{t('approvals.crdaApproved') || 'APCRDA Approved'} · {t('approvals.reraRegistered') || 'RERA Registered'} · 100% {t('common.clearTitle')}</span>
         </div>
         <div className={styles.devCredit}>
-          Developed by <a href="https://www.smsolutionstech.com" target="_blank" rel="noreferrer">SM Solutions &amp; Technologies</a>
+          Developed by <a href="https://www.chaturbhujaplots.in" target="_blank" rel="noreferrer">SM Solutions &amp; Technologies</a>
         </div>
       </div>
     </footer>

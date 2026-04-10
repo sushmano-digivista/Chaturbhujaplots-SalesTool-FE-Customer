@@ -195,9 +195,9 @@ function ProjectPopup({ proj, onClose, onNavigate, pricing, t, language }) {
         {/* Stats row */}
         <div className={styles.popupStats}>
           {[
-            { val: proj.upcoming ? safet('portfolio.comingSoon') : proj.starting, lab: safet('portfolio.startingFrom') },
-            { val: proj.upcoming ? safet('portfolio.comingSoon') : proj.total,    lab: safet('portfolio.totalPlots')   },
-            { val: proj.upcoming ? safet('portfolio.comingSoon') : proj.starting, lab: safet('portfolio.startingFrom') },
+            { val: (!proj.starting || proj.starting === 'Coming Soon') ? safet('portfolio.comingSoon') : proj.starting, lab: safet('portfolio.startingFrom') },
+            { val: proj.total || safet('portfolio.comingSoon'), lab: safet('portfolio.totalPlots') },
+            { val: (!proj.starting || proj.starting === 'Coming Soon') ? safet('portfolio.comingSoon') : proj.starting, lab: safet('portfolio.startingFrom') },
           ].map((s, i) => (
             <div key={i} className={styles.pStat}>
               <div className={styles.pStatVal} style={{ color: ac.color }}>{s.val}</div>

@@ -65,6 +65,25 @@ export default function PricingCard({ pricing, compact = false, dark = false }) 
         )}
       </div>
 
+      {/* Booking & Agreement — Trimbak Oaks only */}
+      {(pricing.booking || pricing.agreement) && (
+        <div className={styles.cornerSection} style={{ marginTop: 8 }}>
+          <div className={styles.cornerTitle}>{tv('project.paymentTerms', 'Payment Terms')}</div>
+          {pricing.booking && (
+            <div className={styles.cornerRow}>
+              <span className={styles.cornerType}>{tv('project.bookingAmount', 'Booking Amount')}</span>
+              <span className={styles.cornerExtra}>Rs.{pricing.booking.amount.toLocaleString('en-IN')}/-</span>
+            </div>
+          )}
+          {pricing.agreement && (
+            <div className={styles.cornerRow}>
+              <span className={styles.cornerType}>{tv('project.agreementAmount', 'At Agreement')}</span>
+              <span className={styles.cornerExtra}>{pricing.agreement.fraction} {tv('project.ofTotal', 'of total')}</span>
+            </div>
+          )}
+        </div>
+      )}
+
       {pricing.note && (
         <p className={styles.note}>* {tv('project.pricingNote', localizeSqYd(pricing.note))}</p>
       )}

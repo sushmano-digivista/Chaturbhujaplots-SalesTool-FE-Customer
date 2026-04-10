@@ -118,6 +118,7 @@ export default function LocationSection({ content }) {
     'Hanuman Temple':            'hanumanTemple',
     'Outer Ring Road (ORR)':     'outerRingRoad',
     'BEL Company (Defence PSU)': 'belCompany',
+    'BEL Company':               'belCompany',
     'Bandar Port':               'bandarPort',
     'Bharatanatyam Institution': 'bharatanatyam',
     'Vijayawada Airport':        'vijayawadaAirport',
@@ -315,7 +316,7 @@ export default function LocationSection({ content }) {
                 <div className={styles.distSub}>{tloc(d.subtitle, LOC_SUB_KEYS[d.subtitle] || '')}</div>
               </div>
               <div className={styles.distBadge} style={{ background: palette.light, color: palette.text }}>
-                {language === 'te' ? { 'Nearby': 'సమీపంలో', 'Proposed': 'ప్రతిపాదితం' }[d.distance] || d.distance : d.distance}
+                {language === 'te' ? { 'Nearby': '\u0c38\u0c2e\u0c40\u0c2a\u0c02\u0c32\u0c4b', 'Proposed': '\u0c2a\u0c4d\u0c30\u0c24\u0c3f\u0c2a\u0c3e\u0c26\u0c3f\u0c24\u0c02', 'Adjacent': '\u0c2a\u0c4d\u0c30\u0c15\u0c4d\u0c15\u0c28', 'Ready': '\u0c38\u0c3f\u0c26\u0c4d\u0c27\u0c02' }[d.distance] || d.distance : d.distance}
               </div>
             </motion.div>
           ))}

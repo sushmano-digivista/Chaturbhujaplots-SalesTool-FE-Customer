@@ -101,9 +101,40 @@ export default function LocationSection({ content }) {
   const { t, language } = useLanguage()
 
   const tloc = (val, key) => {
-    if (!key) return val
-    const v = t('locationLabels.' + key)
-    return (v && v !== 'locationLabels.' + key) ? v : val
+    if (!key || language !== 'te') return val
+    const TE = {
+      nh16Highway: 'NH-16 జాతీయ రహదారి', nh16Sub: 'ప్రక్కన — నేరు ప్రవేశం',
+      amaravatiCapital: 'అమరావతి రాజధాని', amaravatiCapitalSub: 'ఆంధ్రప్రదేశ్ కొత్త రాజధాని',
+      engineeringColleges: 'ఇంజనీరింగ్ కళాశాలలు', engineeringColSub2: 'అమృత సాయి, MVR, MIC',
+      nimraMedical: 'నిమ్రా మెడికల్ కళాశాల', healthcareHub: 'ఆరోగ్య కేంద్రం',
+      mulapaduStadium: 'మూలపాడు స్టేడియం', intlCricket: 'అంతర్జాతీయ క్రికెట్',
+      cineStudio: 'సినిమా స్టూడియో', cineStudioSub: 'ప్రభుత్వ ప్రతిపాదితం, నందిగామ',
+      railwayConn: 'రైల్వే కనెక్టివిటీ', railwayConnSub: 'ప్రభుత్వ ప్రతిపాదితం, అమరావతి-పారిటాల',
+      logisticHub: 'లాజిస్టిక్ హబ్', logisticHubSub: 'ప్రభుత్వ ప్రతిపాదితం, పారిటాల',
+      hanumanTemple: 'హనుమాన్ దేవాలయం', hanumanTempleSub2: 'కొన్ని నిమిషాలలో',
+      orrRingRoad: 'ఓఆర్‌ఆర్ (రింగ్ రోడ్)', veryNearExcellent: 'చాలా సమీపంలో, అద్భుత కనెక్టివిటీ',
+      orrSub: 'ప్రతిపాదితం — అద్భుత ప్రవేశం',
+      nationalHighway: 'జాతీయ రహదారి', nh16Sub2: 'నేరుగా ప్రక్కన', nh16Sub3: 'నేరు ప్రవేశం',
+      kathipudiOngole: 'కటిపూడి–ఒంగోలు హైవే', secondaryHighway: 'ద్వితీయ హైవే ప్రవేశం',
+      belCompany: 'బిఈఎల్ కంపెనీ (డిఫెన్స్ పీఎస్‌యూ)', belSub: 'భారత్ ఎలక్ట్రానిక్స్ లిమిటెడ్',
+      bandarPort: 'బందరు పోర్టు', bandarSub: 'ప్రముఖ వాణిజ్య బందరు', machilipatnamPort: 'మచిలీపట్నం బందరు',
+      sixLaneRoad: '6-లేన్ విజయవాడ–మచిలీపట్నం రోడ్డు', proposedVjaMtm: 'ప్రతిపాదిత విజయవాడ–మచిలీపట్నం',
+      bharatanatyam: 'భరతనాట్యం సంస్థ', bharatanatyamSub: 'ప్రపంచ ప్రసిద్ధ కళా సంస్థ',
+      worldDanceSchool: 'ప్రపంచ ప్రసిద్ధ నృత్య పాఠశాల',
+      housingProject: 'హౌసింగ్ ప్రాజెక్ట్', readyToBuild: 'నిర్మాణానికి సిద్ధం',
+      nearProximity: 'సమీప ప్రదేశంలో',
+      vijayawadaCentre: 'విజయవాడ కేంద్రం', cityCore: 'నగర కేంద్రం — 15 నిమిషాల ప్రయాణం',
+      nh65Highway: 'NH-65 జాతీయ రహదారి హైవే', directHighwayAccess: 'నేరు హైవే ప్రవేశం',
+      vitUniversity: 'విఐటి ఏపి విశ్వవిద్యాలయం', premierEngineering: 'ప్రతిష్టాత్మక ఇంజనీరింగ్ క్యాంపస్',
+      manipalHospital: 'మణిపాల్ ఆస్పత్రి', penamaluruHealthcare: 'పెనమలూరు ఆరోగ్య కేంద్రం',
+      vijayawadaJunction: 'విజయవాడ జంక్షన్', majorRailwayHub: 'ప్రముఖ రైల్వే జంక్షన్',
+      vijayawadaAirport: 'విజయవాడ విమానాశ్రయం', airConnectivity: 'వాయు సంపర్కం',
+      vijayawadaCity: 'విజయవాడ', vijayawadaSub: 'AP వాణిజ్య రాజధాని',
+      govtProposedAmaravati: 'ప్రభుత్వ ప్రతిపాదితం, అమరావతి నుండి',
+      hanumanTempleSub: 'శ్రీ పారిటాల హనుమాన్ దేవాలయం',
+      engineeringColSub: 'అమృత సాయి, MVR, MIC కళాశాల', engineeringColSub3: 'ప్రతిష్టాత్మక సంస్థలు',
+    }
+    return TE[key] || val
   }
   const LOC_NAME_KEYS = {
     'NH-16 National Hwy':        'nh16Highway',

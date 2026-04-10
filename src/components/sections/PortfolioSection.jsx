@@ -299,7 +299,7 @@ function CompletedCard({ proj, index, language, t }) {
         const names = {'Nandana Vihar': 'నందన విహార్', 'County': 'కౌంటీ', 'Pearl': 'పర్ల్', 'Empire': 'ఎంపైర్', 'Pride': 'ప్రైడ్', 'Prime': 'ప్రైమ్'}
         return names[proj.name] || proj.name
       })()}</div>
-      <div className={styles.compLoc}>📍 {proj.loc}</div>
+      <div className={styles.compLoc}>📍 {language === 'te' && proj.locTe ? proj.locTe : proj.loc}</div>
       <div className={styles.compMeta}>{proj.plots} {language === 'te' ? 'ప్లాట్లు' : 'plots'} · {proj.year}</div>
     </motion.div>
   )

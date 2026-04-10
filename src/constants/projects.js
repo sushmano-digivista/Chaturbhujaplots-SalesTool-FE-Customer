@@ -296,12 +296,12 @@ export const ACTIVE_PROJECTS = [
 ]
 
 export const COMPLETED_PROJECTS = [
-  { name: 'Nandana Vihar', loc: 'Kanumuru',  year: '2022', plots: 64 },
-  { name: 'County',        loc: 'Edupugallu', year: '2021', plots: 48 },
-  { name: 'Pearl',         loc: 'Kankipadu',  year: '2020', plots: 36 },
-  { name: 'Empire',        loc: 'Penamaluru', year: '2019', plots: 72 },
-  { name: 'Pride',         loc: 'Nepalli',    year: '2018', plots: 42 },
-  { name: 'Prime',         loc: 'Kankipadu',  year: '2017', plots: 55 },
+  { name: 'Nandana Vihar', loc: 'Kanumuru',  locTe: 'కనుమూరు',  year: '2022', plots: 64 },
+  { name: 'County',        loc: 'Edupugallu', locTe: 'ఎదుపుగల్లు', year: '2021', plots: 48 },
+  { name: 'Pearl',         loc: 'Kankipadu',  locTe: 'కంకిపాడు',  year: '2020', plots: 36 },
+  { name: 'Empire',        loc: 'Penamaluru', locTe: 'పెనమలూరు', year: '2019', plots: 72 },
+  { name: 'Pride',         loc: 'Nepalli',    locTe: 'నేపల్లి',    year: '2018', plots: 42 },
+  { name: 'Prime',         loc: 'Kankipadu',  locTe: 'కంకిపాడు',  year: '2017', plots: 55 },
 ]
 
 export const COMPANY_CONTACT = {

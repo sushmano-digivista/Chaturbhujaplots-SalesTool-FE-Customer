@@ -68,17 +68,21 @@
 
 .actions { display: flex; flex-direction: column; gap: 10px; margin-top: 4px; }
 
-/* Three brochure CTAs in one horizontal row */
+/* Three brochure CTAs in one horizontal row: Email [flex] | WA [fixed] | Download [flex] */
 .ctaRow {
   display: flex;
-  gap: 8px;
+  align-items: center;
+  gap: 10px;
 }
-.ctaRow .ctaGroup { flex: 1; }
+/* Email & Download groups stretch equally */
+.ctaRow .ctaGroup { flex: 1; min-width: 0; }
+/* WhatsApp group stays fixed-width (icon only, no stretch) */
+.ctaRow .ctaGroup:nth-child(2) { flex: 0 0 auto; }
 .ctaRow .ctaGroup button,
 .ctaRow .ctaGroup a {
   width: 100%;
-  font-size: 12.5px;
-  padding: 11px 6px;
+  font-size: 13px;
+  padding: 12px 10px;
 }
 .waBtn {
   display: flex; align-items: center; justify-content: center; gap: 8px;
@@ -112,9 +116,10 @@
   display: flex; align-items: center; justify-content: center; gap: 8px;
   background: linear-gradient(135deg, #C9A84C, #e2bf64);
   color: #1a0c00; font-weight: 700; font-size: 14px;
-  border-radius: 12px; padding: 14px; border: none;
+  border-radius: 12px; padding: 14px 16px; border: none;
   text-decoration: none; cursor: pointer;
   transition: opacity 0.2s, transform 0.2s;
+  min-height: 48px; white-space: nowrap;
 }
 .downloadBtn:hover { opacity: 0.88; transform: translateY(-1px); }
 
@@ -122,8 +127,9 @@
   width: 100%; display: flex; align-items: center; justify-content: center; gap: 8px;
   background: rgba(30,77,43,0.08); border: 1px solid rgba(30,77,43,0.2);
   color: var(--green); font-size: 14px; font-weight: 600; font-family: 'DM Sans', sans-serif;
-  padding: 12px; border-radius: 12px; cursor: pointer;
+  padding: 14px 16px; border-radius: 12px; cursor: pointer;
   transition: background 0.2s;
+  min-height: 48px; white-space: nowrap;
 }
 .emailBtn:hover { background: rgba(30,77,43,0.14); }
 

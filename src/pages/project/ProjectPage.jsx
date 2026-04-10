@@ -1,15 +1,18 @@
 import { useState, useEffect, useCallback } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
-import { ArrowLeft, Phone, MessageCircle, X, Play, Navigation, Menu } from 'lucide-react'
+import { ArrowLeft, Phone, X, Play, Navigation, Menu } from 'lucide-react'
+import WhatsAppIcon from '@/components/ui/WhatsAppIcon'
 import { getFacingRows }                from '@/constants/facingMap'
 import { getProjectGallery, getProjectVideos } from '@/constants/projectGalleries'
 import { useSubmitLead, usePricing, useContactSettings, useProject } from '@/hooks/useData'
 import LeadModal           from '@/components/ui/LeadModal'
 import PricingCard         from '@/components/ui/PricingCard'
+import QRCard              from '@/components/ui/QRCard'
 import { openWhatsApp, openMaps } from '@/utils/security'
 import { DEFAULT_WA_NUMBER }      from '@/constants/config'
 import LaunchBanner               from '@/components/ui/LaunchBanner'
+import LanguageToggle             from '@/components/layout/LanguageToggle'
 import { useLanguage }            from '@/context/LanguageContext'
 import styles              from './ProjectPage.module.css'
 
@@ -110,15 +113,13 @@ function HomeTab({ proj, onEnquire }) {
               onClick={() => onEnquire({ source: 'PROJECT_HOME', label: 'Enquire Now', category: proj.name })}>
               {t('nav.enquireNow')} →
             </button>
-            <button className='btn btn-ghost'
+            <WhatsAppIcon size={48} title={t('contact.sendWhatsApp')}
               onClick={() => openWhatsApp(
                 proj.contact?.whatsapp || DEFAULT_WA_NUMBER,
                 language === 'te'
                 ? t('contact.waProjectMsg').replace('{name}', (language === 'te' && tProj('name')) ? tProj('name') : proj.name)
                 : (proj.contact?.whatsappMessage || ('Hi! I am interested in ' + proj.name + '. Can I book a free site visit? 🏡')),
-              )}>
-              💬 {t('contact.sendWhatsApp')}
-            </button>
+              )} />
           </div>
         </div>
         <div className={styles.heroStats}>
@@ -504,24 +505,43 @@ function ContactTab({ proj, onEnquire, ownerSettings }) {
       <h2 className={styles.tabTitle}>{t('sections.contact')}</h2>
       <div className={styles.contactGrid}>
         <div className={styles.contactInfo}>
-          {c.phone    && <a href={'tel:' + c.phone}       className={styles.contactRow}><Phone size={16} />{c.phone}</a>}
-          {c.whatsapp && <button className={styles.contactRow} onClick={openWA}><MessageCircle size={16} />{t('contact.sendWhatsApp')}</button>}
+          {c.phone && (
+            <div className={styles.contactRow} style={{ display: 'flex', alignItems: 'center', gap: 12, justifyContent: 'space-between' }}>
+              <a href={'tel:' + c.phone} style={{ display: 'flex', alignItems: 'center', gap: 8, color: 'inherit', textDecoration: 'none' }}>
+                <Phone size={16} />{c.phone}
+              </a>
+              {c.whatsapp && <WhatsAppIcon size={36} onClick={openWA} title={t('contact.sendWhatsApp')} />}
+            </div>
+          )}
           {c.email    && <a href={'mailto:' + c.email}    className={styles.contactRow}>✉️ {c.email}</a>}
-          {address    && <div className={styles.contactRow}>📍 {address}</div>}
+          {address    && (
+            <a className={styles.contactRow}
+              href="#" onClick={(e) => { e.preventDefault(); openMaps(proj.mapOpenUrl); }}
+              style={{ cursor: 'pointer' }}>
+              📍 {address}
+            </a>
+          )}
           {c.website  && <a href={'https://' + c.website} target='_blank' rel='noreferrer' className={styles.contactRow}>🌐 {c.website}</a>}
+
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 10, marginTop: 8 }}>
+            <button className='btn btn-gold btn-full'
+              onClick={() => onEnquire({ source: 'CONTACT_FORM', label: 'Request Callback', type: 'CALLBACK', category: proj.name })}>
+              📞 {t('modal.requestCallback')}
+            </button>
+            <button className='btn btn-green btn-full'
+              onClick={() => onEnquire({ source: 'CONTACT_FORM', label: 'Schedule Site Visit', type: 'SITE_VISIT', category: proj.name })}>
+              🗓️ {t('hero.siteVisitCta')}
+            </button>
+          </div>
         </div>
         <div className={styles.contactCtas}>
-          <button className='btn btn-gold btn-full'
-            onClick={() => onEnquire({ source: 'CONTACT_FORM', label: 'Request Callback', type: 'CALLBACK', category: proj.name })}>
-            📞 {t('modal.requestCallback')}
-          </button>
-          <button className='btn btn-green btn-full' style={{ marginTop: 10 }}
-            onClick={() => onEnquire({ source: 'CONTACT_FORM', label: 'Schedule Site Visit', type: 'SITE_VISIT', category: proj.name })}>
-            🗓️ {t('hero.siteVisitCta')}
-          </button>
-          <button className={styles.waBtn} onClick={openWA}>
-            💬 {t('contact.sendWhatsApp')}
-          </button>
+          {c.whatsapp && (
+            <QRCard
+              waNumber={c.whatsapp || DEFAULT_WA_NUMBER}
+              title={language === 'te' ? 'వాట్సాప్ QR స్కాన్' : 'Scan & Chat on WhatsApp'}
+              subtitle={language === 'te' ? 'ఈ QR స్కాన్ చేసి నేరుగా మాతో మాట్లాడండి' : 'Scan this QR to start a WhatsApp chat instantly'}
+            />
+          )}
         </div>
       </div>
     </div>
@@ -607,10 +627,13 @@ export default function ProjectPage() {
             <span className={styles.headerName}>{(() => { const k = 'projects.' + proj.id + '.name'; const v = t(k); return (language === 'te' && v && v !== k) ? v : proj.name })()} </span>
             <span className={styles.headerLoc}>📍 {tProj('loc') || proj.loc}</span>
           </div>
-          <button className={styles.enquireBtn}
-            onClick={() => openEnquiry({ source: 'CONTACT_FORM', label: 'Enquire Now', category: proj.name })}>
-            {t('nav.enquireNow')} →
-          </button>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+            <LanguageToggle />
+            <button className={styles.enquireBtn}
+              onClick={() => openEnquiry({ source: 'CONTACT_FORM', label: 'Enquire Now', category: proj.name })}>
+              {t('nav.enquireNow')} →
+            </button>
+          </div>
           <button className={styles.mobileNavBtn} onClick={() => setMobileNav((v) => !v)}>
             <Menu size={18} />
           </button>
@@ -635,6 +658,9 @@ export default function ProjectPage() {
                   {tab.label}
                 </button>
               ))}
+              <div style={{ display: 'flex', justifyContent: 'center', paddingTop: 8 }}>
+                <LanguageToggle />
+              </div>
             </motion.nav>
           )}
         </AnimatePresence>

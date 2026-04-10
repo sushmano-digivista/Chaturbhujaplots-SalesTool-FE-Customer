@@ -1,4 +1,5 @@
-import { Phone, MessageCircle, Map } from 'lucide-react'
+import { Phone, Map } from 'lucide-react'
+import WhatsAppIcon from '@/components/ui/WhatsAppIcon'
 import { openWhatsApp }    from '@/utils/security'
 import { DEFAULT_WA_NUMBER, DEFAULT_PHONE } from '@/constants/config'
 import { useLanguage } from '@/context/LanguageContext'
@@ -20,10 +21,7 @@ export default function StickyBar({ contact, onEnquire }) {
         <span>{t('contact.callUs')}</span>
       </a>
 
-      <button className={styles.sbBtn + ' ' + styles.sbWa} onClick={openWA}>
-        <MessageCircle size={20} />
-        <span>{t('contact.sendWhatsApp')}</span>
-      </button>
+      <WhatsAppIcon size={44} onClick={openWA} title={t('contact.sendWhatsApp')} />
 
       <button
         className={styles.sbBtn + ' ' + styles.sbMain}

@@ -8,6 +8,7 @@ import { useProjects } from '@/hooks/useData'
 import { getFacingRows } from '@/constants/facingMap'
 import PricingCard     from '@/components/ui/PricingCard'
 import { openWhatsApp }  from '@/utils/security'
+import WhatsAppIcon from '@/components/ui/WhatsAppIcon'
 import { DEFAULT_WA_NUMBER } from '@/constants/config'
 import { useLanguage } from '@/context/LanguageContext'
 import styles from './PortfolioSection.module.css'
@@ -266,17 +267,13 @@ function ProjectPopup({ proj, onClose, onNavigate, pricing, t, language }) {
           >
             {safet('portfolio.viewProject')} →
           </button>
-          <button
-            className={styles.popupWa}
+          <WhatsAppIcon size={48}
             onClick={() => openWhatsApp(
               proj.contact?.whatsapp || DEFAULT_WA_NUMBER,
               language === 'te'
               ? t('contact.waProjectMsg').replace('{name}', (language === 'te' && tProj('name')) ? tProj('name') : proj.name)
               : (proj.contact?.whatsappMessage || ('Hi! I am interested in ' + proj.name + '. Can I book a free site visit? 🏡')),
-            )}
-          >
-            💬 WhatsApp
-          </button>
+            )} />
         </div>
         </div>{/* /popupScroll */}
       </motion.div>

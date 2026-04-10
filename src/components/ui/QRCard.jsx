@@ -1,6 +1,7 @@
 import { useRef } from 'react'
 import { QRCodeSVG } from 'qrcode.react'
 import { useLanguage } from '@/context/LanguageContext'
+import WhatsAppIcon from '@/components/ui/WhatsAppIcon'
 import styles from './QRCard.module.css'
 
 export default function QRCard({ waNumber, title, subtitle, size = 160 }) {
@@ -61,7 +62,7 @@ export default function QRCard({ waNumber, title, subtitle, size = 160 }) {
           includeMargin={true}
         />
       </div>
-      <div className={styles.waIcon}>💬</div>
+      <div className={styles.waIcon}><WhatsAppIcon size={36} /></div>
       <h4 className={styles.title}>{title || (isTe ? 'వాట్సాప్ QR' : 'WhatsApp QR')}</h4>
       <p className={styles.subtitle}>{subtitle || (isTe ? 'స్కాన్ చేసి మాతో చాట్ చేయండి' : 'Scan to chat with us instantly')}</p>
       <button className={styles.downloadBtn} onClick={downloadQR}>

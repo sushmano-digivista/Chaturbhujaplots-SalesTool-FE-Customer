@@ -1,6 +1,7 @@
 import { openWhatsApp }    from '@/utils/security'
 import { DEFAULT_WA_NUMBER } from '@/constants/config'
 import { useLanguage } from '@/context/LanguageContext'
+import WhatsAppIcon from '@/components/ui/WhatsAppIcon'
 import styles from './Footer.module.css'
 
 export default function FloatingWA({ contact }) {
@@ -10,8 +11,8 @@ export default function FloatingWA({ contact }) {
   }
 
   return (
-    <button className={styles.floatWA} onClick={openWA} title="Chat on WhatsApp">
-      💬
-    </button>
+    <div className={styles.floatWA} style={{ background: 'none', boxShadow: 'none', padding: 0 }}>
+      <WhatsAppIcon size={52} onClick={openWA} title="Chat on WhatsApp" />
+    </div>
   )
 }

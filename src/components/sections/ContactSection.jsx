@@ -4,6 +4,7 @@ import { DEFAULT_WA_NUMBER } from '@/constants/config'
 import { useLanguage } from '@/context/LanguageContext'
 import styles from './Sections.module.css'
 import QRCard from '@/components/ui/QRCard'
+import WhatsAppIcon from '@/components/ui/WhatsAppIcon'
 
 const PERKS_EN = [
   'Free site visit with transport',
@@ -57,17 +58,20 @@ export default function ContactSection({ content, onEnquire }) {
           </div>
 
           {contact.phone && (
-            <a href={`tel:${contact.phone}`} className={styles.callCard}>
-              <span style={{ fontSize: 20 }}>📞</span>
-              <div>
-                <div className={styles.callLabel}>{t('contact.callUs')}</div>
-                <div className={styles.callNum}>{contact.phone}</div>
-              </div>
-            </a>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+              <a href={`tel:${contact.phone}`} className={styles.callCard} style={{ flex: 1 }}>
+                <span style={{ fontSize: 20 }}>📞</span>
+                <div>
+                  <div className={styles.callLabel}>{t('contact.callUs')}</div>
+                  <div className={styles.callNum}>{contact.phone}</div>
+                </div>
+              </a>
+              <WhatsAppIcon size={52} onClick={openWA} title={t('contact.sendWhatsApp')} />
+            </div>
           )}
         </motion.div>
 
-        {/* Right — action buttons */}
+        {/* Right — action buttons + QR */}
         <motion.div
           className={styles.ctaBox}
           initial={{ opacity: 0, x: 20 }}
@@ -91,17 +95,13 @@ export default function ContactSection({ content, onEnquire }) {
             >
               🗓️ {t('hero.siteVisitCta')}
             </button>
-
-            <button className={styles.waBtn} onClick={openWA}>
-              💬 {t('contact.sendWhatsApp')}
-            </button>
           </div>
 
           <div className={styles.ctaNote}>
             {t('contact.respondNote') || 'We typically respond within'} <strong>30 {t('contact.respondMinutes') || 'minutes'}</strong> {t('contact.respondHours') || 'during business hours (9am–7pm).'}
           </div>
 
-          <div style={{ display: 'flex', justifyContent: 'center', marginTop: 24 }}>
+          <div style={{ display: 'flex', justifyContent: 'center', marginTop: 16 }}>
             <QRCard
               waNumber={contact.whatsapp || '919948709041'}
               waMessage={language === 'te' ? t('contact.whatsappMessage') : (contact.whatsappMessage || t('contact.whatsappMessage'))}

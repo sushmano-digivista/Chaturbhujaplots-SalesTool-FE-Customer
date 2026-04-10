@@ -7,6 +7,9 @@ export default function PricingCard({ pricing, compact = false, dark = false }) 
   if (!pricing) return null
 
   const tv = (key, fallback) => { const v = t(key); return (v && v !== key) ? v : fallback }
+  const localizeSqYd = (s) => (s || '')
+    .replace(/sq\.yd/gi, tv('project.sqYdShort', 'sq.yd'))
+    .replace(/\bextra\b/gi, tv('project.extra', 'extra'))
 
   return (
     <div className={`${styles.card} ${compact ? styles.compact : ''} ${dark ? styles.dark : ''}`}>
@@ -50,20 +53,20 @@ export default function PricingCard({ pricing, compact = false, dark = false }) 
           return (
             <div key={i} className={styles.cornerRow}>
               <span className={styles.cornerType}>{CORNER_MAP[c.type] || c.type}</span>
-              <span className={styles.cornerExtra}>{c.label}</span>
+              <span className={styles.cornerExtra}>{localizeSqYd(c.label)}</span>
             </div>
           )
         })}
         {pricing.corpus && (
           <div className={styles.cornerRow}>
             <span className={styles.cornerType}>{tv('project.corpusFund', 'Corpus Fund')}</span>
-            <span className={styles.cornerExtra}>{pricing.corpus.label}</span>
+            <span className={styles.cornerExtra}>{localizeSqYd(pricing.corpus.label)}</span>
           </div>
         )}
       </div>
 
       {pricing.note && (
-        <p className={styles.note}>* {pricing.note}</p>
+        <p className={styles.note}>* {tv('project.pricingNote', localizeSqYd(pricing.note))}</p>
       )}
     </div>
   )

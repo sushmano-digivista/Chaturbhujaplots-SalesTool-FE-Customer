@@ -2,7 +2,8 @@ import { createPortal }         from 'react-dom'
 import { useEffect, useState }  from 'react'
 import { useForm }               from 'react-hook-form'
 import { motion, AnimatePresence } from 'framer-motion'
-import { X, MessageCircle, Download, Mail, Loader2, AlertCircle, Calendar, ChevronRight } from 'lucide-react'
+import { X, Download, Mail, Loader2, AlertCircle, Calendar, ChevronRight } from 'lucide-react'
+import WhatsAppIcon from '@/components/ui/WhatsAppIcon'
 import { useSubmitLead }         from '@/hooks/useData'
 import { ACTIVE_PROJECTS }       from '@/constants/projects'
 import { BROCHURES, getBrochureUrl } from '@/constants/brochures'
@@ -347,10 +348,7 @@ export default function LeadModal({ context, onClose, whatsapp, content }) {
                     disabled={submitLead.isPending}>
                     {submitLead.isPending ? 'Requesting…' : '📞 ' + t('modal.requestCallback')}
                   </button>
-                  <button type="button" className={styles.waBtn}
-                    onClick={() => setWaStep(1)}>
-                    <MessageCircle size={15} /> WhatsApp Instead
-                  </button>
+                  <WhatsAppIcon size={44} onClick={() => setWaStep(1)} />
                 </div>
               </form>
 
@@ -495,16 +493,13 @@ export default function LeadModal({ context, onClose, whatsapp, content }) {
                     disabled={submitLead.isPending}>
                     {submitLead.isPending ? t('common.loading') : '📞 ' + t('modal.requestCallback')}
                   </button>
-                  <button type="button" className={styles.waBtn} style={{marginTop:0}}
-                    onClick={() => {
-                      const num = whatsapp || DEFAULT_WA_NUMBER
-                      const txt = language === 'te'
-                        ? t('contact.waPlotMsg').replace('{size}', context?.plotSize || context?.category || '').replace('{area}', context?.plotArea || '').replace('{venture}', context?.venture || 'చతుర్భుజ').replace('{price}', context?.priceFrom || '')
-                        : `Hi, I am interested in a ${context?.plotSize || context?.category} plot (${context?.plotArea}) in ${context?.venture || 'Chaturbhuja Properties'}. Price: ${context?.priceFrom}. Please share details.`
-                      openWhatsApp(num, txt)
-                    }}>
-                    <MessageCircle size={15} /> WhatsApp Us
-                  </button>
+                  <WhatsAppIcon size={44} onClick={() => {
+                    const num = whatsapp || DEFAULT_WA_NUMBER
+                    const txt = language === 'te'
+                      ? t('contact.waPlotMsg').replace('{size}', context?.plotSize || context?.category || '').replace('{area}', context?.plotArea || '').replace('{venture}', context?.venture || 'చతుర్భుజ').replace('{price}', context?.priceFrom || '')
+                      : `Hi, I am interested in a ${context?.plotSize || context?.category} plot (${context?.plotArea}) in ${context?.venture || 'Chaturbhuja Properties'}. Price: ${context?.priceFrom}. Please share details.`
+                    openWhatsApp(num, txt)
+                  }} />
                 </div>
               </form>
 
@@ -577,11 +572,9 @@ export default function LeadModal({ context, onClose, whatsapp, content }) {
                     </div>
 
                     <div className={styles.ctaGroup}>
-                      <button type="button" className={styles.waBtn}
-                        onClick={handleWhatsApp} disabled={sending === 'wa' || waSent}>
-                        {sending === 'wa' ? <Loader2 size={15} className={styles.spin} /> : <MessageCircle size={15} />}
-                        {waSent ? 'Sent ✓' : 'WhatsApp'}
-                      </button>
+                      {sending === 'wa'
+                        ? <Loader2 size={44} className={styles.spin} />
+                        : <WhatsAppIcon size={44} onClick={waSent ? undefined : handleWhatsApp} />}
                       {ctaErrors.wa && <p className={styles.ctaError}><AlertCircle size={12} /> {ctaErrors.wa}</p>}
                     </div>
 

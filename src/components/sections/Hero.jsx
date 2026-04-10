@@ -5,6 +5,7 @@ import { motion } from 'framer-motion'
 import { MapPin, Calendar, FileText, Phone } from 'lucide-react'
 import { useInView } from 'react-intersection-observer'
 import { useLanguage } from '@/context/LanguageContext'
+import WhatsAppIcon from '@/components/ui/WhatsAppIcon'
 import styles from './Hero.module.css'
 
 // ── Lightweight animated counter — no external dep ───────────────────────────
@@ -199,8 +200,9 @@ export default function Hero({ content, onEnquire }) {
             <a
               href={`https://wa.me/${DEFAULT_WA_NUMBER}?text=${encodeURIComponent(waMsg)}`}
               target="_blank" rel="noreferrer"
-              className={styles.directorWaBtn} aria-label="WhatsApp">
-              💬
+              className={styles.directorWaBtn} aria-label="WhatsApp"
+              style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center' }}>
+              <WhatsAppIcon size={32} />
             </a>
           </div>
         </div>
@@ -271,8 +273,9 @@ export default function Hero({ content, onEnquire }) {
           <a
             href={`https://wa.me/${whatsapp}?text=${encodeURIComponent(waMsg)}`}
             target="_blank" rel="noreferrer"
-            className={styles.lcBtnWA}>
-            💬
+            className={styles.lcBtnWA}
+            style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', padding: 0, background: 'none', border: 'none' }}>
+            <WhatsAppIcon size={44} />
           </a>
         </div>
 

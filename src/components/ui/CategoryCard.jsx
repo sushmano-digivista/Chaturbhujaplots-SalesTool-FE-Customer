@@ -1,7 +1,9 @@
 import { motion, AnimatePresence } from 'framer-motion'
+import { useLanguage } from '@/context/LanguageContext'
 import styles from '../sections/PlotGrid.module.css'
 
 export default function CategoryCard({ meta, data, isOpen, onToggle, onEnquire, hoveredPlot, setHoveredPlot }) {
+  const { language } = useLanguage()
   return (
     <motion.div
       className={`${styles.catCard} ${isOpen ? styles.catCardOpen : ''}`}
@@ -19,7 +21,7 @@ export default function CategoryCard({ meta, data, isOpen, onToggle, onEnquire, 
         </div>
         <div className={styles.catRight}>
           <div className={styles.catCount} style={{ color: meta.color }}>{data.count}</div>
-          <div className={styles.catCountLabel}>PLOTS</div>
+          <div className={styles.catCountLabel}>{language === 'te' ? 'ప్లాట్లు' : 'PLOTS'}</div>
           {false && (
             <div className={styles.catPrice}>from {data.priceFrom}</div>
           )}

@@ -517,7 +517,7 @@ export const FALLBACK_TRANSLATIONS = {
       viewPricing:          '\u0c27\u0c30\u0c32\u0c41 \u0c1a\u0c42\u0c21\u0c02\u0c21\u0c3f \u25bc',
       byPlotSize:           '\u0c2a\u0c4d\u0c32\u0c3e\u0c1f\u0c4d \u0c2a\u0c30\u0c3f\u0c2e\u0c3e\u0c23\u0c02 \u0c2a\u0c4d\u0c30\u0c15\u0c3e\u0c30\u0c02',
       eastFacing:           '\u2600\ufe0f \u0c24\u0c42\u0c30\u0c4d\u0c2a\u0c41 \u0c2e\u0c41\u0c16\u0c02',
-      westFacing:           '\U0001f319 \u0c2a\u0c21\u0c2e\u0c30 \u0c2e\u0c41\u0c16\u0c02',
+      westFacing:           '🌙 \u0c2a\u0c21\u0c2e\u0c30 \u0c2e\u0c41\u0c16\u0c02',
       cornerPlots:          '\u25e3 \u0c2e\u0c42\u0c32 \u0c2a\u0c4d\u0c32\u0c3e\u0c1f\u0c4d\u0c32\u0c41',
       northFacing:          '\u25b2 \u0c09\u0c24\u0c4d\u0c24\u0c30 \u0c2e\u0c41\u0c16\u0c02',
       southFacing:          '\u25bc \u0c26\u0c15\u0c4d\u0c37\u0c3f\u0c23 \u0c2e\u0c41\u0c16\u0c02',
@@ -672,7 +672,7 @@ export const FALLBACK_TRANSLATIONS = {
     },
     facings: {
       east:      '\u2600\ufe0f \u0c24\u0c42\u0c30\u0c4d\u0c2a\u0c41',
-      west:      '\U0001f319 \u0c2a\u0c21\u0c2e\u0c30',
+      west:      '🌙 \u0c2a\u0c21\u0c2e\u0c30',
       corner:    '\u25e3 \u0c2e\u0c42\u0c32',
       north:     '\u25b2 \u0c09\u0c24\u0c4d\u0c24\u0c30\u0c02',
       south:     '\u25bc \u0c26\u0c15\u0c4d\u0c37\u0c3f\u0c23\u0c02',

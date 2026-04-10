@@ -222,9 +222,13 @@ export default function LeadModal({ context, onClose, whatsapp, content }) {
         <select className="form-input" {...register('project')}
           onChange={e => { clearCtaError('download'); register('project').onChange(e) }}>
           <option value="">{t('modal.selectProject') || 'Select a project'}</option>
-          {ACTIVE_PROJECTS.map(p => (
-            <option key={p.id} value={p.name}>{p.name} — {p.loc}</option>
-          ))}
+          {ACTIVE_PROJECTS.map(p => {
+            const NAME_TE = { 'Anjana Paradise': 'అంజన పారడైజ్', 'Trimbak Oaks': 'ట్రింబక్ ఓక్స్', 'Aparna Legacy': 'అపర్ణ లెగసీ', 'Varaha Virtue': 'వరాహ వర్చ్యూ' }
+            const LOC_TE = { 'Paritala, Near Amaravati': 'పరిటాల అమరావతి సమీపంలో', 'Penamaluru, Near Vijayawada': 'పెనమలూరు విజయవాడ సమీపంలో', 'Chevitikallu, Gateway of Amaravati Capital Region': 'చెవిటికల్లు అమరావతి క్యాపిటల్ రీజియన్ గేట్‌వే', 'Pamarru, Krishna District': 'పామర్రు కృష్ణా జిల్లా' }
+            const name = language === 'te' ? (NAME_TE[p.name] || p.name) : p.name
+            const loc = language === 'te' ? (LOC_TE[p.loc] || p.loc) : p.loc
+            return <option key={p.id} value={p.name}>{name} — {loc}</option>
+          })}
           <option value="Any Project">{isSV ? (t('modal.anyNotSure') || 'Any / Not Sure Yet') : (t('modal.anyNotSureAll') || 'Any / Not Sure Yet — Download All')}</option>
         </select>
         {/* Dynamic note from MongoDB when selected project has no brochure */}
@@ -358,9 +362,13 @@ export default function LeadModal({ context, onClose, whatsapp, content }) {
                   <label className="form-label">{language === 'te' ? 'ప్రాజెక్ట్ ఆసక్తి' : 'Project Interest'}</label>
                   <select className="form-input" {...register('project')}>
                     <option value="">{t('modal.selectProjectOptional') || 'Select a project (optional)'}</option>
-                    {ACTIVE_PROJECTS.map(p => (
-                      <option key={p.id} value={p.name}>{p.name} — {p.loc}</option>
-                    ))}
+                    {ACTIVE_PROJECTS.map(p => {
+                      const NAME_TE = { 'Anjana Paradise': 'అంజన పారడైజ్', 'Trimbak Oaks': 'ట్రింబక్ ఓక్స్', 'Aparna Legacy': 'అపర్ణ లెగసీ', 'Varaha Virtue': 'వరాహ వర్చ్యూ' }
+                      const LOC_TE = { 'Paritala, Near Amaravati': 'పరిటాల అమరావతి సమీపంలో', 'Penamaluru, Near Vijayawada': 'పెనమలూరు విజయవాడ సమీపంలో', 'Chevitikallu, Gateway of Amaravati Capital Region': 'చెవిటికల్లు అమరావతి క్యాపిటల్ రీజియన్ గేట్‌వే', 'Pamarru, Krishna District': 'పామర్రు కృష్ణా జిల్లా' }
+                      const name = language === 'te' ? (NAME_TE[p.name] || p.name) : p.name
+                      const loc = language === 'te' ? (LOC_TE[p.loc] || p.loc) : p.loc
+                      return <option key={p.id} value={p.name}>{name} — {loc}</option>
+                    })}
                     <option value="Any Project">{language === 'te' ? 'ఏదైనా / ఇంకా నిర్ణయించలేదు' : 'Any / Not Sure Yet'}</option>
                   </select>
                 </div>
@@ -387,16 +395,22 @@ export default function LeadModal({ context, onClose, whatsapp, content }) {
                 {waStep === 1 && (
                   <div className={styles.waStep}>
                     <div className={styles.waStepHeader}>
-                      🏡 <strong>Step 1 of 3 — Project Interest</strong>
+                      🏡 <strong>{language === 'te' ? 'స్టెప్ 1/3 — ప్రాజెక్ట్ ఆసక్తి' : 'Step 1 of 3 — Project Interest'}</strong>
                     </div>
-                    <p className={styles.waStepDesc}>Which project are you interested in?</p>
-                    {[
+                    <p className={styles.waStepDesc}>{language === 'te' ? 'మీకు ఏ ప్రాజెక్ట్‌పై ఆసక్తి ఉంది?' : 'Which project are you interested in?'}</p>
+                    {(language === 'te' ? [
+                      { id: 'anjana',  label: 'అంజన పారడైజ్',   sub: 'పరిటాల · అమరావతి సమీపంలో · 242 ప్లాట్లు' },
+                      { id: 'aparna',  label: 'అపర్ణ లెగసీ',     sub: 'చెవిటికల్లు · 273 ప్లాట్లు' },
+                      { id: 'varaha',  label: 'వరాహ వర్చ్యూ',     sub: 'పామర్రు · జాతీయ రహదారి-16 · 132 ప్లాట్లు' },
+                      { id: 'trimbak', label: 'ట్రింబక్ ఓక్స్',      sub: 'పెనమలూరు · విజయవాడ సమీపంలో · త్వరలో' },
+                      { id: 'any',     label: 'ఏదైనా / అన్ని ప్రాజెక్టులు', sub: 'అన్ని పాంప్లెట్లు పంపండి' },
+                    ] : [
                       { id: 'anjana',  label: 'Anjana Paradise',   sub: 'Paritala · Near Amaravati · 242 plots' },
                       { id: 'aparna',  label: 'Aparna Legacy',     sub: 'Chevitikallu · 273 plots' },
                       { id: 'varaha',  label: 'Varaha Virtue',     sub: 'Pamarru · Near NH-16 · 132 plots' },
                       { id: 'trimbak', label: 'Trimbak Oaks',      sub: 'Penamaluru · Near Vijayawada · Coming soon' },
                       { id: 'any',     label: 'Any / All Projects', sub: 'Send me all brochures' },
-                    ].map((p, i) => (
+                    ]).map((p, i) => (
                       <button key={p.id} className={styles.waOption}
                         onClick={() => { setWaAnswers(a => ({ ...a, project: p.label })); setWaStep(2) }}>
                         <span className={styles.waOptionNum}>{i + 1}</span>

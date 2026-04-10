@@ -1,4 +1,20 @@
 *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+
+/* Launch overlay — boom entrance + shrink-to-banner exit */
+@keyframes boomIn {
+  0%   { opacity: 0; transform: scale(0.3) rotate(-2deg); }
+  50%  { opacity: 1; transform: scale(1.06) rotate(0.5deg); }
+  70%  { transform: scale(0.97); }
+  100% { transform: scale(1) rotate(0deg); }
+}
+@keyframes spinRing {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+@keyframes pulseGlow {
+  0%,100% { box-shadow: 0 0 8px rgba(201,168,76,.2); }
+  50%     { box-shadow: 0 0 20px rgba(201,168,76,.5); }
+}
 html  { scroll-behavior: smooth; }
 body  { font-family:'DM Sans',sans-serif; background:var(--cream); color:var(--text-dark); overflow-x:hidden; }
 img   { max-width:100%; display:block; }

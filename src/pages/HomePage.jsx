@@ -11,6 +11,7 @@ import {
 import { LeadModal } from '@/components/ui'
 import PageLoader    from '@/components/common/PageLoader'
 import LaunchBanner  from '@/components/ui/LaunchBanner'
+import LaunchOverlay from '@/components/ui/LaunchOverlay'
 
 // Animation duration in ms -- must match CSS animation total in PageLoader
 const LOADER_MIN_MS = 2800
@@ -57,6 +58,7 @@ export default function HomePage() {
 
   return (
     <div style={{ paddingTop: 'var(--nav-h)' }}>
+      <LaunchOverlay />
       <LaunchBanner />
       <Navbar contact={contact} onEnquire={openEnquiry} />
       <main>

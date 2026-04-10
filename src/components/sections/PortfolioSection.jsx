@@ -300,7 +300,7 @@ function CompletedCard({ proj, index, language, t }) {
         return names[proj.name] || proj.name
       })()}</div>
       <div className={styles.compLoc}>📍 {proj.loc}</div>
-      <div className={styles.compMeta}>{proj.plots} plots · {proj.year}</div>
+      <div className={styles.compMeta}>{proj.plots} {language === 'te' ? 'ప్లాట్లు' : 'plots'} · {proj.year}</div>
     </motion.div>
   )
 }
@@ -382,7 +382,7 @@ export default function PortfolioSection({ content, onEnquire, pricingMap }) {
             <div className={styles.blockCheckDot} />
             <h3 className={styles.blockTitle}>{t('nav.completedSoldOut')}</h3>
             <span className={styles.blockPill}>
-              {completed.length} projects · {completed.reduce((a, p) => a + (p.plots || 48), 0)}+ plots
+              {completed.length} {language === 'te' ? 'ప్రాజెక్టులు' : 'projects'} · {completed.reduce((a, p) => a + (p.plots || 48), 0)}+ {language === 'te' ? 'ప్లాట్లు' : 'plots'}
             </span>
           </div>
           <div className={styles.compGrid}>

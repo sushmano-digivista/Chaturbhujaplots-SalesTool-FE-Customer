@@ -142,6 +142,7 @@ export default function LocationSection({ content }) {
     'International Cricket':              'intlCricket',
     'Govt. proposed, Nandigama':          'cineStudioSub',
     'Govt. proposed, Amaravati-Paritala': 'railwayConnSub',
+    'Govt. proposed, Amaravati\u2013Paritala': 'railwayConnSub',
     'Govt. proposed, Paritala':           'logisticHubSub',
     'Just minutes away':                  'hanumanTempleSub2',
     'Proposed — excellent access':        'orrSub',
@@ -314,7 +315,7 @@ export default function LocationSection({ content }) {
                 <div className={styles.distSub}>{tloc(d.subtitle, LOC_SUB_KEYS[d.subtitle] || '')}</div>
               </div>
               <div className={styles.distBadge} style={{ background: palette.light, color: palette.text }}>
-                {d.distance}
+                {language === 'te' ? { 'Nearby': 'సమీపంలో', 'Proposed': 'ప్రతిపాదితం' }[d.distance] || d.distance : d.distance}
               </div>
             </motion.div>
           ))}

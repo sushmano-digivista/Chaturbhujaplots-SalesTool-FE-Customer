@@ -300,7 +300,7 @@ export const COMPLETED_PROJECTS = [
   { name: 'County',        loc: 'Edupugallu', locTe: 'ఎదుపుగల్లు', year: '2021', plots: 48 },
   { name: 'Pearl',         loc: 'Kankipadu',  locTe: 'కంకిపాడు',  year: '2020', plots: 36 },
   { name: 'Empire',        loc: 'Penamaluru', locTe: 'పెనమలూరు', year: '2019', plots: 72 },
-  { name: 'Pride',         loc: 'Nepalli',    locTe: 'నేపల్లి',    year: '2018', plots: 42 },
+  { name: 'Pride',         loc: 'Neppalli',   locTe: 'నేప్పల్లి',   year: '2018', plots: 42 },
   { name: 'Prime',         loc: 'Kankipadu',  locTe: 'కంకిపాడు',  year: '2017', plots: 55 },
 ]
 

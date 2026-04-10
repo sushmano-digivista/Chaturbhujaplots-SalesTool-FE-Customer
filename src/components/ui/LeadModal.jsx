@@ -262,8 +262,35 @@ export default function LeadModal({ context, onClose, whatsapp, content }) {
 
             <div className={styles.scrollBody}>
             <div className={styles.modalHeader}>
-              <h3 className={styles.title}>{context?.label || t('sections.contact')}</h3>
-              {context?.category && <span className={styles.catTag}>{context.category}</span>}
+              <h3 className={styles.title}>{(() => {
+                if (!context?.label) return t('sections.contact')
+                if (language === 'te') {
+                  const LABEL_TE = {
+                    'Enquire Now': 'ఇప్పుడే సంప్రదించండి',
+                    'Get Plot Details': 'ప్లాట్ వివరాలు పొందండి',
+                    'Register Interest': 'ఆసక్తి నమోదు చేయండి',
+                    'Request Callback': 'తిరిగి కాల్ చేయమని అభ్యర్థన',
+                    'Schedule Site Visit': 'సైట్ విజిట్ షెడ్యూల్',
+                    'Get Callback': 'తిరిగి కాల్ చేయమని అభ్యర్థన',
+                    'Notify Me': 'నాకు తెలియజేయండి',
+                    'Secure Plot': 'ప్లాట్ బుక్ చేయండి',
+                    'Book Site Visit': 'సైట్ విజిట్ బుక్ చేయండి',
+                    'Download Brochure': 'పాంప్లెట్ డౌన్‌లోడ్',
+                  }
+                  return LABEL_TE[context.label] || context.label
+                }
+                return context.label
+              })()}</h3>
+              {context?.category && <span className={styles.catTag}>{(() => {
+                if (language !== 'te') return context.category
+                const CAT_TE = {
+                  'Anjana Paradise': 'అంజన పారడైజ్',
+                  'Trimbak Oaks': 'ట్రింబక్ ఓక్స్',
+                  'Aparna Legacy': 'అపర్ణ లెగసీ',
+                  'Varaha Virtue': 'వరాహ వర్చ్యూ',
+                }
+                return CAT_TE[context.category] || context.category
+              })()}</span>}
               <p className={styles.subtitle}>
                 {isSV
                   ? t('modal.siteVisitTitle')

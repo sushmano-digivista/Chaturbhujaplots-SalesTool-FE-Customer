@@ -106,9 +106,9 @@ export const ACTIVE_PROJECTS = [
       agreement: { fraction: '1/3', label: '1/3rd at Agreement' },
       note: 'All prices per sq. yard. Corner charges additional.',
     },
-    tag:         'Upcoming',
-    status:      'Details Coming Soon',
-    upcoming:    true,
+    tag:         'New Launch',
+    status:      'CRDA Approved | RERA Registered | Phase II Open for Booking',
+    upcoming:    false,
     facings:     { east: 138, west: 105, north: 28, south: 29, southWest: 11, southEast: 11, northEast: 1, northWestSouth: 1 },
     approvals:   ['CRDA Approved', 'RERA Registered', '100% Clear Title'],
     highlights: [

@@ -146,21 +146,25 @@ const VENTURE_PLOTS = {
     short:    'Penamaluru',
     color:    '#C0522A',
     totalPlots: 324,
-    upcoming: true,
     categories: {
-      eastFacing: {
-        label: 'East-Facing', description: 'Morning sunlight — ideal for Vaastu and wellness.',
-        count: 138, priceFrom: 'Rs.28,999/sq.yd',
-        plotNumbers: [17,18,19,20,21,22,34,35,36,37,39,40,41,52,53,54,55,57,58,59,71,72,73,74,76,77,78,91,92,93,94,95,96,97,98,99,112,113,114,115,116,117,118,119,120,132,133,134,135,136,137,138],
+      phase1: {
+        label: 'Phase I (138 Plots)', description: 'Completed phase — 138 premium plots with all infrastructure ready.',
+        count: 138, priceFrom: 'Contact us',
+        plotNumbers: Array.from({ length: 138 }, (_, i) => i + 1),
       },
-      westFacing: {
-        label: 'West-Facing', description: 'Evening sunlight with open western views.',
-        count: 105, priceFrom: 'Rs.28,499/sq.yd',
-        plotNumbers: [24,25,26,28,29,30,31,42,43,44,47,48,49,60,61,62,64,65,66,67,68,79,80,81,82,83,84,85,86,87,100,101,102,103,104,105,106,107,108,109,121,122,123,124,125,126,127,128],
+      phase2East: {
+        label: 'Phase II — East-Facing', description: 'Morning sunlight — ideal for Vaastu and wellness.',
+        count: 86, priceFrom: 'Rs.28,999/sq.yd',
+        plotNumbers: [],
       },
-      cornerPlots: {
-        label: 'Corner Plots', description: 'Premium corner plots with maximum road frontage.',
-        count: 52, priceFrom: 'Rs.1,500/sq.yd extra',
+      phase2West: {
+        label: 'Phase II — West-Facing', description: 'Evening sunlight with open western views.',
+        count: 57, priceFrom: 'Rs.28,499/sq.yd',
+        plotNumbers: [],
+      },
+      phase2NorthSouth: {
+        label: 'Phase II — North/South', description: 'North & South facing plots — 4 blocks (A, B, C, D).',
+        count: 43, priceFrom: 'Contact us',
         plotNumbers: [],
       },
     },

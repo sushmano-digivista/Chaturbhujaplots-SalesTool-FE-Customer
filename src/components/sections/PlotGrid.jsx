@@ -150,7 +150,7 @@ const VENTURE_PLOTS = {
       phase1: {
         label: 'Phase I (138 Plots)', description: 'Completed phase — 138 premium plots with all infrastructure ready.',
         count: 138, priceFrom: 'Contact us',
-        plotNumbers: Array.from({ length: 138 }, (_, i) => i + 1),
+        plotNumbers: [],
       },
       phase2East: {
         label: 'Phase II — East-Facing', description: 'Morning sunlight — ideal for Vaastu and wellness.',
@@ -196,7 +196,7 @@ export default function PlotGrid({ onEnquire, pricingMap }) {
 
   const venture    = VENTURE_PLOTS[ventureKey]
   const color      = VENTURE_COLORS[ventureKey]
-  const categories = venture.upcoming ? [] : Object.entries(venture.categories).map(([key, data]) => ({ key, data }))
+  const categories = (venture.upcoming || !venture.categories) ? [] : Object.entries(venture.categories).map(([key, data]) => ({ key, data }))
 
   return (
     <section className="section section-cream" id="plots">

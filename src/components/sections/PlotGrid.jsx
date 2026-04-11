@@ -8,11 +8,15 @@ import styles         from './PlotGrid.module.css'
 
 // ── Per-category visual metadata ──────────────────────────────────────────────
 const CATEGORY_META = {
-  eastFacing:  { icon: <Sun       size={18} />, label: 'East-Facing',  color: '#C9A84C', bg: 'rgba(201,168,76,0.12)'  },
-  westFacing:  { icon: <Sunset    size={18} />, label: 'West-Facing',  color: '#4A90D9', bg: 'rgba(74,144,217,0.12)'  },
-  northFacing: { icon: <ArrowUp   size={18} />, label: 'North-Facing', color: '#4CAF74', bg: 'rgba(76,175,116,0.12)'  },
-  southFacing: { icon: <ArrowDown size={18} />, label: 'South-Facing', color: '#E24B4A', bg: 'rgba(226,75,74,0.12)'   },
-  cornerPlots: { icon: <Maximize2 size={18} />, label: 'Corner Plots', color: '#9B7B2E', bg: 'rgba(155,123,46,0.12)'  },
+  eastFacing:       { icon: <Sun       size={18} />, label: 'East-Facing',            color: '#C9A84C', bg: 'rgba(201,168,76,0.12)'  },
+  westFacing:       { icon: <Sunset    size={18} />, label: 'West-Facing',            color: '#4A90D9', bg: 'rgba(74,144,217,0.12)'  },
+  northFacing:      { icon: <ArrowUp   size={18} />, label: 'North-Facing',           color: '#4CAF74', bg: 'rgba(76,175,116,0.12)'  },
+  southFacing:      { icon: <ArrowDown size={18} />, label: 'South-Facing',           color: '#E24B4A', bg: 'rgba(226,75,74,0.12)'   },
+  cornerPlots:      { icon: <Maximize2 size={18} />, label: 'Corner Plots',           color: '#9B7B2E', bg: 'rgba(155,123,46,0.12)'  },
+  phase1:           { icon: <Maximize2 size={18} />, label: 'Phase I',                color: '#1E4D2B', bg: 'rgba(30,77,43,0.12)'    },
+  phase2East:       { icon: <Sun       size={18} />, label: 'Phase II — East',        color: '#C9A84C', bg: 'rgba(201,168,76,0.12)'  },
+  phase2West:       { icon: <Sunset    size={18} />, label: 'Phase II — West',        color: '#4A90D9', bg: 'rgba(74,144,217,0.12)'  },
+  phase2NorthSouth: { icon: <ArrowUp   size={18} />, label: 'Phase II — North/South', color: '#4CAF74', bg: 'rgba(76,175,116,0.12)'  },
 }
 
 // ── Local pricing fallback (used when API is unavailable) ───────────────────

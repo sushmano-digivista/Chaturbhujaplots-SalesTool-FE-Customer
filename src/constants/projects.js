@@ -109,7 +109,7 @@ export const ACTIVE_PROJECTS = [
     tag:         'New Launch',
     status:      'CRDA Approved | RERA Registered | Phase II Open for Booking',
     upcoming:    false,
-    facings:     { east: 138, west: 105, north: 28, south: 29, southWest: 11, southEast: 11, northEast: 1, northWestSouth: 1 },
+    facings:     { east: 138, west: 105, north: 28, south: 29, southWest: 11, southEast: 11, northEast: 1 },
     approvals:   ['CRDA Approved', 'RERA Registered', '100% Clear Title'],
     highlights: [
       '5 km from Vijayawada City Centre',

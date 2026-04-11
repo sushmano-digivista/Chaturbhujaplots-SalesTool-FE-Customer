@@ -13,10 +13,6 @@ const CATEGORY_META = {
   northFacing:      { icon: <ArrowUp   size={18} />, label: 'North-Facing',           color: '#4CAF74', bg: 'rgba(76,175,116,0.12)'  },
   southFacing:      { icon: <ArrowDown size={18} />, label: 'South-Facing',           color: '#E24B4A', bg: 'rgba(226,75,74,0.12)'   },
   cornerPlots:      { icon: <Maximize2 size={18} />, label: 'Corner Plots',           color: '#9B7B2E', bg: 'rgba(155,123,46,0.12)'  },
-  phase1:           { icon: <Maximize2 size={18} />, label: 'Phase I',                color: '#1E4D2B', bg: 'rgba(30,77,43,0.12)'    },
-  phase2East:       { icon: <Sun       size={18} />, label: 'Phase II — East',        color: '#C9A84C', bg: 'rgba(201,168,76,0.12)'  },
-  phase2West:       { icon: <Sunset    size={18} />, label: 'Phase II — West',        color: '#4A90D9', bg: 'rgba(74,144,217,0.12)'  },
-  phase2NorthSouth: { icon: <ArrowUp   size={18} />, label: 'Phase II — North/South', color: '#4CAF74', bg: 'rgba(76,175,116,0.12)'  },
 }
 
 // ── Local pricing fallback (used when API is unavailable) ───────────────────
@@ -151,25 +147,20 @@ const VENTURE_PLOTS = {
     color:    '#C0522A',
     totalPlots: 324,
     categories: {
-      phase1: {
-        label: 'Phase I (138 Plots)', description: 'Completed phase — 138 premium plots with all infrastructure ready.',
-        count: 138, priceFrom: 'Contact us',
-        plotNumbers: [],
+      eastFacing: {
+        label: 'East-Facing', description: 'Phase I: 52 plots | Phase II: 86 plots (Blocks A, B, C, D)',
+        count: 138, priceFrom: 'Rs.28,999/sq.yd',
+        plotNumbers: [17,18,19,20,21,22,34,35,36,37,39,40,41,52,53,54,55,57,58,59,71,72,73,74,76,77,78,91,92,93,94,95,96,97,98,99,112,113,114,115,116,117,118,119,120,132,133,134,135,136,137,138],
       },
-      phase2East: {
-        label: 'Phase II — East-Facing', description: 'Morning sunlight — ideal for Vaastu and wellness.',
-        count: 86, priceFrom: 'Rs.28,999/sq.yd',
-        plotNumbers: [],
+      westFacing: {
+        label: 'West-Facing', description: 'Phase I: 48 plots | Phase II: 57 plots (Blocks A, B, C, D)',
+        count: 105, priceFrom: 'Rs.28,499/sq.yd',
+        plotNumbers: [24,25,26,28,29,30,31,42,43,44,47,48,49,60,61,62,64,65,66,67,68,79,80,81,82,83,84,85,86,87,100,101,102,103,104,105,106,107,108,109,121,122,123,124,125,126,127,128],
       },
-      phase2West: {
-        label: 'Phase II — West-Facing', description: 'Evening sunlight with open western views.',
-        count: 57, priceFrom: 'Rs.28,499/sq.yd',
-        plotNumbers: [],
-      },
-      phase2NorthSouth: {
-        label: 'Phase II — North/South', description: 'North & South facing plots — 4 blocks (A, B, C, D).',
-        count: 43, priceFrom: 'Contact us',
-        plotNumbers: [],
+      cornerPlots: {
+        label: 'Corner / Special Facing', description: 'Phase I: 38 plots (North, South, NE, SE, SW) | Phase II: 43 plots (North, South)',
+        count: 81, priceFrom: 'Contact us',
+        plotNumbers: [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,23,27,32,33,38,45,46,50,51,56,63,69,70,75,88,89,90,110,111,129,130,131],
       },
     },
     byDimension: [

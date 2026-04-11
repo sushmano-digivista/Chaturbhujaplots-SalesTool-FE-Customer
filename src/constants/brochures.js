@@ -7,7 +7,7 @@ export const BROCHURES = {
   anjana:  '/brochures/Anjana_Paradise_Brochure.pdf',
   aparna:  '/brochures/Aparna_Legacy_Brochure.pdf',
   varaha:  '/brochures/Varaha_Virtue_Brochure.pdf',
-  trimbak: null,   // Brochure not yet available for Trimbak Oaks
+  trimbak: '/brochures/Trimbak_Oaks_Brochure.pdf',
   general: '/brochures/Chaturbhuja_Overview_Brochure.pdf',
 }
 

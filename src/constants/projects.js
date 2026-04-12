@@ -15,11 +15,11 @@ export const ACTIVE_PROJECTS = [
     total:       242,      // confirmed from Paritala layout plan (242 plots)
     starting:    'Rs.24.8L',
     pricing: {
-      east:    { base: 13000, dev: 1000, label: 'Rs.13,000 + Rs.1,000 Dev. Charges' },
-      west:    { base: 12500, dev: 1000, label: 'Rs.12,500 + Rs.1,000 Dev. Charges' },
+      east:    { base: 12999, dev: 1000, label: 'Rs.12,999 + Rs.1,000 Dev. Charges' },
+      west:    { base: 12499, dev: 1000, label: 'Rs.12,499 + Rs.1,000 Dev. Charges' },
       corners: [
-        { type: 'North-East Corner', extra: 1000, label: 'Rs.1,000/sq.yd extra' },
-        { type: 'Other Corners',     extra: 500,  label: 'Rs.500/sq.yd extra'   },
+        { type: 'North-East Corner', extra: 999, label: 'Rs.999/sq.yd extra' },
+        { type: 'Other Corners',     extra: 499, label: 'Rs.499/sq.yd extra' },
       ],
       note: 'All prices per sq. yard. Corner charges additional.',
     },
@@ -109,7 +109,7 @@ export const ACTIVE_PROJECTS = [
     tag:         'New Launch',
     status:      'CRDA Approved | RERA Registered | Phase II Open for Booking',
     upcoming:    false,
-    facings:     { east: 138, west: 105, north: 28, south: 29, southWest: 11, southEast: 11, northEast: 1 },
+    facings:     { east: 113, west: 119, corner: 52, north: 20, south: 10, southWest: 7, southEast: 3 },
     approvals:   ['CRDA Approved', 'RERA Registered', '100% Clear Title'],
     highlights: [
       '5 km from Vijayawada City Centre',
@@ -160,11 +160,11 @@ export const ACTIVE_PROJECTS = [
     total:       273,
     starting:    'Rs.26L',
     pricing: {
-      east:    { base: 12000, dev: 1000, label: 'Rs.12,000 + Rs.1,000 Dev. Charges' },
-      west:    { base: 11500, dev: 1000, label: 'Rs.11,500 + Rs.1,000 Dev. Charges' },
+      east:    { base: 11999, dev: 1000, label: 'Rs.11,999 + Rs.1,000 Dev. Charges' },
+      west:    { base: 11499, dev: 1000, label: 'Rs.11,499 + Rs.1,000 Dev. Charges' },
       corners: [
-        { type: 'North-East Corner', extra: 1000, label: 'Rs.1,000/sq.yd extra' },
-        { type: 'Other Corners',     extra: 500,  label: 'Rs.500/sq.yd extra'   },
+        { type: 'North-East Corner', extra: 999, label: 'Rs.999/sq.yd extra' },
+        { type: 'Other Corners',     extra: 499, label: 'Rs.499/sq.yd extra' },
       ],
       note: 'All prices per sq. yard. Corner charges additional.',
     },
@@ -234,11 +234,11 @@ export const ACTIVE_PROJECTS = [
     total:       132,
     starting:    'Rs.25L',
     pricing: {
-      east:    { base: 15000, dev: 1000, label: 'Rs.15,000 + Rs.1,000 Dev. Charges' },
-      west:    { base: 14500, dev: 1000, label: 'Rs.14,500 + Rs.1,000 Dev. Charges' },
+      east:    { base: 14999, dev: 1000, label: 'Rs.14,999 + Rs.1,000 Dev. Charges' },
+      west:    { base: 14499, dev: 1000, label: 'Rs.14,499 + Rs.1,000 Dev. Charges' },
       corners: [
-        { type: 'North-East Corner', extra: 1000, label: 'Rs.1,000/sq.yd extra' },
-        { type: 'Other Corners',     extra: 500,  label: 'Rs.500/sq.yd extra'   },
+        { type: 'North-East Corner', extra: 999, label: 'Rs.999/sq.yd extra' },
+        { type: 'Other Corners',     extra: 499, label: 'Rs.499/sq.yd extra' },
       ],
       corpus:  { amount: 100, label: 'Rs.100/sq.yd Corpus Fund' },
       note: 'All prices per sq. yard. Corner charges additional.',

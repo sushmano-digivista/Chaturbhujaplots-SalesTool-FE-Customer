@@ -13,32 +13,38 @@ const CATEGORY_META = {
   northFacing:      { icon: <ArrowUp   size={18} />, label: 'North-Facing',           color: '#4CAF74', bg: 'rgba(76,175,116,0.12)'  },
   southFacing:      { icon: <ArrowDown size={18} />, label: 'South-Facing',           color: '#E24B4A', bg: 'rgba(226,75,74,0.12)'   },
   cornerPlots:      { icon: <Maximize2 size={18} />, label: 'Corner Plots',           color: '#9B7B2E', bg: 'rgba(155,123,46,0.12)'  },
+  p1East:           { icon: <Sun       size={18} />, label: 'Phase I — East',         color: '#C9A84C', bg: 'rgba(201,168,76,0.12)'  },
+  p1West:           { icon: <Sunset    size={18} />, label: 'Phase I — West',         color: '#4A90D9', bg: 'rgba(74,144,217,0.12)'  },
+  p1Corner:         { icon: <Maximize2 size={18} />, label: 'Phase I — Corner',       color: '#9B7B2E', bg: 'rgba(155,123,46,0.12)'  },
+  p2East:           { icon: <Sun       size={18} />, label: 'Phase II — East',        color: '#C0522A', bg: 'rgba(192,82,42,0.12)'   },
+  p2West:           { icon: <Sunset    size={18} />, label: 'Phase II — West',        color: '#1976D2', bg: 'rgba(25,118,210,0.12)'  },
+  p2Corner:         { icon: <Maximize2 size={18} />, label: 'Phase II — Corner',      color: '#9B7B2E', bg: 'rgba(155,123,46,0.12)'  },
 }
 
 // ── Local pricing fallback (used when API is unavailable) ───────────────────
 const LOCAL_PRICING = {
   anjana: {
-    east:    { base: 13000, dev: 1000 },
-    west:    { base: 12500, dev: 1000 },
+    east:    { base: 12999, dev: 1000 },
+    west:    { base: 12499, dev: 1000 },
     corners: [
-      { type: 'North-East Corner', extra: 1000 },
-      { type: 'Other Corners',     extra: 500  },
+      { type: 'North-East Corner', extra: 999 },
+      { type: 'Other Corners',     extra: 499 },
     ],
   },
   aparna: {
-    east:    { base: 12000, dev: 1000 },
-    west:    { base: 11500, dev: 1000 },
+    east:    { base: 11999, dev: 1000 },
+    west:    { base: 11499, dev: 1000 },
     corners: [
-      { type: 'North-East Corner', extra: 1000 },
-      { type: 'Other Corners',     extra: 500  },
+      { type: 'North-East Corner', extra: 999 },
+      { type: 'Other Corners',     extra: 499 },
     ],
   },
   varaha: {
-    east:    { base: 15000, dev: 1000 },
-    west:    { base: 14500, dev: 1000 },
+    east:    { base: 14999, dev: 1000 },
+    west:    { base: 14499, dev: 1000 },
     corners: [
-      { type: 'North-East Corner', extra: 1000 },
-      { type: 'Other Corners',     extra: 500  },
+      { type: 'North-East Corner', extra: 999 },
+      { type: 'Other Corners',     extra: 499 },
     ],
     corpus:  { amount: 100 },
   },
@@ -147,20 +153,35 @@ const VENTURE_PLOTS = {
     color:    '#C0522A',
     totalPlots: 324,
     categories: {
-      eastFacing: {
-        label: 'East-Facing', description: 'Phase I: 52 plots | Phase II: 86 plots (Blocks A, B, C, D)',
-        count: 138, priceFrom: 'Rs.28,999/sq.yd',
-        plotNumbers: [17,18,19,20,21,22,34,35,36,37,39,40,41,52,53,54,55,57,58,59,71,72,73,74,76,77,78,91,92,93,94,95,96,97,98,99,112,113,114,115,116,117,118,119,120,132,133,134,135,136,137,138],
+      p1East: {
+        label: 'Phase I — East', description: 'Phase I East-facing — 40 plots, morning sunlight.',
+        count: 40, priceFrom: 'Contact us',
+        plotNumbers: [18,19,22,34,35,36,37,40,41,52,53,54,55,58,59,70,71,72,73,74,77,78,90,91,92,93,94,95,98,99,112,113,114,115,116,117,120,132,133,134],
       },
-      westFacing: {
-        label: 'West-Facing', description: 'Phase I: 48 plots | Phase II: 57 plots (Blocks A, B, C, D)',
-        count: 105, priceFrom: 'Rs.28,499/sq.yd',
-        plotNumbers: [24,25,26,28,29,30,31,42,43,44,47,48,49,60,61,62,64,65,66,67,68,79,80,81,82,83,84,85,86,87,100,101,102,103,104,105,106,107,108,109,121,122,123,124,125,126,127,128],
+      p1West: {
+        label: 'Phase I — West', description: 'Phase I West-facing — 44 plots, evening sunlight.',
+        count: 44, priceFrom: 'Contact us',
+        plotNumbers: [24,25,28,29,30,31,42,43,46,47,48,49,60,61,64,65,66,67,68,79,80,83,84,85,86,87,100,101,104,105,106,107,108,109,121,124,125,126,127,128,129,136,137,138],
       },
-      cornerPlots: {
-        label: 'Corner / Special Facing', description: 'Phase I: 38 plots (North, South, NE, SE, SW) | Phase II: 43 plots (North, South)',
-        count: 81, priceFrom: 'Contact us',
-        plotNumbers: [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,23,27,32,33,38,45,46,50,51,56,63,69,70,75,88,89,90,110,111,129,130,131],
+      p1Corner: {
+        label: 'Phase I — Corner/Other', description: 'Phase I Corner, North, South, NE, SE, SW — 54 plots.',
+        count: 54, priceFrom: 'Contact us',
+        plotNumbers: [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,20,21,23,26,27,32,33,38,39,44,45,50,51,56,57,62,63,69,75,76,81,82,88,89,96,97,102,103,110,111,118,119,122,123,130,131,135],
+      },
+      p2East: {
+        label: 'Phase II — East', description: 'Phase II East-facing — 73 plots, Blocks A, B, C, D.',
+        count: 73, priceFrom: 'Rs.28,999/sq.yd',
+        plotNumbers: ['A6','A7','A8','A9','A10','A11','A18','A19','A20','A21','A22','A23','A30','A31','A32','A33','A34','A35','B2','B3','B4','B5','B6','B7','B8','B9','B10','B11','B12','B15','B34','B35','B36','B37','B38','B39','B40','B41','B42','B43','B44','C2','C3','C4','C23','C24','C25','C26','C27','C28','C29','C39','C40','C41','C42','C43','C44','C45','D2','D3','D4','D5','D6','D14','D15','D16','D17','D18','D26','D27','D28','D29','D30'],
+      },
+      p2West: {
+        label: 'Phase II — West', description: 'Phase II West-facing — 75 plots, Blocks A, B, C, D.',
+        count: 75, priceFrom: 'Rs.28,499/sq.yd',
+        plotNumbers: ['A1','A2','A3','A4','A5','A12','A13','A14','A15','A16','A17','A24','A25','A26','A27','A28','A29','A36','A37','A38','A39','A40','A41','B17','B18','B21','B22','B23','B24','B25','B26','B27','B28','B29','B30','B31','B47','B48','B49','B50','B51','B52','B53','B54','C16','C17','C18','C19','C20','C21','C22','C32','C33','C34','C35','C36','C37','C38','C48','C49','C50','C51','C52','C53','C54','D7','D8','D9','D10','D11','D19','D20','D21','D22','D23'],
+      },
+      p2Corner: {
+        label: 'Phase II — Corner/Other', description: 'Phase II Corner, North, South — 38 plots, Blocks A–D.',
+        count: 38, priceFrom: 'Contact us',
+        plotNumbers: ['B1','B13','B14','B16','B19','B20','B32','B33','B45','B46','C1','C5','C6','C7','C8','C9','C10','C11','C12','C13','C14','C15','C30','C31','C46','C47','D1','D12','D13','D24','D25','D31','D32','D33','D34','D35','D36','D37'],
       },
     },
     byDimension: [

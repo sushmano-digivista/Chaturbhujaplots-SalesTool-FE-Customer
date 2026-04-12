@@ -206,7 +206,7 @@ export default function PlotGrid({ onEnquire, pricingMap }) {
   const [activeCategory, setActiveCategory] = useState(null)
   const [hoveredPlot,    setHoveredPlot]    = useState(null)
   const [priceOpen,      setPriceOpen]      = useState(false)
-  const { t } = useLanguage()
+  const { t, language } = useLanguage()
   const tv = (key, fallback) => { const v = t(key); return (v && v !== key) ? v : fallback }
   const VENTURE_PRICING = pricingMap || LOCAL_PRICING
 

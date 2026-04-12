@@ -30,7 +30,7 @@ export default function LeadModal({ context, onClose, whatsapp, content }) {
   const isPE      = isPlotEnquiry(context)
   const isCB      = isCallback(context)
   const { t, language } = useLanguage()
-  const { register, handleSubmit, reset, watch, formState: { errors } } = useForm()
+  const { register, handleSubmit, reset, watch, setValue, formState: { errors } } = useForm()
   const submitLead  = useSubmitLead()
   const [submitted, setSubmitted]  = useState(false)
   const [emailSent, setEmailSent]  = useState(false)
@@ -75,6 +75,14 @@ export default function LeadModal({ context, onClose, whatsapp, content }) {
     }
     return () => { document.body.style.overflow = ''; document.body.style.paddingRight = '' }
   }, [isOpen])
+
+  // Pre-select project from venture context (e.g. from PlotGrid dimension enquiry)
+  useEffect(() => {
+    if (isOpen && context?.venture) {
+      const proj = ACTIVE_PROJECTS.find(p => p.name === context.venture)
+      if (proj) setValue('project', proj.name)
+    }
+  }, [isOpen, context?.venture])
 
   useEffect(() => {
     const h = e => { if (e.key === 'Escape') onClose() }
@@ -194,7 +202,7 @@ export default function LeadModal({ context, onClose, whatsapp, content }) {
         <label className="form-label">{t('modal.namePlaceholder')} *</label>
         <input className={`form-input ${errors.name ? 'error' : ''}`}
           placeholder={t('contact.namePlaceholder')} autoComplete="name"
-          {...register('name', { required: 'Name is required' })} />
+          {...register('name', { required: language === 'te' ? 'పేరు అవసరం' : 'Name is required' })} />
         {errors.name && <span className="form-error">{errors.name.message}</span>}
       </div>
       <div className="form-group">
@@ -202,8 +210,8 @@ export default function LeadModal({ context, onClose, whatsapp, content }) {
         <input className={`form-input ${errors.phone ? 'error' : ''}`}
           placeholder={t('contact.phonePlaceholder')} inputMode="tel" autoComplete="tel"
           {...register('phone', {
-            required: 'Phone number is required',
-            pattern:  { value:/^[6-9]\d{9}$/, message:'Enter valid 10-digit Indian number' },
+            required: language === 'te' ? 'ఫోన్ నంబర్ అవసరం' : 'Phone number is required',
+            pattern:  { value:/^[6-9]\d{9}$/, message: language === 'te' ? 'చెల్లుబాటు అయ్యే 10 అంకెల నంబర్ నమోదు చేయండి' : 'Enter valid 10-digit Indian number' },
           })} />
         {errors.phone && <span className="form-error">{errors.phone.message}</span>}
       </div>
@@ -227,6 +235,8 @@ export default function LeadModal({ context, onClose, whatsapp, content }) {
           {!isSV && <span style={{ color:'rgba(0,0,0,0.4)', fontWeight:400, marginLeft:6 }}>({t('modal.requiredForDownload') || 'required for Download'})</span>}
         </label>
         <select className="form-input" {...register('project')}
+          disabled={!!context?.venture}
+          style={context?.venture ? { opacity: 0.7, cursor: 'not-allowed' } : {}}
           onChange={e => { clearCtaError('download'); register('project').onChange(e) }}>
           <option value="">{t('modal.selectProject') || 'Select a project'}</option>
           {ACTIVE_PROJECTS.map(p => {
@@ -287,6 +297,7 @@ export default function LeadModal({ context, onClose, whatsapp, content }) {
                     'Secure Plot': 'ప్లాట్ బుక్ చేయండి',
                     'Book Site Visit': 'సైట్ విజిట్ బుక్ చేయండి',
                     'Download Brochure': 'పాంప్లెట్ డౌన్‌లోడ్',
+                    'Enquire About Plot': 'ప్లాట్ గురించి సంప్రదించండి',
                   }
                   return LABEL_TE[context.label] || context.label
                 }
@@ -382,15 +393,17 @@ export default function LeadModal({ context, onClose, whatsapp, content }) {
 
                 <div className={styles.callbackNote}>
                   <span>📞</span>
-                  <span>Our property advisor will call you within <strong>30 minutes</strong> during business hours (9am–7pm).</span>
+                  <span>{language === 'te' ? <>మా ప్రాపర్టీ సలహాదారు <strong>30 నిమిషాలలో</strong> మీకు కాల్ చేస్తారు (ఉదయం 9 నుండి సాయంత్రం 7 వరకు).</> : <>Our property advisor will call you within <strong>30 minutes</strong> during business hours (9am–7pm).</>}</span>
                 </div>
 
                 <div className={styles.actions}>
-                  <button type="submit" className="btn btn-green btn-full"
-                    disabled={submitLead.isPending}>
-                    {submitLead.isPending ? 'Requesting…' : '📞 ' + t('modal.requestCallback')}
-                  </button>
-                  <WhatsAppIcon size={44} onClick={() => setWaStep(1)} />
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 12, justifyContent: 'center' }}>
+                    <button type="submit" className="btn btn-green" style={{ flex: 1 }}
+                      disabled={submitLead.isPending}>
+                      {submitLead.isPending ? (language === 'te' ? 'అభ్యర్థిస్తోంది…' : 'Requesting…') : '📞 ' + t('modal.requestCallback')}
+                    </button>
+                    <WhatsAppIcon size={44} onClick={() => setWaStep(1)} />
+                  </div>
                 </div>
               </form>
 
@@ -504,50 +517,56 @@ export default function LeadModal({ context, onClose, whatsapp, content }) {
                   </div>
                   <div className={styles.plotCardRow}>
                     <span className={styles.plotArea}>{context?.plotArea}</span>
-                    {context?.venture && <span className={styles.plotVenture}>{context.venture}</span>}
+                    {context?.venture && <span className={styles.plotVenture}>{(() => {
+                      if (language !== 'te') return context.venture
+                      const V_TE = { 'Anjana Paradise': 'అంజన పారడైజ్', 'Trimbak Oaks': 'ట్రింబక్ ఓక్స్', 'Aparna Legacy': 'అపర్ణ లెగసీ', 'Varaha Virtue': 'వరాహ వర్చ్యూ' }
+                      return V_TE[context.venture] || context.venture
+                    })()}</span>}
                   </div>
                 </div>
 
                 <div className="form-group">
-                  <label className="form-label">Your Name *</label>
+                  <label className="form-label">{language === 'te' ? 'మీ పేరు *' : 'Your Name *'}</label>
                   <input className={`form-input ${errors.name ? 'error' : ''}`}
-                    placeholder="Full name" autoComplete="name"
-                    {...register('name', { required: 'Name is required' })} />
+                    placeholder={language === 'te' ? 'పూర్తి పేరు' : 'Full name'} autoComplete="name"
+                    {...register('name', { required: language === 'te' ? 'పేరు అవసరం' : 'Name is required' })} />
                   {errors.name && <span className="form-error">{errors.name.message}</span>}
                 </div>
 
                 <div className="form-group">
-                  <label className="form-label">Mobile Number *</label>
+                  <label className="form-label">{language === 'te' ? 'ఫోన్ నంబర్ *' : 'Mobile Number *'}</label>
                   <input className={`form-input ${errors.phone ? 'error' : ''}`}
                     placeholder="+91 XXXXX XXXXX" inputMode="tel" autoComplete="tel"
                     {...register('phone', {
-                      required: 'Phone number is required',
-                      pattern:  { value:/^[6-9]\d{9}$/, message:'Enter valid 10-digit Indian number' },
+                      required: language === 'te' ? 'ఫోన్ నంబర్ అవసరం' : 'Phone number is required',
+                      pattern:  { value:/^[6-9]\d{9}$/, message: language === 'te' ? 'చెల్లుబాటు అయ్యే 10 అంకెల నంబర్ నమోదు చేయండి' : 'Enter valid 10-digit Indian number' },
                     })} />
                   {errors.phone && <span className="form-error">{errors.phone.message}</span>}
                 </div>
 
                 <div className="form-group">
-                  <label className="form-label">Email <span style={{color:'rgba(0,0,0,0.4)',fontWeight:400}}>(optional)</span></label>
-                  <input className="form-input" placeholder="you@example.com"
+                  <label className="form-label">{language === 'te' ? 'ఇమెయిల్' : 'Email'} <span style={{color:'rgba(0,0,0,0.4)',fontWeight:400}}>({language === 'te' ? 'ఐచ్ఛికం' : 'optional'})</span></label>
+                  <input className="form-input" placeholder={language === 'te' ? 'మీ ఇమెయిల్' : 'you@example.com'}
                     inputMode="email" autoComplete="email"
                     {...register('email', {
-                      pattern: { value:/^[^\s@]+@[^\s@]+\.[^\s@]+$/, message:'Enter valid email' },
+                      pattern: { value:/^[^\s@]+@[^\s@]+\.[^\s@]+$/, message: language === 'te' ? 'చెల్లుబాటు అయ్యే ఇమెయిల్ నమోదు చేయండి' : 'Enter valid email' },
                     })} />
                 </div>
 
                 <div className={styles.actions}>
-                  <button type="submit" className="btn btn-green btn-full"
-                    disabled={submitLead.isPending}>
-                    {submitLead.isPending ? t('common.loading') : '📞 ' + t('modal.requestCallback')}
-                  </button>
-                  <WhatsAppIcon size={44} onClick={() => {
-                    const num = whatsapp || DEFAULT_WA_NUMBER
-                    const txt = language === 'te'
-                      ? t('contact.waPlotMsg').replace('{size}', context?.plotSize || context?.category || '').replace('{area}', context?.plotArea || '').replace('{venture}', context?.venture || 'చతుర్భుజ').replace('{price}', context?.priceFrom || '')
-                      : `Hi, I am interested in a ${context?.plotSize || context?.category} plot (${context?.plotArea}) in ${context?.venture || 'Chaturbhuja Properties'}. Price: ${context?.priceFrom}. Please share details.`
-                    openWhatsApp(num, txt)
-                  }} />
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 12, justifyContent: 'center' }}>
+                    <button type="submit" className="btn btn-green" style={{ flex: 1 }}
+                      disabled={submitLead.isPending}>
+                      {submitLead.isPending ? t('common.loading') : '📞 ' + t('modal.requestCallback')}
+                    </button>
+                    <WhatsAppIcon size={44} onClick={() => {
+                      const num = whatsapp || DEFAULT_WA_NUMBER
+                      const txt = language === 'te'
+                        ? t('contact.waPlotMsg').replace('{size}', context?.plotSize || context?.category || '').replace('{area}', context?.plotArea || '').replace('{venture}', context?.venture || 'చతుర్భుజ').replace('{price}', context?.priceFrom || '')
+                        : `Hi, I am interested in a ${context?.plotSize || context?.category} plot (${context?.plotArea}) in ${context?.venture || 'Chaturbhuja Properties'}. Price: ${context?.priceFrom}. Please share details.`
+                      openWhatsApp(num, txt)
+                    }} />
+                  </div>
                 </div>
               </form>
 
@@ -635,7 +654,7 @@ export default function LeadModal({ context, onClose, whatsapp, content }) {
                     </div>
                   </div>{/* /ctaRow */}
 
-                  <div className={styles.divider}><span>or</span></div>
+                  <div className={styles.divider}><span>{language === 'te' ? 'లేదా' : 'or'}</span></div>
 
                   <button type="submit" className="btn btn-green btn-full" disabled={submitLead.isPending}>
                     {submitLead.isPending ? t('common.loading') : '📞 ' + t('modal.requestCallback')}

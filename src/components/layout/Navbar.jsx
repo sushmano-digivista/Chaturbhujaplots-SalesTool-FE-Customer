@@ -7,7 +7,7 @@ import { useLanguage } from '@/context/LanguageContext'
 
 export const NAV_PROJECTS = [
   { id: 'anjana',  name: 'Anjana Paradise', sub: 'Paritala, Near Amaravati',    available: 14, total: 242 },
-  { id: 'trimbak', name: 'Trimbak Oaks',    sub: 'Penamaluru, Near Vijayawada', available: null, total: null, upcoming: true },
+  { id: 'trimbak', name: 'Trimbak Oaks',    sub: 'Penamaluru, Near Vijayawada', available: 0, total: 324 },
   { id: 'aparna',  name: 'Aparna Legacy',   sub: 'Chevitikallu, Gateway of Amaravati Capital Region', available: 16, total: 28  },
   { id: 'varaha',  name: 'Varaha Virtue',   sub: 'Pamarru, Near NH-16',         available: 20, total: 32  },
 ]

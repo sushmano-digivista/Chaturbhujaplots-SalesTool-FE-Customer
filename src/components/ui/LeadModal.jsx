@@ -202,7 +202,7 @@ export default function LeadModal({ context, onClose, whatsapp, content }) {
         <label className="form-label">{t('modal.namePlaceholder')} *</label>
         <input className={`form-input ${errors.name ? 'error' : ''}`}
           placeholder={t('contact.namePlaceholder')} autoComplete="name"
-          {...register('name', { required: 'Name is required' })} />
+          {...register('name', { required: language === 'te' ? 'పేరు అవసరం' : 'Name is required' })} />
         {errors.name && <span className="form-error">{errors.name.message}</span>}
       </div>
       <div className="form-group">
@@ -210,8 +210,8 @@ export default function LeadModal({ context, onClose, whatsapp, content }) {
         <input className={`form-input ${errors.phone ? 'error' : ''}`}
           placeholder={t('contact.phonePlaceholder')} inputMode="tel" autoComplete="tel"
           {...register('phone', {
-            required: 'Phone number is required',
-            pattern:  { value:/^[6-9]\d{9}$/, message:'Enter valid 10-digit Indian number' },
+            required: language === 'te' ? 'ఫోన్ నంబర్ అవసరం' : 'Phone number is required',
+            pattern:  { value:/^[6-9]\d{9}$/, message: language === 'te' ? 'చెల్లుబాటు అయ్యే 10 అంకెల నంబర్ నమోదు చేయండి' : 'Enter valid 10-digit Indian number' },
           })} />
         {errors.phone && <span className="form-error">{errors.phone.message}</span>}
       </div>
@@ -524,30 +524,30 @@ export default function LeadModal({ context, onClose, whatsapp, content }) {
                 </div>
 
                 <div className="form-group">
-                  <label className="form-label">Your Name *</label>
+                  <label className="form-label">{language === 'te' ? 'మీ పేరు *' : 'Your Name *'}</label>
                   <input className={`form-input ${errors.name ? 'error' : ''}`}
-                    placeholder="Full name" autoComplete="name"
-                    {...register('name', { required: 'Name is required' })} />
+                    placeholder={language === 'te' ? 'పూర్తి పేరు' : 'Full name'} autoComplete="name"
+                    {...register('name', { required: language === 'te' ? 'పేరు అవసరం' : 'Name is required' })} />
                   {errors.name && <span className="form-error">{errors.name.message}</span>}
                 </div>
 
                 <div className="form-group">
-                  <label className="form-label">Mobile Number *</label>
+                  <label className="form-label">{language === 'te' ? 'ఫోన్ నంబర్ *' : 'Mobile Number *'}</label>
                   <input className={`form-input ${errors.phone ? 'error' : ''}`}
                     placeholder="+91 XXXXX XXXXX" inputMode="tel" autoComplete="tel"
                     {...register('phone', {
-                      required: 'Phone number is required',
-                      pattern:  { value:/^[6-9]\d{9}$/, message:'Enter valid 10-digit Indian number' },
+                      required: language === 'te' ? 'ఫోన్ నంబర్ అవసరం' : 'Phone number is required',
+                      pattern:  { value:/^[6-9]\d{9}$/, message: language === 'te' ? 'చెల్లుబాటు అయ్యే 10 అంకెల నంబర్ నమోదు చేయండి' : 'Enter valid 10-digit Indian number' },
                     })} />
                   {errors.phone && <span className="form-error">{errors.phone.message}</span>}
                 </div>
 
                 <div className="form-group">
-                  <label className="form-label">Email <span style={{color:'rgba(0,0,0,0.4)',fontWeight:400}}>(optional)</span></label>
-                  <input className="form-input" placeholder="you@example.com"
+                  <label className="form-label">{language === 'te' ? 'ఇమెయిల్' : 'Email'} <span style={{color:'rgba(0,0,0,0.4)',fontWeight:400}}>({language === 'te' ? 'ఐచ్ఛికం' : 'optional'})</span></label>
+                  <input className="form-input" placeholder={language === 'te' ? 'మీ ఇమెయిల్' : 'you@example.com'}
                     inputMode="email" autoComplete="email"
                     {...register('email', {
-                      pattern: { value:/^[^\s@]+@[^\s@]+\.[^\s@]+$/, message:'Enter valid email' },
+                      pattern: { value:/^[^\s@]+@[^\s@]+\.[^\s@]+$/, message: language === 'te' ? 'చెల్లుబాటు అయ్యే ఇమెయిల్ నమోదు చేయండి' : 'Enter valid email' },
                     })} />
                 </div>
 

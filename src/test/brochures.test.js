@@ -37,7 +37,7 @@ describe('getBrochureUrl', () => {
     expect(getBrochureUrl('anjana')).toBe(BROCHURES.anjana)
     expect(getBrochureUrl('aparna')).toBe(BROCHURES.aparna)
     expect(getBrochureUrl('varaha')).toBe(BROCHURES.varaha)
-    expect(getBrochureUrl('trimbak')).toBeNull() // no brochure available yet
+    expect(getBrochureUrl('trimbak')).toBe(BROCHURES.trimbak)
   })
 
   it('returns the general brochure URL for an unknown project ID', () => {

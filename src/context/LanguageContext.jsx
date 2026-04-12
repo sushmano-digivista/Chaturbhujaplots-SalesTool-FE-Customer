@@ -185,10 +185,11 @@ export const FALLBACK_TRANSLATIONS = {
       },
     },
     tags: {
-      featured:  'Featured',
-      upcoming:  'Upcoming',
-      limited:   'Limited',
-      hot:       'Hot',
+      featured:     'Featured',
+      upcoming:     'Upcoming',
+      limited:      'Limited',
+      hot:          'Hot',
+      'new launch': 'New Launch',
     },
 
     facings: {
@@ -662,10 +663,11 @@ export const FALLBACK_TRANSLATIONS = {
       },
     },
     tags: {
-      featured:  '\u0c2e\u0c41\u0c16\u0c4d\u0c2f\u0c2e\u0c48\u0c28\u0c26\u0c3f',
-      upcoming:  '\u0c30\u0c3e\u0c2c\u0c4b\u0c24\u0c4b\u0c02\u0c26\u0c3f',
-      limited:   '\u0c2a\u0c30\u0c3f\u0c2e\u0c3f\u0c24\u0c02',
-      hot:       '\u0c39\u0c3e\u0c1f\u0c4d',
+      featured:     '\u0c2e\u0c41\u0c16\u0c4d\u0c2f\u0c2e\u0c48\u0c28\u0c26\u0c3f',
+      upcoming:     '\u0c30\u0c3e\u0c2c\u0c4b\u0c24\u0c4b\u0c02\u0c26\u0c3f',
+      limited:      '\u0c2a\u0c30\u0c3f\u0c2e\u0c3f\u0c24\u0c02',
+      hot:          '\u0c39\u0c3e\u0c1f\u0c4d',
+      'new launch': '\u0c15\u0c4a\u0c24\u0c4d\u0c24 \u0c32\u0c3e\u0c02\u0c1a\u0c4d',
     },
     facings: {
       east:      '\u2600\ufe0f \u0c24\u0c42\u0c30\u0c4d\u0c2a\u0c41',

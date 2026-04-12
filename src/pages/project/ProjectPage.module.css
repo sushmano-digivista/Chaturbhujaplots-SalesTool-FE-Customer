@@ -163,7 +163,7 @@
 .facingFill { height: 100%; border-radius: 100px; }
 .facingCount { width: 36px; text-align: right; font-size: 13px; font-weight: 700; color: var(--text-dark); }
 
-.factsGrid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+.factsGrid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 16px; }
 .factCard {
   background: var(--green-light); border-radius: 14px; padding: 22px 16px; text-align: center;
   border: 1px solid rgba(30,77,43,0.1);

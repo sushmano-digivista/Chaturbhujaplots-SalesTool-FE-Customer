@@ -152,56 +152,130 @@ function HomeTab({ proj, onEnquire }) {
 }
 
 function OverviewTab({ proj, onEnquire, apiPricing }) {
-  const { t } = useLanguage()
+  const { t, language } = useLanguage()
   const tProj = (field) => { const k = 'projects.' + proj.id + '.' + field; const v = t(k); return (v && v !== k) ? v : null }
   const facingRows  = getFacingRows(proj.facings || {})
   const totalFacing = facingRows.reduce((s, r) => s + r.value, 0)
+  const isTrimbak = proj.id === 'trimbak'
+
+  // Phase-wise facing data for Trimbak
+  const phase1Facings = isTrimbak ? { east: 40, west: 44, north: 8, south: 6, southWest: 13, southEast: 11, northEast: 10, northWest: 6 } : null
+  const phase2Facings = isTrimbak ? { east: 73, west: 75, north: 12, south: 4, corner: 22 } : null
+  const p1Rows = phase1Facings ? getFacingRows(phase1Facings) : []
+  const p2Rows = phase2Facings ? getFacingRows(phase2Facings) : []
+  const p1Total = p1Rows.reduce((s, r) => s + r.value, 0)
+  const p2Total = p2Rows.reduce((s, r) => s + r.value, 0)
+
+  const renderFacingCard = (title, rows, total, badge) => (
+    <div className={styles.facingCard} style={{ marginBottom: 20 }}>
+      <div className={styles.facingHeader}>
+        <h3 className={styles.facingTitle}>{title}</h3>
+        <span className={styles.facingTotal}>{badge}</span>
+      </div>
+      <div className={styles.facingRows}>
+        {rows.map((row) => (
+          <div key={row.label} className={styles.facingRow}>
+            <div className={styles.facingLabel}>
+              <span style={{ marginRight: 4 }}>{row.icon}</span>
+              <div className={styles.facingDot} style={{ background: row.color }} />
+              {(() => { const k = 'facings.' + row.key; const v = t(k); return v !== k ? v : row.label })()}
+            </div>
+            <div className={styles.facingBar}>
+              <motion.div
+                className={styles.facingFill}
+                style={{ background: row.color }}
+                initial={{ width: 0 }}
+                whileInView={{ width: (row.value / total * 100) + '%' }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.8, ease: 'easeOut' }}
+              />
+            </div>
+            <div className={styles.facingCount}>{row.value}</div>
+          </div>
+        ))}
+      </div>
+    </div>
+  )
+
   return (
     <div className={styles.tabContent}>
       <h2 className={styles.tabTitle}>{t('project.overview')}</h2>
-      {/* Pricing card — show if pricing exists, even for upcoming projects */}
-      {(apiPricing || proj.pricing) && (
-        <div style={{ marginBottom: 20 }}>
-          <PricingCard pricing={apiPricing || proj.pricing} />
-        </div>
-      )}
 
-      {/* Plot distribution — only for non-upcoming projects with facings */}
-      {!proj.upcoming && facingRows.length > 0 && (
-        <div className={styles.facingCard}>
-          <div className={styles.facingHeader}>
-            <h3 className={styles.facingTitle}>{t('portfolio.plotDistribution')}</h3>
-            <span className={styles.facingTotal}>{proj.total} {t('portfolio.totalPlotsLabel')}</span>
-          </div>
-          <div className={styles.facingRows}>
-            {facingRows.map((row) => (
-              <div key={row.label} className={styles.facingRow}>
-                <div className={styles.facingLabel}>
-                  <span style={{ marginRight: 4 }}>{row.icon}</span>
-                  <div className={styles.facingDot} style={{ background: row.color }} />
-                  {(() => { const k = 'facings.' + row.key; const v = t(k); return v !== k ? v : row.label })()}
-                </div>
-                <div className={styles.facingBar}>
-                  <motion.div
-                    className={styles.facingFill}
-                    style={{ background: row.color }}
-                    initial={{ width: 0 }}
-                    whileInView={{ width: (row.value / totalFacing * 100) + '%' }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.8, ease: 'easeOut' }}
-                  />
-                </div>
-                <div className={styles.facingCount}>{row.value}</div>
+      {isTrimbak ? (
+        <>
+          {/* Phase II Pricing */}
+          {(apiPricing || proj.pricing) && (
+            <div style={{ marginBottom: 10 }}>
+              <h3 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 20, marginBottom: 10, color: 'var(--green)' }}>
+                {language === 'te' ? 'ఫేజ్ II — ధరలు' : 'Phase II — Pricing'}
+              </h3>
+              <PricingCard pricing={apiPricing || proj.pricing} />
+            </div>
+          )}
+
+          {/* Phase I Distribution */}
+          {renderFacingCard(
+            language === 'te' ? 'ఫేజ్ I — ప్లాట్ పంపిణీ' : 'Phase I — Plot Distribution',
+            p1Rows, p1Total,
+            `${proj.phase1Plots || 138} ${language === 'te' ? 'ప్లాట్లు' : 'plots'}`
+          )}
+
+          {/* Phase II Distribution */}
+          {renderFacingCard(
+            language === 'te' ? 'ఫేజ్ II — ప్లాట్ పంపిణీ (బ్లాక్స్ A, B, C, D)' : 'Phase II — Plot Distribution (Blocks A, B, C, D)',
+            p2Rows, p2Total,
+            `${proj.phase2Plots || 186} ${language === 'te' ? 'ప్లాట్లు' : 'plots'}`
+          )}
+        </>
+      ) : (
+        <>
+          {/* Standard pricing for other projects */}
+          {(apiPricing || proj.pricing) && (
+            <div style={{ marginBottom: 20 }}>
+              <PricingCard pricing={apiPricing || proj.pricing} />
+            </div>
+          )}
+
+          {/* Standard plot distribution */}
+          {!proj.upcoming && facingRows.length > 0 && (
+            <div className={styles.facingCard}>
+              <div className={styles.facingHeader}>
+                <h3 className={styles.facingTitle}>{t('portfolio.plotDistribution')}</h3>
+                <span className={styles.facingTotal}>{proj.total} {t('portfolio.totalPlotsLabel')}</span>
               </div>
-            ))}
-          </div>
-        </div>
+              <div className={styles.facingRows}>
+                {facingRows.map((row) => (
+                  <div key={row.label} className={styles.facingRow}>
+                    <div className={styles.facingLabel}>
+                      <span style={{ marginRight: 4 }}>{row.icon}</span>
+                      <div className={styles.facingDot} style={{ background: row.color }} />
+                      {(() => { const k = 'facings.' + row.key; const v = t(k); return v !== k ? v : row.label })()}
+                    </div>
+                    <div className={styles.facingBar}>
+                      <motion.div
+                        className={styles.facingFill}
+                        style={{ background: row.color }}
+                        initial={{ width: 0 }}
+                        whileInView={{ width: (row.value / totalFacing * 100) + '%' }}
+                        viewport={{ once: true }}
+                        transition={{ duration: 0.8, ease: 'easeOut' }}
+                      />
+                    </div>
+                    <div className={styles.facingCount}>{row.value}</div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+        </>
       )}
 
       {/* Facts grid */}
       <div className={styles.factsGrid}>
         {[
           proj.total && { label: t('portfolio.totalPlots'),    value: proj.total },
+          isTrimbak && { label: language === 'te' ? 'ఫేజ్ I' : 'Phase I', value: proj.phase1Plots || 138 },
+          isTrimbak && { label: language === 'te' ? 'ఫేజ్ II' : 'Phase II', value: proj.phase2Plots || 186 },
           proj.starting && { label: t('portfolio.startingPrice'), value: proj.starting === 'Coming Soon' ? t('portfolio.comingSoon') : proj.starting },
           { label: t('portfolio.projectStatus'), value: proj.upcoming ? t('portfolio.comingSoon') : t('portfolio.openForBooking') },
         ].filter(Boolean).map((f) => (

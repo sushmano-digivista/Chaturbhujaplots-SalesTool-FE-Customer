@@ -297,6 +297,7 @@ export default function LeadModal({ context, onClose, whatsapp, content }) {
                     'Secure Plot': 'ప్లాట్ బుక్ చేయండి',
                     'Book Site Visit': 'సైట్ విజిట్ బుక్ చేయండి',
                     'Download Brochure': 'పాంప్లెట్ డౌన్‌లోడ్',
+                    'Enquire About Plot': 'ప్లాట్ గురించి సంప్రదించండి',
                   }
                   return LABEL_TE[context.label] || context.label
                 }
@@ -514,7 +515,11 @@ export default function LeadModal({ context, onClose, whatsapp, content }) {
                   </div>
                   <div className={styles.plotCardRow}>
                     <span className={styles.plotArea}>{context?.plotArea}</span>
-                    {context?.venture && <span className={styles.plotVenture}>{context.venture}</span>}
+                    {context?.venture && <span className={styles.plotVenture}>{(() => {
+                      if (language !== 'te') return context.venture
+                      const V_TE = { 'Anjana Paradise': 'అంజన పారడైజ్', 'Trimbak Oaks': 'ట్రింబక్ ఓక్స్', 'Aparna Legacy': 'అపర్ణ లెగసీ', 'Varaha Virtue': 'వరాహ వర్చ్యూ' }
+                      return V_TE[context.venture] || context.venture
+                    })()}</span>}
                   </div>
                 </div>
 

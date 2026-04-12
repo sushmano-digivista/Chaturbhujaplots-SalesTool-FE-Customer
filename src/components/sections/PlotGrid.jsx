@@ -438,6 +438,7 @@ export default function PlotGrid({ onEnquire, pricingMap }) {
                 const dk = CAT_DESC_KEYS[data.label];  const dv = t(dk||'')
                 const translatedData = {
                   ...data,
+                  venture:     venture.label,
                   label:       language === 'te' ? (CAT_TE_LABELS[data.label] || ((lv && lv !== lk) ? lv : data.label)) : ((lv && lv !== lk) ? lv : data.label),
                   description: language === 'te' ? (CAT_TE_DESCS[data.description] || ((dv && dv !== dk) ? dv : data.description)) : ((dv && dv !== dk) ? dv : data.description),
                 }

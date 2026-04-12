@@ -30,7 +30,7 @@ export default function LeadModal({ context, onClose, whatsapp, content }) {
   const isPE      = isPlotEnquiry(context)
   const isCB      = isCallback(context)
   const { t, language } = useLanguage()
-  const { register, handleSubmit, reset, watch, formState: { errors } } = useForm()
+  const { register, handleSubmit, reset, watch, setValue, formState: { errors } } = useForm()
   const submitLead  = useSubmitLead()
   const [submitted, setSubmitted]  = useState(false)
   const [emailSent, setEmailSent]  = useState(false)
@@ -75,6 +75,14 @@ export default function LeadModal({ context, onClose, whatsapp, content }) {
     }
     return () => { document.body.style.overflow = ''; document.body.style.paddingRight = '' }
   }, [isOpen])
+
+  // Pre-select project from venture context (e.g. from PlotGrid dimension enquiry)
+  useEffect(() => {
+    if (isOpen && context?.venture) {
+      const proj = ACTIVE_PROJECTS.find(p => p.name === context.venture)
+      if (proj) setValue('project', proj.name)
+    }
+  }, [isOpen, context?.venture])
 
   useEffect(() => {
     const h = e => { if (e.key === 'Escape') onClose() }
@@ -227,6 +235,8 @@ export default function LeadModal({ context, onClose, whatsapp, content }) {
           {!isSV && <span style={{ color:'rgba(0,0,0,0.4)', fontWeight:400, marginLeft:6 }}>({t('modal.requiredForDownload') || 'required for Download'})</span>}
         </label>
         <select className="form-input" {...register('project')}
+          disabled={!!context?.venture}
+          style={context?.venture ? { opacity: 0.7, cursor: 'not-allowed' } : {}}
           onChange={e => { clearCtaError('download'); register('project').onChange(e) }}>
           <option value="">{t('modal.selectProject') || 'Select a project'}</option>
           {ACTIVE_PROJECTS.map(p => {

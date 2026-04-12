@@ -398,7 +398,7 @@ export default function PlotGrid({ onEnquire, pricingMap }) {
           <AnimatePresence mode="wait">
             <motion.div
               key={ventureKey}
-              className={styles.categoryGrid}
+              className={categories.length > 3 ? styles.categoryGrid3x2 : styles.categoryGrid}
               initial={{ opacity: 0, y: 8 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0 }}
@@ -448,7 +448,7 @@ export default function PlotGrid({ onEnquire, pricingMap }) {
                     <CategoryCard
                       meta={meta}
                       data={translatedData}
-                      isOpen={isOpen}
+                      isOpen={false}
                       onToggle={() => setActiveCategory(isOpen ? null : key)}
                       onEnquire={onEnquire}
                       hoveredPlot={hoveredPlot}
@@ -459,6 +459,49 @@ export default function PlotGrid({ onEnquire, pricingMap }) {
               })}
             </motion.div>
           </AnimatePresence>
+
+          {/* Expanded category content below grid */}
+          {activeCategory && (() => {
+            const activeCat = categories.find(c => c.key === activeCategory)
+            if (!activeCat) return null
+            const { data } = activeCat
+            const meta = CATEGORY_META[activeCategory]
+            return (
+              <motion.div
+                key={activeCategory}
+                initial={{ opacity: 0, height: 0 }}
+                animate={{ opacity: 1, height: 'auto' }}
+                exit={{ opacity: 0, height: 0 }}
+                style={{ marginBottom: 32, background: 'var(--white)', borderRadius: 14, border: '1.5px solid rgba(30,77,43,0.12)', padding: 24 }}
+              >
+                <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 12 }}>
+                  {meta && <span style={{ color: meta.color }}>{meta.icon}</span>}
+                  <strong>{language === 'te' ? ({
+                    'Phase I — East': 'ఫేజ్ I — తూర్పు', 'Phase I — West': 'ఫేజ్ I — పడమర', 'Phase I — Corner/Other': 'ఫేజ్ I — మూల/ఇతర',
+                    'Phase II — East': 'ఫేజ్ II — తూర్పు', 'Phase II — West': 'ఫేజ్ II — పడమర', 'Phase II — Corner/Other': 'ఫేజ్ II — మూల/ఇతర',
+                    'East-Facing': '☀️ తూర్పు ముఖం', 'West-Facing': '🌙 పడమర ముఖం', 'Corner Plots': '◣ మూల ప్లాట్లు',
+                  }[data.label] || data.label) : data.label}</strong>
+                  <span style={{ color: 'rgba(0,0,0,0.4)', fontSize: 13 }}>— {data.count} {language === 'te' ? 'ప్లాట్లు' : 'plots'}</span>
+                </div>
+                {data.plotNumbers?.length > 0 && (
+                  <>
+                    <p style={{ fontSize: 13, color: 'var(--text-mid)', marginBottom: 8 }}>
+                      {data.count} {language === 'te' ? 'ప్లాట్లు ఈ విభాగంలో:' : 'plots in this category:'}
+                    </p>
+                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}>
+                      {data.plotNumbers.map(num => (
+                        <span key={num} style={{ background: 'rgba(201,168,76,0.12)', border: '1px solid rgba(201,168,76,0.3)', borderRadius: 6, padding: '4px 10px', fontSize: 13, fontWeight: 600 }}>{num}</span>
+                      ))}
+                    </div>
+                  </>
+                )}
+                <button className="btn btn-gold" style={{ marginTop: 16 }}
+                  onClick={() => onEnquire({ source: 'CATEGORY_ENQUIRY', label: 'Enquire About Plot', type: 'PLOT_ENQUIRY', category: data.label, plotSize: data.label, venture: venture.label })}>
+                  {language === 'te' ? `${data.label} కోసం సంప్రదించండి` : `Enquire for ${data.label}`}
+                </button>
+              </motion.div>
+            )
+          })()}
 
           {/* By Plot Size breakdown */}
           <div className={styles.dimSection}>

@@ -39,6 +39,10 @@
   display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
   gap: 16px; margin-bottom: 48px;
 }
+.categoryGrid3x2 {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 16px; margin-bottom: 16px;
+}
 .catCard {
   background: var(--white); border: 1.5px solid rgba(30,77,43,0.1);
   border-radius: var(--rlg); overflow: hidden; transition: border-color 0.2s;
@@ -133,6 +137,7 @@
 
 @media (max-width:768px) {
   .categoryGrid { grid-template-columns: 1fr; }
+  .categoryGrid3x2 { grid-template-columns: 1fr; }
   .dimGrid { grid-template-columns: 1fr 1fr; }
   .priceBannerNote { display:block; font-size:11px; margin-left:0; margin-top:4px; }
 }

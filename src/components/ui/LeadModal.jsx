@@ -393,15 +393,17 @@ export default function LeadModal({ context, onClose, whatsapp, content }) {
 
                 <div className={styles.callbackNote}>
                   <span>📞</span>
-                  <span>Our property advisor will call you within <strong>30 minutes</strong> during business hours (9am–7pm).</span>
+                  <span>{language === 'te' ? <>మా ప్రాపర్టీ సలహాదారు <strong>30 నిమిషాలలో</strong> మీకు కాల్ చేస్తారు (ఉదయం 9 నుండి సాయంత్రం 7 వరకు).</> : <>Our property advisor will call you within <strong>30 minutes</strong> during business hours (9am–7pm).</>}</span>
                 </div>
 
                 <div className={styles.actions}>
-                  <button type="submit" className="btn btn-green btn-full"
-                    disabled={submitLead.isPending}>
-                    {submitLead.isPending ? 'Requesting…' : '📞 ' + t('modal.requestCallback')}
-                  </button>
-                  <WhatsAppIcon size={44} onClick={() => setWaStep(1)} />
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 12, justifyContent: 'center' }}>
+                    <button type="submit" className="btn btn-green" style={{ flex: 1 }}
+                      disabled={submitLead.isPending}>
+                      {submitLead.isPending ? (language === 'te' ? 'అభ్యర్థిస్తోంది…' : 'Requesting…') : '📞 ' + t('modal.requestCallback')}
+                    </button>
+                    <WhatsAppIcon size={44} onClick={() => setWaStep(1)} />
+                  </div>
                 </div>
               </form>
 
@@ -552,17 +554,19 @@ export default function LeadModal({ context, onClose, whatsapp, content }) {
                 </div>
 
                 <div className={styles.actions}>
-                  <button type="submit" className="btn btn-green btn-full"
-                    disabled={submitLead.isPending}>
-                    {submitLead.isPending ? t('common.loading') : '📞 ' + t('modal.requestCallback')}
-                  </button>
-                  <WhatsAppIcon size={44} onClick={() => {
-                    const num = whatsapp || DEFAULT_WA_NUMBER
-                    const txt = language === 'te'
-                      ? t('contact.waPlotMsg').replace('{size}', context?.plotSize || context?.category || '').replace('{area}', context?.plotArea || '').replace('{venture}', context?.venture || 'చతుర్భుజ').replace('{price}', context?.priceFrom || '')
-                      : `Hi, I am interested in a ${context?.plotSize || context?.category} plot (${context?.plotArea}) in ${context?.venture || 'Chaturbhuja Properties'}. Price: ${context?.priceFrom}. Please share details.`
-                    openWhatsApp(num, txt)
-                  }} />
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 12, justifyContent: 'center' }}>
+                    <button type="submit" className="btn btn-green" style={{ flex: 1 }}
+                      disabled={submitLead.isPending}>
+                      {submitLead.isPending ? t('common.loading') : '📞 ' + t('modal.requestCallback')}
+                    </button>
+                    <WhatsAppIcon size={44} onClick={() => {
+                      const num = whatsapp || DEFAULT_WA_NUMBER
+                      const txt = language === 'te'
+                        ? t('contact.waPlotMsg').replace('{size}', context?.plotSize || context?.category || '').replace('{area}', context?.plotArea || '').replace('{venture}', context?.venture || 'చతుర్భుజ').replace('{price}', context?.priceFrom || '')
+                        : `Hi, I am interested in a ${context?.plotSize || context?.category} plot (${context?.plotArea}) in ${context?.venture || 'Chaturbhuja Properties'}. Price: ${context?.priceFrom}. Please share details.`
+                      openWhatsApp(num, txt)
+                    }} />
+                  </div>
                 </div>
               </form>
 
@@ -650,7 +654,7 @@ export default function LeadModal({ context, onClose, whatsapp, content }) {
                     </div>
                   </div>{/* /ctaRow */}
 
-                  <div className={styles.divider}><span>or</span></div>
+                  <div className={styles.divider}><span>{language === 'te' ? 'లేదా' : 'or'}</span></div>
 
                   <button type="submit" className="btn btn-green btn-full" disabled={submitLead.isPending}>
                     {submitLead.isPending ? t('common.loading') : '📞 ' + t('modal.requestCallback')}

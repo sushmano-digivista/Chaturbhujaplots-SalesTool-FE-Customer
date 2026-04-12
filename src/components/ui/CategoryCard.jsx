@@ -56,7 +56,7 @@ export default function CategoryCard({ meta, data, isOpen, onToggle, onEnquire, 
             transition={{ duration: 0.3, ease: [0.4, 0, 0.2, 1] }}
           >
             <div className={styles.plotNumsWrap}>
-              <p className={styles.plotNumsTitle}>{data.count} plots in this category:</p>
+              <p className={styles.plotNumsTitle}>{data.count} {language === 'te' ? 'ప్లాట్లు ఈ విభాగంలో:' : 'plots in this category:'}</p>
               <div className={styles.plotNums}>
                 {data.plotNumbers?.map((num) => (
                   <motion.span
@@ -85,7 +85,7 @@ export default function CategoryCard({ meta, data, isOpen, onToggle, onEnquire, 
                 plotSize: data.label, venture: data.venture,
               })}
             >
-              Enquire for {data.label}
+              {language === 'te' ? `${data.label} కోసం సంప్రదించండి` : `Enquire for ${data.label}`}
             </button>
           </motion.div>
         )}

@@ -418,12 +418,28 @@ export default function PlotGrid({ onEnquire, pricingMap }) {
                   'West-Facing':  'sections.westFacingDesc',
                   'Corner Plots': 'sections.cornerPlotsDesc',
                 }
+                const CAT_TE_LABELS = {
+                  'Phase I — East': 'ఫేజ్ I — తూర్పు',
+                  'Phase I — West': 'ఫేజ్ I — పడమర',
+                  'Phase I — Corner/Other': 'ఫేజ్ I — మూల/ఇతర',
+                  'Phase II — East': 'ఫేజ్ II — తూర్పు',
+                  'Phase II — West': 'ఫేజ్ II — పడమర',
+                  'Phase II — Corner/Other': 'ఫేజ్ II — మూల/ఇతర',
+                }
+                const CAT_TE_DESCS = {
+                  'Phase I East-facing — 40 plots, morning sunlight.': 'ఫేజ్ I తూర్పు ముఖం — 40 ప్లాట్లు, ఉదయపు సూర్యుడు.',
+                  'Phase I West-facing — 44 plots, evening sunlight.': 'ఫేజ్ I పడమర ముఖం — 44 ప్లాట్లు, సాయంత్రపు సూర్యుడు.',
+                  'Phase I Corner, North, South, NE, SE, SW — 54 plots.': 'ఫేజ్ I మూల, ఉత్తరం, దక్షిణం, ఈశాన్యం, ఆగ్నేయం, నైఋతి — 54 ప్లాట్లు.',
+                  'Phase II East-facing — 73 plots, Blocks A, B, C, D.': 'ఫేజ్ II తూర్పు ముఖం — 73 ప్లాట్లు, బ్లాక్స్ A, B, C, D.',
+                  'Phase II West-facing — 75 plots, Blocks A, B, C, D.': 'ఫేజ్ II పడమర ముఖం — 75 ప్లాట్లు, బ్లాక్స్ A, B, C, D.',
+                  'Phase II Corner, North, South — 38 plots, Blocks A–D.': 'ఫేజ్ II మూల, ఉత్తరం, దక్షిణం — 38 ప్లాట్లు, బ్లాక్స్ A–D.',
+                }
                 const lk = CAT_LABEL_KEYS[data.label]; const lv = t(lk||'')
                 const dk = CAT_DESC_KEYS[data.label];  const dv = t(dk||'')
                 const translatedData = {
                   ...data,
-                  label:       (lv && lv !== lk) ? lv : data.label,
-                  description: (dv && dv !== dk) ? dv : data.description,
+                  label:       language === 'te' ? (CAT_TE_LABELS[data.label] || ((lv && lv !== lk) ? lv : data.label)) : ((lv && lv !== lk) ? lv : data.label),
+                  description: language === 'te' ? (CAT_TE_DESCS[data.description] || ((dv && dv !== dk) ? dv : data.description)) : ((dv && dv !== dk) ? dv : data.description),
                 }
                 const isOpen = activeCategory === key
                 return (

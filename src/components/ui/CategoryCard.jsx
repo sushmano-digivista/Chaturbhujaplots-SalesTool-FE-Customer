@@ -8,7 +8,8 @@ export default function CategoryCard({ meta, data, isOpen, onToggle, onEnquire, 
     <motion.div
       className={`${styles.catCard} ${isOpen ? styles.catCardOpen : ''}`}
       layout
-      style={{ borderColor: isOpen ? meta.color : 'rgba(30,77,43,0.1)' }}
+      onClick={onToggle}
+      style={{ borderColor: isOpen ? meta.color : 'rgba(30,77,43,0.1)', cursor: 'pointer' }}
     >
       {/* Header row */}
       <div className={styles.catHeader}>
@@ -30,7 +31,7 @@ export default function CategoryCard({ meta, data, isOpen, onToggle, onEnquire, 
         {/* Arrow toggle button */}
         <motion.button
           className={styles.chevronBtn}
-          onClick={onToggle}
+          onClick={(e) => { e.stopPropagation(); onToggle() }}
           animate={{ rotate: isOpen ? 180 : 0 }}
           whileHover={{ scale: 1.15, backgroundColor: isOpen ? meta.color : 'rgba(30,77,43,0.08)' }}
           whileTap={{ scale: 0.9 }}
@@ -79,11 +80,11 @@ export default function CategoryCard({ meta, data, isOpen, onToggle, onEnquire, 
             <button
               className="btn btn-green"
               style={{ marginTop: 16, width: '100%' }}
-              onClick={() => onEnquire({
+              onClick={(e) => { e.stopPropagation(); onEnquire({
                 source: 'CATEGORY_ENQUIRY', label: 'Enquire About Plot',
                 type: 'PLOT_ENQUIRY', category: data.label,
                 plotSize: data.label, venture: data.venture,
-              })}
+              })}}
             >
               {language === 'te' ? `${data.label} కోసం సంప్రదించండి` : `Enquire for ${data.label}`}
             </button>

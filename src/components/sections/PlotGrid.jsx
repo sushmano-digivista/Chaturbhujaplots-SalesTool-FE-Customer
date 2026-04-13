@@ -465,11 +465,7 @@ export default function PlotGrid({ onEnquire, pricingMap }) {
                       >
                         <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 12 }}>
                           {meta && <span style={{ color: meta.color }}>{meta.icon}</span>}
-                          <strong>{language === 'te' ? ({
-                            'Phase I — East': 'ఫేజ్ I — తూర్పు', 'Phase I — West': 'ఫేజ్ I — పడమర', 'Phase I — Corner/Other': 'ఫేజ్ I — మూల/ఇతర',
-                            'Phase II — East': 'ఫేజ్ II — తూర్పు', 'Phase II — West': 'ఫేజ్ II — పడమర', 'Phase II — Corner/Other': 'ఫేజ్ II — మూల/ఇతర',
-                            'East-Facing': '☀️ తూర్పు ముఖం', 'West-Facing': '🌙 పడమర ముఖం', 'Corner Plots': '◣ మూల ప్లాట్లు',
-                          }[data.label] || data.label) : data.label}</strong>
+                          <strong>{translatedData.label}</strong>
                           <span style={{ color: 'rgba(0,0,0,0.4)', fontSize: 13 }}>— {data.count} {language === 'te' ? 'ప్లాట్లు' : 'plots'}</span>
                         </div>
                         {data.plotNumbers?.length > 0 && (
@@ -486,7 +482,7 @@ export default function PlotGrid({ onEnquire, pricingMap }) {
                         )}
                         <button className="btn btn-gold" style={{ marginTop: 16 }}
                           onClick={(e) => { e.stopPropagation(); onEnquire({ source: 'CATEGORY_ENQUIRY', label: 'Enquire About Plot', type: 'PLOT_ENQUIRY', category: data.label, plotSize: data.label, venture: venture.label })}}>
-                          {language === 'te' ? `${data.label} కోసం సంప్రదించండి` : `Enquire for ${data.label}`}
+                          {language === 'te' ? `${translatedData.label} కోసం సంప్రదించండి` : `Enquire for ${translatedData.label}`}
                         </button>
                       </motion.div>
                     )}

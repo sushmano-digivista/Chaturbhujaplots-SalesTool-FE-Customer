@@ -174,9 +174,9 @@ export const FALLBACK_TRANSLATIONS = {
     },
     content: {
       hero: {
-        headline:    'Premium Plots in',
-        subheadline: 'Andhra Pradesh',
-        description: "A name rooted in integrity \u2014 Chaturbhuja Properties & Infra has been shaping Andhra Pradesh's real estate landscape for 25 years. Under the leadership of Mr. Donepudi Durga Prasad, we have placed 1200+ families in homes they are proud of, across 15+ APCRDA & RERA approved ventures in the Krishna\u2013NTR\u2013Guntur corridor.",
+        headline:    'Premium Plots Near',
+        subheadline: 'Amaravati, AP Capital',
+        description: "Invest in the future of Andhra Pradesh's capital \u2014 Chaturbhuja Properties & Infra offers premium APCRDA & RERA approved plots in and around Amaravati, the new state capital. With 25 years of trust, 15+ projects, and 1200+ happy families across the Krishna\u2013NTR\u2013Guntur corridor, our ventures are strategically positioned for exceptional capital appreciation as Amaravati develops into a world-class capital city.",
         approvalBadges: [
           'APCRDA Proposed Layout \u00b7 LP No: 35/2025',
           'AP RERA \u00b7 P06060125894',
@@ -652,9 +652,9 @@ export const FALLBACK_TRANSLATIONS = {
     },
     content: {
       hero: {
-        headline:    '\u0c2a\u0c4d\u0c30\u0c40\u0c2e\u0c3f\u0c2f\u0c02 \u0c2a\u0c4d\u0c32\u0c3e\u0c1f\u0c4d\u0c32\u0c41 -',
-        subheadline: '\u0c06\u0c02\u0c27\u0c4d\u0c30\u0c2a\u0c4d\u0c30\u0c26\u0c47\u0c36\u0c4d\u200c',
-        description: '\u0c28\u0c2e\u0c4d\u0c2e\u0c15\u0c3e\u0c28\u0c3f\u0c15\u0c3f \u0c2a\u0c4d\u0c30\u0c24\u0c40\u0c15\u0c17\u0c3e \u0c28\u0c3f\u0c32\u0c3f\u0c1a\u0c3f\u0c28 \u0c1a\u0c24\u0c41\u0c30\u0c4d\u0c2d\u0c41\u0c1c \u0c2a\u0c4d\u0c30\u0c3e\u0c2a\u0c30\u0c4d\u0c1f\u0c40\u0c38\u0c4d & \u0c07\u0c28\u0c4d\u200c\u0c2b\u0c4d\u0c30\u0c3e \u0c17\u0c24 25 \u0c38\u0c02\u0c35\u0c24\u0c4d\u0c38\u0c30\u0c3e\u0c32\u0c41\u0c17\u0c3e \u0c06\u0c02\u0c27\u0c4d\u0c30\u0c2a\u0c4d\u0c30\u0c26\u0c47\u0c36\u0c4d \u0c30\u0c3f\u0c2f\u0c32\u0c4d \u0c0e\u0c38\u0c4d\u0c1f\u0c47\u0c1f\u0c4d \u0c30\u0c02\u0c17\u0c3e\u0c28\u0c4d\u0c28\u0c3f \u0c05\u0c2d\u0c3f\u0c35\u0c43\u0c26\u0c4d\u0c27\u0c3f \u0c1a\u0c47\u0c38\u0c4d\u0c24\u0c4b\u0c02\u0c26\u0c3f. \u0c36\u0c4d\u0c30\u0c40 \u0c26\u0c4b\u0c28\u0c47\u0c2a\u0c42\u0c21\u0c3f \u0c26\u0c41\u0c30\u0c4d\u0c17 \u0c2a\u0c4d\u0c30\u0c38\u0c3e\u0c26\u0c4d \u0c17\u0c3e\u0c30\u0c3f \u0c28\u0c3e\u0c2f\u0c15\u0c24\u0c4d\u0c35\u0c02\u0c32\u0c4b \u0c15\u0c43\u0c37\u0c4d\u0c23\u0c3e\u2013\u0c0e\u0c28\u0c4d\u200c\u0c1f\u0c40\u0c06\u0c30\u0c4d\u2013\u0c17\u0c41\u0c02\u0c1f\u0c42\u0c30\u0c41 \u0c15\u0c3e\u0c30\u0c3f\u0c21\u0c3e\u0c30\u0c4d\u200c\u0c32\u0c4b\u0c28\u0c3f 15+ \u0c0f\u0c2a\u0c3f\u0c38\u0c3f\u0c06\u0c30\u0c4d\u0c21\u0c47\u0c0f & \u0c30\u0c47\u0c30\u0c3e \u0c06\u0c2e\u0c4b\u0c26\u0c3f\u0c24 \u0c2a\u0c4d\u0c30\u0c3e\u0c1c\u0c46\u0c15\u0c4d\u0c1f\u0c41\u0c32 \u0c26\u0c4d\u0c35\u0c3e\u0c30\u0c3e 1200+ \u0c15\u0c41\u0c1f\u0c41\u0c02\u0c2c\u0c3e\u0c32\u0c15\u0c41 \u0c17\u0c30\u0c4d\u0c35\u0c02\u0c17\u0c3e \u0c28\u0c3f\u0c35\u0c38\u0c3f\u0c02\u0c1a\u0c47 \u0c07\u0c33\u0c4d\u0c33\u0c28\u0c41 \u0c05\u0c02\u0c26\u0c3f\u0c02\u0c1a\u0c3e\u0c2e\u0c41.',
+        headline:    'అమరావతి సమీపంలో',
+        subheadline: 'ప్రీమియం ప్లాట్లు',
+        description: 'ఆంధ్రప్రదేశ్ కొత్త రాజధాని అమరావతిలో మరియు చుట్టుపక్కల పెట్టుబడి పెట్టండి \u2014 చతుర్భుజ ప్రాపర్టీస్ & ఇన్\u200cఫ్రా ఏపిసిఆర్డేఏ & రేరా ఆమోదిత ప్రీమియం ప్లాట్లను అందిస్తోంది. 25 సంవత్సరాల నమ్మకం, 15+ ప్రాజెక్టులు, 1200+ సంతోషకర కుటుంబాలతో కృష్ణా\u2013ఎన్\u200cటీఆర్\u2013గుంటూరు కారిడార్\u200cలో మా వెంచర్లు అమరావతి ప్రపంచ స్థాయి రాజధానిగా అభివృద్ధి చెందుతున్నందున అసాధారణ మూల్యాభివృద్ధికి వ్యూహాత్మకంగా ఉన్నాయి.',
         approvalBadges: [
           '\u0c0f\u0c2a\u0c3f\u0c38\u0c3f\u0c06\u0c30\u0c4d\u0c21\u0c47\u0c0f \u0c2a\u0c4d\u0c30\u0c24\u0c3f\u0c2a\u0c3e\u0c26\u0c3f\u0c24 \u0c32\u0c47\u0c14\u0c35\u0c41\u0c1f\u0c4d - LP \u0c28\u0c02: 35/2025',
           '\u0c0f\u0c2a\u0c3f \u0c30\u0c47\u0c30\u0c3e - P06060125894',

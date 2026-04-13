@@ -1,0 +1,204 @@
+/* ── Header bar — fixed below navbar, always visible ─────────────── */
+.bar {
+  position: fixed;
+  top: var(--nav-h, 72px);
+  left: 0;
+  right: 0;
+  z-index: 850;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  padding: 10px 20px;
+  background: linear-gradient(135deg, #0d2818 0%, #1a3d28 50%, #0d2818 100%);
+  border-bottom: 2px solid rgba(201, 168, 76, 0.35);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  cursor: pointer;
+  user-select: none;
+}
+
+.bar:hover {
+  background: linear-gradient(135deg, #0f2e1c 0%, #1d4530 50%, #0f2e1c 100%);
+}
+
+@keyframes shimmerGold {
+  0%   { background-position: -200% center; }
+  100% { background-position: 200% center; }
+}
+
+@keyframes pulseGlow {
+  0%, 100% { box-shadow: 0 0 6px rgba(201,168,76,0.3); }
+  50%      { box-shadow: 0 0 16px rgba(201,168,76,0.7), 0 0 30px rgba(201,168,76,0.2); }
+}
+
+.label {
+  font-size: 13px;
+  color: #fff;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  font-weight: 700;
+  background: linear-gradient(135deg, #C9A84C, #e2bf64);
+  padding: 6px 16px;
+  border-radius: 24px;
+  animation: pulseGlow 2s ease-in-out infinite;
+}
+
+.price {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 34px;
+  font-weight: 700;
+  line-height: 1;
+  background: linear-gradient(90deg, #C9A84C 0%, #f5e6b8 35%, #fff 50%, #e2bf64 75%, #C9A84C 100%);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: shimmerGold 2.5s linear infinite;
+  filter: drop-shadow(0 0 8px rgba(201,168,76,0.4));
+}
+
+.cta {
+  font-size: 13px;
+  color: #C9A84C;
+  border: 1.5px solid rgba(201, 168, 76, 0.5);
+  padding: 6px 18px;
+  border-radius: 24px;
+  background: none;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 600;
+}
+
+.cta:hover {
+  background: rgba(201, 168, 76, 0.2);
+  border-color: #C9A84C;
+  color: #fff;
+}
+
+.arrow {
+  color: #C9A84C;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+/* ── Backdrop — dark overlay behind dropdown ──────────────────────── */
+.backdrop {
+  position: fixed;
+  top: calc(var(--nav-h, 72px) + 56px);
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 848;
+}
+
+/* ── Dropdown — venture cards grid ───────────────────────────────── */
+@keyframes slideDown {
+  from { opacity: 0; transform: translateY(-8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.dropdown {
+  position: fixed;
+  top: calc(var(--nav-h, 72px) + 56px);
+  left: 0;
+  right: 0;
+  z-index: 849;
+  background: linear-gradient(135deg, #0d2818 0%, #1a3d28 50%, #0d2818 100%);
+  border-bottom: 2px solid rgba(201, 168, 76, 0.4);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+  animation: slideDown 0.2s ease;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 10px;
+  padding: 12px 20px 14px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.card {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(201, 168, 76, 0.15);
+  border-radius: 8px;
+  padding: 10px 12px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.15s;
+  overflow: hidden;
+  min-width: 0;
+}
+
+.card:hover {
+  background: rgba(201, 168, 76, 0.08);
+  border-color: rgba(201, 168, 76, 0.4);
+  transform: translateY(-1px);
+}
+
+.cardName {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 14px;
+  font-weight: 700;
+  color: #fff;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.cardLoc {
+  font-size: 10px;
+  color: rgba(255, 255, 255, 0.45);
+  margin-bottom: 4px;
+}
+
+.cardPrices {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  font-size: 10px;
+  color: rgba(255, 255, 255, 0.6);
+  flex-wrap: wrap;
+}
+
+.cardPrices strong {
+  color: #C9A84C;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 14px;
+}
+
+.unit {
+  font-size: 9px;
+  color: rgba(201, 168, 76, 0.5);
+  margin-top: 1px;
+}
+
+/* ── Mobile ──────────────────────────────────────────────────────── */
+@media (max-width: 768px) {
+  .bar {
+    padding: 8px 12px;
+    gap: 10px;
+  }
+
+  .price { font-size: 26px; }
+  .label { font-size: 11px; padding: 4px 12px; }
+
+  .grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 6px;
+    padding: 10px 10px 12px;
+  }
+
+  .cardName { font-size: 13px; }
+
+  .cardPrices {
+    flex-direction: column;
+    gap: 2px;
+    font-size: 10px;
+  }
+
+  .cardPrices strong { font-size: 13px; }
+  .card { padding: 6px 8px; }
+}

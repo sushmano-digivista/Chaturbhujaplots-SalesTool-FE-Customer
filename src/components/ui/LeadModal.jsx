@@ -310,6 +310,18 @@ export default function LeadModal({ context, onClose, whatsapp, content }) {
                   'Trimbak Oaks': 'ట్రింబక్ ఓక్స్',
                   'Aparna Legacy': 'అపర్ణ లెగసీ',
                   'Varaha Virtue': 'వరాహ వర్చ్యూ',
+                  'East-Facing': '☀️ తూర్పు ముఖం',
+                  'West-Facing': '🌙 పడమర ముఖం',
+                  'Corner Plots': '◣ మూల ప్లాట్లు',
+                  'North-Facing': '▲ ఉత్తర ముఖం',
+                  'South-Facing': '▼ దక్షిణ ముఖం',
+                  'Corner / Special Facing': 'మూల / ప్రత్యేక ముఖం',
+                  'Phase I — East': 'ఫేజ్ I — తూర్పు',
+                  'Phase I — West': 'ఫేజ్ I — పడమర',
+                  'Phase I — Corner/Other': 'ఫేజ్ I — మూల/ఇతర',
+                  'Phase II — East': 'ఫేజ్ II — తూర్పు',
+                  'Phase II — West': 'ఫేజ్ II — పడమర',
+                  'Phase II — Corner/Other': 'ఫేజ్ II — మూల/ఇతర',
                 }
                 return CAT_TE[context.category] || context.category
               })()}</span>}
@@ -512,7 +524,19 @@ export default function LeadModal({ context, onClose, whatsapp, content }) {
                 {/* Plot summary card */}
                 <div className={styles.plotCard}>
                   <div className={styles.plotCardRow}>
-                    <div className={styles.plotDim}>{context?.plotSize || context?.category}</div>
+                    <div className={styles.plotDim}>{(() => {
+                      const val = context?.plotSize || context?.category
+                      if (!val || language !== 'te') return val
+                      const FACING_TE = {
+                        'East-Facing': '☀️ తూర్పు ముఖం', 'West-Facing': '🌙 పడమర ముఖం',
+                        'Corner Plots': '◣ మూల ప్లాట్లు', 'North-Facing': '▲ ఉత్తర ముఖం',
+                        'Phase I — East': 'ఫేజ్ I — తూర్పు', 'Phase I — West': 'ఫేజ్ I — పడమర',
+                        'Phase I — Corner/Other': 'ఫేజ్ I — మూల/ఇతర',
+                        'Phase II — East': 'ఫేజ్ II — తూర్పు', 'Phase II — West': 'ఫేజ్ II — పడమర',
+                        'Phase II — Corner/Other': 'ఫేజ్ II — మూల/ఇతర',
+                      }
+                      return FACING_TE[val] || val
+                    })()}</div>
                     <div className={styles.plotPrice}>{context?.priceFrom}</div>
                   </div>
                   <div className={styles.plotCardRow}>

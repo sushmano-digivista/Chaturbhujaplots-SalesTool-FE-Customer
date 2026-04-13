@@ -258,15 +258,15 @@ function ProjectPopup({ proj, onClose, onNavigate, pricing, t, language }) {
         {(pricing || proj.pricing) && <div style={{padding:'0 20px 4px'}}><PricingCard pricing={pricing || proj.pricing} compact dark /></div>}
 
         {/* CTAs */}
-        <div className={styles.popupActions}>
+        <div className={styles.popupActions} style={{ justifyContent: 'center', alignItems: 'center', flexDirection: 'row' }}>
           <button
             className={styles.popupCta}
-            style={{ background: ac.color }}
+            style={{ background: ac.color, flex: 1 }}
             onClick={onNavigate}
           >
             {safet('portfolio.viewProject')} →
           </button>
-          <WhatsAppIcon size={48}
+          <WhatsAppIcon size={44}
             onClick={() => openWhatsApp(
               proj.contact?.whatsapp || DEFAULT_WA_NUMBER,
               language === 'te'

@@ -29,6 +29,7 @@
   padding: 5px 16px;
   cursor: pointer;
   user-select: none;
+  flex-wrap: wrap;
 }
 
 .bar:hover { background: rgba(201, 168, 76, 0.04); }
@@ -43,6 +44,7 @@
   padding: 3px 10px;
   border-radius: 20px;
   animation: pulseGlow 2s ease-in-out infinite;
+  white-space: nowrap;
 }
 
 .price {

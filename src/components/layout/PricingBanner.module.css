@@ -1,24 +1,19 @@
-/* ── Header bar — fixed below navbar, always visible ─────────────── */
-.bar {
+/* ── Wrapper — fixed below navbar ─────────────────────────────────── */
+.wrapper {
   position: fixed;
   top: var(--nav-h, 72px);
   left: 0;
   right: 0;
   z-index: 850;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 14px;
-  padding: 10px 20px;
   background: linear-gradient(135deg, #0d2818 0%, #1a3d28 50%, #0d2818 100%);
   border-bottom: 2px solid rgba(201, 168, 76, 0.35);
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
-  cursor: pointer;
-  user-select: none;
 }
 
-.bar:hover {
-  background: linear-gradient(135deg, #0f2e1c 0%, #1d4530 50%, #0f2e1c 100%);
+/* ── Header bar — clickable ──────────────────────────────────────── */
+@keyframes pulseGlow {
+  0%, 100% { box-shadow: 0 0 6px rgba(201,168,76,0.3); }
+  50%      { box-shadow: 0 0 16px rgba(201,168,76,0.7); }
 }
 
 @keyframes shimmerGold {
@@ -26,26 +21,33 @@
   100% { background-position: 200% center; }
 }
 
-@keyframes pulseGlow {
-  0%, 100% { box-shadow: 0 0 6px rgba(201,168,76,0.3); }
-  50%      { box-shadow: 0 0 16px rgba(201,168,76,0.7), 0 0 30px rgba(201,168,76,0.2); }
+.bar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 5px 16px;
+  cursor: pointer;
+  user-select: none;
 }
 
+.bar:hover { background: rgba(201, 168, 76, 0.04); }
+
 .label {
-  font-size: 13px;
+  font-size: 10px;
   color: #fff;
-  letter-spacing: 2px;
+  letter-spacing: 1.5px;
   text-transform: uppercase;
   font-weight: 700;
   background: linear-gradient(135deg, #C9A84C, #e2bf64);
-  padding: 6px 16px;
-  border-radius: 24px;
+  padding: 3px 10px;
+  border-radius: 20px;
   animation: pulseGlow 2s ease-in-out infinite;
 }
 
 .price {
   font-family: 'Cormorant Garamond', serif;
-  font-size: 34px;
+  font-size: 22px;
   font-weight: 700;
   line-height: 1;
   background: linear-gradient(90deg, #C9A84C 0%, #f5e6b8 35%, #fff 50%, #e2bf64 75%, #C9A84C 100%);
@@ -54,151 +56,118 @@
   -webkit-text-fill-color: transparent;
   background-clip: text;
   animation: shimmerGold 2.5s linear infinite;
-  filter: drop-shadow(0 0 8px rgba(201,168,76,0.4));
 }
 
 .cta {
-  font-size: 13px;
-  color: #C9A84C;
-  border: 1.5px solid rgba(201, 168, 76, 0.5);
-  padding: 6px 18px;
-  border-radius: 24px;
+  font-size: 11px;
+  color: rgba(201, 168, 76, 0.8);
+  border: 1px solid rgba(201, 168, 76, 0.3);
+  padding: 3px 12px;
+  border-radius: 20px;
   background: none;
   cursor: pointer;
   transition: all 0.2s;
   font-family: 'DM Sans', sans-serif;
-  font-weight: 600;
 }
 
 .cta:hover {
-  background: rgba(201, 168, 76, 0.2);
+  background: rgba(201, 168, 76, 0.15);
   border-color: #C9A84C;
-  color: #fff;
+  color: #C9A84C;
 }
 
 .arrow {
-  color: #C9A84C;
-  font-size: 14px;
-  font-weight: 700;
+  color: rgba(201, 168, 76, 0.5);
+  font-size: 11px;
 }
 
-/* ── Backdrop — dark overlay behind dropdown ──────────────────────── */
-.backdrop {
-  position: fixed;
-  top: calc(var(--nav-h, 72px) + 56px);
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(0, 0, 0, 0.5);
-  z-index: 848;
-}
-
-/* ── Dropdown — venture cards grid ───────────────────────────────── */
+/* ── Expanded grid — inside wrapper ──────────────────────────────── */
 @keyframes slideDown {
-  from { opacity: 0; transform: translateY(-8px); }
+  from { opacity: 0; transform: translateY(-5px); }
   to   { opacity: 1; transform: translateY(0); }
-}
-
-.dropdown {
-  position: fixed;
-  top: calc(var(--nav-h, 72px) + 56px);
-  left: 0;
-  right: 0;
-  z-index: 849;
-  background: linear-gradient(135deg, #0d2818 0%, #1a3d28 50%, #0d2818 100%);
-  border-bottom: 2px solid rgba(201, 168, 76, 0.4);
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
-  animation: slideDown 0.2s ease;
 }
 
 .grid {
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 10px;
-  padding: 12px 20px 14px;
-  max-width: 1200px;
-  margin: 0 auto;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+  padding: 8px 12px 10px;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  animation: slideDown 0.2s ease;
 }
 
 .card {
   background: rgba(255, 255, 255, 0.04);
   border: 1px solid rgba(201, 168, 76, 0.15);
   border-radius: 8px;
-  padding: 10px 12px;
+  padding: 10px 6px;
   text-align: center;
   cursor: pointer;
   transition: all 0.15s;
-  overflow: hidden;
-  min-width: 0;
 }
 
 .card:hover {
   background: rgba(201, 168, 76, 0.08);
   border-color: rgba(201, 168, 76, 0.4);
-  transform: translateY(-1px);
 }
 
 .cardName {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 14px;
+  font-size: 12px;
   font-weight: 700;
   color: #fff;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  line-height: 1.3;
 }
 
 .cardLoc {
-  font-size: 10px;
+  font-size: 9px;
   color: rgba(255, 255, 255, 0.45);
-  margin-bottom: 4px;
+  margin-bottom: 3px;
 }
 
 .cardPrices {
   display: flex;
   justify-content: center;
-  gap: 8px;
-  font-size: 10px;
+  gap: 6px;
+  font-size: 9px;
   color: rgba(255, 255, 255, 0.6);
-  flex-wrap: wrap;
 }
 
 .cardPrices strong {
   color: #C9A84C;
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 14px;
+  font-size: 12px;
 }
 
 .unit {
-  font-size: 9px;
+  font-size: 8px;
   color: rgba(201, 168, 76, 0.5);
   margin-top: 1px;
 }
 
+/* ── Backdrop ────────────────────────────────────────────────────── */
+.backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.4);
+  z-index: 849;
+}
+
 /* ── Mobile ──────────────────────────────────────────────────────── */
 @media (max-width: 768px) {
-  .bar {
-    padding: 8px 12px;
-    gap: 10px;
-  }
-
-  .price { font-size: 26px; }
-  .label { font-size: 11px; padding: 4px 12px; }
+  .bar { padding: 4px 10px; gap: 8px; }
+  .price { font-size: 18px; }
+  .label { font-size: 9px; padding: 2px 8px; }
 
   .grid {
     grid-template-columns: repeat(2, 1fr);
     gap: 6px;
-    padding: 10px 10px 12px;
+    padding: 6px 8px 8px;
   }
 
-  .cardName { font-size: 13px; }
-
-  .cardPrices {
-    flex-direction: column;
-    gap: 2px;
-    font-size: 10px;
-  }
-
-  .cardPrices strong { font-size: 13px; }
-  .card { padding: 6px 8px; }
+  .cardName { font-size: 11px; }
+  .cardPrices { flex-direction: column; gap: 2px; }
+  .cardPrices strong { font-size: 11px; }
+  .card { padding: 6px 4px; }
 }

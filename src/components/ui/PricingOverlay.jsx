@@ -22,7 +22,7 @@ export default function PricingOverlay() {
 
   useEffect(() => {
     if (phase !== 'boom') return
-    const t = setTimeout(() => setPhase('shrink'), 3000)
+    const t = setTimeout(() => setPhase('shrink'), 2000)
     return () => clearTimeout(t)
   }, [phase])
 

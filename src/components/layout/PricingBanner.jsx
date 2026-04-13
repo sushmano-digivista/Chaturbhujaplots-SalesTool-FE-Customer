@@ -47,37 +47,38 @@ export default function PricingBanner() {
 
   return (
     <>
-      {/* Fixed header bar — always visible */}
-      <div className={styles.bar} onClick={() => setExpanded(e => !e)}>
-        <span className={styles.label}>{isTe ? 'ప్లాట్లు ప్రారంభ ధర' : 'PLOTS STARTING FROM'}</span>
-        <span className={styles.price}>₹{minPrice.toLocaleString('en-IN')}/{isTe ? 'చ.గ.' : 'sq.yd'}</span>
-        <button className={styles.cta} onClick={scrollToPlots}>
-          {isTe ? 'అన్ని ప్రాజెక్టులు చూడండి' : 'View All Projects'}
-        </button>
-        <span className={styles.arrow}>{expanded ? '▲' : '▼'}</span>
+      {/* Single fixed container with bar + dropdown */}
+      <div className={styles.wrapper}>
+        {/* Header bar — always visible */}
+        <div className={styles.bar} onClick={() => setExpanded(e => !e)}>
+          <span className={styles.label}>{isTe ? 'ప్లాట్లు ప్రారంభ ధర' : 'PLOTS STARTING FROM'}</span>
+          <span className={styles.price}>₹{minPrice.toLocaleString('en-IN')}/{isTe ? 'చ.గ.' : 'sq.yd'}</span>
+          <button className={styles.cta} onClick={scrollToPlots}>
+            {isTe ? 'అన్ని ప్రాజెక్టులు చూడండి' : 'View All Projects'}
+          </button>
+          <span className={styles.arrow}>{expanded ? '▲' : '▼'}</span>
+        </div>
+
+        {/* Expanded venture cards */}
+        {expanded && (
+          <div className={styles.grid}>
+            {ventures.map(v => (
+              <div key={v.id} className={styles.card} onClick={scrollToPlots}>
+                <div className={styles.cardName}>{v.name}</div>
+                <div className={styles.cardLoc}>📍 {v.loc}</div>
+                <div className={styles.cardPrices}>
+                  <span>☀ {isTe ? 'తూర్పు' : 'East'}: <strong>₹{v.east.toLocaleString('en-IN')}</strong></span>
+                  <span>🌙 {isTe ? 'పడమర' : 'West'}: <strong>₹{v.west.toLocaleString('en-IN')}</strong></span>
+                </div>
+                <div className={styles.unit}>/{isTe ? 'చ.గ.' : 'sq.yd'}</div>
+              </div>
+            ))}
+          </div>
+        )}
       </div>
 
-      {/* Expanded venture cards — overlay below bar */}
-      {expanded && (
-        <>
-          <div className={styles.backdrop} onClick={() => setExpanded(false)} />
-          <div className={styles.dropdown}>
-            <div className={styles.grid}>
-              {ventures.map(v => (
-                <div key={v.id} className={styles.card} onClick={scrollToPlots}>
-                  <div className={styles.cardName}>{v.name}</div>
-                  <div className={styles.cardLoc}>📍 {v.loc}</div>
-                  <div className={styles.cardPrices}>
-                    <span>☀ {isTe ? 'తూర్పు' : 'East'}: <strong>₹{v.east.toLocaleString('en-IN')}</strong></span>
-                    <span>🌙 {isTe ? 'పడమర' : 'West'}: <strong>₹{v.west.toLocaleString('en-IN')}</strong></span>
-                  </div>
-                  <div className={styles.unit}>/{isTe ? 'చ.గ.' : 'sq.yd'}</div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </>
-      )}
+      {/* Backdrop */}
+      {expanded && <div className={styles.backdrop} onClick={() => setExpanded(false)} />}
     </>
   )
 }

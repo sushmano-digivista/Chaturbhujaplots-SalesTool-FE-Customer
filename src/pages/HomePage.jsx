@@ -68,7 +68,7 @@ export default function HomePage() {
   const contact       = activeContent?.contact || {}
 
   return (
-    <div style={{ paddingTop: 'calc(var(--nav-h) + 56px)' }}>
+    <div style={{ paddingTop: 'calc(var(--nav-h) + 32px)' }}>
       <PricingOverlay />
       <LaunchOverlay />
       <LaunchBanner />

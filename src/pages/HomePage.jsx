@@ -12,6 +12,8 @@ import { LeadModal } from '@/components/ui'
 import PageLoader    from '@/components/common/PageLoader'
 import LaunchBanner  from '@/components/ui/LaunchBanner'
 import LaunchOverlay from '@/components/ui/LaunchOverlay'
+import PricingOverlay from '@/components/ui/PricingOverlay'
+import PricingBanner from '@/components/layout/PricingBanner'
 
 // Animation duration in ms -- must match CSS animation total in PageLoader
 const LOADER_MIN_MS = 2800
@@ -24,6 +26,7 @@ if (!window.__chaturbhuja_loaded) {
   try {
     sessionStorage.removeItem('home_loader_shown')
     sessionStorage.removeItem('launch_overlay_shown')
+    sessionStorage.removeItem('pricing_overlay_shown')
   } catch {}
 }
 
@@ -65,10 +68,12 @@ export default function HomePage() {
   const contact       = activeContent?.contact || {}
 
   return (
-    <div style={{ paddingTop: 'var(--nav-h)' }}>
+    <div style={{ paddingTop: 'calc(var(--nav-h) + 32px)' }}>
+      <PricingOverlay />
       <LaunchOverlay />
       <LaunchBanner />
       <Navbar contact={contact} onEnquire={openEnquiry} />
+      <PricingBanner />
       <main>
         <Hero              content={activeContent} onEnquire={openEnquiry} />
         <PortfolioSection pricingMap={pricingMap}  content={activeContent} onEnquire={openEnquiry} />

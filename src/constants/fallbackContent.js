@@ -4,9 +4,9 @@
  */
 const FALLBACK_CONTENT = {
   hero: {
-    headline:       'Premium Plots Near',
-    subheadline:    'Amaravati, AP Capital',
-    description:    "Invest in the future of Andhra Pradesh's capital — Chaturbhuja Properties & Infra offers premium APCRDA & RERA approved plots in and around Amaravati, the new state capital. With 25 years of trust, 15+ projects, and 1200+ happy families across the Krishna–NTR–Guntur corridor, our ventures are strategically positioned for exceptional capital appreciation as Amaravati develops into a world-class capital city.",
+    headline:       'Premium Plots in',
+    subheadline:    'Andhra Pradesh',
+    description:    "A name rooted in integrity — Chaturbhuja Properties & Infra has been shaping Andhra Pradesh's real estate landscape for 25 years. Under the leadership of Mr. Donepudi Durga Prasad, we have placed 1200+ families in homes they are proud of, across 15+ APCRDA & RERA approved ventures in the Krishna–NTR–Guntur corridor.",
     approvalBadges: [
       'APCRDA Proposed Layouts',
       'AP RERA Registered',

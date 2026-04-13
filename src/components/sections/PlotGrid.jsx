@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Sun, Sunset, ArrowUp, ArrowDown, Maximize2 } from 'lucide-react'
 import { useLanguage } from '@/context/LanguageContext'
@@ -205,6 +205,16 @@ export default function PlotGrid({ onEnquire, pricingMap }) {
   const [ventureKey,     setVentureKey]     = useState('anjana')
   const [activeCategory, setActiveCategory] = useState(null)
   const [hoveredPlot,    setHoveredPlot]    = useState(null)
+  const expandedRef = useRef(null)
+
+  // Auto-scroll to expanded content when a category is clicked
+  useEffect(() => {
+    if (activeCategory && expandedRef.current) {
+      setTimeout(() => {
+        expandedRef.current?.scrollIntoView({ behavior: 'smooth', block: 'nearest' })
+      }, 350) // wait for animation to start
+    }
+  }, [activeCategory])
   const [priceOpen,      setPriceOpen]      = useState(false)
   const { t, language } = useLanguage()
   const tv = (key, fallback) => { const v = t(key); return (v && v !== key) ? v : fallback }
@@ -468,6 +478,7 @@ export default function PlotGrid({ onEnquire, pricingMap }) {
             const meta = CATEGORY_META[activeCategory]
             return (
               <motion.div
+                ref={expandedRef}
                 key={activeCategory}
                 initial={{ opacity: 0, height: 0 }}
                 animate={{ opacity: 1, height: 'auto' }}

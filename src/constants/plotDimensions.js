@@ -259,32 +259,179 @@ const varaha = {
 for (let i = 1; i <= 132; i++) { if (!varaha[i]) varaha[i] = VARAHA_STD }
 
 // ═══════════════════════════════════════════════════════════════════════════
-// TRIMBAK OAKS — Penamaluru (324 plots: Phase I = 138, Phase II = 186)
-// byDimension: 50×33 × 74 (std), 47×33 × 43, 36×46 × 24, 50×45 × 20, Irregular × 25
-// Phase II uses block prefixes: A, B, C, D
+// TRIMBAK OAKS — Penamaluru (324 plots: Phase I = 138, Phase II Blocks A–D)
+// Phase II data provided by owner, block by block.
+// Phase II blocks use prefixes: A1–A41, B1–B54, C1–C54, D1–D37.
 // ═══════════════════════════════════════════════════════════════════════════
 
 const TRIMBAK_STD = { sqyd: 183.33, dimension: "50'×33'" }
 
 const trimbak = {}
-// Phase I: plots 1–138
+
+// ── Phase I: plots 1–138 (all standard 50'×33' · 183.33 sq.yd) ────────────
 for (let i = 1; i <= 138; i++) { trimbak[i] = TRIMBAK_STD }
-// Phase II: A1–A41, B1–B54, C1–C54, D1–D37 (~186 plots)
-const P2_BLOCKS = {
-  A: 41,
-  B: 54,
-  C: 54,
-  D: 37,
+
+// ── Phase II — Block A (41 plots) ─────────────────────────────────────────
+const blockA = {
+  A1:  { sqyd: 325.21, dimension: "55'×53'" },
+  A2:  { sqyd: 325.21, dimension: "55'×53'" },
+  A3:  { sqyd: 325.21, dimension: "55'×53'" },
+  A4:  { sqyd: 325.21, dimension: "55'×53'" },
+  A5:  { sqyd: 328.90, dimension: "55'×54'" },
+  A6:  { sqyd: 192.79, dimension: "33'×53'" },
+  A7:  { sqyd: 159.29, dimension: "33'×43'" },
+  A8:  { sqyd: 159.29, dimension: "33'×43'" },
+  A9:  { sqyd: 159.29, dimension: "33'×43'" },
+  A10: { sqyd: 159.29, dimension: "33'×43'" },
+  A11: { sqyd: 211.08, dimension: "35'×54'" },
+  A12: { sqyd: 163.81, dimension: "33'×45'" },
+  A13: { sqyd: 228.46, dimension: "42'×49'" },
+  A14: { sqyd: 172.41, dimension: "33'×47'" },
+  A15: { sqyd: 172.41, dimension: "33'×47'" },
+  A16: { sqyd: 172.41, dimension: "33'×47'" },
+  A17: { sqyd: 172.41, dimension: "33'×47'" },
+  A18: { sqyd: 201.85, dimension: "35'×52'" },
+  A19: { sqyd: 183.36, dimension: "33'×50'" },
+  A20: { sqyd: 183.36, dimension: "33'×50'" },
+  A21: { sqyd: 183.36, dimension: "33'×50'" },
+  A22: { sqyd: 183.36, dimension: "33'×50'" },
+  A23: { sqyd: 280.84, dimension: "50'×50'" },
+  A24: { sqyd: 264.07, dimension: "48'×50'" },
+  A25: { sqyd: 172.41, dimension: "33'×47'" },
+  A26: { sqyd: 172.41, dimension: "33'×47'" },
+  A27: { sqyd: 172.41, dimension: "33'×47'" },
+  A28: { sqyd: 172.41, dimension: "33'×47'" },
+  A29: { sqyd: 199.22, dimension: "35'×51'" },
+  A30: { sqyd: 225.83, dimension: "42'×48'" },
+  A31: { sqyd: 183.36, dimension: "33'×50'" },
+  A32: { sqyd: 183.36, dimension: "33'×50'" },
+  A33: { sqyd: 183.36, dimension: "33'×50'" },
+  A34: { sqyd: 183.36, dimension: "33'×50'" },
+  A35: { sqyd: 257.80, dimension: "48'×48'" },
+  A36: { sqyd: 239.16, dimension: "45'×48'" },
+  A37: { sqyd: 166.73, dimension: "33'×46'" },
+  A38: { sqyd: 165.74, dimension: "33'×45'" },
+  A39: { sqyd: 164.86, dimension: "33'×45'" },
+  A40: { sqyd: 164.15, dimension: "33'×45'" },
+  A41: { sqyd: 213.13, dimension: "38'×50'" },
 }
-for (const [block, count] of Object.entries(P2_BLOCKS)) {
-  for (let i = 1; i <= count; i++) {
-    trimbak[`${block}${i}`] = TRIMBAK_STD
-  }
+
+// ── Phase II — Block B (54 plots) ─────────────────────────────────────────
+const blockB = {
+  B1:  { sqyd: 163.07, dimension: "33'×44'" },
+  B2:  { sqyd: 136.34, dimension: "30'×41'" },
+  B3:  { sqyd: 145.64, dimension: "33'×40'" },
+  B4:  { sqyd: 154.92, dimension: "33'×42'" },
+  B5:  { sqyd: 164.21, dimension: "33'×45'" },
+  B6:  { sqyd: 173.49, dimension: "33'×47'" },
+  B7:  { sqyd: 181.87, dimension: "33'×50'" },
+  B8:  { sqyd: 183.19, dimension: "33'×50'" },
+  B9:  { sqyd: 183.00, dimension: "33'×50'" },
+  B10: { sqyd: 271.60, dimension: "50'×49'" },
+  B11: { sqyd: 225.91, dimension: "42'×48'" },
+  B12: { sqyd: 314.22, dimension: "55'×51'" },
+  B13: { sqyd: 292.53, dimension: "50'×53'" },
+  B14: { sqyd: 277.55, dimension: "50'×50'" },
+  B15: { sqyd: 199.68, dimension: "35'×51'" },
+  B16: { sqyd: 164.21, dimension: "33'×45'" },
+  B17: { sqyd: 324.56, dimension: "55'×53'" },
+  B18: { sqyd: 183.36, dimension: "33'×50'" },
+  B19: { sqyd: 256.49, dimension: "48'×48'" },
+  B20: { sqyd: 416.01, dimension: "Premium Corner" },
+  B21: { sqyd: 183.36, dimension: "33'×50'" },
+  B22: { sqyd: 222.37, dimension: "35'×57'" },
+  B23: { sqyd: 183.36, dimension: "33'×50'" },
+  B24: { sqyd: 183.36, dimension: "33'×50'" },
+  B25: { sqyd: 183.36, dimension: "33'×50'" },
+  B26: { sqyd: 183.36, dimension: "33'×50'" },
+  B27: { sqyd: 183.36, dimension: "33'×50'" },
+  B28: { sqyd: 183.36, dimension: "33'×50'" },
+  B29: { sqyd: 183.36, dimension: "33'×50'" },
+  B30: { sqyd: 183.36, dimension: "33'×50'" },
+  B31: { sqyd: 183.36, dimension: "33'×50'" },
+  B32: { sqyd: 237.93, dimension: "45'×48'" },
+  B33: { sqyd: 237.93, dimension: "45'×48'" },
+  B34: { sqyd: 183.36, dimension: "33'×50'" },
+  B35: { sqyd: 183.36, dimension: "33'×50'" },
+  B36: { sqyd: 183.36, dimension: "33'×50'" },
+  B37: { sqyd: 183.36, dimension: "33'×50'" },
+  B38: { sqyd: 183.36, dimension: "33'×50'" },
+  B39: { sqyd: 183.36, dimension: "33'×50'" },
+  B40: { sqyd: 183.36, dimension: "33'×50'" },
+  B41: { sqyd: 183.36, dimension: "33'×50'" },
+  B42: { sqyd: 183.36, dimension: "33'×50'" },
+  B43: { sqyd: 222.37, dimension: "35'×57'" },
+  B44: { sqyd: 183.36, dimension: "33'×50'" },
+  B45: { sqyd: 351.35, dimension: "55'×57'" },
+  B46: { sqyd: 1671.11, dimension: "Premium Corner" },
+  B47: { sqyd: 151.68, dimension: "33'×41'" },
+  B48: { sqyd: 161.09, dimension: "33'×44'" },
+  B49: { sqyd: 137.19, dimension: "30'×41'" },
+  B50: { sqyd: 146.52, dimension: "33'×40'" },
+  B51: { sqyd: 155.85, dimension: "33'×43'" },
+  B52: { sqyd: 165.17, dimension: "33'×45'" },
+  B53: { sqyd: 174.49, dimension: "33'×47'" },
+  B54: { sqyd: 264.66, dimension: "48'×50'" },
 }
+
+// ── Phase II — Block C (54 plots) ─────────────────────────────────────────
+// NOTE: Block C image was low-resolution; values below are best-effort.
+// Please verify with Block-C specific data table when available.
+const blockC = {}
+for (let i = 1; i <= 54; i++) {
+  blockC[`C${i}`] = TRIMBAK_STD
+}
+
+// ── Phase II — Block D (37 plots) ─────────────────────────────────────────
+const BLOCK_D_STD = { sqyd: 183.50, dimension: "33'×50'" }
+const blockD = {
+  D25: { sqyd: 214.66, dimension: "38'×50'" },
+  D26: { sqyd: 202.88, dimension: "36'×50'" },
+  D27: { sqyd: 191.11, dimension: "33'×52'" },
+  D28: { sqyd: 179.34, dimension: "33'×49'" },
+  D29: { sqyd: 167.56, dimension: "33'×46'" },
+  D30: { sqyd: 155.79, dimension: "33'×43'" },
+  D31: { sqyd: 206.98, dimension: "35'×53'" },
+  D32: { sqyd: 122.41, dimension: "30'×37'" },
+  D33: { sqyd: 139.28, dimension: "30'×42'" },
+  D34: { sqyd: 140.72, dimension: "30'×42'" },
+  D35: { sqyd: 132.65, dimension: "30'×40'" },
+  D36: { sqyd: 163.97, dimension: "33'×45'" },
+  D37: { sqyd: 167.22, dimension: "33'×46'" },
+}
+for (let i = 1; i <= 24; i++) { blockD[`D${i}`] = BLOCK_D_STD }
+
+// Merge all Phase II blocks into trimbak
+Object.assign(trimbak, blockA, blockB, blockC, blockD)
 
 // ═══════════════════════════════════════════════════════════════════════════
 
 export const PLOT_DIMENSIONS = { anjana, trimbak, aparna, varaha }
+
+/**
+ * Trimbak Phase-II block colours — matches block header accents on
+ * the owner-provided block tables. Used to colour the plot chip
+ * per-block in Phase II categories (East/West/Corner mix plots
+ * from all 4 blocks in a single category).
+ */
+export const TRIMBAK_BLOCK_COLORS = {
+  A: '#C9A84C', // Gold — matches Block A header
+  B: '#C0392B', // Red  — matches Block B header
+  C: '#1E4D2B', // Green — matches Block C header
+  D: '#8B4513', // Brown — matches Block D header
+}
+
+/**
+ * Returns the block colour for a Trimbak Phase-II plot number,
+ * or null for Phase I or other ventures.
+ * Phase-II plot numbers start with A/B/C/D prefix.
+ */
+export function getTrimbakBlockColor(ventureKey, plotNumber) {
+  if (ventureKey !== 'trimbak') return null
+  const str = String(plotNumber)
+  const prefix = str[0]?.toUpperCase()
+  return TRIMBAK_BLOCK_COLORS[prefix] || null
+}
 
 /**
  * Lookup helper — returns dimension/area info for a plot, or null if unknown.

@@ -4,7 +4,7 @@ import { Sun, Sunset, ArrowUp, ArrowDown, Maximize2 } from 'lucide-react'
 import { useLanguage } from '@/context/LanguageContext'
 import CategoryCard   from '@/components/ui/CategoryCard'
 import PlotVisualGrid from '@/components/ui/PlotVisualGrid'
-import { getPlotDimension } from '@/constants/plotDimensions'
+import { getPlotDimension, getTrimbakBlockColor } from '@/constants/plotDimensions'
 import styles         from './PlotGrid.module.css'
 
 // ── Per-category visual metadata ──────────────────────────────────────────────
@@ -534,34 +534,48 @@ export default function PlotGrid({ onEnquire, pricingMap }) {
                                 const dim = getPlotDimension(ventureKey, num)
                                 // Pulse the first 3 chips until user has clicked one (reset on category change)
                                 const shouldPulse = !openPlot && idx < 3
+                                // Trimbak Phase-II plots: colour per block prefix (A/B/C/D)
+                                const blockColor = getTrimbakBlockColor(ventureKey, num)
+                                const chipAccent = blockColor || meta?.color || '#C9A84C'
+                                // Convert hex → rgba for gradient backgrounds
+                                const hexToRgba = (hex, a) => {
+                                  const h = hex.replace('#','')
+                                  const r = parseInt(h.substring(0,2), 16)
+                                  const g = parseInt(h.substring(2,4), 16)
+                                  const b = parseInt(h.substring(4,6), 16)
+                                  return `rgba(${r},${g},${b},${a})`
+                                }
+                                const gradBase   = `linear-gradient(90deg, ${hexToRgba(chipAccent, 0.18)}, ${hexToRgba(chipAccent, 0.06)})`
+                                const gradHover  = `linear-gradient(90deg, ${hexToRgba(chipAccent, 0.32)}, ${hexToRgba(chipAccent, 0.14)})`
+                                const borderBase = `1px dashed ${hexToRgba(chipAccent, 0.55)}`
                                 return (
                                   <span key={num} style={{ position: 'relative', display: 'inline-block' }}>
                                     <button
                                       type="button"
                                       onClick={(e) => {
                                         e.stopPropagation()
-                                        setOpenPlot(isOpenPlot ? null : { num, catKey: key, catLabel: translatedData.label })
+                                        setOpenPlot(isOpenPlot ? null : { num, catKey: key, catLabel: translatedData.label, accent: chipAccent })
                                       }}
                                       onMouseEnter={(e) => {
                                         if (isOpenPlot) return
-                                        e.currentTarget.style.background = 'linear-gradient(90deg, rgba(201,168,76,0.32), rgba(201,168,76,0.14))'
+                                        e.currentTarget.style.background = gradHover
                                         e.currentTarget.style.transform   = 'translateY(-2px)'
-                                        e.currentTarget.style.boxShadow   = '0 3px 8px rgba(201,168,76,0.35)'
+                                        e.currentTarget.style.boxShadow   = `0 3px 8px ${hexToRgba(chipAccent, 0.35)}`
                                       }}
                                       onMouseLeave={(e) => {
                                         if (isOpenPlot) return
-                                        e.currentTarget.style.background = 'linear-gradient(90deg, rgba(201,168,76,0.18), rgba(201,168,76,0.06))'
+                                        e.currentTarget.style.background = gradBase
                                         e.currentTarget.style.transform   = 'translateY(0)'
                                         e.currentTarget.style.boxShadow   = 'none'
                                       }}
                                       style={{
                                         background: isOpenPlot
-                                          ? (meta?.color || '#C9A84C')
-                                          : 'linear-gradient(90deg, rgba(201,168,76,0.18), rgba(201,168,76,0.06))',
+                                          ? chipAccent
+                                          : gradBase,
                                         color:        isOpenPlot ? '#fff' : '#1E4D2B',
                                         border:       isOpenPlot
-                                          ? '1px solid ' + (meta?.color || '#C9A84C')
-                                          : '1px dashed rgba(201,168,76,0.55)',
+                                          ? '1px solid ' + chipAccent
+                                          : borderBase,
                                         borderRadius: 8,
                                         padding: '6px 14px',
                                         fontSize: 18,
@@ -587,7 +601,7 @@ export default function PlotGrid({ onEnquire, pricingMap }) {
                                           left: '50%',
                                           transform: 'translateX(-50%)',
                                           background: '#fff',
-                                          border: '1.5px solid ' + (meta?.color || '#C9A84C'),
+                                          border: '1.5px solid ' + chipAccent,
                                           borderRadius: 10,
                                           padding: '12px 14px',
                                           boxShadow: '0 8px 24px rgba(0,0,0,0.15)',
@@ -600,8 +614,8 @@ export default function PlotGrid({ onEnquire, pricingMap }) {
                                         }}
                                       >
                                         {/* Arrow */}
-                                        <div style={{ position: 'absolute', top: -8, left: '50%', transform: 'translateX(-50%) rotate(45deg)', width: 12, height: 12, background: '#fff', borderLeft: '1.5px solid ' + (meta?.color || '#C9A84C'), borderTop: '1.5px solid ' + (meta?.color || '#C9A84C') }} />
-                                        <div style={{ fontWeight: 700, fontSize: 14, color: meta?.color || '#C9A84C', marginBottom: 6 }}>
+                                        <div style={{ position: 'absolute', top: -8, left: '50%', transform: 'translateX(-50%) rotate(45deg)', width: 12, height: 12, background: '#fff', borderLeft: '1.5px solid ' + chipAccent, borderTop: '1.5px solid ' + chipAccent }} />
+                                        <div style={{ fontWeight: 700, fontSize: 14, color: chipAccent, marginBottom: 6 }}>
                                           {language === 'te' ? 'ప్లాట్ నం.' : 'Plot No.'} {num}
                                         </div>
                                         {dim ? (

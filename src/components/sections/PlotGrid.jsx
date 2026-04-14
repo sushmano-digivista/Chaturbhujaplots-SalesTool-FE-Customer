@@ -444,25 +444,59 @@ export default function PlotGrid({ onEnquire, pricingMap }) {
                 }
                 const isOpen = activeCategory === key
                 return (
-                  <motion.div key={key}>
-                    <CategoryCard
-                      meta={meta}
-                      data={translatedData}
-                      isOpen={false}
-                      onToggle={() => setActiveCategory(isOpen ? null : key)}
-                      onEnquire={onEnquire}
-                      hoveredPlot={hoveredPlot}
-                      setHoveredPlot={setHoveredPlot}
-                    />
-                    {/* expanded content rendered outside grid below */}
-                  </motion.div>
+                  <>
+                    <motion.div key={key}>
+                      <CategoryCard
+                        meta={meta}
+                        data={translatedData}
+                        isOpen={false}
+                        onToggle={() => setActiveCategory(isOpen ? null : key)}
+                        onEnquire={onEnquire}
+                        hoveredPlot={hoveredPlot}
+                        setHoveredPlot={setHoveredPlot}
+                      />
+                    </motion.div>
+                    {/* Expanded content — spans full grid width below the clicked card's row */}
+                    {isOpen && (
+                      <motion.div
+                        key={key + '-expand'}
+                        initial={{ opacity: 0, height: 0 }}
+                        animate={{ opacity: 1, height: 'auto' }}
+                        exit={{ opacity: 0, height: 0 }}
+                        transition={{ duration: 0.25 }}
+                        style={{ gridColumn: '1 / -1', marginBottom: 8, background: 'var(--white)', borderRadius: 14, border: '1.5px solid rgba(30,77,43,0.12)', padding: 20 }}
+                      >
+                        <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 10 }}>
+                          {meta && <span style={{ color: meta.color }}>{meta.icon}</span>}
+                          <strong>{translatedData.label}</strong>
+                          <span style={{ color: 'rgba(0,0,0,0.4)', fontSize: 12 }}>— {data.count} {language === 'te' ? 'ప్లాట్లు' : 'plots'}</span>
+                        </div>
+                        {data.plotNumbers?.length > 0 && (
+                          <>
+                            <p style={{ fontSize: 12, color: 'var(--text-mid)', marginBottom: 6 }}>
+                              {data.count} {language === 'te' ? 'ప్లాట్లు ఈ విభాగంలో:' : 'plots in this category:'}
+                            </p>
+                            <div style={{ display: 'flex', flexWrap: 'wrap', gap: 5 }}>
+                              {data.plotNumbers.map(num => (
+                                <span key={num} style={{ background: 'rgba(201,168,76,0.12)', border: '1px solid rgba(201,168,76,0.3)', borderRadius: 6, padding: '3px 8px', fontSize: 12, fontWeight: 600 }}>{num}</span>
+                              ))}
+                            </div>
+                          </>
+                        )}
+                        <button className="btn btn-gold" style={{ marginTop: 14 }}
+                          onClick={(e) => { e.stopPropagation(); onEnquire({ source: 'CATEGORY_ENQUIRY', label: 'Enquire About Plot', type: 'PLOT_ENQUIRY', category: data.label, plotSize: data.label, venture: venture.label })}}>
+                          {language === 'te' ? `${translatedData.label} కోసం సంప్రదించండి` : `Enquire for ${translatedData.label}`}
+                        </button>
+                      </motion.div>
+                    )}
+                  </>
                 )
               })}
             </motion.div>
           </AnimatePresence>
 
-          {/* Expanded category content — full width below grid */}
-          {activeCategory && (() => {
+          {/* Expanded category content — full width below grid (disabled, now inline) */}
+          {false && activeCategory && (() => {
             const activeCat = categories.find(c => c.key === activeCategory)
             if (!activeCat) return null
             const { data } = activeCat

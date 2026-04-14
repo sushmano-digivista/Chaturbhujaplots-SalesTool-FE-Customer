@@ -544,20 +544,24 @@ export default function PlotGrid({ onEnquire, pricingMap }) {
                                       }}
                                       onMouseEnter={(e) => {
                                         if (isOpenPlot) return
-                                        e.currentTarget.style.background = 'rgba(201,168,76,0.28)'
+                                        e.currentTarget.style.background = 'linear-gradient(90deg, rgba(201,168,76,0.32), rgba(201,168,76,0.14))'
                                         e.currentTarget.style.transform   = 'translateY(-2px)'
                                         e.currentTarget.style.boxShadow   = '0 3px 8px rgba(201,168,76,0.35)'
                                       }}
                                       onMouseLeave={(e) => {
                                         if (isOpenPlot) return
-                                        e.currentTarget.style.background = 'rgba(201,168,76,0.12)'
+                                        e.currentTarget.style.background = 'linear-gradient(90deg, rgba(201,168,76,0.18), rgba(201,168,76,0.06))'
                                         e.currentTarget.style.transform   = 'translateY(0)'
                                         e.currentTarget.style.boxShadow   = 'none'
                                       }}
                                       style={{
-                                        background: isOpenPlot ? (meta?.color || '#C9A84C') : 'rgba(201,168,76,0.12)',
-                                        color:      isOpenPlot ? '#fff' : 'inherit',
-                                        border:     '1px solid ' + (isOpenPlot ? (meta?.color || '#C9A84C') : 'rgba(201,168,76,0.5)'),
+                                        background: isOpenPlot
+                                          ? (meta?.color || '#C9A84C')
+                                          : 'linear-gradient(90deg, rgba(201,168,76,0.18), rgba(201,168,76,0.06))',
+                                        color:        isOpenPlot ? '#fff' : 'inherit',
+                                        border:       isOpenPlot
+                                          ? '1px solid ' + (meta?.color || '#C9A84C')
+                                          : '1px dashed rgba(201,168,76,0.55)',
                                         borderRadius: 6,
                                         padding: '4px 10px',
                                         fontSize: 12,

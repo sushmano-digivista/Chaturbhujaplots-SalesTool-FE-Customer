@@ -76,13 +76,16 @@ export default function LeadModal({ context, onClose, whatsapp, content }) {
     return () => { document.body.style.overflow = ''; document.body.style.paddingRight = '' }
   }, [isOpen])
 
-  // Pre-select project from venture context (e.g. from PlotGrid dimension enquiry)
+  // Pre-select project from venture/category context
+  // - `venture` is used by PlotGrid dimension enquiries
+  // - `category` is used by ProjectPage CTAs (Enquire Now, Callback, Site Visit, Brochure)
   useEffect(() => {
-    if (isOpen && context?.venture) {
-      const proj = ACTIVE_PROJECTS.find(p => p.name === context.venture)
+    const projectName = context?.venture || context?.category
+    if (isOpen && projectName) {
+      const proj = ACTIVE_PROJECTS.find(p => p.name === projectName)
       if (proj) setValue('project', proj.name)
     }
-  }, [isOpen, context?.venture])
+  }, [isOpen, context?.venture, context?.category])
 
   useEffect(() => {
     const h = e => { if (e.key === 'Escape') onClose() }

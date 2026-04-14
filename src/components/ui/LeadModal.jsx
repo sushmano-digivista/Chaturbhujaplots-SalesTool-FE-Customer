@@ -76,13 +76,16 @@ export default function LeadModal({ context, onClose, whatsapp, content }) {
     return () => { document.body.style.overflow = ''; document.body.style.paddingRight = '' }
   }, [isOpen])
 
-  // Pre-select project from venture context (e.g. from PlotGrid dimension enquiry)
+  // Pre-select project from venture/category context
+  // - `venture` is used by PlotGrid dimension enquiries
+  // - `category` is used by ProjectPage CTAs (Enquire Now, Callback, Site Visit, Brochure)
   useEffect(() => {
-    if (isOpen && context?.venture) {
-      const proj = ACTIVE_PROJECTS.find(p => p.name === context.venture)
+    const projectName = context?.venture || context?.category
+    if (isOpen && projectName) {
+      const proj = ACTIVE_PROJECTS.find(p => p.name === projectName)
       if (proj) setValue('project', proj.name)
     }
-  }, [isOpen, context?.venture])
+  }, [isOpen, context?.venture, context?.category])
 
   useEffect(() => {
     const h = e => { if (e.key === 'Escape') onClose() }
@@ -239,13 +242,20 @@ export default function LeadModal({ context, onClose, whatsapp, content }) {
           style={context?.venture ? { opacity: 0.7, cursor: 'not-allowed' } : {}}
           onChange={e => { clearCtaError('download'); register('project').onChange(e) }}>
           <option value="">{t('modal.selectProject') || 'Select a project'}</option>
-          {ACTIVE_PROJECTS.map(p => {
-            const NAME_TE = { 'Anjana Paradise': 'అంజన పారడైజ్', 'Trimbak Oaks': 'ట్రింబక్ ఓక్స్', 'Aparna Legacy': 'అపర్ణ లెగసీ', 'Varaha Virtue': 'వరాహ వర్చ్యూ' }
-            const LOC_TE = { 'Paritala, Near Amaravati': 'పరిటాల అమరావతి సమీపంలో', 'Penamaluru, Near Vijayawada': 'పెనమలూరు విజయవాడ సమీపంలో', 'Chevitikallu, Gateway of Amaravati Capital Region': 'చెవిటికల్లు అమరావతి క్యాపిటల్ రీజియన్ గేట్‌వే', 'Pamarru, Krishna District': 'పామర్రు కృష్ణా జిల్లా' }
-            const name = language === 'te' ? (NAME_TE[p.name] || p.name) : p.name
-            const loc = language === 'te' ? (LOC_TE[p.loc] || p.loc) : p.loc
-            return <option key={p.id} value={p.name}>{name} — {loc}</option>
-          })}
+          {/* On a specific project page, show only that project; otherwise show all */}
+          {(() => {
+            const currentProject = context?.venture || context?.category
+            const projectsToShow = currentProject
+              ? ACTIVE_PROJECTS.filter(p => p.name === currentProject)
+              : ACTIVE_PROJECTS
+            return projectsToShow.map(p => {
+              const NAME_TE = { 'Anjana Paradise': 'అంజన పారడైజ్', 'Trimbak Oaks': 'ట్రింబక్ ఓక్స్', 'Aparna Legacy': 'అపర్ణ లెగసీ', 'Varaha Virtue': 'వరాహ వర్చ్యూ' }
+              const LOC_TE = { 'Paritala, Near Amaravati': 'పరిటాల అమరావతి సమీపంలో', 'Penamaluru, Near Vijayawada': 'పెనమలూరు విజయవాడ సమీపంలో', 'Chevitikallu, Gateway of Amaravati Capital Region': 'చెవిటికల్లు అమరావతి క్యాపిటల్ రీజియన్ గేట్‌వే', 'Pamarru, Krishna District': 'పామర్రు కృష్ణా జిల్లా' }
+              const name = language === 'te' ? (NAME_TE[p.name] || p.name) : p.name
+              const loc = language === 'te' ? (LOC_TE[p.loc] || p.loc) : p.loc
+              return <option key={p.id} value={p.name}>{name} — {loc}</option>
+            })
+          })()}
           <option value="Any Project">{isSV ? (t('modal.anyNotSure') || 'Any / Not Sure Yet') : (t('modal.anyNotSureAll') || 'Any / Not Sure Yet — Download All')}</option>
         </select>
         {/* Dynamic note from MongoDB when selected project has no brochure */}
@@ -392,13 +402,20 @@ export default function LeadModal({ context, onClose, whatsapp, content }) {
                   <label className="form-label">{language === 'te' ? 'ప్రాజెక్ట్ ఆసక్తి' : 'Project Interest'}</label>
                   <select className="form-input" {...register('project')}>
                     <option value="">{t('modal.selectProjectOptional') || 'Select a project (optional)'}</option>
-                    {ACTIVE_PROJECTS.map(p => {
-                      const NAME_TE = { 'Anjana Paradise': 'అంజన పారడైజ్', 'Trimbak Oaks': 'ట్రింబక్ ఓక్స్', 'Aparna Legacy': 'అపర్ణ లెగసీ', 'Varaha Virtue': 'వరాహ వర్చ్యూ' }
-                      const LOC_TE = { 'Paritala, Near Amaravati': 'పరిటాల అమరావతి సమీపంలో', 'Penamaluru, Near Vijayawada': 'పెనమలూరు విజయవాడ సమీపంలో', 'Chevitikallu, Gateway of Amaravati Capital Region': 'చెవిటికల్లు అమరావతి క్యాపిటల్ రీజియన్ గేట్‌వే', 'Pamarru, Krishna District': 'పామర్రు కృష్ణా జిల్లా' }
-                      const name = language === 'te' ? (NAME_TE[p.name] || p.name) : p.name
-                      const loc = language === 'te' ? (LOC_TE[p.loc] || p.loc) : p.loc
-                      return <option key={p.id} value={p.name}>{name} — {loc}</option>
-                    })}
+                    {/* On a specific project page, show only that project; otherwise show all */}
+                    {(() => {
+                      const currentProject = context?.venture || context?.category
+                      const projectsToShow = currentProject
+                        ? ACTIVE_PROJECTS.filter(p => p.name === currentProject)
+                        : ACTIVE_PROJECTS
+                      return projectsToShow.map(p => {
+                        const NAME_TE = { 'Anjana Paradise': 'అంజన పారడైజ్', 'Trimbak Oaks': 'ట్రింబక్ ఓక్స్', 'Aparna Legacy': 'అపర్ణ లెగసీ', 'Varaha Virtue': 'వరాహ వర్చ్యూ' }
+                        const LOC_TE = { 'Paritala, Near Amaravati': 'పరిటాల అమరావతి సమీపంలో', 'Penamaluru, Near Vijayawada': 'పెనమలూరు విజయవాడ సమీపంలో', 'Chevitikallu, Gateway of Amaravati Capital Region': 'చెవిటికల్లు అమరావతి క్యాపిటల్ రీజియన్ గేట్‌వే', 'Pamarru, Krishna District': 'పామర్రు కృష్ణా జిల్లా' }
+                        const name = language === 'te' ? (NAME_TE[p.name] || p.name) : p.name
+                        const loc = language === 'te' ? (LOC_TE[p.loc] || p.loc) : p.loc
+                        return <option key={p.id} value={p.name}>{name} — {loc}</option>
+                      })
+                    })()}
                     <option value="Any Project">{language === 'te' ? 'ఏదైనా / ఇంకా నిర్ణయించలేదు' : 'Any / Not Sure Yet'}</option>
                   </select>
                 </div>

@@ -37,12 +37,15 @@ export default function PricingBanner() {
 
   const scrollToPlots = (e) => {
     e.stopPropagation()
-    const el = document.getElementById('plots')
-    if (el) {
-      const navH = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--nav-h')) || 72
-      window.scrollTo({ top: el.offsetTop - navH - 40, behavior: 'smooth' })
-    }
     setExpanded(false)
+    // Use scrollIntoView — browser handles layout changes (lazy-loaded images,
+    // banner collapse) continuously during the scroll, instead of targeting
+    // a fixed pixel position that may become stale.
+    // Offset is handled by CSS `scroll-margin-top` on #plots (see PlotGrid).
+    requestAnimationFrame(() => {
+      const el = document.getElementById('plots')
+      if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' })
+    })
   }
 
   return (

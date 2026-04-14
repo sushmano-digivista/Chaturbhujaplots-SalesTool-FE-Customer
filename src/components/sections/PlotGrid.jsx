@@ -4,6 +4,7 @@ import { Sun, Sunset, ArrowUp, ArrowDown, Maximize2 } from 'lucide-react'
 import { useLanguage } from '@/context/LanguageContext'
 import CategoryCard   from '@/components/ui/CategoryCard'
 import PlotVisualGrid from '@/components/ui/PlotVisualGrid'
+import { getPlotDimension } from '@/constants/plotDimensions'
 import styles         from './PlotGrid.module.css'
 
 // ── Per-category visual metadata ──────────────────────────────────────────────
@@ -206,6 +207,7 @@ export default function PlotGrid({ onEnquire, pricingMap }) {
   const [activeCategory, setActiveCategory] = useState(null)
   const [hoveredPlot,    setHoveredPlot]    = useState(null)
   const [priceOpen,      setPriceOpen]      = useState(false)
+  const [openPlot,       setOpenPlot]       = useState(null) // { num, catLabel } — clicked plot chip popover
   const { t, language } = useLanguage()
   const tv = (key, fallback) => { const v = t(key); return (v && v !== key) ? v : fallback }
   const VENTURE_PRICING = pricingMap || LOCAL_PRICING
@@ -218,11 +220,28 @@ export default function PlotGrid({ onEnquire, pricingMap }) {
         setVentureKey(key)
         setActiveCategory(null)
         setPriceOpen(false)
+        setOpenPlot(null)
       }
     }
     window.addEventListener('cbp:selectVenture', handler)
     return () => window.removeEventListener('cbp:selectVenture', handler)
   }, [])
+
+  // Close plot popover when clicking outside or pressing Escape
+  useEffect(() => {
+    if (!openPlot) return
+    const handleEsc = (e) => { if (e.key === 'Escape') setOpenPlot(null) }
+    const handleClick = () => setOpenPlot(null)
+    window.addEventListener('keydown', handleEsc)
+    window.addEventListener('click', handleClick)
+    return () => {
+      window.removeEventListener('keydown', handleEsc)
+      window.removeEventListener('click', handleClick)
+    }
+  }, [openPlot])
+
+  // Reset popover when changing venture/category
+  useEffect(() => { setOpenPlot(null) }, [ventureKey, activeCategory])
 
   const venture    = VENTURE_PLOTS[ventureKey]
   const color      = VENTURE_COLORS[ventureKey]
@@ -489,11 +508,108 @@ export default function PlotGrid({ onEnquire, pricingMap }) {
                           <>
                             <p style={{ fontSize: 12, color: 'var(--text-mid)', marginBottom: 6 }}>
                               {data.count} {language === 'te' ? 'ప్లాట్లు ఈ విభాగంలో:' : 'plots in this category:'}
+                              <span style={{ marginLeft: 8, fontSize: 11, color: 'rgba(0,0,0,0.45)' }}>
+                                ({language === 'te' ? 'వివరాల కోసం క్లిక్ చేయండి' : 'Click any plot for details'})
+                              </span>
                             </p>
                             <div style={{ display: 'flex', flexWrap: 'wrap', gap: 5 }}>
-                              {data.plotNumbers.map(num => (
-                                <span key={num} style={{ background: 'rgba(201,168,76,0.12)', border: '1px solid rgba(201,168,76,0.3)', borderRadius: 6, padding: '3px 8px', fontSize: 12, fontWeight: 600 }}>{num}</span>
-                              ))}
+                              {data.plotNumbers.map(num => {
+                                const isOpenPlot = openPlot?.num === num && openPlot?.catKey === key
+                                const dim = getPlotDimension(ventureKey, num)
+                                return (
+                                  <span key={num} style={{ position: 'relative', display: 'inline-block' }}>
+                                    <button
+                                      type="button"
+                                      onClick={(e) => {
+                                        e.stopPropagation()
+                                        setOpenPlot(isOpenPlot ? null : { num, catKey: key, catLabel: translatedData.label })
+                                      }}
+                                      style={{
+                                        background: isOpenPlot ? (meta?.color || '#C9A84C') : 'rgba(201,168,76,0.12)',
+                                        color:      isOpenPlot ? '#fff' : 'inherit',
+                                        border:     '1px solid ' + (isOpenPlot ? (meta?.color || '#C9A84C') : 'rgba(201,168,76,0.3)'),
+                                        borderRadius: 6,
+                                        padding: '3px 8px',
+                                        fontSize: 12,
+                                        fontWeight: 600,
+                                        cursor: 'pointer',
+                                        font: 'inherit',
+                                        transition: 'all 0.15s',
+                                      }}
+                                      aria-label={`Plot ${num} details`}
+                                      aria-expanded={isOpenPlot}
+                                    >{num}</button>
+                                    {isOpenPlot && (
+                                      <div
+                                        onClick={(e) => e.stopPropagation()}
+                                        style={{
+                                          position: 'absolute',
+                                          top: 'calc(100% + 6px)',
+                                          left: '50%',
+                                          transform: 'translateX(-50%)',
+                                          background: '#fff',
+                                          border: '1.5px solid ' + (meta?.color || '#C9A84C'),
+                                          borderRadius: 10,
+                                          padding: '12px 14px',
+                                          boxShadow: '0 8px 24px rgba(0,0,0,0.15)',
+                                          minWidth: 210,
+                                          zIndex: 20,
+                                          fontSize: 13,
+                                          fontWeight: 400,
+                                          textAlign: 'left',
+                                          lineHeight: 1.5,
+                                        }}
+                                      >
+                                        {/* Arrow */}
+                                        <div style={{ position: 'absolute', top: -8, left: '50%', transform: 'translateX(-50%) rotate(45deg)', width: 12, height: 12, background: '#fff', borderLeft: '1.5px solid ' + (meta?.color || '#C9A84C'), borderTop: '1.5px solid ' + (meta?.color || '#C9A84C') }} />
+                                        <div style={{ fontWeight: 700, fontSize: 14, color: meta?.color || '#C9A84C', marginBottom: 6 }}>
+                                          {language === 'te' ? 'ప్లాట్ నం.' : 'Plot No.'} {num}
+                                        </div>
+                                        {dim ? (
+                                          <>
+                                            <div style={{ display: 'flex', justifyContent: 'space-between', gap: 10, marginBottom: 3 }}>
+                                              <span style={{ color: 'rgba(0,0,0,0.55)' }}>📐 {language === 'te' ? 'కొలతలు' : 'Dimensions'}</span>
+                                              <strong>{dim.dimension}</strong>
+                                            </div>
+                                            <div style={{ display: 'flex', justifyContent: 'space-between', gap: 10, marginBottom: 3 }}>
+                                              <span style={{ color: 'rgba(0,0,0,0.55)' }}>📏 {language === 'te' ? 'వైశాల్యం' : 'Area'}</span>
+                                              <strong>{dim.sqyd} {language === 'te' ? 'చ.గ.' : 'sq.yd'}</strong>
+                                            </div>
+                                          </>
+                                        ) : (
+                                          <div style={{ color: 'rgba(0,0,0,0.55)', marginBottom: 3 }}>
+                                            {language === 'te' ? 'వివరాల కోసం సంప్రదించండి' : 'Contact us for dimensions'}
+                                          </div>
+                                        )}
+                                        <div style={{ display: 'flex', justifyContent: 'space-between', gap: 10, marginBottom: 10 }}>
+                                          <span style={{ color: 'rgba(0,0,0,0.55)' }}>🧭 {language === 'te' ? 'ముఖం' : 'Facing'}</span>
+                                          <strong>{translatedData.label}</strong>
+                                        </div>
+                                        <button
+                                          className="btn btn-gold"
+                                          style={{ width: '100%', padding: '6px 10px', fontSize: 12 }}
+                                          onClick={(e) => {
+                                            e.stopPropagation()
+                                            setOpenPlot(null)
+                                            onEnquire({
+                                              source: 'PLOT_NUMBER_ENQUIRY',
+                                              label: 'Enquire About Plot',
+                                              type: 'PLOT_ENQUIRY',
+                                              category: data.label,
+                                              venture: venture.label,
+                                              plotNumber: num,
+                                              plotDimension: dim?.dimension,
+                                              plotArea: dim?.sqyd,
+                                            })
+                                          }}
+                                        >
+                                          {language === 'te' ? `ప్లాట్ ${num} కోసం సంప్రదించండి` : `Enquire About Plot ${num}`}
+                                        </button>
+                                      </div>
+                                    )}
+                                  </span>
+                                )
+                              })}
                             </div>
                           </>
                         )}

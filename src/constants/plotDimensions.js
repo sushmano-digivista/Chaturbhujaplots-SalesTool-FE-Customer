@@ -248,8 +248,8 @@ const varaha = {
   103: { sqyd: 191.62, dimension: "33'×52'" },
   104: { sqyd: 191.71, dimension: "33'×52'" },
   105: { sqyd: 189.36, dimension: "33'×52'" },
-  106: { sqyd: 315.94, dimension: "50'×57'" },
-  107: { sqyd: 250.07, dimension: "50'×45'" },
+  106: { sqyd: 250.07, dimension: "50'×45'" },
+  107: { sqyd: 315.94, dimension: "50'×57'" },
   // Plot 118–119: Corner
   118: { sqyd: 312.78, dimension: "50'×56'" },
   119: { sqyd: 222.37, dimension: "35'×57'" },

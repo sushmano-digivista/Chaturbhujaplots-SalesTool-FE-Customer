@@ -190,51 +190,44 @@ for (let i = 1; i <= 273; i++) { if (!aparna[i]) aparna[i] = APARNA_STD }
 
 // ═══════════════════════════════════════════════════════════════════════════
 // VARAHA VIRTUE — Pamarru (132 plots)
-// byDimension: 40×56 × 83 (std), 50×33 × 38, Irregular × 11
+// Data extracted from Varaha Virtue layout PDF.
+// Most plots are 33'×50' · 183.36 sq.yd (standard).
+// Entrance/end corners + edge plots have custom dimensions below.
 // ═══════════════════════════════════════════════════════════════════════════
 
-const VARAHA_STD = { sqyd: 248.88, dimension: "40'×56'" }
+const VARAHA_STD = { sqyd: 183.36, dimension: "33'×50'" }
 
 const varaha = {
-  // West-facing row typically 50×33 (183 sq.yd)
-  2:   { sqyd: 183.33, dimension: "50'×33'" },
-  4:   { sqyd: 183.33, dimension: "50'×33'" },
-  6:   { sqyd: 183.33, dimension: "50'×33'" },
-  8:   { sqyd: 183.33, dimension: "50'×33'" },
-  12:  { sqyd: 183.33, dimension: "50'×33'" },
-  14:  { sqyd: 183.33, dimension: "50'×33'" },
-  16:  { sqyd: 183.33, dimension: "50'×33'" },
-  18:  { sqyd: 183.33, dimension: "50'×33'" },
-  22:  { sqyd: 183.33, dimension: "50'×33'" },
-  24:  { sqyd: 183.33, dimension: "50'×33'" },
-  26:  { sqyd: 183.33, dimension: "50'×33'" },
-  28:  { sqyd: 183.33, dimension: "50'×33'" },
-  32:  { sqyd: 183.33, dimension: "50'×33'" },
-  34:  { sqyd: 183.33, dimension: "50'×33'" },
-  36:  { sqyd: 183.33, dimension: "50'×33'" },
-  38:  { sqyd: 183.33, dimension: "50'×33'" },
-  42:  { sqyd: 183.33, dimension: "50'×33'" },
-  44:  { sqyd: 183.33, dimension: "50'×33'" },
-  46:  { sqyd: 183.33, dimension: "50'×33'" },
-  48:  { sqyd: 183.33, dimension: "50'×33'" },
-  52:  { sqyd: 183.33, dimension: "50'×33'" },
-  54:  { sqyd: 183.33, dimension: "50'×33'" },
-  56:  { sqyd: 183.33, dimension: "50'×33'" },
-  58:  { sqyd: 183.33, dimension: "50'×33'" },
-  62:  { sqyd: 183.33, dimension: "50'×33'" },
-  64:  { sqyd: 183.33, dimension: "50'×33'" },
-  66:  { sqyd: 183.33, dimension: "50'×33'" },
-  68:  { sqyd: 183.33, dimension: "50'×33'" },
-  72:  { sqyd: 183.33, dimension: "50'×33'" },
-  74:  { sqyd: 183.33, dimension: "50'×33'" },
-  76:  { sqyd: 183.33, dimension: "50'×33'" },
-  78:  { sqyd: 183.33, dimension: "50'×33'" },
-  82:  { sqyd: 183.33, dimension: "50'×33'" },
-  84:  { sqyd: 183.33, dimension: "50'×33'" },
-  86:  { sqyd: 183.33, dimension: "50'×33'" },
-  88:  { sqyd: 183.33, dimension: "50'×33'" },
-  92:  { sqyd: 183.33, dimension: "50'×33'" },
-  94:  { sqyd: 183.33, dimension: "50'×33'" },
+  // Plots 1–2: Large entrance corners
+  1:   { sqyd: 510.10, dimension: "Premium Corner" },
+  2:   { sqyd: 580.25, dimension: "Premium Corner" },
+  // Plots 10–18: Reduced-size row
+  10:  { sqyd: 149.72, dimension: "30'×45'" },
+  11:  { sqyd: 153.13, dimension: "30'×46'" },
+  12:  { sqyd: 139.00, dimension: "30'×42'" },
+  13:  { sqyd: 146.78, dimension: "30'×44'" },
+  14:  { sqyd: 146.78, dimension: "30'×44'" },
+  15:  { sqyd: 146.78, dimension: "30'×44'" },
+  16:  { sqyd: 146.78, dimension: "30'×44'" },
+  17:  { sqyd: 146.78, dimension: "30'×44'" },
+  // Corner/block plots with premium sizes
+  33:  { sqyd: 249.06, dimension: "50'×45'" },
+  47:  { sqyd: 250.07, dimension: "50'×45'" },
+  50:  { sqyd: 222.37, dimension: "35'×57'" },
+  59:  { sqyd: 222.37, dimension: "35'×57'" },
+  74:  { sqyd: 222.37, dimension: "35'×57'" },
+  84:  { sqyd: 222.37, dimension: "35'×57'" },
+  88:  { sqyd: 191.62, dimension: "33'×52'" },
+  89:  { sqyd: 191.62, dimension: "33'×52'" },
+  90:  { sqyd: 311.14, dimension: "50'×56'" },
+  96:  { sqyd: 315.94, dimension: "50'×57'" },
+  100: { sqyd: 222.37, dimension: "35'×57'" },
+  103: { sqyd: 311.14, dimension: "50'×56'" },
+  109: { sqyd: 179.37, dimension: "33'×49'" },
+  111: { sqyd: 222.37, dimension: "35'×57'" },
+  117: { sqyd: 222.37, dimension: "35'×57'" },
+  126: { sqyd: 222.37, dimension: "35'×57'" },
+  132: { sqyd: 349.12, dimension: "Premium Corner" },
 }
 for (let i = 1; i <= 132; i++) { if (!varaha[i]) varaha[i] = VARAHA_STD }
 

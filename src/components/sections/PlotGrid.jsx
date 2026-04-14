@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Sun, Sunset, ArrowUp, ArrowDown, Maximize2 } from 'lucide-react'
 import { useLanguage } from '@/context/LanguageContext'
@@ -194,7 +194,7 @@ const VENTURE_PLOTS = {
   },
 }
 
-const VENTURE_KEYS   = ['anjana', 'aparna', 'varaha', 'trimbak']
+const VENTURE_KEYS   = ['anjana', 'trimbak', 'aparna', 'varaha']
 const VENTURE_COLORS = { anjana: '#1E4D2B', aparna: '#C9A84C', varaha: '#1976D2', trimbak: '#C0522A' }
 
 /**
@@ -209,6 +209,20 @@ export default function PlotGrid({ onEnquire, pricingMap }) {
   const { t, language } = useLanguage()
   const tv = (key, fallback) => { const v = t(key); return (v && v !== key) ? v : fallback }
   const VENTURE_PRICING = pricingMap || LOCAL_PRICING
+
+  // Listen for external venture selection (e.g. from PricingBanner cards)
+  useEffect(() => {
+    const handler = (e) => {
+      const key = e?.detail?.ventureKey
+      if (key && VENTURE_PLOTS[key]) {
+        setVentureKey(key)
+        setActiveCategory(null)
+        setPriceOpen(false)
+      }
+    }
+    window.addEventListener('cbp:selectVenture', handler)
+    return () => window.removeEventListener('cbp:selectVenture', handler)
+  }, [])
 
   const venture    = VENTURE_PLOTS[ventureKey]
   const color      = VENTURE_COLORS[ventureKey]

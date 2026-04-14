@@ -558,16 +558,20 @@ export default function PlotGrid({ onEnquire, pricingMap }) {
                                         background: isOpenPlot
                                           ? (meta?.color || '#C9A84C')
                                           : 'linear-gradient(90deg, rgba(201,168,76,0.18), rgba(201,168,76,0.06))',
-                                        color:        isOpenPlot ? '#fff' : 'inherit',
+                                        color:        isOpenPlot ? '#fff' : '#7a5d1e',
                                         border:       isOpenPlot
                                           ? '1px solid ' + (meta?.color || '#C9A84C')
                                           : '1px dashed rgba(201,168,76,0.55)',
-                                        borderRadius: 6,
-                                        padding: '4px 10px',
-                                        fontSize: 12,
-                                        fontWeight: 600,
+                                        borderRadius: 8,
+                                        padding: '6px 14px',
+                                        fontSize: 15,
+                                        fontWeight: 700,
+                                        fontFamily: "'Cormorant Garamond', Georgia, serif",
+                                        fontStyle: 'italic',
+                                        letterSpacing: '0.4px',
+                                        textShadow: isOpenPlot ? '0 1px 2px rgba(0,0,0,0.25)' : '0 1px 0 rgba(255,255,255,0.6)',
+                                        minWidth: 40,
                                         cursor: 'pointer',
-                                        font: 'inherit',
                                         transition: 'all 0.15s',
                                         animation: shouldPulse ? 'plotChipPulse 1.8s ease-in-out infinite' : undefined,
                                       }}

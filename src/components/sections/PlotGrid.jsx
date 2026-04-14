@@ -506,16 +506,34 @@ export default function PlotGrid({ onEnquire, pricingMap }) {
                         </div>
                         {data.plotNumbers?.length > 0 && (
                           <>
+                            {/* Prominent interactive hint banner */}
+                            <div style={{
+                              display: 'flex', alignItems: 'center', gap: 8,
+                              background: 'linear-gradient(90deg, rgba(201,168,76,0.18), rgba(201,168,76,0.06))',
+                              border: '1px dashed rgba(201,168,76,0.5)',
+                              borderRadius: 8,
+                              padding: '8px 12px',
+                              marginBottom: 10,
+                              fontSize: 12,
+                              color: 'var(--text-dark)',
+                              fontWeight: 500,
+                            }}>
+                              <span style={{ fontSize: 16, animation: 'plotHintPulse 1.6s ease-in-out infinite' }}>👆</span>
+                              <span>
+                                {language === 'te'
+                                  ? <>ఏదైనా <strong>ప్లాట్ నంబర్</strong> క్లిక్ చేయండి — కొలతలు & వైశాల్యం చూడండి</>
+                                  : <>Tap any <strong>plot number</strong> below to see its dimensions &amp; area</>}
+                              </span>
+                            </div>
                             <p style={{ fontSize: 12, color: 'var(--text-mid)', marginBottom: 6 }}>
                               {data.count} {language === 'te' ? 'ప్లాట్లు ఈ విభాగంలో:' : 'plots in this category:'}
-                              <span style={{ marginLeft: 8, fontSize: 11, color: 'rgba(0,0,0,0.45)' }}>
-                                ({language === 'te' ? 'వివరాల కోసం క్లిక్ చేయండి' : 'Click any plot for details'})
-                              </span>
                             </p>
                             <div style={{ display: 'flex', flexWrap: 'wrap', gap: 5 }}>
-                              {data.plotNumbers.map(num => {
+                              {data.plotNumbers.map((num, idx) => {
                                 const isOpenPlot = openPlot?.num === num && openPlot?.catKey === key
                                 const dim = getPlotDimension(ventureKey, num)
+                                // Pulse the first 3 chips until user has clicked one (reset on category change)
+                                const shouldPulse = !openPlot && idx < 3
                                 return (
                                   <span key={num} style={{ position: 'relative', display: 'inline-block' }}>
                                     <button
@@ -524,17 +542,30 @@ export default function PlotGrid({ onEnquire, pricingMap }) {
                                         e.stopPropagation()
                                         setOpenPlot(isOpenPlot ? null : { num, catKey: key, catLabel: translatedData.label })
                                       }}
+                                      onMouseEnter={(e) => {
+                                        if (isOpenPlot) return
+                                        e.currentTarget.style.background = 'rgba(201,168,76,0.28)'
+                                        e.currentTarget.style.transform   = 'translateY(-2px)'
+                                        e.currentTarget.style.boxShadow   = '0 3px 8px rgba(201,168,76,0.35)'
+                                      }}
+                                      onMouseLeave={(e) => {
+                                        if (isOpenPlot) return
+                                        e.currentTarget.style.background = 'rgba(201,168,76,0.12)'
+                                        e.currentTarget.style.transform   = 'translateY(0)'
+                                        e.currentTarget.style.boxShadow   = 'none'
+                                      }}
                                       style={{
                                         background: isOpenPlot ? (meta?.color || '#C9A84C') : 'rgba(201,168,76,0.12)',
                                         color:      isOpenPlot ? '#fff' : 'inherit',
-                                        border:     '1px solid ' + (isOpenPlot ? (meta?.color || '#C9A84C') : 'rgba(201,168,76,0.3)'),
+                                        border:     '1px solid ' + (isOpenPlot ? (meta?.color || '#C9A84C') : 'rgba(201,168,76,0.5)'),
                                         borderRadius: 6,
-                                        padding: '3px 8px',
+                                        padding: '4px 10px',
                                         fontSize: 12,
                                         fontWeight: 600,
                                         cursor: 'pointer',
                                         font: 'inherit',
                                         transition: 'all 0.15s',
+                                        animation: shouldPulse ? 'plotChipPulse 1.8s ease-in-out infinite' : undefined,
                                       }}
                                       aria-label={`Plot ${num} details`}
                                       aria-expanded={isOpenPlot}

@@ -375,11 +375,61 @@ const blockB = {
 }
 
 // ── Phase II — Block C (54 plots) ─────────────────────────────────────────
-// NOTE: Block C image was low-resolution; values below are best-effort.
-// Please verify with Block-C specific data table when available.
-const blockC = {}
-for (let i = 1; i <= 54; i++) {
-  blockC[`C${i}`] = TRIMBAK_STD
+const blockC = {
+  C1:  { sqyd: 365.78, dimension: "55'×60'" },
+  C2:  { sqyd: 223.79, dimension: "42'×48'" },
+  C3:  { sqyd: 223.79, dimension: "42'×48'" },
+  C4:  { sqyd: 223.79, dimension: "42'×48'" },
+  C5:  { sqyd: 240.69, dimension: "45'×48'" },
+  C6:  { sqyd: 321.53, dimension: "55'×53'" },
+  C7:  { sqyd: 752.56, dimension: "Premium Corner" },
+  C8:  { sqyd: 687.32, dimension: "Premium Corner" },
+  C9:  { sqyd: 304.67, dimension: "50'×55'" },
+  C10: { sqyd: 308.18, dimension: "50'×55'" },
+  C11: { sqyd: 318.24, dimension: "55'×52'" },
+  C12: { sqyd: 331.30, dimension: "55'×54'" },
+  C13: { sqyd: 192.51, dimension: "33'×53'" },
+  C14: { sqyd: 313.66, dimension: "55'×51'" },
+  C15: { sqyd: 249.41, dimension: "48'×47'" },
+  C16: { sqyd: 249.41, dimension: "48'×47'" },
+  C17: { sqyd: 249.41, dimension: "48'×47'" },
+  C18: { sqyd: 249.41, dimension: "48'×47'" },
+  C19: { sqyd: 249.41, dimension: "48'×47'" },
+  C20: { sqyd: 249.41, dimension: "48'×47'" },
+  C21: { sqyd: 249.41, dimension: "48'×47'" },
+  C22: { sqyd: 309.83, dimension: "50'×56'" },
+  C23: { sqyd: 293.64, dimension: "50'×53'" },
+  C24: { sqyd: 251.58, dimension: "48'×48'" },
+  C25: { sqyd: 251.58, dimension: "48'×48'" },
+  C26: { sqyd: 251.58, dimension: "48'×48'" },
+  C27: { sqyd: 251.58, dimension: "48'×48'" },
+  C28: { sqyd: 251.58, dimension: "48'×48'" },
+  C29: { sqyd: 251.58, dimension: "48'×48'" },
+  C30: { sqyd: 251.58, dimension: "48'×48'" },
+  C31: { sqyd: 231.13, dimension: "42'×50'" },
+  C32: { sqyd: 231.13, dimension: "42'×50'" },
+  C33: { sqyd: 231.13, dimension: "42'×50'" },
+  C34: { sqyd: 231.13, dimension: "42'×50'" },
+  C35: { sqyd: 231.13, dimension: "42'×50'" },
+  C36: { sqyd: 231.13, dimension: "42'×50'" },
+  C37: { sqyd: 231.13, dimension: "42'×50'" },
+  C38: { sqyd: 244.72, dimension: "45'×49'" },
+  C39: { sqyd: 230.55, dimension: "42'×50'" },
+  C40: { sqyd: 233.05, dimension: "42'×50'" },
+  C41: { sqyd: 233.05, dimension: "42'×50'" },
+  C42: { sqyd: 233.05, dimension: "42'×50'" },
+  C43: { sqyd: 233.05, dimension: "42'×50'" },
+  C44: { sqyd: 233.05, dimension: "42'×50'" },
+  C45: { sqyd: 233.05, dimension: "42'×50'" },
+  C46: { sqyd: 233.05, dimension: "42'×50'" },
+  C47: { sqyd: 197.61, dimension: "35'×51'" },
+  C48: { sqyd: 183.36, dimension: "33'×50'" },
+  C49: { sqyd: 183.36, dimension: "33'×50'" },
+  C50: { sqyd: 183.36, dimension: "33'×50'" },
+  C51: { sqyd: 183.36, dimension: "33'×50'" },
+  C52: { sqyd: 183.36, dimension: "33'×50'" },
+  C53: { sqyd: 166.78, dimension: "33'×46'" },
+  C54: { sqyd: 179.92, dimension: "33'×49'" },
 }
 
 // ── Phase II — Block D (37 plots) ─────────────────────────────────────────

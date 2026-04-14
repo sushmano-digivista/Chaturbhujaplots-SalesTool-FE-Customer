@@ -216,13 +216,13 @@ const varaha = {
   15:  { sqyd: 146.78, dimension: "33'×40'" },
   16:  { sqyd: 146.78, dimension: "33'×40'" },
   17:  { sqyd: 146.78, dimension: "33'×40'" },
-  // Plot 18–19: Block transition
+  // Plots 18–19: Block corners
   18:  { sqyd: 249.06, dimension: "50'×45'" },
   19:  { sqyd: 312.78, dimension: "50'×56'" },
-  // Plot 31–32: Corner
+  // Plots 31–37: Corner + reduced row
   31:  { sqyd: 250.07, dimension: "50'×45'" },
   32:  { sqyd: 249.06, dimension: "50'×45'" },
-  // Plots 34–37: Reduced row
+  33:  { sqyd: 146.78, dimension: "33'×40'" },
   34:  { sqyd: 146.78, dimension: "33'×40'" },
   35:  { sqyd: 146.78, dimension: "33'×40'" },
   36:  { sqyd: 146.78, dimension: "33'×40'" },
@@ -236,21 +236,21 @@ const varaha = {
   // Plots 68–69: Large entrance corners
   68:  { sqyd: 504.10, dimension: "Premium Corner" },
   69:  { sqyd: 580.25, dimension: "Premium Corner" },
-  // Plot 80–81: Corner
+  // Plots 80–81: Corner
   80:  { sqyd: 222.37, dimension: "35'×57'" },
   81:  { sqyd: 312.78, dimension: "50'×56'" },
-  // Plot 94–95: Corner
-  94:  { sqyd: 250.07, dimension: "50'×45'" },
-  95:  { sqyd: 311.14, dimension: "50'×56'" },
-  // Plots 101–107: Premium block
-  101: { sqyd: 179.27, dimension: "33'×49'" },
-  102: { sqyd: 185.59, dimension: "33'×51'" },
-  103: { sqyd: 191.62, dimension: "33'×52'" },
-  104: { sqyd: 191.71, dimension: "33'×52'" },
-  105: { sqyd: 189.36, dimension: "33'×52'" },
+  // Plots 93–94: Corner
+  93:  { sqyd: 250.07, dimension: "50'×45'" },
+  94:  { sqyd: 311.14, dimension: "50'×56'" },
+  // Plots 100–106: Premium block
+  100: { sqyd: 179.27, dimension: "33'×49'" },
+  101: { sqyd: 185.59, dimension: "33'×51'" },
+  102: { sqyd: 191.62, dimension: "33'×52'" },
+  103: { sqyd: 191.71, dimension: "33'×52'" },
+  104: { sqyd: 189.36, dimension: "33'×52'" },
+  105: { sqyd: 315.94, dimension: "50'×57'" },
   106: { sqyd: 250.07, dimension: "50'×45'" },
-  107: { sqyd: 315.94, dimension: "50'×57'" },
-  // Plot 118–119: Corner
+  // Plots 118–119: Corner
   118: { sqyd: 312.78, dimension: "50'×56'" },
   119: { sqyd: 222.37, dimension: "35'×57'" },
   // Plot 132: End corner

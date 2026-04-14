@@ -581,13 +581,9 @@ export default function PlotGrid({ onEnquire, pricingMap }) {
                                             {language === 'te' ? 'వివరాల కోసం సంప్రదించండి' : 'Contact us for dimensions'}
                                           </div>
                                         )}
-                                        <div style={{ display: 'flex', justifyContent: 'space-between', gap: 10, marginBottom: 10 }}>
-                                          <span style={{ color: 'rgba(0,0,0,0.55)' }}>🧭 {language === 'te' ? 'ముఖం' : 'Facing'}</span>
-                                          <strong>{translatedData.label}</strong>
-                                        </div>
                                         <button
                                           className="btn btn-gold"
-                                          style={{ width: '100%', padding: '6px 10px', fontSize: 12 }}
+                                          style={{ width: '100%', padding: '6px 10px', fontSize: 12, marginTop: 8 }}
                                           onClick={(e) => {
                                             e.stopPropagation()
                                             setOpenPlot(null)

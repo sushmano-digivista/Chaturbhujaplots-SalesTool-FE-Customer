@@ -54,7 +54,7 @@ export default function Footer({ content }) {
                     ? `+${ownerSettings.ownerPhone}`
                     : contact.phone || '+919948709041'
   const whatsapp = ownerSettings?.ownerPhone || DEFAULT_WA_NUMBER
-  const email    = ownerSettings?.ownerEmail || contact.email || 'info@chaturbhuja.in'
+  const email    = ownerSettings?.ownerEmail || contact.email || 'chaturbhujaplots@gmail.com'
 
   return (
     <footer className={styles.footer}>

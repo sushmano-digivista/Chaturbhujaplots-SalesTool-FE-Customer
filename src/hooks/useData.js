@@ -44,7 +44,7 @@ export function useContactSettings() {
     retry: 2,
     placeholderData: {
       ownerPhone: '919739762698',
-      ownerEmail: 'info@chaturbhuja.in',
+      ownerEmail: 'chaturbhujaplots@gmail.com',
     },
   })
 }

@@ -190,43 +190,70 @@ for (let i = 1; i <= 273; i++) { if (!aparna[i]) aparna[i] = APARNA_STD }
 
 // ═══════════════════════════════════════════════════════════════════════════
 // VARAHA VIRTUE — Pamarru (132 plots)
-// Data extracted from Varaha Virtue layout PDF.
-// Most plots are 33'×50' · 183.36 sq.yd (standard).
-// Entrance/end corners + edge plots have custom dimensions below.
+// Data extracted from Varaha Virtue layout PDF table.
+// Standard plot: 33'×50' · 183.36 sq.yd. All non-standard plots listed below.
 // ═══════════════════════════════════════════════════════════════════════════
 
 const VARAHA_STD = { sqyd: 183.36, dimension: "33'×50'" }
 
 const varaha = {
-  // Plots 1–2: Large entrance corners
-  1:   { sqyd: 510.10, dimension: "Premium Corner" },
-  2:   { sqyd: 580.25, dimension: "Premium Corner" },
-  // Plots 10–18: Reduced-size row
-  10:  { sqyd: 149.72, dimension: "30'×45'" },
-  11:  { sqyd: 153.13, dimension: "30'×46'" },
-  12:  { sqyd: 139.00, dimension: "30'×42'" },
-  13:  { sqyd: 146.78, dimension: "30'×44'" },
-  14:  { sqyd: 146.78, dimension: "30'×44'" },
-  15:  { sqyd: 146.78, dimension: "30'×44'" },
-  16:  { sqyd: 146.78, dimension: "30'×44'" },
-  17:  { sqyd: 146.78, dimension: "30'×44'" },
-  // Corner/block plots with premium sizes
-  33:  { sqyd: 249.06, dimension: "50'×45'" },
-  47:  { sqyd: 250.07, dimension: "50'×45'" },
-  50:  { sqyd: 222.37, dimension: "35'×57'" },
-  59:  { sqyd: 222.37, dimension: "35'×57'" },
-  74:  { sqyd: 222.37, dimension: "35'×57'" },
-  84:  { sqyd: 222.37, dimension: "35'×57'" },
-  88:  { sqyd: 191.62, dimension: "33'×52'" },
-  89:  { sqyd: 191.62, dimension: "33'×52'" },
-  90:  { sqyd: 311.14, dimension: "50'×56'" },
-  96:  { sqyd: 315.94, dimension: "50'×57'" },
-  100: { sqyd: 222.37, dimension: "35'×57'" },
-  103: { sqyd: 311.14, dimension: "50'×56'" },
-  109: { sqyd: 179.37, dimension: "33'×49'" },
-  111: { sqyd: 222.37, dimension: "35'×57'" },
-  117: { sqyd: 222.37, dimension: "35'×57'" },
-  126: { sqyd: 222.37, dimension: "35'×57'" },
+  // Plots 1–6: Large entrance/frontage premium
+  1:   { sqyd: 854.27, dimension: "Premium Corner" },
+  2:   { sqyd: 635.20, dimension: "Premium Corner" },
+  3:   { sqyd: 650.91, dimension: "Premium Corner" },
+  4:   { sqyd: 666.60, dimension: "Premium Corner" },
+  5:   { sqyd: 682.30, dimension: "Premium Corner" },
+  6:   { sqyd: 773.16, dimension: "Premium Corner" },
+  // Plots 7–17: Reduced-size entrance row
+  7:   { sqyd: 225.09, dimension: "35'×58'" },
+  8:   { sqyd: 139.00, dimension: "33'×38'" },
+  9:   { sqyd: 143.71, dimension: "33'×39'" },
+  10:  { sqyd: 148.42, dimension: "33'×40'" },
+  11:  { sqyd: 153.13, dimension: "33'×42'" },
+  12:  { sqyd: 157.85, dimension: "33'×43'" },
+  13:  { sqyd: 146.78, dimension: "33'×40'" },
+  14:  { sqyd: 146.78, dimension: "33'×40'" },
+  15:  { sqyd: 146.78, dimension: "33'×40'" },
+  16:  { sqyd: 146.78, dimension: "33'×40'" },
+  17:  { sqyd: 146.78, dimension: "33'×40'" },
+  // Plot 18–19: Block transition
+  18:  { sqyd: 249.06, dimension: "50'×45'" },
+  19:  { sqyd: 312.78, dimension: "50'×56'" },
+  // Plot 31–32: Corner
+  31:  { sqyd: 250.07, dimension: "50'×45'" },
+  32:  { sqyd: 249.06, dimension: "50'×45'" },
+  // Plots 34–37: Reduced row
+  34:  { sqyd: 146.78, dimension: "33'×40'" },
+  35:  { sqyd: 146.78, dimension: "33'×40'" },
+  36:  { sqyd: 146.78, dimension: "33'×40'" },
+  37:  { sqyd: 146.78, dimension: "33'×40'" },
+  // Plots 43–44: Corner
+  43:  { sqyd: 311.14, dimension: "50'×56'" },
+  44:  { sqyd: 250.07, dimension: "50'×45'" },
+  // Plots 56–57: Corner
+  56:  { sqyd: 312.78, dimension: "50'×56'" },
+  57:  { sqyd: 222.37, dimension: "35'×57'" },
+  // Plots 68–69: Large entrance corners
+  68:  { sqyd: 504.10, dimension: "Premium Corner" },
+  69:  { sqyd: 580.25, dimension: "Premium Corner" },
+  // Plot 80–81: Corner
+  80:  { sqyd: 222.37, dimension: "35'×57'" },
+  81:  { sqyd: 312.78, dimension: "50'×56'" },
+  // Plot 94–95: Corner
+  94:  { sqyd: 250.07, dimension: "50'×45'" },
+  95:  { sqyd: 311.14, dimension: "50'×56'" },
+  // Plots 101–107: Premium block
+  101: { sqyd: 179.27, dimension: "33'×49'" },
+  102: { sqyd: 185.59, dimension: "33'×51'" },
+  103: { sqyd: 191.62, dimension: "33'×52'" },
+  104: { sqyd: 191.71, dimension: "33'×52'" },
+  105: { sqyd: 189.36, dimension: "33'×52'" },
+  106: { sqyd: 315.94, dimension: "50'×57'" },
+  107: { sqyd: 250.07, dimension: "50'×45'" },
+  // Plot 118–119: Corner
+  118: { sqyd: 312.78, dimension: "50'×56'" },
+  119: { sqyd: 222.37, dimension: "35'×57'" },
+  // Plot 132: End corner
   132: { sqyd: 349.12, dimension: "Premium Corner" },
 }
 for (let i = 1; i <= 132; i++) { if (!varaha[i]) varaha[i] = VARAHA_STD }

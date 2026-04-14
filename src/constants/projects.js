@@ -78,7 +78,7 @@ export const ACTIVE_PROJECTS = [
     ],
     mapEmbedUrl: 'https://maps.google.com/maps?q=Paritala,Andhra+Pradesh,India&t=k&z=14&ie=UTF8&iwloc=&output=embed',
     mapOpenUrl:  'https://maps.google.com/?q=Paritala,Krishna+District,Andhra+Pradesh',
-    contact: { phone: '+91 99487 09041', whatsapp: '919948709041', email: 'msnraoooo@gmail.com', address: 'Paritala, Krishna District, AP 521180', website: 'www.chaturbhujaplots.in' },
+    contact: { phone: '+91 99487 09041', whatsapp: '919948709041', email: 'chaturbhujaplots@gmail.com', address: 'Paritala, Krishna District, AP 521180', website: 'www.chaturbhujaplots.in' },
   },
 
   {
@@ -146,7 +146,7 @@ export const ACTIVE_PROJECTS = [
     ],
     mapEmbedUrl: 'https://maps.google.com/maps?q=Penamaluru,Andhra+Pradesh,India&t=k&z=14&ie=UTF8&iwloc=&output=embed',
     mapOpenUrl:  'https://maps.google.com/?q=Penamaluru,Andhra+Pradesh',
-    contact: { phone: '+91 99487 09041', whatsapp: '919948709041', email: 'msnraoooo@gmail.com', address: 'Penamaluru, Krishna District, AP', website: 'www.chaturbhujaplots.in' },
+    contact: { phone: '+91 99487 09041', whatsapp: '919948709041', email: 'chaturbhujaplots@gmail.com', address: 'Penamaluru, Krishna District, AP', website: 'www.chaturbhujaplots.in' },
   },
 
   {
@@ -220,7 +220,7 @@ export const ACTIVE_PROJECTS = [
     ],
     mapEmbedUrl: 'https://maps.google.com/maps?q=Chevitikallu,NTR+District,Andhra+Pradesh,India&t=k&z=14&ie=UTF8&iwloc=&output=embed',
     mapOpenUrl:  'https://maps.google.com/?q=Chevitikallu,Kanchikacherla,Andhra+Pradesh',
-    contact: { phone: '+91 99487 09041', whatsapp: '919948709041', email: 'msnraoooo@gmail.com', address: 'Chevitikallu Village, Kanchikacherla Mandal, NTR District, AP', website: 'www.chaturbhujaplots.in' },
+    contact: { phone: '+91 99487 09041', whatsapp: '919948709041', email: 'chaturbhujaplots@gmail.com', address: 'Chevitikallu Village, Kanchikacherla Mandal, NTR District, AP', website: 'www.chaturbhujaplots.in' },
   },
 
   {
@@ -295,7 +295,7 @@ export const ACTIVE_PROJECTS = [
     ],
     mapEmbedUrl: 'https://maps.google.com/maps?q=Pamarru,Krishna+District,Andhra+Pradesh,India&t=k&z=14&ie=UTF8&iwloc=&output=embed',
     mapOpenUrl:  'https://maps.google.com/?q=Pamarru,Andhra+Pradesh',
-    contact: { phone: '+91 99487 09041', whatsapp: '919948709041', email: 'msnraoooo@gmail.com', address: 'Pamarru Village & Mandal, Krishna District, AP', website: 'www.chaturbhujaplots.in' },
+    contact: { phone: '+91 99487 09041', whatsapp: '919948709041', email: 'chaturbhujaplots@gmail.com', address: 'Pamarru Village & Mandal, Krishna District, AP', website: 'www.chaturbhujaplots.in' },
   },
 ]
 
@@ -311,7 +311,7 @@ export const COMPLETED_PROJECTS = [
 export const COMPANY_CONTACT = {
   phone:            '+91 99487 09041',
   whatsapp:         '919948709041',
-  email:            'msnraoooo@gmail.com',
+  email:            'chaturbhujaplots@gmail.com',
   website:          'www.chaturbhujaplots.in',
   registeredOffice: 'Flat No. 101, Venkat Meadows, Patamata, Vijayawada 520007',
   corporateOffice:  'First Floor, Padmavathi Icon, Panta Kaluva Road, Near Auto Nagar, Vijayawada 520007',

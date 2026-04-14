@@ -36,9 +36,9 @@ const TESTS = [
         if(d.ownerPhone!=='919948709041') throw new Error('Got: '+d.ownerPhone)
         return d.ownerPhone
       }},
-      { id:'s3', name:'ownerEmail = msnraoooo@gmail.com', fn: async()=>{
+      { id:'s3', name:'ownerEmail = chaturbhujaplots@gmail.com', fn: async()=>{
         const d = await settingsApi.getContact()
-        if(d.ownerEmail!=='msnraoooo@gmail.com') throw new Error('Got: '+d.ownerEmail)
+        if(d.ownerEmail!=='chaturbhujaplots@gmail.com') throw new Error('Got: '+d.ownerEmail)
         return d.ownerEmail
       }},
       { id:'s4', name:'aparna_contact_address has Gateway of Amaravati', fn: async()=>{

@@ -215,7 +215,7 @@ export default function PlotGrid({ onEnquire, pricingMap }) {
   const categories = (venture.upcoming || !venture.categories) ? [] : Object.entries(venture.categories).map(([key, data]) => ({ key, data }))
 
   return (
-    <section className="section section-cream" id="plots">
+    <section className="section section-cream" id="plots" style={{ scrollMarginTop: 'calc(var(--nav-h, 72px) + 50px)' }}>
       <div className="sec-hdr">
         <div className="sec-tag">{tv('sections.plotCategories', 'Plot Categories')}</div>
         <h2 className="sec-title">{tv('sections.explorePlots', 'Explore')} <em>{tv('sections.availablePlots', 'Available Plots')}</em></h2>

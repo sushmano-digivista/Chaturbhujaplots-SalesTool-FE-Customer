@@ -37,12 +37,19 @@ export default function PricingBanner() {
 
   const scrollToPlots = (e) => {
     e.stopPropagation()
-    const el = document.getElementById('plots')
-    if (el) {
-      const navH = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--nav-h')) || 72
-      window.scrollTo({ top: el.offsetTop - navH - 40, behavior: 'smooth' })
-    }
     setExpanded(false)
+    // Defer scroll by one frame so the banner collapse finishes first
+    // and any pending layout shifts settle, giving us accurate coordinates.
+    requestAnimationFrame(() => {
+      const el = document.getElementById('plots')
+      if (!el) return
+      const navH = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--nav-h')) || 72
+      // getBoundingClientRect is viewport-relative and accounts for all
+      // transforms/parent offsets (offsetTop does not). Add window.scrollY
+      // to convert to document-absolute position.
+      const absTop = el.getBoundingClientRect().top + window.scrollY
+      window.scrollTo({ top: absTop - navH - 40, behavior: 'smooth' })
+    })
   }
 
   return (

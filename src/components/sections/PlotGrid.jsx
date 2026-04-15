@@ -487,21 +487,30 @@ export default function PlotGrid({ onEnquire, pricingMap }) {
                         onToggle={() => {
                           const next = isOpen ? null : key
                           setActiveCategory(next)
-                          // Auto-scroll so the venture switcher sits at the
-                          // top — user sees: venture switcher + Price Range
-                          // banner + clicked category card + expanded plot
-                          // panel. Keeps full navigational context visible.
                           if (next) {
                             requestAnimationFrame(() => {
                               requestAnimationFrame(() => {
-                                const anchor = document.getElementById('plot-venture-switcher')
-                                if (!anchor) return
-                                // Fixed-header clearance: navbar + (sticky pricing banner if present)
+                                // Fixed-header clearance (shared)
                                 const navH = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--nav-h')) || 72
                                 const banner = document.querySelector('[data-pricing-banner]')
                                 const bannerH = banner ? banner.getBoundingClientRect().height : 0
                                 const fixedHeader = navH + bannerH
-                                const breathingRoom = 16
+                                const isMobile = window.matchMedia('(max-width: 768px)').matches
+                                // Mobile: single-column grid, cards stack.
+                                // Anchor on the CLICKED CARD so the plot
+                                // numbers appear right below (and the
+                                // category card stays visible). Otherwise
+                                // the expand panel can end up far below the
+                                // fold when a bottom card is clicked.
+                                //
+                                // Desktop: multi-column grid — the venture
+                                // switcher + price banner fit in view with
+                                // the clicked card row, giving full context.
+                                const anchor = isMobile
+                                  ? document.getElementById(`plot-category-card-${next}`)
+                                  : document.getElementById('plot-venture-switcher')
+                                if (!anchor) return
+                                const breathingRoom = isMobile ? 8 : 16
                                 const absTop = anchor.getBoundingClientRect().top + window.scrollY
                                 window.scrollTo({ top: absTop - fixedHeader - breathingRoom, behavior: 'smooth' })
                               })

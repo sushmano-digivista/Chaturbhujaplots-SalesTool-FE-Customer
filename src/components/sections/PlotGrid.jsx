@@ -501,10 +501,17 @@ export default function PlotGrid({ onEnquire, pricingMap }) {
                               requestAnimationFrame(() => {
                                 const el = document.getElementById(`plot-category-expand-${next}`)
                                 if (!el) return
+                                // Total fixed-header clearance: navbar + (pricing banner if present)
                                 const navH = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--nav-h')) || 72
-                                const contextSpace = 160  // leaves the full clicked card visible above
+                                // Pricing banner sits directly under the navbar; measure it if rendered
+                                const banner = document.querySelector('[data-pricing-banner]')
+                                const bannerH = banner ? banner.getBoundingClientRect().height : 0
+                                const fixedHeader = navH + bannerH
+                                // Keep the clicked category card fully visible above the panel
+                                // (card ≈ 130px + breathing room 30px = 160px)
+                                const contextSpace = 160
                                 const absTop = el.getBoundingClientRect().top + window.scrollY
-                                window.scrollTo({ top: absTop - navH - contextSpace, behavior: 'smooth' })
+                                window.scrollTo({ top: absTop - fixedHeader - contextSpace, behavior: 'smooth' })
                               })
                             })
                           }

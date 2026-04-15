@@ -63,7 +63,7 @@ export default function PricingBanner() {
   return (
     <>
       {/* Single fixed container with bar + dropdown */}
-      <div className={styles.wrapper}>
+      <div className={styles.wrapper} data-pricing-banner>
         {/* Header bar — always visible */}
         <div className={styles.bar} onClick={() => setExpanded(e => !e)}>
           <span className={styles.label}>{isTe ? 'ప్లాట్లు ప్రారంభ ధర' : 'PLOTS STARTING FROM'}</span>

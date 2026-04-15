@@ -533,10 +533,29 @@ export default function PlotGrid({ onEnquire, pricingMap }) {
                         transition={{ duration: 0.25 }}
                         style={{ gridColumn: '1 / -1', marginBottom: 8, background: 'var(--white)', borderRadius: 14, border: '1.5px solid rgba(30,77,43,0.12)', padding: 20 }}
                       >
-                        <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 10 }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 10, flexWrap: 'wrap' }}>
                           {meta && <span style={{ color: meta.color }}>{meta.icon}</span>}
                           <strong>{translatedData.label}</strong>
                           <span style={{ color: 'rgba(0,0,0,0.4)', fontSize: 12 }}>— {data.count} {language === 'te' ? 'ప్లాట్లు' : 'plots'}</span>
+                          {/* Venture name badge — pushed to the right; wraps on narrow mobile */}
+                          <span style={{
+                            marginLeft: 'auto',
+                            background: `${color}14`,
+                            color: color,
+                            border: `1px solid ${color}44`,
+                            borderRadius: 999,
+                            padding: '3px 10px',
+                            fontSize: 11,
+                            fontWeight: 700,
+                            letterSpacing: 0.3,
+                            whiteSpace: 'nowrap',
+                          }}>
+                            📍 {(() => {
+                              const nk = 'projects.' + ventureKey + '.name'
+                              const nv = t(nk)
+                              return (nv && nv !== nk) ? nv : venture.label
+                            })()}
+                          </span>
                         </div>
                         {data.plotNumbers?.length > 0 && (
                           <>

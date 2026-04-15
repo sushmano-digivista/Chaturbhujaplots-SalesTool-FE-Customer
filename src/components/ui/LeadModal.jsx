@@ -132,6 +132,9 @@ export default function LeadModal({ context, onClose, whatsapp, content }) {
         source: context?.source || 'CONTACT_FORM',
         categoryInterest: context?.category || data.category || undefined,
         projectInterest:  data.project || undefined,
+        plotNumber:       context?.plotNumber || undefined,
+        plotDimension:    context?.plotDimension || undefined,
+        plotArea:         context?.plotArea || undefined,
       })
       setSubmitted(true)
       reset()
@@ -540,6 +543,14 @@ export default function LeadModal({ context, onClose, whatsapp, content }) {
 
                 {/* Plot summary card */}
                 <div className={styles.plotCard}>
+                  {context?.plotNumber && (
+                    <div className={styles.plotCardRow} style={{ borderBottom: '1px dashed rgba(0,0,0,0.1)', paddingBottom: 6, marginBottom: 6 }}>
+                      <strong style={{ color: 'var(--brand-green)', fontSize: 15 }}>
+                        {language === 'te' ? 'ప్లాట్ నం.' : 'Plot No.'} {context.plotNumber}
+                      </strong>
+                      {context?.plotDimension && <span style={{ fontSize: 13, color: 'rgba(0,0,0,0.65)' }}>{context.plotDimension}</span>}
+                    </div>
+                  )}
                   <div className={styles.plotCardRow}>
                     <div className={styles.plotDim}>{(() => {
                       const val = context?.plotSize || context?.category
@@ -557,7 +568,7 @@ export default function LeadModal({ context, onClose, whatsapp, content }) {
                     <div className={styles.plotPrice}>{context?.priceFrom}</div>
                   </div>
                   <div className={styles.plotCardRow}>
-                    <span className={styles.plotArea}>{context?.plotArea}</span>
+                    <span className={styles.plotArea}>{context?.plotArea ? (typeof context.plotArea === 'number' ? `${context.plotArea} ${language === 'te' ? 'చ.గ.' : 'sq.yd'}` : context.plotArea) : ''}</span>
                     {context?.venture && <span className={styles.plotVenture}>{(() => {
                       if (language !== 'te') return context.venture
                       const V_TE = { 'Anjana Paradise': 'అంజన పారడైజ్', 'Trimbak Oaks': 'ట్రింబక్ ఓక్స్', 'Aparna Legacy': 'అపర్ణ లెగసీ', 'Varaha Virtue': 'వరాహ వర్చ్యూ' }

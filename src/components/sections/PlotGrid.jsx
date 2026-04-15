@@ -5,6 +5,7 @@ import { useLanguage } from '@/context/LanguageContext'
 import CategoryCard   from '@/components/ui/CategoryCard'
 import PlotVisualGrid from '@/components/ui/PlotVisualGrid'
 import { getPlotDimension, getTrimbakBlockColor } from '@/constants/plotDimensions'
+import { getPlotStatus, getStatusCounts } from '@/constants/plotStatus'
 import styles         from './PlotGrid.module.css'
 
 // ── Per-category visual metadata ──────────────────────────────────────────────
@@ -486,21 +487,30 @@ export default function PlotGrid({ onEnquire, pricingMap }) {
                         onToggle={() => {
                           const next = isOpen ? null : key
                           setActiveCategory(next)
-                          // Auto-scroll so the venture switcher sits at the
-                          // top — user sees: venture switcher + Price Range
-                          // banner + clicked category card + expanded plot
-                          // panel. Keeps full navigational context visible.
                           if (next) {
                             requestAnimationFrame(() => {
                               requestAnimationFrame(() => {
-                                const anchor = document.getElementById('plot-venture-switcher')
-                                if (!anchor) return
-                                // Fixed-header clearance: navbar + (sticky pricing banner if present)
+                                // Fixed-header clearance (shared)
                                 const navH = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--nav-h')) || 72
                                 const banner = document.querySelector('[data-pricing-banner]')
                                 const bannerH = banner ? banner.getBoundingClientRect().height : 0
                                 const fixedHeader = navH + bannerH
-                                const breathingRoom = 16
+                                const isMobile = window.matchMedia('(max-width: 768px)').matches
+                                // Mobile: single-column grid, cards stack.
+                                // Anchor on the CLICKED CARD so the plot
+                                // numbers appear right below (and the
+                                // category card stays visible). Otherwise
+                                // the expand panel can end up far below the
+                                // fold when a bottom card is clicked.
+                                //
+                                // Desktop: multi-column grid — the venture
+                                // switcher + price banner fit in view with
+                                // the clicked card row, giving full context.
+                                const anchor = isMobile
+                                  ? document.getElementById(`plot-category-card-${next}`)
+                                  : document.getElementById('plot-venture-switcher')
+                                if (!anchor) return
+                                const breathingRoom = isMobile ? 8 : 16
                                 const absTop = anchor.getBoundingClientRect().top + window.scrollY
                                 window.scrollTo({ top: absTop - fixedHeader - breathingRoom, behavior: 'smooth' })
                               })
@@ -523,10 +533,29 @@ export default function PlotGrid({ onEnquire, pricingMap }) {
                         transition={{ duration: 0.25 }}
                         style={{ gridColumn: '1 / -1', marginBottom: 8, background: 'var(--white)', borderRadius: 14, border: '1.5px solid rgba(30,77,43,0.12)', padding: 20 }}
                       >
-                        <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 10 }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 10, flexWrap: 'wrap' }}>
                           {meta && <span style={{ color: meta.color }}>{meta.icon}</span>}
                           <strong>{translatedData.label}</strong>
                           <span style={{ color: 'rgba(0,0,0,0.4)', fontSize: 12 }}>— {data.count} {language === 'te' ? 'ప్లాట్లు' : 'plots'}</span>
+                          {/* Venture name badge — pushed to the right; wraps on narrow mobile */}
+                          <span style={{
+                            marginLeft: 'auto',
+                            background: `${color}14`,
+                            color: color,
+                            border: `1px solid ${color}44`,
+                            borderRadius: 999,
+                            padding: '3px 10px',
+                            fontSize: 11,
+                            fontWeight: 700,
+                            letterSpacing: 0.3,
+                            whiteSpace: 'nowrap',
+                          }}>
+                            📍 {(() => {
+                              const nk = 'projects.' + ventureKey + '.name'
+                              const nv = t(nk)
+                              return (nv && nv !== nk) ? nv : venture.label
+                            })()}
+                          </span>
                         </div>
                         {data.plotNumbers?.length > 0 && (
                           <>
@@ -549,15 +578,45 @@ export default function PlotGrid({ onEnquire, pricingMap }) {
                                   : <>Tap any <strong>plot number</strong> below to see its dimensions &amp; area</>}
                               </span>
                             </div>
+                            {/* Status legend — Available vs Sold counts */}
+                            {(() => {
+                              const counts = getStatusCounts(ventureKey, data.plotNumbers)
+                              if (counts.available === 0 && counts.sold === 0) return null
+                              return (
+                                <div style={{
+                                  display: 'flex', flexWrap: 'wrap', gap: 16, alignItems: 'center',
+                                  marginBottom: 10, fontSize: 12, color: 'var(--text-mid)',
+                                }}>
+                                  <span style={{ display: 'inline-flex', alignItems: 'center', gap: 6 }}>
+                                    <span style={{ width: 10, height: 10, borderRadius: '50%', background: '#2D6E40', display: 'inline-block', boxShadow: '0 0 4px rgba(45,110,64,0.6)' }} />
+                                    <strong style={{ color: 'var(--text-dark)' }}>{language === 'te' ? 'అందుబాటులో' : 'Available'}</strong>
+                                    <span>{counts.available}</span>
+                                  </span>
+                                  <span style={{ display: 'inline-flex', alignItems: 'center', gap: 6 }}>
+                                    <span style={{ width: 10, height: 10, borderRadius: '50%', background: '#C0392B', display: 'inline-block' }} />
+                                    <strong style={{ color: 'var(--text-dark)' }}>{language === 'te' ? 'అమ్ముడుపోయింది' : 'Sold'}</strong>
+                                    <span>{counts.sold}</span>
+                                  </span>
+                                </div>
+                              )
+                            })()}
                             <p style={{ fontSize: 12, color: 'var(--text-mid)', marginBottom: 6 }}>
                               {data.count} {language === 'te' ? 'ప్లాట్లు ఈ విభాగంలో:' : 'plots in this category:'}
                             </p>
                             <div style={{ display: 'flex', flexWrap: 'wrap', gap: 5 }}>
-                              {data.plotNumbers.map((num, idx) => {
+                              {/* Sort so available chips come first, then sold */}
+                              {[...data.plotNumbers].sort((a, b) => {
+                                const sa = getPlotStatus(ventureKey, a)
+                                const sb = getPlotStatus(ventureKey, b)
+                                if (sa === sb) return 0
+                                return sa === 'available' ? -1 : 1
+                              }).map((num, idx) => {
                                 const isOpenPlot = openPlot?.num === num && openPlot?.catKey === key
                                 const dim = getPlotDimension(ventureKey, num)
-                                // Pulse the first 3 chips until user has clicked one (reset on category change)
-                                const shouldPulse = !openPlot && idx < 3
+                                const status = getPlotStatus(ventureKey, num)
+                                const isSold = status === 'sold'
+                                // Pulse the first 3 available chips until user has clicked one
+                                const shouldPulse = !openPlot && idx < 3 && !isSold
                                 // Trimbak Phase-II plots: colour per block prefix (A/B/C/D)
                                 const blockColor = getTrimbakBlockColor(ventureKey, num)
                                 const chipAccent = blockColor || meta?.color || '#C9A84C'
@@ -572,6 +631,9 @@ export default function PlotGrid({ onEnquire, pricingMap }) {
                                 const gradBase   = `linear-gradient(90deg, ${hexToRgba(chipAccent, 0.18)}, ${hexToRgba(chipAccent, 0.06)})`
                                 const gradHover  = `linear-gradient(90deg, ${hexToRgba(chipAccent, 0.32)}, ${hexToRgba(chipAccent, 0.14)})`
                                 const borderBase = `1px dashed ${hexToRgba(chipAccent, 0.55)}`
+                                // Sold chip uses a muted gray palette
+                                const soldGrad   = 'linear-gradient(90deg, rgba(120,120,120,0.15), rgba(120,120,120,0.05))'
+                                const soldGradHover = 'linear-gradient(90deg, rgba(120,120,120,0.22), rgba(120,120,120,0.10))'
                                 return (
                                   <span key={num} style={{ position: 'relative', display: 'inline-block' }}>
                                     <button
@@ -582,24 +644,32 @@ export default function PlotGrid({ onEnquire, pricingMap }) {
                                       }}
                                       onMouseEnter={(e) => {
                                         if (isOpenPlot) return
-                                        e.currentTarget.style.background = gradHover
-                                        e.currentTarget.style.transform   = 'translateY(-2px)'
-                                        e.currentTarget.style.boxShadow   = `0 3px 8px ${hexToRgba(chipAccent, 0.35)}`
+                                        if (isSold) {
+                                          e.currentTarget.style.background = soldGradHover
+                                        } else {
+                                          e.currentTarget.style.background = gradHover
+                                          e.currentTarget.style.transform   = 'translateY(-2px)'
+                                          e.currentTarget.style.boxShadow   = `0 3px 8px ${hexToRgba(chipAccent, 0.35)}`
+                                        }
                                       }}
                                       onMouseLeave={(e) => {
                                         if (isOpenPlot) return
-                                        e.currentTarget.style.background = gradBase
-                                        e.currentTarget.style.transform   = 'translateY(0)'
-                                        e.currentTarget.style.boxShadow   = 'none'
+                                        if (isSold) {
+                                          e.currentTarget.style.background = soldGrad
+                                        } else {
+                                          e.currentTarget.style.background = gradBase
+                                          e.currentTarget.style.transform   = 'translateY(0)'
+                                          e.currentTarget.style.boxShadow   = 'none'
+                                        }
                                       }}
                                       style={{
                                         background: isOpenPlot
-                                          ? chipAccent
-                                          : gradBase,
-                                        color:        isOpenPlot ? '#fff' : '#1E4D2B',
+                                          ? (isSold ? '#888' : chipAccent)
+                                          : (isSold ? soldGrad : gradBase),
+                                        color:        isOpenPlot ? '#fff' : (isSold ? '#888' : '#1E4D2B'),
                                         border:       isOpenPlot
-                                          ? '1px solid ' + chipAccent
-                                          : borderBase,
+                                          ? '1px solid ' + (isSold ? '#888' : chipAccent)
+                                          : (isSold ? '1px dashed rgba(120,120,120,0.5)' : borderBase),
                                         borderRadius: 8,
                                         padding: '6px 14px',
                                         fontSize: 18,
@@ -611,11 +681,35 @@ export default function PlotGrid({ onEnquire, pricingMap }) {
                                         minWidth: 42,
                                         cursor: 'pointer',
                                         transition: 'all 0.15s',
+                                        opacity: isSold ? 0.75 : 1,
                                         animation: shouldPulse ? 'plotChipPulse 1.8s ease-in-out infinite' : undefined,
                                       }}
-                                      aria-label={`Plot ${num} details`}
+                                      aria-label={`Plot ${num}${isSold ? ' (sold)' : ''} details`}
                                       aria-expanded={isOpenPlot}
                                     >{num}</button>
+                                    {/* SOLD badge overlay on sold chips */}
+                                    {isSold && (
+                                      <span
+                                        aria-hidden="true"
+                                        style={{
+                                          position: 'absolute',
+                                          top: -7,
+                                          right: -6,
+                                          background: '#C0392B',
+                                          color: '#fff',
+                                          fontSize: 8,
+                                          fontWeight: 700,
+                                          letterSpacing: 0.5,
+                                          padding: '2px 5px',
+                                          borderRadius: 3,
+                                          lineHeight: 1,
+                                          boxShadow: '0 1px 3px rgba(0,0,0,0.2)',
+                                          pointerEvents: 'none',
+                                          fontFamily: "'DM Sans', sans-serif",
+                                          fontStyle: 'normal',
+                                        }}
+                                      >SOLD</span>
+                                    )}
                                     {isOpenPlot && (
                                       <div
                                         onClick={(e) => e.stopPropagation()}
@@ -658,26 +752,43 @@ export default function PlotGrid({ onEnquire, pricingMap }) {
                                             {language === 'te' ? 'వివరాల కోసం సంప్రదించండి' : 'Contact us for dimensions'}
                                           </div>
                                         )}
-                                        <button
-                                          className="btn btn-gold"
-                                          style={{ width: '100%', padding: '6px 10px', fontSize: 12, marginTop: 8 }}
-                                          onClick={(e) => {
-                                            e.stopPropagation()
-                                            setOpenPlot(null)
-                                            onEnquire({
-                                              source: 'PLOT_NUMBER_ENQUIRY',
-                                              label: 'Enquire About Plot',
-                                              type: 'PLOT_ENQUIRY',
-                                              category: data.label,
-                                              venture: venture.label,
-                                              plotNumber: num,
-                                              plotDimension: dim?.dimension,
-                                              plotArea: dim?.sqyd,
-                                            })
-                                          }}
-                                        >
-                                          {language === 'te' ? `ప్లాట్ ${num} కోసం సంప్రదించండి` : `Enquire About Plot ${num}`}
-                                        </button>
+                                        {isSold ? (
+                                          <div style={{
+                                            marginTop: 10,
+                                            padding: '8px 12px',
+                                            background: 'rgba(192,57,43,0.08)',
+                                            border: '1px solid rgba(192,57,43,0.3)',
+                                            borderRadius: 6,
+                                            color: '#C0392B',
+                                            fontWeight: 700,
+                                            fontSize: 13,
+                                            textAlign: 'center',
+                                            letterSpacing: 0.3,
+                                          }}>
+                                            🔴 {language === 'te' ? 'ఇప్పటికే అమ్ముడుపోయింది' : 'Already Sold'}
+                                          </div>
+                                        ) : (
+                                          <button
+                                            className="btn btn-gold"
+                                            style={{ width: '100%', padding: '6px 10px', fontSize: 12, marginTop: 8 }}
+                                            onClick={(e) => {
+                                              e.stopPropagation()
+                                              setOpenPlot(null)
+                                              onEnquire({
+                                                source: 'PLOT_NUMBER_ENQUIRY',
+                                                label: 'Enquire About Plot',
+                                                type: 'PLOT_ENQUIRY',
+                                                category: data.label,
+                                                venture: venture.label,
+                                                plotNumber: num,
+                                                plotDimension: dim?.dimension,
+                                                plotArea: dim?.sqyd,
+                                              })
+                                            }}
+                                          >
+                                            {language === 'te' ? `ప్లాట్ ${num} కోసం సంప్రదించండి` : `Enquire About Plot ${num}`}
+                                          </button>
+                                        )}
                                       </div>
                                     )}
                                   </span>

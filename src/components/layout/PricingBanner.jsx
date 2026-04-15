@@ -50,13 +50,46 @@ export default function PricingBanner() {
     if (ventureKey) {
       window.dispatchEvent(new CustomEvent('cbp:selectVenture', { detail: { ventureKey } }))
     }
-    // Use scrollIntoView — browser handles layout changes (lazy-loaded images,
-    // banner collapse) continuously during the scroll, instead of targeting
-    // a fixed pixel position that may become stale.
-    // Offset is handled by CSS `scroll-margin-top` on #plots (see PlotGrid).
-    requestAnimationFrame(() => {
+
+    // Robust scroll that handles:
+    //  1. Banner collapse animation (height change during scroll)
+    //  2. Lazy-loaded images above #plots that shift layout
+    //  3. Sticky pricing banner height changes
+    //
+    // Strategy:
+    //   a) Wait 2 animation frames for the `setExpanded(false)` collapse
+    //      + React re-render to settle.
+    //   b) First smooth scroll with scrollIntoView (animates).
+    //   c) After the smooth scroll would complete (~600ms), re-measure
+    //      and do a final precise window.scrollTo if we landed off target.
+    //      Uses 'auto' behavior so the correction is instant.
+    const scrollTarget = () => {
       const el = document.getElementById('plots')
-      if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' })
+      if (!el) return
+      // getBoundingClientRect re-reads position at THIS moment
+      const navH = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--nav-h')) || 72
+      const margin = 50
+      const absTop = el.getBoundingClientRect().top + window.scrollY
+      return Math.max(0, absTop - navH - margin)
+    }
+
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        const el = document.getElementById('plots')
+        if (!el) return
+        // Phase 1: smooth scroll (animates, ~300–500ms)
+        el.scrollIntoView({ behavior: 'smooth', block: 'start' })
+        // Phase 2: after smooth scroll should be done, verify + correct.
+        // If images/banner shifted layout mid-scroll, we recompute and
+        // snap to the right pixel precisely (no visible jump if we
+        // already landed correctly).
+        setTimeout(() => {
+          const target = scrollTarget()
+          if (target == null) return
+          const diff = Math.abs(window.scrollY - target)
+          if (diff > 2) window.scrollTo({ top: target, behavior: 'auto' })
+        }, 650)
+      })
     })
   }
 

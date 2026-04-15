@@ -260,7 +260,7 @@ export default function PlotGrid({ onEnquire, pricingMap }) {
       </div>
 
       {/* ── Venture switcher ─────────────────────────────────────────────── */}
-      <div className={styles.ventureSwitcher}>
+      <div className={styles.ventureSwitcher} id="plot-venture-switcher">
         {VENTURE_KEYS.map(k => {
           const v = VENTURE_PLOTS[k]
           const isActive = ventureKey === k
@@ -486,24 +486,22 @@ export default function PlotGrid({ onEnquire, pricingMap }) {
                         onToggle={() => {
                           const next = isOpen ? null : key
                           setActiveCategory(next)
-                          // Auto-scroll so the clicked card sits flush just
-                          // below the fixed navbar + sticky pricing banner.
-                          // This hides the orange 'Price Range' banner above
-                          // the grid so the user only sees a clean card +
-                          // expanded plot panel.
+                          // Auto-scroll so the venture switcher sits at the
+                          // top — user sees: venture switcher + Price Range
+                          // banner + clicked category card + expanded plot
+                          // panel. Keeps full navigational context visible.
                           if (next) {
                             requestAnimationFrame(() => {
                               requestAnimationFrame(() => {
-                                const cardEl = document.getElementById(`plot-category-card-${next}`)
-                                if (!cardEl) return
-                                // Fixed-header clearance: navbar + (pricing banner if present)
+                                const anchor = document.getElementById('plot-venture-switcher')
+                                if (!anchor) return
+                                // Fixed-header clearance: navbar + (sticky pricing banner if present)
                                 const navH = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--nav-h')) || 72
                                 const banner = document.querySelector('[data-pricing-banner]')
                                 const bannerH = banner ? banner.getBoundingClientRect().height : 0
                                 const fixedHeader = navH + bannerH
-                                // Small breathing room so card isn't glued to the header
-                                const breathingRoom = 12
-                                const absTop = cardEl.getBoundingClientRect().top + window.scrollY
+                                const breathingRoom = 16
+                                const absTop = anchor.getBoundingClientRect().top + window.scrollY
                                 window.scrollTo({ top: absTop - fixedHeader - breathingRoom, behavior: 'smooth' })
                               })
                             })

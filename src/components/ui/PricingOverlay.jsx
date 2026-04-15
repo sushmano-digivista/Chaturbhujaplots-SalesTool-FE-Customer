@@ -88,7 +88,7 @@ export default function PricingOverlay() {
         </h1>
 
         <p style={{ fontSize: 14, color: 'rgba(255,255,255,0.5)', marginBottom: 28 }}>
-          {isTe ? 'ఏపిసిఆర్డేఏ & రేరా ఆమోదిత ప్రీమియం ప్లాట్లు — అమరావతి సమీపంలో' : 'APCRDA & RERA approved premium plots — Near Amaravati Capital'}
+          {isTe ? 'ఏపిసిఆర్డేఏ & రేరా ఆమోదిత ప్రీమియం ప్లాట్లు — అమరావతి సమీపంలో' : 'APCRDA & RERA approved premium plots — Near Amaravathi Capital'}
         </p>
 
         {/* Venture prices */}

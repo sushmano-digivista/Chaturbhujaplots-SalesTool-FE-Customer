@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, Fragment } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Sun, Sunset, ArrowUp, ArrowDown, Maximize2 } from 'lucide-react'
 import { useLanguage } from '@/context/LanguageContext'
@@ -477,8 +477,8 @@ export default function PlotGrid({ onEnquire, pricingMap }) {
                 }
                 const isOpen = activeCategory === key
                 return (
-                  <>
-                    <motion.div key={key}>
+                  <Fragment key={key}>
+                    <motion.div>
                       <CategoryCard
                         meta={meta}
                         data={translatedData}
@@ -684,7 +684,7 @@ export default function PlotGrid({ onEnquire, pricingMap }) {
                         </button>
                       </motion.div>
                     )}
-                  </>
+                  </Fragment>
                 )
               })}
             </motion.div>

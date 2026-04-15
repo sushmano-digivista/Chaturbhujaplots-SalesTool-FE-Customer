@@ -18,10 +18,16 @@
 
 export const PLOT_STATUS = {
   // ── Anjana Paradise — Paritala Plan-22 ──────────────────────────────────
-  // TODO: replace placeholder with actual available list from owner.
-  // Currently empty → every Anjana plot renders as 'sold'.
+  // 33 plots available out of 242 total (owner update, April 2026)
   anjana: {
-    available: [],
+    available: [
+      180, 181,
+      206, 207, 208,
+      212, 213, 214, 215, 216, 217, 218, 219, 220,
+      221, 222, 223, 224, 225, 226, 227,
+      231, 232, 233, 234, 235, 236, 237, 238, 239,
+      240, 241, 242,
+    ],
   },
 
   // ── Trimbak Oaks — Penamaluru (Phase I + Phase II) ──────────────────────

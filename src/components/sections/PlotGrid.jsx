@@ -1,4 +1,4 @@
-import { useState, useEffect, Fragment } from 'react'
+import { useState, useEffect, useLayoutEffect, useRef, Fragment } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Sun, Sunset, ArrowUp, ArrowDown, Maximize2 } from 'lucide-react'
 import { useLanguage } from '@/context/LanguageContext'
@@ -198,6 +198,72 @@ const VENTURE_PLOTS = {
 
 const VENTURE_KEYS   = ['anjana', 'trimbak', 'aparna', 'varaha']
 const VENTURE_COLORS = { anjana: '#1E4D2B', aparna: '#C9A84C', varaha: '#1976D2', trimbak: '#C0522A' }
+
+// ── Plot popover — self-adjusts so it stays within the viewport ──────────────
+// On narrow screens, chips near the left/right edge were causing the popover
+// to overflow off-screen. This component measures after mount and shifts the
+// popover horizontally by up to ~(half-viewport - 16px) so both arrow and
+// content always stay visible. Also keeps the arrow visually centered under
+// the clicked chip by offsetting it in the opposite direction.
+function PlotPopover({ accent, children, arrowShift = 0, style = {} }) {
+  const ref = useRef(null)
+  const [shift, setShift] = useState(0)
+
+  useLayoutEffect(() => {
+    const el = ref.current
+    if (!el) return
+    const adjust = () => {
+      const rect = el.getBoundingClientRect()
+      const margin = 8 // min gap from viewport edge
+      const overflowLeft  = margin - rect.left
+      const overflowRight = rect.right - (window.innerWidth - margin)
+      let next = 0
+      if (overflowLeft > 0)  next =  overflowLeft
+      if (overflowRight > 0) next = -overflowRight
+      setShift(prev => (Math.abs(prev - next) > 1 ? next : prev))
+    }
+    adjust()
+    window.addEventListener('resize', adjust)
+    return () => window.removeEventListener('resize', adjust)
+  }, [])
+
+  return (
+    <div
+      ref={ref}
+      onClick={(e) => e.stopPropagation()}
+      style={{
+        position: 'absolute',
+        top: 'calc(100% + 6px)',
+        left: '50%',
+        transform: `translateX(calc(-50% + ${shift}px))`,
+        background: '#fff',
+        border: '1.5px solid ' + accent,
+        borderRadius: 10,
+        padding: '12px 14px',
+        boxShadow: '0 8px 24px rgba(0,0,0,0.15)',
+        minWidth: 210,
+        maxWidth: 'min(260px, calc(100vw - 24px))',
+        zIndex: 20,
+        fontSize: 13,
+        fontWeight: 400,
+        textAlign: 'left',
+        lineHeight: 1.5,
+        ...style,
+      }}
+    >
+      {/* Arrow — stays centered under the chip regardless of popover shift */}
+      <div style={{
+        position: 'absolute', top: -8,
+        left: `calc(50% - ${shift}px)`,
+        transform: 'translateX(-50%) rotate(45deg)',
+        width: 12, height: 12, background: '#fff',
+        borderLeft: '1.5px solid ' + accent,
+        borderTop:  '1.5px solid ' + accent,
+      }} />
+      {children}
+    </div>
+  )
+}
 
 /**
  * PlotGrid — "Explore Available Plots" section with venture switcher.
@@ -711,28 +777,7 @@ export default function PlotGrid({ onEnquire, pricingMap }) {
                                       >SOLD</span>
                                     )}
                                     {isOpenPlot && (
-                                      <div
-                                        onClick={(e) => e.stopPropagation()}
-                                        style={{
-                                          position: 'absolute',
-                                          top: 'calc(100% + 6px)',
-                                          left: '50%',
-                                          transform: 'translateX(-50%)',
-                                          background: '#fff',
-                                          border: '1.5px solid ' + chipAccent,
-                                          borderRadius: 10,
-                                          padding: '12px 14px',
-                                          boxShadow: '0 8px 24px rgba(0,0,0,0.15)',
-                                          minWidth: 210,
-                                          zIndex: 20,
-                                          fontSize: 13,
-                                          fontWeight: 400,
-                                          textAlign: 'left',
-                                          lineHeight: 1.5,
-                                        }}
-                                      >
-                                        {/* Arrow */}
-                                        <div style={{ position: 'absolute', top: -8, left: '50%', transform: 'translateX(-50%) rotate(45deg)', width: 12, height: 12, background: '#fff', borderLeft: '1.5px solid ' + chipAccent, borderTop: '1.5px solid ' + chipAccent }} />
+                                      <PlotPopover accent={chipAccent}>
                                         <div style={{ fontWeight: 700, fontSize: 14, color: chipAccent, marginBottom: 6 }}>
                                           {language === 'te' ? 'ప్లాట్ నం.' : 'Plot No.'} {num}
                                         </div>
@@ -789,7 +834,7 @@ export default function PlotGrid({ onEnquire, pricingMap }) {
                                             {language === 'te' ? `ప్లాట్ ${num} కోసం సంప్రదించండి` : `Enquire About Plot ${num}`}
                                           </button>
                                         )}
-                                      </div>
+                                      </PlotPopover>
                                     )}
                                   </span>
                                 )

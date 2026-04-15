@@ -483,7 +483,22 @@ export default function PlotGrid({ onEnquire, pricingMap }) {
                         meta={meta}
                         data={translatedData}
                         isOpen={false}
-                        onToggle={() => setActiveCategory(isOpen ? null : key)}
+                        onToggle={() => {
+                          const next = isOpen ? null : key
+                          setActiveCategory(next)
+                          // Auto-scroll the expanded panel into view when opening
+                          // (not when closing). Wait a couple of frames so the
+                          // panel has been inserted + framer-motion started
+                          // animating height to 'auto'.
+                          if (next) {
+                            requestAnimationFrame(() => {
+                              requestAnimationFrame(() => {
+                                const el = document.getElementById(`plot-category-expand-${next}`)
+                                if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' })
+                              })
+                            })
+                          }
+                        }}
                         onEnquire={onEnquire}
                         hoveredPlot={hoveredPlot}
                         setHoveredPlot={setHoveredPlot}
@@ -493,11 +508,12 @@ export default function PlotGrid({ onEnquire, pricingMap }) {
                     {isOpen && (
                       <motion.div
                         key={key + '-expand'}
+                        id={`plot-category-expand-${key}`}
                         initial={{ opacity: 0, height: 0 }}
                         animate={{ opacity: 1, height: 'auto' }}
                         exit={{ opacity: 0, height: 0 }}
                         transition={{ duration: 0.25 }}
-                        style={{ gridColumn: '1 / -1', marginBottom: 8, background: 'var(--white)', borderRadius: 14, border: '1.5px solid rgba(30,77,43,0.12)', padding: 20 }}
+                        style={{ gridColumn: '1 / -1', marginBottom: 8, background: 'var(--white)', borderRadius: 14, border: '1.5px solid rgba(30,77,43,0.12)', padding: 20, scrollMarginTop: 'calc(var(--nav-h, 72px) + 20px)' }}
                       >
                         <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 10 }}>
                           {meta && <span style={{ color: meta.color }}>{meta.icon}</span>}

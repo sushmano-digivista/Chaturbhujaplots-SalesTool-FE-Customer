@@ -32,8 +32,40 @@ export const PLOT_STATUS = {
 
   // ── Trimbak Oaks — Penamaluru (Phase I + Phase II) ──────────────────────
   // Phase II plot numbers use block prefixes: A1, B4, C10, D15 etc.
+  //
+  // Phase II extracted from owner-provided trimbak_oaks_blocks_ABCD_register.xlsx
+  // (yellow = sold, white = available).
+  //   Block A: 15 available, 26 sold (41 total)
+  //   Block B: 24 available, 30 sold (54 total)
+  //   Block C: 19 available, 35 sold (54 total)
+  //   Block D: 23 available, 14 sold (37 total)
+  //   Phase II total: 81 available, 105 sold (186 total)
+  //
+  // Phase I (plots 1–138): status data not yet received from owner.
+  // Currently defaulting every Phase I plot to 'available' below.
   trimbak: {
-    available: [],
+    available: [
+      // ── Phase I (1–138) — placeholder: all available until owner data arrives
+      ...Array.from({ length: 138 }, (_, i) => i + 1),
+
+      // ── Phase II — Block A (15 available)
+      'A1', 'A2', 'A3', 'A4', 'A5', 'A6', 'A7',
+      'A12', 'A17', 'A18', 'A24', 'A25', 'A28', 'A29', 'A30',
+
+      // ── Phase II — Block B (24 available)
+      'B3', 'B9', 'B10', 'B11', 'B12', 'B13', 'B16', 'B17', 'B18', 'B19',
+      'B20', 'B22', 'B23', 'B28', 'B29', 'B45', 'B47', 'B48', 'B49', 'B50',
+      'B51', 'B52', 'B53', 'B54',
+
+      // ── Phase II — Block C (19 available)
+      'C1', 'C17', 'C18', 'C20', 'C21', 'C22', 'C23', 'C27', 'C28', 'C29',
+      'C30', 'C38', 'C39', 'C49', 'C50', 'C51', 'C52', 'C53', 'C54',
+
+      // ── Phase II — Block D (23 available)
+      'D1', 'D2', 'D3', 'D8', 'D9', 'D10', 'D11', 'D12', 'D19', 'D20',
+      'D21', 'D22', 'D23', 'D24', 'D25', 'D26', 'D31', 'D32', 'D33', 'D34',
+      'D35', 'D36', 'D37',
+    ],
   },
 
   // ── Aparna Legacy — Chevitikallu ────────────────────────────────────────

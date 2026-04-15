@@ -502,7 +502,7 @@ export default function PlotGrid({ onEnquire, pricingMap }) {
                                 const el = document.getElementById(`plot-category-expand-${next}`)
                                 if (!el) return
                                 const navH = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--nav-h')) || 72
-                                const contextSpace = 120  // leaves the clicked card visible above
+                                const contextSpace = 160  // leaves the full clicked card visible above
                                 const absTop = el.getBoundingClientRect().top + window.scrollY
                                 window.scrollTo({ top: absTop - navH - contextSpace, behavior: 'smooth' })
                               })

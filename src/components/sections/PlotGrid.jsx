@@ -478,7 +478,7 @@ export default function PlotGrid({ onEnquire, pricingMap }) {
                 const isOpen = activeCategory === key
                 return (
                   <Fragment key={key}>
-                    <motion.div>
+                    <motion.div id={`plot-category-card-${key}`}>
                       <CategoryCard
                         meta={meta}
                         data={translatedData}
@@ -486,32 +486,25 @@ export default function PlotGrid({ onEnquire, pricingMap }) {
                         onToggle={() => {
                           const next = isOpen ? null : key
                           setActiveCategory(next)
-                          // Auto-scroll the expanded panel into view when opening
-                          // (not when closing). Land the panel so the clicked
-                          // category card is still just visible above — gives
-                          // the user spatial context ('I clicked East-Facing,
-                          // and now I see its plots right below').
+                          // Auto-scroll so the clicked card sits flush just
+                          // below the fixed navbar + sticky pricing banner.
+                          // This hides the orange 'Price Range' banner above
+                          // the grid so the user only sees a clean card +
+                          // expanded plot panel.
                           if (next) {
-                            // Two rAFs lets framer-motion start the height:'auto'
-                            // animation and the browser re-layout before we
-                            // measure. Then compute a target offset that keeps
-                            // ~120px of the venture switcher + clicked card row
-                            // visible above the navbar.
                             requestAnimationFrame(() => {
                               requestAnimationFrame(() => {
-                                const el = document.getElementById(`plot-category-expand-${next}`)
-                                if (!el) return
-                                // Total fixed-header clearance: navbar + (pricing banner if present)
+                                const cardEl = document.getElementById(`plot-category-card-${next}`)
+                                if (!cardEl) return
+                                // Fixed-header clearance: navbar + (pricing banner if present)
                                 const navH = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--nav-h')) || 72
-                                // Pricing banner sits directly under the navbar; measure it if rendered
                                 const banner = document.querySelector('[data-pricing-banner]')
                                 const bannerH = banner ? banner.getBoundingClientRect().height : 0
                                 const fixedHeader = navH + bannerH
-                                // Keep the clicked category card fully visible above the panel
-                                // (card ≈ 130px + breathing room 30px = 160px)
-                                const contextSpace = 160
-                                const absTop = el.getBoundingClientRect().top + window.scrollY
-                                window.scrollTo({ top: absTop - fixedHeader - contextSpace, behavior: 'smooth' })
+                                // Small breathing room so card isn't glued to the header
+                                const breathingRoom = 12
+                                const absTop = cardEl.getBoundingClientRect().top + window.scrollY
+                                window.scrollTo({ top: absTop - fixedHeader - breathingRoom, behavior: 'smooth' })
                               })
                             })
                           }

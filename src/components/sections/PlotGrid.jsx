@@ -560,7 +560,7 @@ export default function PlotGrid({ onEnquire, pricingMap }) {
                                   marginBottom: 10, fontSize: 12, color: 'var(--text-mid)',
                                 }}>
                                   <span style={{ display: 'inline-flex', alignItems: 'center', gap: 6 }}>
-                                    <span style={{ width: 10, height: 10, borderRadius: '50%', background: '#C9A84C', display: 'inline-block', boxShadow: '0 0 4px rgba(201,168,76,0.6)' }} />
+                                    <span style={{ width: 10, height: 10, borderRadius: '50%', background: '#2D6E40', display: 'inline-block', boxShadow: '0 0 4px rgba(45,110,64,0.6)' }} />
                                     <strong style={{ color: 'var(--text-dark)' }}>{language === 'te' ? 'అందుబాటులో' : 'Available'}</strong>
                                     <span>{counts.available}</span>
                                   </span>

@@ -487,14 +487,24 @@ export default function PlotGrid({ onEnquire, pricingMap }) {
                           const next = isOpen ? null : key
                           setActiveCategory(next)
                           // Auto-scroll the expanded panel into view when opening
-                          // (not when closing). Wait a couple of frames so the
-                          // panel has been inserted + framer-motion started
-                          // animating height to 'auto'.
+                          // (not when closing). Land the panel so the clicked
+                          // category card is still just visible above — gives
+                          // the user spatial context ('I clicked East-Facing,
+                          // and now I see its plots right below').
                           if (next) {
+                            // Two rAFs lets framer-motion start the height:'auto'
+                            // animation and the browser re-layout before we
+                            // measure. Then compute a target offset that keeps
+                            // ~120px of the venture switcher + clicked card row
+                            // visible above the navbar.
                             requestAnimationFrame(() => {
                               requestAnimationFrame(() => {
                                 const el = document.getElementById(`plot-category-expand-${next}`)
-                                if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' })
+                                if (!el) return
+                                const navH = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--nav-h')) || 72
+                                const contextSpace = 120  // leaves the clicked card visible above
+                                const absTop = el.getBoundingClientRect().top + window.scrollY
+                                window.scrollTo({ top: absTop - navH - contextSpace, behavior: 'smooth' })
                               })
                             })
                           }
@@ -513,7 +523,7 @@ export default function PlotGrid({ onEnquire, pricingMap }) {
                         animate={{ opacity: 1, height: 'auto' }}
                         exit={{ opacity: 0, height: 0 }}
                         transition={{ duration: 0.25 }}
-                        style={{ gridColumn: '1 / -1', marginBottom: 8, background: 'var(--white)', borderRadius: 14, border: '1.5px solid rgba(30,77,43,0.12)', padding: 20, scrollMarginTop: 'calc(var(--nav-h, 72px) + 20px)' }}
+                        style={{ gridColumn: '1 / -1', marginBottom: 8, background: 'var(--white)', borderRadius: 14, border: '1.5px solid rgba(30,77,43,0.12)', padding: 20 }}
                       >
                         <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 10 }}>
                           {meta && <span style={{ color: meta.color }}>{meta.icon}</span>}

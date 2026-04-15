@@ -57,8 +57,15 @@ export const PLOT_STATUS = {
   },
 
   // ── Varaha Virtue — Pamarru ─────────────────────────────────────────────
+  // 47 plots available out of 132 total
+  // Extracted from owner-provided consolidated_plots.xlsx (yellow=sold, white=available)
   varaha: {
-    available: [],
+    available: [
+      1, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 21, 23, 26, 28,
+      33, 34, 35, 36, 37, 38, 39, 40, 41,
+      83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99,
+      100, 101, 102, 103, 107,
+    ],
   },
 }
 

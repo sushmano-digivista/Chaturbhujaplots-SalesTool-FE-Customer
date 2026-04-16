@@ -15,6 +15,7 @@ import LaunchOverlay from '@/components/ui/LaunchOverlay'
 import PricingOverlay from '@/components/ui/PricingOverlay'
 import PricingBanner from '@/components/layout/PricingBanner'
 import AvailabilityBanner from '@/components/sections/AvailabilityBanner'
+import TrustBadges from '@/components/sections/TrustBadges'
 import ExitIntentPopup from '@/components/ui/ExitIntentPopup'
 
 // Animation duration in ms -- must match CSS animation total in PageLoader
@@ -78,6 +79,7 @@ export default function HomePage() {
       <PricingBanner />
       <main>
         <Hero              content={activeContent} onEnquire={openEnquiry} />
+        <TrustBadges />
         <AvailabilityBanner />
         <PortfolioSection pricingMap={pricingMap}  content={activeContent} onEnquire={openEnquiry} />
         <GallerySection    content={activeContent} />

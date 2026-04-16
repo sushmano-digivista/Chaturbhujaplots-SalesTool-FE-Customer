@@ -15,6 +15,7 @@ import LaunchOverlay from '@/components/ui/LaunchOverlay'
 import PricingOverlay from '@/components/ui/PricingOverlay'
 import PricingBanner from '@/components/layout/PricingBanner'
 import AvailabilityBanner from '@/components/sections/AvailabilityBanner'
+import ExitIntentPopup from '@/components/ui/ExitIntentPopup'
 
 // Animation duration in ms -- must match CSS animation total in PageLoader
 const LOADER_MIN_MS = 2800
@@ -97,6 +98,7 @@ export default function HomePage() {
         whatsapp={contact.whatsapp}
         content={activeContent}
       />
+      <ExitIntentPopup />
     </div>
   )
 }

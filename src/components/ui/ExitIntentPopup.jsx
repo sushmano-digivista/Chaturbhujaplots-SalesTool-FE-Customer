@@ -30,8 +30,8 @@ import { trackEvent } from '@/utils/analytics'
  */
 
 const MIN_DWELL_MS         = 15000 // don't show in first 15s (both platforms)
-const MOBILE_INACTIVITY_MS = 20000 // mobile: 20s of no tap/key
-const MOBILE_MAX_DWELL_MS  = 25000 // mobile fallback: show after 25s
+const MOBILE_INACTIVITY_MS = 30000 // mobile: 30s of no tap/key
+const MOBILE_MAX_DWELL_MS  = 35000 // mobile fallback: show after 35s
 const MIN_SCROLL_RATIO     = 0.01  // mobile: any scroll at all counts as engagement
 
 const STORAGE_KEY = 'cbp_exit_intent_shown'

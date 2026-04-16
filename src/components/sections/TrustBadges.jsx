@@ -84,7 +84,7 @@ export default function TrustBadges() {
       aria-label="Chaturbhuja trust signals"
       style={{
         position: 'relative',
-        padding: 'clamp(52px, 7vw, 80px) 16px clamp(48px, 6vw, 64px)',
+        padding: 'clamp(36px, 5vw, 54px) 16px clamp(32px, 4vw, 44px)',
         color: '#fff',
         overflow: 'hidden',
         isolation: 'isolate',
@@ -121,20 +121,24 @@ export default function TrustBadges() {
       }} />
 
       <div style={{ maxWidth: 1100, margin: '0 auto', position: 'relative', textAlign: 'center' }}>
-        {/* Brand logo — slightly bigger so it anchors the section */}
+        {/* Brand logo — preserve native colors (gold + green) so it
+            stays recognizable; a slight brightness lift ensures the
+            green text stays readable against the dark green backdrop */}
         <motion.div
           initial={{ opacity: 0, y: -10 }}
           animate={inView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.5 }}
-          style={{ marginBottom: 14 }}
+          style={{ marginBottom: 10 }}
         >
           <img
             src="/chaturbhuja-logo.webp"
             alt="Chaturbhuja Properties & Infra"
             loading="lazy"
             style={{
-              height: 68, width: 'auto', margin: '0 auto',
-              filter: 'brightness(0) invert(1)',  // white logo against dark bg
+              height: 48,
+              width: 'auto',
+              margin: '0 auto',
+              filter: 'brightness(1.15) drop-shadow(0 2px 8px rgba(0,0,0,0.4))',
             }}
           />
         </motion.div>
@@ -174,9 +178,9 @@ export default function TrustBadges() {
           )}
         </h2>
         <p style={{
-          fontSize: 14,
+          fontSize: 13,
           color: 'rgba(255,255,255,0.75)',
-          margin: '0 0 clamp(32px, 4vw, 44px)',
+          margin: '0 0 clamp(22px, 3vw, 32px)',
         }}>
           {isTe ? TE_MAP.tagline : '25 years of proven track record · 1200+ happy families settled'}
         </p>
@@ -184,9 +188,9 @@ export default function TrustBadges() {
         {/* The 4 BIG stats */}
         <div style={{
           display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))',
-          gap: 'clamp(12px, 2vw, 20px)',
-          marginBottom: 'clamp(32px, 4vw, 42px)',
+          gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 1fr))',
+          gap: 'clamp(10px, 1.6vw, 16px)',
+          marginBottom: 'clamp(24px, 3vw, 32px)',
         }}>
           {stats.map((s, i) => (
             <motion.div
@@ -196,7 +200,7 @@ export default function TrustBadges() {
               transition={{ duration: 0.6, delay: i * 0.12, ease: [0.4, 0, 0.2, 1] }}
               style={{
                 textAlign: 'center',
-                padding: 'clamp(20px, 3vw, 30px) 12px',
+                padding: 'clamp(14px, 2vw, 20px) 10px',
                 background: 'rgba(11,40,24,0.55)',
                 backdropFilter: 'blur(6px)',
                 WebkitBackdropFilter: 'blur(6px)',
@@ -208,12 +212,12 @@ export default function TrustBadges() {
             >
               <div style={{
                 fontFamily: "'Cormorant Garamond', Georgia, serif",
-                fontSize: 'clamp(52px, 8vw, 88px)',
+                fontSize: 'clamp(36px, 5vw, 56px)',
                 fontWeight: 700,
                 color: '#C9A84C',
                 lineHeight: 1,
                 letterSpacing: '-0.02em',
-                textShadow: '0 3px 18px rgba(201,168,76,0.45), 0 0 40px rgba(201,168,76,0.15)',
+                textShadow: '0 2px 12px rgba(201,168,76,0.35)',
               }}>
                 <AnimatedCount end={s.value} suffix={s.suffix} active={inView} />
               </div>

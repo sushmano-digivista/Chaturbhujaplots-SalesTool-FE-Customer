@@ -30,7 +30,8 @@ import { trackEvent } from '@/utils/analytics'
  */
 
 const MIN_DWELL_MS         = 15000 // don't show in first 15s (both platforms)
-const MOBILE_INACTIVITY_MS = 20000 // mobile: 20s of no input after any scroll
+const MOBILE_INACTIVITY_MS = 15000 // mobile: 15s of no tap/key after any scroll
+const MOBILE_MAX_DWELL_MS  = 40000 // mobile fallback: show after 40s + scroll
 const MIN_SCROLL_RATIO     = 0.20  // mobile: user must have scrolled >= 20%
 
 const STORAGE_KEY = 'cbp_exit_intent_shown'
@@ -80,27 +81,37 @@ export default function ExitIntentPopup() {
       show('desktop_mouseleave_top')
     }
 
-    // ── MOBILE: scroll depth + inactivity ────────────────────────────────
+    // ── MOBILE: scroll depth tracking ────────────────────────────────────
+    // NOTE: scroll does NOT reset the idle timer. Rationale: on mobile,
+    // every finger swipe fires scroll; if scroll counted as activity the
+    // idle threshold would never trigger while the user is browsing.
+    // Only actual taps/keys reset the timer.
     const onScroll = () => {
-      lastActivityRef.current = Date.now()
       const doc = document.documentElement
       const scrollable = Math.max(1, doc.scrollHeight - window.innerHeight)
       const ratio = window.scrollY / scrollable
       if (ratio > maxScrollRatioRef.current) maxScrollRatioRef.current = ratio
     }
+    // Real activity: actual taps and keys
     const onInput = () => { lastActivityRef.current = Date.now() }
 
     const isMobile = window.matchMedia('(max-width: 768px)').matches
     let mobileTimer = null
     if (isMobile) {
-      // Poll every 2s — earlier: 5s was too slow for ~20s idle window
+      // Poll every 2s. Three mobile triggers, whichever fires first:
+      //   A) 15s idle (no taps/keys) + >= 20% scroll      (classic exit intent)
+      //   B) 40s total dwell         + >= 20% scroll      (guaranteed fallback)
+      //   C) visibilitychange to 'visible' after leaving  (handled separately)
       mobileTimer = setInterval(() => {
         if (shownRef.current) return
         const idleFor = Date.now() - lastActivityRef.current
         const dwelled = Date.now() - pageLoadedAtRef.current
         if (dwelled < MIN_DWELL_MS) return
-        if (idleFor >= MOBILE_INACTIVITY_MS && maxScrollRatioRef.current >= MIN_SCROLL_RATIO) {
-          show('mobile_inactive_after_scroll')
+        if (maxScrollRatioRef.current < MIN_SCROLL_RATIO) return
+        if (idleFor >= MOBILE_INACTIVITY_MS) {
+          show('mobile_idle_after_scroll')
+        } else if (dwelled >= MOBILE_MAX_DWELL_MS) {
+          show('mobile_max_dwell_after_scroll')
         }
       }, 2000)
     }

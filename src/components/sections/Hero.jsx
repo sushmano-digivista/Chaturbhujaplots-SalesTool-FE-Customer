@@ -6,6 +6,7 @@ import { MapPin, Calendar, FileText, Phone } from 'lucide-react'
 import { useInView } from 'react-intersection-observer'
 import { useLanguage } from '@/context/LanguageContext'
 import WhatsAppIcon from '@/components/ui/WhatsAppIcon'
+import { trackPhoneClick, trackWhatsAppClick, trackEnquireCta } from '@/utils/analytics'
 import styles from './Hero.module.css'
 
 // ── Lightweight animated counter — no external dep ───────────────────────────
@@ -188,19 +189,22 @@ export default function Hero({ content, onEnquire }) {
           <div className={styles.directorInfo}>
             <div className={styles.directorBadge}>{dirTitle}</div>
             <div className={styles.directorName}>{dirName}</div>
-            <a href={`tel:${dirPhone}`} className={styles.directorPhone}>
+            <a href={`tel:${dirPhone}`} className={styles.directorPhone}
+               onClick={() => trackPhoneClick('HERO_DIRECTOR_CARD', dirPhone)}>
               <Phone size={10} />{dirPhone}
             </a>
           </div>
 
           <div className={styles.directorActions}>
-            <a href={`tel:${dirPhone}`} className={styles.directorCallBtn} aria-label="Call">
+            <a href={`tel:${dirPhone}`} className={styles.directorCallBtn} aria-label="Call"
+               onClick={() => trackPhoneClick('HERO_DIRECTOR_CARD', dirPhone)}>
               <Phone size={13} /><span>{t('contact.callUs')}</span>
             </a>
             <a
               href={`https://wa.me/${DEFAULT_WA_NUMBER}?text=${encodeURIComponent(waMsg)}`}
               target="_blank" rel="noreferrer"
               className={styles.directorWaBtn} aria-label="WhatsApp"
+              onClick={() => trackWhatsAppClick('HERO_DIRECTOR_CARD')}
               style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center' }}>
               <WhatsAppIcon size={32} />
             </a>
@@ -274,6 +278,7 @@ export default function Hero({ content, onEnquire }) {
             href={`https://wa.me/${whatsapp}?text=${encodeURIComponent(waMsg)}`}
             target="_blank" rel="noreferrer"
             className={styles.lcBtnWA}
+            onClick={() => trackWhatsAppClick('HERO_LC_BTN')}
             style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', padding: 0, background: 'none', border: 'none' }}>
             <WhatsAppIcon size={44} />
           </a>

@@ -121,24 +121,33 @@ export default function TrustBadges() {
       }} />
 
       <div style={{ maxWidth: 1100, margin: '0 auto', position: 'relative', textAlign: 'center' }}>
-        {/* Brand logo — preserve native colors (gold + green) so it
-            stays recognizable; a slight brightness lift ensures the
-            green text stays readable against the dark green backdrop */}
+        {/* Brand logo — wrapped in a white 'card' so the native
+            green wordmark stays perfectly legible against the dark
+            section background (matches how the logo renders on the
+            navbar's white background). */}
         <motion.div
           initial={{ opacity: 0, y: -10 }}
           animate={inView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.5 }}
-          style={{ marginBottom: 10 }}
+          style={{
+            display: 'inline-flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            background: '#fff',
+            padding: '10px 20px',
+            borderRadius: 12,
+            boxShadow: '0 6px 20px rgba(0,0,0,0.25)',
+            marginBottom: 14,
+          }}
         >
           <img
             src="/chaturbhuja-logo.webp"
             alt="Chaturbhuja Properties & Infra"
             loading="lazy"
             style={{
-              height: 48,
+              height: 44,
               width: 'auto',
-              margin: '0 auto',
-              filter: 'brightness(1.15) drop-shadow(0 2px 8px rgba(0,0,0,0.4))',
+              display: 'block',
             }}
           />
         </motion.div>

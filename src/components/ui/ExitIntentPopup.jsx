@@ -53,21 +53,54 @@ export default function ExitIntentPopup() {
   const maxScrollRatioRef = useRef(0)
 
   useEffect(() => {
+    const show = (trigger, opts = {}) => {
+      if (shownRef.current) return
+      if (!opts.force) {
+        if (Date.now() - pageLoadedAtRef.current < MIN_DWELL_MS) return
+        // Don't show if any modal/overlay is currently blocking scroll.
+        // LeadModal + LaunchOverlay + PricingOverlay all set
+        // document.body.style.overflow = 'hidden' while open, which is
+        // a precise signal (won't false-match Hero's decorative overlay div).
+        if (document.body.style.overflow === 'hidden') return
+      }
+      shownRef.current = true
+      if (!opts.force) {
+        try { sessionStorage.setItem(STORAGE_KEY, '1') } catch {}
+      }
+      trackEvent('exit_intent_shown', { trigger })
+      setVisible(true)
+    }
+
     // Respect session flag: if already shown, never show again this session
     try { if (sessionStorage.getItem(STORAGE_KEY) === '1') return } catch {}
 
-    const show = (trigger) => {
-      if (shownRef.current) return
-      if (Date.now() - pageLoadedAtRef.current < MIN_DWELL_MS) return
-      // Don't show if any modal/overlay is currently blocking scroll.
-      // LeadModal + LaunchOverlay + PricingOverlay all set
-      // document.body.style.overflow = 'hidden' while open, which is
-      // a precise signal (won't false-match Hero's decorative overlay div).
-      if (document.body.style.overflow === 'hidden') return
-      shownRef.current = true
-      try { sessionStorage.setItem(STORAGE_KEY, '1') } catch {}
-      trackEvent('exit_intent_shown', { trigger })
-      setVisible(true)
+    // ── DIAGNOSTIC HELPERS — call from browser console to test ──────────────
+    // Works on Safari's Web Inspector / Chrome DevTools.
+    //   window.__cbpForceExitPopup()       → show immediately, bypass all guards
+    //   window.__cbpClearExitSession()     → clear the once-per-session flag
+    //   window.__cbpExitPopupStatus()      → log current state for debugging
+    if (typeof window !== 'undefined') {
+      window.__cbpForceExitPopup   = () => show('manual_test', { force: true })
+      window.__cbpClearExitSession = () => {
+        try { sessionStorage.removeItem(STORAGE_KEY) } catch {}
+        shownRef.current = false
+        // eslint-disable-next-line no-console
+        console.log('[ExitIntent] Session cleared. Reload page.')
+      }
+      window.__cbpExitPopupStatus  = () => {
+        const dwelled = Date.now() - pageLoadedAtRef.current
+        const idleFor = Date.now() - lastActivityRef.current
+        // eslint-disable-next-line no-console
+        console.log('[ExitIntent] status', {
+          alreadyShown: shownRef.current,
+          sessionFlag:  (() => { try { return sessionStorage.getItem(STORAGE_KEY) } catch { return 'err' } })(),
+          dwelledMs:    dwelled,
+          idleMs:       idleFor,
+          scrollRatio:  maxScrollRatioRef.current.toFixed(2),
+          bodyLocked:   document.body.style.overflow === 'hidden',
+          isMobile:     window.matchMedia('(max-width: 768px)').matches,
+        })
+      }
     }
 
     // ── DESKTOP: mouse leaves via top edge ───────────────────────────────

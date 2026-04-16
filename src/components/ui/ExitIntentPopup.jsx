@@ -207,6 +207,25 @@ export default function ExitIntentPopup() {
     setVisible(false)
   }
 
+  // Derive project interest from the current URL path so the sales
+  // team knows WHICH venture the visitor was looking at when they
+  // decided to leave. Makes the callback conversation much more
+  // targeted — e.g. "Hi Susheela, I see you were checking Anjana
+  // Paradise — let me share the latest availability..."
+  const deriveProjectInterest = () => {
+    try {
+      const path = window.location.pathname.toLowerCase()
+      if (path.includes('/project/anjana'))  return 'Anjana Paradise'
+      if (path.includes('/project/trimbak')) return 'Trimbak Oaks'
+      if (path.includes('/project/aparna'))  return 'Aparna Legacy'
+      if (path.includes('/project/varaha'))  return 'Varaha Virtue'
+      if (path === '/' || path === '')       return 'Homepage visitor — open to all 4 projects'
+      return 'Website (' + path + ')'
+    } catch {
+      return undefined
+    }
+  }
+
   const handleSubmit = async (e) => {
     e.preventDefault()
     setError('')
@@ -219,12 +238,15 @@ export default function ExitIntentPopup() {
     }
     setSubmitting(true)
     try {
+      const projectInterest = deriveProjectInterest()
       await leadApi.submit({
-        name:   trimmedName,
-        phone:  phone.trim(),
-        source: 'EXIT_INTENT',
+        name:             trimmedName,
+        phone:            phone.trim(),
+        source:           'EXIT_INTENT',
+        projectInterest,
+        categoryInterest: 'Exit-intent popup — general interest',
       })
-      trackEvent('exit_intent_submitted', { has_phone: true })
+      trackEvent('exit_intent_submitted', { has_phone: true, project: projectInterest })
       setSubmitted(true)
     } catch (err) {
       setError(isTe ? 'సమస్య ఏర్పడింది. మళ్ళీ ప్రయత్నించండి' : 'Something went wrong. Please try again.')

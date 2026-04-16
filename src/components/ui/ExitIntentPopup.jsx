@@ -30,8 +30,8 @@ import { trackEvent } from '@/utils/analytics'
  */
 
 const MIN_DWELL_MS         = 15000 // don't show in first 15s (both platforms)
-const MOBILE_INACTIVITY_MS = 20000 // mobile: 20s of no tap/key
-const MOBILE_MAX_DWELL_MS  = 25000 // mobile fallback: show after 25s
+const MOBILE_INACTIVITY_MS = 30000 // mobile: 30s of no tap/key
+const MOBILE_MAX_DWELL_MS  = 35000 // mobile fallback: show after 35s
 const MIN_SCROLL_RATIO     = 0.01  // mobile: any scroll at all counts as engagement
 
 const STORAGE_KEY = 'cbp_exit_intent_shown'
@@ -71,13 +71,16 @@ export default function ExitIntentPopup() {
 
     const show = (trigger, opts = {}) => {
       if (shownRef.current) return
-      if (!opts.force) {
+      // Modal-open guard: skip only if another modal is currently
+      // blocking the scroll (LeadModal / LaunchOverlay / PricingOverlay
+      // all set body.overflow='hidden' while open).
+      if (document.body.style.overflow === 'hidden') return
+      // Dwell time guard — applied to PASSIVE triggers only (mobile idle,
+      // visibility return). True exit intent (desktop mouseleave toward
+      // browser close button) fires instantly because the user's intent
+      // is unambiguous — they're actively leaving.
+      if (!opts.force && !opts.skipDwell) {
         if (Date.now() - pageLoadedAtRef.current < MIN_DWELL_MS) return
-        // Don't show if any modal/overlay is currently blocking scroll.
-        // LeadModal + LaunchOverlay + PricingOverlay all set
-        // document.body.style.overflow = 'hidden' while open, which is
-        // a precise signal (won't false-match Hero's decorative overlay div).
-        if (document.body.style.overflow === 'hidden') return
       }
       shownRef.current = true
       if (!opts.force) {
@@ -126,14 +129,15 @@ export default function ExitIntentPopup() {
     }
 
     // ── DESKTOP: mouse leaves via top edge ───────────────────────────────
-    // Use mouseout on documentElement — more reliable cross-browser than
-    // mouseleave on document. Also requires relatedTarget to be null or
-    // outside the viewport (mouse truly left the window, not just crossed
-    // to another element).
+    // Fires INSTANTLY when the cursor moves off the top of the viewport
+    // (i.e. user heading to the browser's close/tab/back buttons).
+    // skipDwell: true bypasses the 15s dwell guard — exit intent must
+    // fire the moment the user decides to leave; waiting defeats the
+    // purpose.
     const onMouseOut = (e) => {
       if (e.relatedTarget) return        // moved to another element, still inside
       if ((e.clientY ?? 0) > 0) return   // left via sides/bottom — ignore
-      show('desktop_mouseleave_top')
+      show('desktop_mouseleave_top', { skipDwell: true })
     }
 
     // ── MOBILE: scroll depth tracking ────────────────────────────────────

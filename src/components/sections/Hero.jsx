@@ -2,7 +2,7 @@ import { DEFAULT_WA_NUMBER } from '@/constants/config'
 import FALLBACK from '@/constants/fallbackContent'
 import { useState, useEffect, useRef } from 'react'
 import { motion } from 'framer-motion'
-import { MapPin, Calendar, FileText, Phone } from 'lucide-react'
+import { MapPin, Calendar, FileText, Phone, Landmark, FileCheck2, BadgeCheck, ShieldCheck } from 'lucide-react'
 import { useInView } from 'react-intersection-observer'
 import { useLanguage } from '@/context/LanguageContext'
 import WhatsAppIcon from '@/components/ui/WhatsAppIcon'
@@ -56,12 +56,21 @@ export default function Hero({ content, onEnquire }) {
     ? dbBadges
     : (hero.approvalBadges?.length ? hero.approvalBadges : FB.hero.approvalBadges)
 
-  // Animated stats bar — labels translated in Telugu mode
-  const heroStats = (hst.length ? hst : FB.heroStats).map((s, i) => {
-    if (!isTe) return s
-    const teLabels = [t('portfolio.yearsIndustry'), t('portfolio.projectsDelivered'), t('portfolio.happyCustomers')]
-    return { ...s, label: teLabels[i] || s.label }
-  })
+  // Animated stats — "Our Credentials" style, matches TrustBadges section.
+  // Four focal stats; each has a headline label + smaller sub-label.
+  const heroStats = isTe
+    ? [
+        { end: 25,   suffix: '+', label: 'సంవత్సరాల',   sub: 'నమ్మకం' },
+        { end: 1200, suffix: '+', label: 'కుటుంబాలు',    sub: 'సంతృప్తి' },
+        { end: 15,   suffix: '+', label: 'ప్రాజెక్టులు', sub: 'పూర్తి' },
+        { end: 100,  suffix: '%', label: 'క్లియర్',      sub: 'టైటిల్' },
+      ]
+    : [
+        { end: 25,   suffix: '+', label: 'Years of',  sub: 'Proven Trust' },
+        { end: 1200, suffix: '+', label: 'Happy',     sub: 'Families Settled' },
+        { end: 15,   suffix: '+', label: 'Projects',  sub: 'Delivered' },
+        { end: 100,  suffix: '%', label: 'Clear',     sub: 'Title Always' },
+      ]
 
   // Director card
   const dirTitle  = (isTe && t('hero.directorTitle')) || dir.title  || FB.director.title
@@ -115,11 +124,22 @@ export default function Hero({ content, onEnquire }) {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.7, ease: [0.4, 0, 0.2, 1] }}>
 
-        {/* Approval badges — from MongoDB hero.approvalBadges */}
+        {/* Approval pills — matches TrustBadges section design (icon + title + detail) */}
         <div className={styles.badges}>
-          {badges.map(b => (
-            <span key={b} className={styles.badge}>
-              <span className={styles.badgeDot} />{b}
+          {[
+            { icon: <Landmark size={14} />,   title: isTe ? 'ఏపిసిఆర్డేఏ ఆమోదితం' : 'APCRDA APPROVED',    detail: 'LP No: 35/2025' },
+            { icon: <FileCheck2 size={14} />, title: isTe ? 'ఏపి రేరా నమోదితం'    : 'AP RERA REGISTERED', detail: 'P06060125894' },
+            { icon: <BadgeCheck size={14} />, title: isTe ? '100% క్లియర్ టైటిల్'  : '100% CLEAR TITLE',    detail: null },
+          ].map((p, i) => (
+            <span key={i} className={styles.badge}>
+              <span className={styles.badgeIcon}>{p.icon}</span>
+              <span className={styles.badgeTitle}>{p.title}</span>
+              {p.detail && (
+                <>
+                  <span className={styles.badgeDivider}>·</span>
+                  <span className={styles.badgeDetail}>{p.detail}</span>
+                </>
+              )}
             </span>
           ))}
         </div>
@@ -151,7 +171,23 @@ export default function Hero({ content, onEnquire }) {
           </motion.button>
         </div>
 
-        {/* Animated stats bar — from MongoDB heroStats */}
+        {/* "Our Credentials" mini-section — tag pill + headline above the grid */}
+        <div className={styles.credHeader}>
+          <div>
+            <span className={styles.credTag}>
+              <ShieldCheck size={12} />
+              {isTe ? 'మా ఆధారాలు' : 'Our Credentials'}
+              <ShieldCheck size={12} />
+            </span>
+          </div>
+          <h3 className={styles.credHeadline}>
+            {isTe
+              ? <>ఆంధ్రప్రదేశ్‌లో విశ్వసనీయ <em>పేరు</em></>
+              : <>Andhra Pradesh's most <em>trusted</em> name in real estate</>}
+          </h3>
+        </div>
+
+        {/* "Our Credentials" stats grid — matches TrustBadges section */}
         <div className={styles.statsBar}>
           {heroStats.map((s, i) => (
             <div key={i} className={styles.stat}>
@@ -160,7 +196,9 @@ export default function Hero({ content, onEnquire }) {
                   ? <AnimatedCount end={s.end} duration={1800} suffix={s.suffix} />
                   : `0${s.suffix}`}
               </div>
+              <div className={styles.statDivider} />
               <div className={styles.statLabel}>{s.label}</div>
+              {s.sub && <div className={styles.statSub}>{s.sub}</div>}
             </div>
           ))}
         </div>

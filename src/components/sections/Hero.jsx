@@ -2,7 +2,7 @@ import { DEFAULT_WA_NUMBER } from '@/constants/config'
 import FALLBACK from '@/constants/fallbackContent'
 import { useState, useEffect, useRef } from 'react'
 import { motion } from 'framer-motion'
-import { MapPin, Calendar, FileText, Phone, Landmark, FileCheck2, BadgeCheck } from 'lucide-react'
+import { MapPin, Calendar, FileText, Phone, Landmark, FileCheck2, BadgeCheck, ShieldCheck } from 'lucide-react'
 import { useInView } from 'react-intersection-observer'
 import { useLanguage } from '@/context/LanguageContext'
 import WhatsAppIcon from '@/components/ui/WhatsAppIcon'
@@ -169,6 +169,22 @@ export default function Hero({ content, onEnquire }) {
             onClick={() => onEnquire({ source: 'HERO_CTA', label: 'Download Brochure', type: 'BROCHURE' })}>
             <FileText size={15} /> {t('hero.brochureCta')}
           </motion.button>
+        </div>
+
+        {/* "Our Credentials" mini-section — tag pill + headline above the grid */}
+        <div className={styles.credHeader}>
+          <div>
+            <span className={styles.credTag}>
+              <ShieldCheck size={12} />
+              {isTe ? 'మా ఆధారాలు' : 'Our Credentials'}
+              <ShieldCheck size={12} />
+            </span>
+          </div>
+          <h3 className={styles.credHeadline}>
+            {isTe
+              ? <>ఆంధ్రప్రదేశ్‌లో విశ్వసనీయ <em>పేరు</em></>
+              : <>Andhra Pradesh's most <em>trusted</em> name in real estate</>}
+          </h3>
         </div>
 
         {/* "Our Credentials" stats grid — matches TrustBadges section */}

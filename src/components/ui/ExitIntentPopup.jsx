@@ -29,9 +29,9 @@ import { trackEvent } from '@/utils/analytics'
  * source='EXIT_INTENT' and close.
  */
 
-const MIN_DWELL_MS        = 15000  // don't show in first 15s
-const MOBILE_INACTIVITY_MS = 45000 // mobile: 45s of no input after scrolling
-const MIN_SCROLL_RATIO     = 0.40  // mobile: only after 40% scroll
+const MIN_DWELL_MS         = 15000 // don't show in first 15s (both platforms)
+const MOBILE_INACTIVITY_MS = 20000 // mobile: 20s of no input after any scroll
+const MIN_SCROLL_RATIO     = 0.20  // mobile: user must have scrolled >= 20%
 
 const STORAGE_KEY = 'cbp_exit_intent_shown'
 
@@ -93,27 +93,45 @@ export default function ExitIntentPopup() {
     const isMobile = window.matchMedia('(max-width: 768px)').matches
     let mobileTimer = null
     if (isMobile) {
+      // Poll every 2s — earlier: 5s was too slow for ~20s idle window
       mobileTimer = setInterval(() => {
         if (shownRef.current) return
         const idleFor = Date.now() - lastActivityRef.current
+        const dwelled = Date.now() - pageLoadedAtRef.current
+        if (dwelled < MIN_DWELL_MS) return
         if (idleFor >= MOBILE_INACTIVITY_MS && maxScrollRatioRef.current >= MIN_SCROLL_RATIO) {
           show('mobile_inactive_after_scroll')
         }
-      }, 5000)
+      }, 2000)
     }
 
-    document.addEventListener('mouseout', onMouseOut)
-    window.addEventListener('scroll',    onScroll,    { passive: true })
-    window.addEventListener('touchstart', onInput,    { passive: true })
+    // Extra trigger for BOTH platforms: fires when user hides the tab
+    // (switches apps, locks phone, changes to another tab). Shown when
+    // they come back — gives one final chance to capture before they
+    // close the tab entirely.
+    const onVisibility = () => {
+      if (document.visibilityState === 'visible' && !shownRef.current) {
+        const dwelled = Date.now() - pageLoadedAtRef.current
+        if (dwelled >= MIN_DWELL_MS && maxScrollRatioRef.current >= 0.10) {
+          show('visibility_return')
+        }
+      }
+    }
+
+    document.addEventListener('mouseout',         onMouseOut)
+    document.addEventListener('visibilitychange', onVisibility)
+    window.addEventListener('scroll',     onScroll,    { passive: true })
+    window.addEventListener('touchstart', onInput,     { passive: true })
     window.addEventListener('click',      onInput)
     window.addEventListener('keydown',    onInput)
 
     return () => {
-      document.removeEventListener('mouseout', onMouseOut)
-      window.removeEventListener('scroll',      onScroll)
-      window.removeEventListener('touchstart',  onInput)
-      window.removeEventListener('click',       onInput)
-      window.removeEventListener('keydown',     onInput)
+      document.removeEventListener('mouseout',         onMouseOut)
+      document.removeEventListener('visibilitychange', onVisibility)
+      window.removeEventListener('scroll',     onScroll)
+      window.removeEventListener('touchstart', onInput)
+      window.removeEventListener('click',      onInput)
+      window.removeEventListener('keydown',    onInput)
       if (mobileTimer) clearInterval(mobileTimer)
     }
   }, [])

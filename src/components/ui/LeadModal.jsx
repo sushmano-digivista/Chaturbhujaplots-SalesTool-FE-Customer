@@ -8,6 +8,7 @@ import { useSubmitLead }         from '@/hooks/useData'
 import { ACTIVE_PROJECTS }       from '@/constants/projects'
 import { BROCHURES, getBrochureUrl } from '@/constants/brochures'
 import { brochureApi, siteVisitApi, leadApi } from '@/api'
+import { trackCallbackRequested, trackSiteVisitScheduled, trackPlotEnquired, trackBrochureDownloaded, trackLeadModalOpen } from '@/utils/analytics'
 import { openWhatsApp, safeOpenExternal } from '@/utils/security'
 import { DEFAULT_WA_NUMBER }     from '@/constants/config'
 import { useLanguage }           from '@/context/LanguageContext'
@@ -69,6 +70,11 @@ export default function LeadModal({ context, onClose, whatsapp, content }) {
       const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth
       document.body.style.overflow = 'hidden'
       document.body.style.paddingRight = scrollbarWidth + 'px'
+      // GA4 — track that the lead modal opened (gives us funnel top data)
+      trackLeadModalOpen(context?.source || 'UNKNOWN', {
+        type:    context?.type || 'BROCHURE',
+        project: context?.venture || context?.category || undefined,
+      })
     } else {
       document.body.style.overflow = ''
       document.body.style.paddingRight = ''
@@ -117,6 +123,12 @@ export default function LeadModal({ context, onClose, whatsapp, content }) {
         name: data.name, phone: data.phone, email: data.email || undefined,
         source: 'CONTACT_FORM', categoryInterest: data.project || context?.category || undefined,
       }).catch(() => {})
+      // GA4 conversion event — "site_visit_scheduled"
+      trackSiteVisitScheduled({
+        project: data.project || context?.category || '(unspecified)',
+        source:  context?.source || 'LEAD_MODAL',
+        visit_date: data.date,
+      })
       setSubmitted(true)
       reset()
     } catch (err) {
@@ -136,6 +148,14 @@ export default function LeadModal({ context, onClose, whatsapp, content }) {
         plotDimension:    context?.plotDimension || undefined,
         plotArea:         context?.plotArea || undefined,
       })
+      // GA4 conversion events — route by context.type
+      const gaContext = {
+        project: data.project || context?.category || '(unspecified)',
+        source:  context?.source || 'LEAD_MODAL',
+        plot_number: context?.plotNumber ? String(context.plotNumber) : undefined,
+      }
+      if (context?.type === 'PLOT_ENQUIRY') trackPlotEnquired(gaContext)
+      else                                   trackCallbackRequested(gaContext)
       setSubmitted(true)
       reset()
     } catch (err) {
@@ -194,6 +214,12 @@ export default function LeadModal({ context, onClose, whatsapp, content }) {
     clearCtaError('download')
     const urls = isAny ? ALL_BROCHURE_URLS.map(b => b.url) : (brochureUrl ? [brochureUrl] : [])
     if (!urls.length) { setCtaErrors(e => ({ ...e, download: 'Brochure coming soon.' })); return }
+    // GA4 conversion — "brochure_downloaded"
+    trackBrochureDownloaded({
+      project: selectedProject,
+      count:   urls.length,
+      bundle:  isAny ? 'all' : 'single',
+    })
     urls.forEach((url, i) => setTimeout(() => {
       const a = document.createElement('a')
       a.href = url; a.download = ''; a.target = '_blank'

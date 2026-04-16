@@ -1,141 +1,232 @@
-import { Landmark, FileCheck2, Award, Users, Building2, BadgeCheck } from 'lucide-react'
+import { motion } from 'framer-motion'
+import { useInView } from 'react-intersection-observer'
+import { useState, useEffect, useRef } from 'react'
+import { Landmark, FileCheck2, BadgeCheck } from 'lucide-react'
 import { useLanguage } from '@/context/LanguageContext'
 
 /**
- * TrustBadges — credibility stripe below Hero.
+ * TrustBadges — big, attention-grabbing credibility stats strip
+ * between Hero and AvailabilityBanner.
  *
- * Why this exists:
- *   The homepage now has urgency (AvailabilityBanner: "Only N plots left"),
- *   but urgency WITHOUT trust backfires — it reads as sleazy high-pressure.
- *   Pairing Trust + Scarcity is the proven combo: "This place is legit AND
- *   I need to act fast." Trust goes ABOVE scarcity so the visitor's brain
- *   processes credibility first.
- *
- * Design:
- *   - Horizontal strip of 6 signal cards (2 cols mobile, 3 cols tablet, 6 cols desktop)
- *   - Each card: lucide icon + headline + sub-line
- *   - Subtle gold accent on icons; cards have soft green-tinted borders
- *   - Single-row section, ~120-180px tall on desktop, stacks cleanly on mobile
- *
- * Content is kept factual & specific (LP number, RERA number, year count,
- * family count) so the claims feel verifiable, not fluffy marketing copy.
+ * v2 — redesigned for punch: the first version was too subtle and
+ * visitors were scrolling past without noticing it. This version
+ * uses:
+ *   - Huge 56-72px animated count-up numbers (impossible to miss)
+ *   - Gold accent frame & top "WHY CHATURBHUJA" pill tag
+ *   - Stronger green→black vignette background
+ *   - Separate approval pills (APCRDA / RERA) at the bottom
+ *   - Staggered scroll-in animation for each stat
  */
 
-const TE_MAP = {
-  title: 'మీరు ఎందుకు నమ్మవచ్చు',
-  subtitle: 'నిరూపితమైన ట్రాక్ రికార్డ్ · అన్ని ఆమోదాలు · 1200+ సంతృప్తికర కుటుంబాలు',
+// Lightweight animated counter — runs only once on first viewport entry
+function AnimatedCount({ end, duration = 1600, suffix = '', active }) {
+  const [count, setCount] = useState(0)
+  const raf = useRef(null)
+  useEffect(() => {
+    if (!active) return
+    let start
+    const step = (ts) => {
+      if (!start) start = ts
+      const progress = Math.min((ts - start) / duration, 1)
+      const eased = 1 - Math.pow(1 - progress, 3)
+      setCount(Math.round(eased * end))
+      if (progress < 1) raf.current = requestAnimationFrame(step)
+    }
+    raf.current = requestAnimationFrame(step)
+    return () => cancelAnimationFrame(raf.current)
+  }, [end, duration, active])
+  return <>{count}{suffix}</>
 }
+
+const TE_MAP = {
+  tag:      'మీరు ఎందుకు నమ్మవచ్చు',
+  headline: 'అంధ్రప్రదేశ్‌లో విశ్వసనీయ రియల్ ఎస్టేట్ పేరు',
+  tagline:  'నిరూపితమైన ట్రాక్ రికార్డ్ · పూర్తి ఆమోదాలు · సంతృప్తికర కుటుంబాలు',
+  stats: [
+    { value: 25,   suffix: '+', label: 'సంవత్సరాల',   sub: 'నమ్మకం' },
+    { value: 1200, suffix: '+', label: 'కుటుంబాలు',    sub: 'సంతృప్తి' },
+    { value: 15,   suffix: '+', label: 'ప్రాజెక్టులు',  sub: 'పూర్తి' },
+    { value: 100,  suffix: '%', label: 'క్లియర్',       sub: 'టైటిల్' },
+  ],
+  apcrda: 'ఏపిసిఆర్డేఏ ఆమోదితం',
+  rera:   'ఏపి రేరా నమోదితం',
+}
+
+const EN_STATS = [
+  { value: 25,   suffix: '+', label: 'Years of',  sub: 'Trust' },
+  { value: 1200, suffix: '+', label: 'Happy',     sub: 'Families' },
+  { value: 15,   suffix: '+', label: 'Projects',  sub: 'Delivered' },
+  { value: 100,  suffix: '%', label: 'Clear',     sub: 'Title' },
+]
 
 export default function TrustBadges() {
   const { language } = useLanguage()
   const isTe = language === 'te'
-
-  const badges = [
-    {
-      icon: <Landmark size={22} />,
-      title: isTe ? 'ఏపిసిఆర్డేఏ ఆమోదం' : 'APCRDA Approved',
-      sub:   isTe ? 'LP నం: 35/2025' : 'LP No: 35/2025',
-    },
-    {
-      icon: <FileCheck2 size={22} />,
-      title: isTe ? 'ఏపి రేరా నమోదితం' : 'AP RERA Registered',
-      sub:   'P06060125894',
-    },
-    {
-      icon: <Award size={22} />,
-      title: isTe ? '25+ సంవత్సరాల నమ్మకం' : '25+ Years of Trust',
-      sub:   isTe ? 'రియల్ ఎస్టేట్‌లో' : 'In real estate',
-    },
-    {
-      icon: <Users size={22} />,
-      title: '1200+',
-      sub:   isTe ? 'సంతృప్తికర కుటుంబాలు' : 'Happy Families Settled',
-    },
-    {
-      icon: <Building2 size={22} />,
-      title: '15+',
-      sub:   isTe ? 'పూర్తి ప్రాజెక్టులు' : 'Projects Delivered',
-    },
-    {
-      icon: <BadgeCheck size={22} />,
-      title: isTe ? '100% క్లియర్ టైటిల్' : '100% Clear Title',
-      sub:   isTe ? 'అన్ని ప్లాట్లపై' : 'On every plot',
-    },
-  ]
+  const { ref, inView } = useInView({ triggerOnce: true, threshold: 0.3 })
+  const stats = isTe ? TE_MAP.stats : EN_STATS
 
   return (
     <section
+      ref={ref}
       aria-label="Chaturbhuja trust signals"
       style={{
-        background: 'linear-gradient(180deg, #1E4D2B 0%, #2D6E40 100%)',
-        padding: '22px 16px 26px',
+        // Deep green → near-black vignette for max contrast against
+        // cream sections above/below
+        background: 'radial-gradient(ellipse at center top, #2D6E40 0%, #0B2818 80%)',
+        padding: 'clamp(40px, 6vw, 64px) 16px clamp(36px, 5vw, 56px)',
         color: '#fff',
+        position: 'relative',
+        overflow: 'hidden',
       }}
     >
-      <div style={{ maxWidth: 1200, margin: '0 auto' }}>
-        <div style={{ textAlign: 'center', marginBottom: 14 }}>
-          <h2 style={{
-            fontFamily: "'Cormorant Garamond', Georgia, serif",
-            fontSize: 'clamp(18px, 2.4vw, 22px)',
-            fontWeight: 600,
-            margin: 0,
-            color: '#C9A84C',
-            letterSpacing: 0.2,
+      {/* Top & bottom gold stripes for strong visual framing */}
+      <div style={{
+        position: 'absolute', top: 0, left: 0, right: 0, height: 3,
+        background: 'linear-gradient(90deg, transparent 0%, #C9A84C 50%, transparent 100%)',
+      }} />
+      <div style={{
+        position: 'absolute', bottom: 0, left: 0, right: 0, height: 3,
+        background: 'linear-gradient(90deg, transparent 0%, #C9A84C 50%, transparent 100%)',
+      }} />
+
+      <div style={{ maxWidth: 1200, margin: '0 auto', position: 'relative' }}>
+        {/* Section tag pill */}
+        <div style={{ textAlign: 'center', marginBottom: 10 }}>
+          <span style={{
+            display: 'inline-block',
+            background: 'rgba(201,168,76,0.18)',
+            border: '1px solid rgba(201,168,76,0.5)',
+            color: '#E8D5A3',
+            padding: '5px 14px',
+            borderRadius: 999,
+            fontSize: 11,
+            fontWeight: 700,
+            letterSpacing: 2,
+            textTransform: 'uppercase',
           }}>
-            {isTe ? TE_MAP.title : 'Why You Can Trust Us'}
-          </h2>
-          <p style={{
-            fontSize: 12, color: 'rgba(255,255,255,0.7)', margin: '4px 0 0',
-          }}>
-            {isTe ? TE_MAP.subtitle : 'Proven track record · All approvals · 1200+ happy families'}
-          </p>
+            ★ {isTe ? TE_MAP.tag : 'Why Chaturbhuja'} ★
+          </span>
         </div>
 
+        {/* Headline */}
+        <h2 style={{
+          fontFamily: "'Cormorant Garamond', Georgia, serif",
+          fontSize: 'clamp(24px, 3.4vw, 36px)',
+          fontWeight: 600,
+          color: '#C9A84C',
+          textAlign: 'center',
+          margin: '0 0 6px',
+          lineHeight: 1.2,
+        }}>
+          {isTe ? TE_MAP.headline : (
+            <>Andhra Pradesh's most <em style={{ color: '#fff', fontStyle: 'italic' }}>trusted</em> real-estate name</>
+          )}
+        </h2>
+        <p style={{
+          fontSize: 13, color: 'rgba(255,255,255,0.7)',
+          textAlign: 'center', margin: '0 0 clamp(28px, 4vw, 40px)',
+        }}>
+          {isTe ? TE_MAP.tagline : 'Proven track record · Full approvals · Happy families'}
+        </p>
+
+        {/* The 4 big stats */}
         <div style={{
           display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))',
-          gap: 10,
+          gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 1fr))',
+          gap: 'clamp(12px, 2vw, 24px)',
+          marginBottom: 'clamp(26px, 3vw, 34px)',
         }}>
-          {badges.map((b, i) => (
-            <div
+          {stats.map((s, i) => (
+            <motion.div
               key={i}
+              initial={{ opacity: 0, y: 20 }}
+              animate={inView ? { opacity: 1, y: 0 } : {}}
+              transition={{ duration: 0.5, delay: i * 0.12, ease: [0.4, 0, 0.2, 1] }}
               style={{
-                display: 'flex', alignItems: 'center', gap: 10,
-                background: 'rgba(255,255,255,0.06)',
-                border: '1px solid rgba(201,168,76,0.3)',
-                borderRadius: 10,
-                padding: '10px 12px',
-                transition: 'all 0.2s',
+                textAlign: 'center',
+                padding: 'clamp(14px, 2vw, 20px) 8px',
+                background: 'rgba(255,255,255,0.04)',
+                border: '1px solid rgba(201,168,76,0.22)',
+                borderRadius: 12,
+                position: 'relative',
               }}
             >
               <div style={{
-                flexShrink: 0,
-                width: 38, height: 38,
-                display: 'flex', alignItems: 'center', justifyContent: 'center',
-                background: 'rgba(201,168,76,0.18)',
+                fontFamily: "'Cormorant Garamond', Georgia, serif",
+                fontSize: 'clamp(40px, 6vw, 60px)',
+                fontWeight: 700,
                 color: '#C9A84C',
-                borderRadius: '50%',
+                lineHeight: 1,
+                textShadow: '0 2px 8px rgba(201,168,76,0.25)',
               }}>
-                {b.icon}
+                <AnimatedCount end={s.value} suffix={s.suffix} active={inView} />
               </div>
-              <div style={{ minWidth: 0 }}>
-                <div style={{
-                  fontSize: 13, fontWeight: 700, color: '#fff',
-                  lineHeight: 1.15,
-                  whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis',
-                }}>
-                  {b.title}
-                </div>
-                <div style={{
-                  fontSize: 11, color: 'rgba(255,255,255,0.65)',
-                  lineHeight: 1.2, marginTop: 1,
-                }}>
-                  {b.sub}
-                </div>
+              <div style={{
+                fontSize: 13, fontWeight: 700, color: '#fff',
+                marginTop: 8, letterSpacing: 0.3,
+              }}>
+                {s.label}
               </div>
-            </div>
+              <div style={{
+                fontSize: 12, color: 'rgba(255,255,255,0.7)',
+                fontWeight: 500,
+              }}>
+                {s.sub}
+              </div>
+            </motion.div>
           ))}
         </div>
+
+        {/* Approval pills (APCRDA + RERA + Clear Title) */}
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={inView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.5, delay: 0.6 }}
+          style={{
+            display: 'flex',
+            flexWrap: 'wrap',
+            justifyContent: 'center',
+            gap: 10,
+          }}
+        >
+          <span style={{
+            display: 'inline-flex', alignItems: 'center', gap: 8,
+            background: 'rgba(255,255,255,0.08)',
+            border: '1px solid rgba(201,168,76,0.4)',
+            padding: '8px 14px',
+            borderRadius: 999,
+            fontSize: 12, fontWeight: 600,
+          }}>
+            <Landmark size={16} style={{ color: '#C9A84C' }} />
+            <span>{isTe ? TE_MAP.apcrda : 'APCRDA APPROVED'}</span>
+            <span style={{ opacity: 0.6, fontWeight: 400 }}>·</span>
+            <span style={{ color: '#C9A84C' }}>LP No: 35/2025</span>
+          </span>
+          <span style={{
+            display: 'inline-flex', alignItems: 'center', gap: 8,
+            background: 'rgba(255,255,255,0.08)',
+            border: '1px solid rgba(201,168,76,0.4)',
+            padding: '8px 14px',
+            borderRadius: 999,
+            fontSize: 12, fontWeight: 600,
+          }}>
+            <FileCheck2 size={16} style={{ color: '#C9A84C' }} />
+            <span>{isTe ? TE_MAP.rera : 'AP RERA REGISTERED'}</span>
+            <span style={{ opacity: 0.6, fontWeight: 400 }}>·</span>
+            <span style={{ color: '#C9A84C' }}>P06060125894</span>
+          </span>
+          <span style={{
+            display: 'inline-flex', alignItems: 'center', gap: 8,
+            background: 'rgba(255,255,255,0.08)',
+            border: '1px solid rgba(201,168,76,0.4)',
+            padding: '8px 14px',
+            borderRadius: 999,
+            fontSize: 12, fontWeight: 600,
+          }}>
+            <BadgeCheck size={16} style={{ color: '#C9A84C' }} />
+            <span>{isTe ? '100% క్లియర్ టైటిల్' : '100% CLEAR TITLE'}</span>
+          </span>
+        </motion.div>
       </div>
     </section>
   )

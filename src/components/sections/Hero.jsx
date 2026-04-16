@@ -56,12 +56,21 @@ export default function Hero({ content, onEnquire }) {
     ? dbBadges
     : (hero.approvalBadges?.length ? hero.approvalBadges : FB.hero.approvalBadges)
 
-  // Animated stats bar — labels translated in Telugu mode
-  const heroStats = (hst.length ? hst : FB.heroStats).map((s, i) => {
-    if (!isTe) return s
-    const teLabels = [t('portfolio.yearsIndustry'), t('portfolio.projectsDelivered'), t('portfolio.happyCustomers')]
-    return { ...s, label: teLabels[i] || s.label }
-  })
+  // Animated stats — "Our Credentials" style, matches TrustBadges section.
+  // Four focal stats; each has a headline label + smaller sub-label.
+  const heroStats = isTe
+    ? [
+        { end: 25,   suffix: '+', label: 'సంవత్సరాల',   sub: 'నమ్మకం' },
+        { end: 1200, suffix: '+', label: 'కుటుంబాలు',    sub: 'సంతృప్తి' },
+        { end: 15,   suffix: '+', label: 'ప్రాజెక్టులు', sub: 'పూర్తి' },
+        { end: 100,  suffix: '%', label: 'క్లియర్',      sub: 'టైటిల్' },
+      ]
+    : [
+        { end: 25,   suffix: '+', label: 'Years of',  sub: 'Proven Trust' },
+        { end: 1200, suffix: '+', label: 'Happy',     sub: 'Families Settled' },
+        { end: 15,   suffix: '+', label: 'Projects',  sub: 'Delivered' },
+        { end: 100,  suffix: '%', label: 'Clear',     sub: 'Title Always' },
+      ]
 
   // Director card
   const dirTitle  = (isTe && t('hero.directorTitle')) || dir.title  || FB.director.title
@@ -151,7 +160,7 @@ export default function Hero({ content, onEnquire }) {
           </motion.button>
         </div>
 
-        {/* Animated stats bar — from MongoDB heroStats */}
+        {/* "Our Credentials" stats grid — matches TrustBadges section */}
         <div className={styles.statsBar}>
           {heroStats.map((s, i) => (
             <div key={i} className={styles.stat}>
@@ -160,7 +169,9 @@ export default function Hero({ content, onEnquire }) {
                   ? <AnimatedCount end={s.end} duration={1800} suffix={s.suffix} />
                   : `0${s.suffix}`}
               </div>
+              <div className={styles.statDivider} />
               <div className={styles.statLabel}>{s.label}</div>
+              {s.sub && <div className={styles.statSub}>{s.sub}</div>}
             </div>
           ))}
         </div>

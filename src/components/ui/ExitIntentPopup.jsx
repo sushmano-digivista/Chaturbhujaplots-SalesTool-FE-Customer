@@ -30,9 +30,9 @@ import { trackEvent } from '@/utils/analytics'
  */
 
 const MIN_DWELL_MS         = 15000 // don't show in first 15s (both platforms)
-const MOBILE_INACTIVITY_MS = 15000 // mobile: 15s of no tap/key after any scroll
-const MOBILE_MAX_DWELL_MS  = 40000 // mobile fallback: show after 40s + scroll
-const MIN_SCROLL_RATIO     = 0.20  // mobile: user must have scrolled >= 20%
+const MOBILE_INACTIVITY_MS = 10000 // mobile: 10s of no tap/key (was 15s)
+const MOBILE_MAX_DWELL_MS  = 25000 // mobile fallback: show after 25s (was 40s)
+const MIN_SCROLL_RATIO     = 0.01  // mobile: any scroll at all counts as engagement
 
 const STORAGE_KEY = 'cbp_exit_intent_shown'
 
@@ -53,6 +53,22 @@ export default function ExitIntentPopup() {
   const maxScrollRatioRef = useRef(0)
 
   useEffect(() => {
+    // ── URL-param test bypasses — makes mobile testing easy ─────────────
+    // ?exitTest=force → show popup after 2s, ignore all guards
+    // ?exitTest=reset → clear the session flag so popup can fire naturally
+    const qs = new URLSearchParams(window.location.search)
+    const testMode = qs.get('exitTest')
+    if (testMode === 'reset') {
+      try { sessionStorage.removeItem(STORAGE_KEY) } catch {}
+      // eslint-disable-next-line no-console
+      console.log('[ExitIntent] ?exitTest=reset — session cleared, popup can fire naturally now.')
+    }
+
+    // Confirm component mounted — visible in browser console so you can
+    // tell whether the popup JS loaded on mobile at all.
+    // eslint-disable-next-line no-console
+    console.log('[ExitIntent] mounted · testMode=' + (testMode || 'none') + ' · sessionFlag=' + (() => { try { return sessionStorage.getItem(STORAGE_KEY) } catch { return 'err' } })())
+
     const show = (trigger, opts = {}) => {
       if (shownRef.current) return
       if (!opts.force) {
@@ -69,6 +85,12 @@ export default function ExitIntentPopup() {
       }
       trackEvent('exit_intent_shown', { trigger })
       setVisible(true)
+    }
+
+    // ?exitTest=force — show after 2s regardless of session/dwell/everything
+    if (testMode === 'force') {
+      const forceTimer = setTimeout(() => show('url_param_force_test', { force: true }), 2000)
+      return () => clearTimeout(forceTimer)
     }
 
     // Respect session flag: if already shown, never show again this session

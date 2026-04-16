@@ -101,6 +101,25 @@ export const PLOT_STATUS = {
   },
 }
 
+// Totals per venture — used by availability banner & urgency messaging.
+// Keep in sync with ACTIVE_PROJECTS in constants/projects.js.
+export const VENTURE_TOTALS = {
+  anjana:  242,
+  trimbak: 324,   // Phase I (138) + Phase II (186)
+  aparna:  273,
+  varaha:  132,
+}
+
+/**
+ * Available plot count for a venture (length of the available list).
+ * If the list is empty we treat the venture as all-available (data pending).
+ */
+export function getAvailableCount(ventureKey) {
+  const list = PLOT_STATUS[ventureKey]?.available || []
+  if (list.length === 0) return VENTURE_TOTALS[ventureKey] || 0
+  return list.length
+}
+
 /**
  * Returns 'available' if the plot is in the available list, else 'sold'.
  * Falls back to 'available' if the venture has no entries yet (so the

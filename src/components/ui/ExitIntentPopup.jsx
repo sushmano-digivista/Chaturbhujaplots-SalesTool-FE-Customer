@@ -248,7 +248,11 @@ export default function ExitIntentPopup() {
           background: 'rgba(0,0,0,0.55)',
           zIndex: 9998,
           display: 'flex', alignItems: 'center', justifyContent: 'center',
-          padding: 16,
+          // Respect iOS safe areas (notch / home bar) — fallback to 16px
+          padding: 'max(16px, env(safe-area-inset-top)) max(16px, env(safe-area-inset-right)) max(16px, env(safe-area-inset-bottom)) max(16px, env(safe-area-inset-left))',
+          // Use 100dvh where supported so mobile Safari's dynamic URL bar
+          // doesn't push content off-screen. Falls back to 100vh.
+          minHeight: '100vh',
         }}
         aria-modal="true" role="dialog"
       >
@@ -261,11 +265,15 @@ export default function ExitIntentPopup() {
           style={{
             position: 'relative',
             width: '100%', maxWidth: 440,
+            // Don't exceed viewport height — if content's tall, scroll inside
+            maxHeight: 'calc(100vh - 32px)',
             background: '#fff',
             borderRadius: 16,
-            padding: '28px 24px 24px',
+            padding: '28px 20px 22px',
             boxShadow: '0 20px 60px rgba(0,0,0,0.35)',
-            overflow: 'hidden',
+            overflowY: 'auto',
+            // Smooth scrolling on iOS
+            WebkitOverflowScrolling: 'touch',
           }}
         >
           {/* Decorative gold stripe */}
@@ -279,12 +287,14 @@ export default function ExitIntentPopup() {
             onClick={() => dismiss('close_button')}
             aria-label="Close"
             style={{
-              position: 'absolute', top: 10, right: 10,
-              background: 'rgba(0,0,0,0.06)',
+              position: 'absolute', top: 8, right: 8,
+              background: 'rgba(0,0,0,0.08)',
               border: 'none', borderRadius: '50%',
-              width: 32, height: 32,
+              // Bumped to 36×36 for a comfortable mobile tap target
+              width: 36, height: 36,
               display: 'flex', alignItems: 'center', justifyContent: 'center',
               cursor: 'pointer',
+              zIndex: 2,
             }}
           >
             <X size={18} />

@@ -2,7 +2,7 @@ import { DEFAULT_WA_NUMBER } from '@/constants/config'
 import FALLBACK from '@/constants/fallbackContent'
 import { useState, useEffect, useRef } from 'react'
 import { motion } from 'framer-motion'
-import { MapPin, Calendar, FileText, Phone } from 'lucide-react'
+import { MapPin, Calendar, FileText, Phone, Landmark, FileCheck2, BadgeCheck } from 'lucide-react'
 import { useInView } from 'react-intersection-observer'
 import { useLanguage } from '@/context/LanguageContext'
 import WhatsAppIcon from '@/components/ui/WhatsAppIcon'
@@ -124,11 +124,22 @@ export default function Hero({ content, onEnquire }) {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.7, ease: [0.4, 0, 0.2, 1] }}>
 
-        {/* Approval badges — from MongoDB hero.approvalBadges */}
+        {/* Approval pills — matches TrustBadges section design (icon + title + detail) */}
         <div className={styles.badges}>
-          {badges.map(b => (
-            <span key={b} className={styles.badge}>
-              <span className={styles.badgeDot} />{b}
+          {[
+            { icon: <Landmark size={14} />,   title: isTe ? 'ఏపిసిఆర్డేఏ ఆమోదితం' : 'APCRDA APPROVED',    detail: 'LP No: 35/2025' },
+            { icon: <FileCheck2 size={14} />, title: isTe ? 'ఏపి రేరా నమోదితం'    : 'AP RERA REGISTERED', detail: 'P06060125894' },
+            { icon: <BadgeCheck size={14} />, title: isTe ? '100% క్లియర్ టైటిల్'  : '100% CLEAR TITLE',    detail: null },
+          ].map((p, i) => (
+            <span key={i} className={styles.badge}>
+              <span className={styles.badgeIcon}>{p.icon}</span>
+              <span className={styles.badgeTitle}>{p.title}</span>
+              {p.detail && (
+                <>
+                  <span className={styles.badgeDivider}>·</span>
+                  <span className={styles.badgeDetail}>{p.detail}</span>
+                </>
+              )}
             </span>
           ))}
         </div>

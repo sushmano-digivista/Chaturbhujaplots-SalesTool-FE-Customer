@@ -58,8 +58,11 @@ export default function ExitIntentPopup() {
     const show = (trigger) => {
       if (shownRef.current) return
       if (Date.now() - pageLoadedAtRef.current < MIN_DWELL_MS) return
-      // Don't show if a lead modal is already open
-      if (document.querySelector('[class*="overlay"]')) return
+      // Don't show if any modal/overlay is currently blocking scroll.
+      // LeadModal + LaunchOverlay + PricingOverlay all set
+      // document.body.style.overflow = 'hidden' while open, which is
+      // a precise signal (won't false-match Hero's decorative overlay div).
+      if (document.body.style.overflow === 'hidden') return
       shownRef.current = true
       try { sessionStorage.setItem(STORAGE_KEY, '1') } catch {}
       trackEvent('exit_intent_shown', { trigger })
@@ -67,8 +70,14 @@ export default function ExitIntentPopup() {
     }
 
     // ── DESKTOP: mouse leaves via top edge ───────────────────────────────
-    const onMouseLeave = (e) => {
-      if (e.clientY <= 0) show('desktop_mouseleave_top')
+    // Use mouseout on documentElement — more reliable cross-browser than
+    // mouseleave on document. Also requires relatedTarget to be null or
+    // outside the viewport (mouse truly left the window, not just crossed
+    // to another element).
+    const onMouseOut = (e) => {
+      if (e.relatedTarget) return        // moved to another element, still inside
+      if ((e.clientY ?? 0) > 0) return   // left via sides/bottom — ignore
+      show('desktop_mouseleave_top')
     }
 
     // ── MOBILE: scroll depth + inactivity ────────────────────────────────
@@ -93,14 +102,14 @@ export default function ExitIntentPopup() {
       }, 5000)
     }
 
-    document.addEventListener('mouseleave', onMouseLeave)
+    document.addEventListener('mouseout', onMouseOut)
     window.addEventListener('scroll',    onScroll,    { passive: true })
     window.addEventListener('touchstart', onInput,    { passive: true })
     window.addEventListener('click',      onInput)
     window.addEventListener('keydown',    onInput)
 
     return () => {
-      document.removeEventListener('mouseleave', onMouseLeave)
+      document.removeEventListener('mouseout', onMouseOut)
       window.removeEventListener('scroll',      onScroll)
       window.removeEventListener('touchstart',  onInput)
       window.removeEventListener('click',       onInput)

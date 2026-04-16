@@ -6,6 +6,7 @@ import CategoryCard   from '@/components/ui/CategoryCard'
 import PlotVisualGrid from '@/components/ui/PlotVisualGrid'
 import { getPlotDimension, getTrimbakBlockColor } from '@/constants/plotDimensions'
 import { getPlotStatus, getStatusCounts } from '@/constants/plotStatus'
+import { trackPlotClicked, trackVentureSwitched } from '@/utils/analytics'
 import styles         from './PlotGrid.module.css'
 
 // ── Per-category visual metadata ──────────────────────────────────────────────
@@ -336,7 +337,7 @@ export default function PlotGrid({ onEnquire, pricingMap }) {
               key={k}
               className={`${styles.ventureBtn} ${isActive ? styles.ventureBtnActive : ''}`}
               style={isActive ? { background: VENTURE_COLORS[k], borderColor: VENTURE_COLORS[k] } : { '--vbtn-color': VENTURE_COLORS[k] }}
-              onClick={() => { setVentureKey(k); setActiveCategory(null); setPriceOpen(false) }}
+              onClick={() => { trackVentureSwitched(k, 'VENTURE_SWITCHER'); setVentureKey(k); setActiveCategory(null); setPriceOpen(false) }}
             >
               <span className={styles.ventureBtnName} style={{ color: isActive ? '#fff' : VENTURE_COLORS[k] }}>{(() => { const nk = 'projects.' + k + '.name'; const nv = t(nk); return (nv && nv !== nk) ? nv : v.label })()}</span>
               <span className={styles.ventureBtnSub}  style={{ color: isActive ? 'rgba(255,255,255,.75)' : 'var(--text-light)' }}>{(() => { const locKey = 'projects.' + k + '.locShort'; const locV = t(locKey); return (locV && locV !== locKey) ? locV : v.short })()}</span>
@@ -706,6 +707,8 @@ export default function PlotGrid({ onEnquire, pricingMap }) {
                                       type="button"
                                       onClick={(e) => {
                                         e.stopPropagation()
+                                        const nextOpen = !isOpenPlot
+                                        if (nextOpen) trackPlotClicked(ventureKey, num, status)
                                         setOpenPlot(isOpenPlot ? null : { num, catKey: key, catLabel: translatedData.label, accent: chipAccent })
                                       }}
                                       onMouseEnter={(e) => {

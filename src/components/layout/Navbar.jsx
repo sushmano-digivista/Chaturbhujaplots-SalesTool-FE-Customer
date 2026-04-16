@@ -4,6 +4,7 @@ import { Menu, X, Phone, ChevronDown } from 'lucide-react'
 import styles from './Navbar.module.css'
 import LanguageToggle from './LanguageToggle'
 import { useLanguage } from '@/context/LanguageContext'
+import { trackEnquireCta } from '@/utils/analytics'
 
 export const NAV_PROJECTS = [
   { id: 'anjana',  name: 'Anjana Paradise', sub: 'Paritala, Near Amaravati',    available: 14, total: 242 },
@@ -143,7 +144,7 @@ export default function Navbar({ contact, onEnquire }) {
 
           <button
             className={styles.enquireBtn}
-            onClick={() => onEnquire({ source: 'HERO_CTA', label: 'Enquire Now' })}
+            onClick={() => { trackEnquireCta('NAVBAR'); onEnquire({ source: 'HERO_CTA', label: 'Enquire Now' }) }}
           >
             {t('nav.enquireNow')} <span className={styles.enquireArrow}>→</span>
           </button>
@@ -209,7 +210,7 @@ export default function Navbar({ contact, onEnquire }) {
         ))}
         <button
           className={styles.mobileEnquire}
-          onClick={() => { setMenuOpen(false); onEnquire({ source: 'HERO_CTA', label: 'Enquire Now' }) }}
+          onClick={() => { trackEnquireCta('NAVBAR_MOBILE'); setMenuOpen(false); onEnquire({ source: 'HERO_CTA', label: 'Enquire Now' }) }}
         >
           {t('nav.enquireNow')} →
         </button>

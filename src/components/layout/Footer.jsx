@@ -2,6 +2,7 @@ import { DEFAULT_WA_NUMBER } from '@/constants/config'
 import { useContactSettings } from '@/hooks/useData'
 import { useLanguage } from '@/context/LanguageContext'
 import WhatsAppIcon from '@/components/ui/WhatsAppIcon'
+import { trackSocialClick, trackPhoneClick, trackWhatsAppClick } from '@/utils/analytics'
 import styles from './Footer.module.css'
 
 const QUICK_LINKS = [
@@ -86,6 +87,7 @@ export default function Footer({ content }) {
                   className={styles.socialBtn}
                   style={{ background: s.color }}
                   title={s.label}
+                  onClick={() => trackSocialClick(s.label.toLowerCase())}
                 >
                   {s.icon === 'f' && (
                     <svg width='20' height='20' viewBox='0 0 24 24' fill='white'>

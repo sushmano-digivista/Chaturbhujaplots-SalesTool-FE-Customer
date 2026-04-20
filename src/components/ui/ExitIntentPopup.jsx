@@ -285,8 +285,8 @@ export default function ExitIntentPopup() {
               </h3>
               <p style={{ fontSize: 14, color: 'var(--text-mid)', margin: '0 0 18px' }}>
                 {isTe
-                  ? 'మా బృందం 24 గంటల్లో మిమ్మల్ని సంప్రదిస్తుంది.'
-                  : 'Our team will call you within 24 hours with the latest price list and site-visit options.'}
+                  ? 'మా బృందం 24 గంటల్లో మిమ్మల్ని సంప్రదించి, మీ ప్రశ్నలకు సమాధానమిస్తుంది మరియు సైట్ విజిట్ షెడ్యూల్ చేస్తుంది.'
+                  : 'Our team will call you within 24 hours to answer your questions and schedule a site visit.'}
               </p>
               <button
                 type="button"

@@ -1,7 +1,7 @@
 import { useEffect, useState, useRef } from 'react'
 import { createPortal } from 'react-dom'
 import { motion, AnimatePresence } from 'framer-motion'
-import { X, Phone } from 'lucide-react'
+import { X, Phone, Hand, CheckCircle2, Lock, HeartHandshake } from 'lucide-react'
 import { useLanguage } from '@/context/LanguageContext'
 import { leadApi } from '@/api'
 import { trackEvent } from '@/utils/analytics'
@@ -276,7 +276,9 @@ export default function ExitIntentPopup() {
 
           {submitted ? (
             <div style={{ textAlign: 'center', padding: '14px 0' }}>
-              <div style={{ fontSize: 42, marginBottom: 8 }}>🙏</div>
+              <div style={{ marginBottom: 8, display: 'flex', justifyContent: 'center' }}>
+                <HeartHandshake size={44} color="#C9A84C" strokeWidth={1.6} />
+              </div>
               <h3 style={{
                 fontFamily: "'Cormorant Garamond', Georgia, serif",
                 fontSize: 22, color: 'var(--green)', margin: '0 0 6px',
@@ -308,8 +310,10 @@ export default function ExitIntentPopup() {
                   padding: '4px 10px', borderRadius: 999,
                   fontSize: 10, fontWeight: 700, letterSpacing: 0.5, textTransform: 'uppercase',
                   marginBottom: 10,
+                  gap: 4, alignItems: 'center',
                 }}>
-                  {isTe ? '✋ వేచి ఉండండి' : '✋ Wait — Before You Go'}
+                  <Hand size={12} style={{ verticalAlign: 'text-bottom', marginRight: 4 }} />
+                  {isTe ? 'వేచి ఉండండి' : 'Wait — Before You Go'}
                 </div>
                 <h2 style={{
                   fontFamily: "'Cormorant Garamond', Georgia, serif",
@@ -334,9 +338,18 @@ export default function ExitIntentPopup() {
                 listStyle: 'none', padding: 0, margin: '0 0 16px',
                 display: 'grid', gap: 6, fontSize: 12, color: 'var(--text-dark)',
               }}>
-                <li>✅ {isTe ? 'ఆన్-ది-స్పాట్ ధరల జాబితా' : 'Latest on-the-spot price list'}</li>
-                <li>✅ {isTe ? 'APCRDA & RERA ఆమోదిత ప్లాట్లు' : 'APCRDA & RERA-approved plots'}</li>
-                <li>✅ {isTe ? 'ఉచిత సైట్ విజిట్ & ట్రాన్స్‌పోర్ట్' : 'Free site visit + transport'}</li>
+                <li style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+                  <CheckCircle2 size={14} color="#2E7D32" style={{ flexShrink: 0 }} />
+                  {isTe ? 'ఆన్-ది-స్పాట్ ధరల జాబితా' : 'Latest on-the-spot price list'}
+                </li>
+                <li style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+                  <CheckCircle2 size={14} color="#2E7D32" style={{ flexShrink: 0 }} />
+                  {isTe ? 'APCRDA & RERA ఆమోదిత ప్లాట్లు' : 'APCRDA & RERA-approved plots'}
+                </li>
+                <li style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+                  <CheckCircle2 size={14} color="#2E7D32" style={{ flexShrink: 0 }} />
+                  {isTe ? 'ఉచిత సైట్ విజిట్ & ట్రాన్స్‌పోర్ట్' : 'Free site visit + transport'}
+                </li>
               </ul>
 
               <form onSubmit={handleSubmit} noValidate>
@@ -388,10 +401,12 @@ export default function ExitIntentPopup() {
               <p style={{
                 fontSize: 10, color: 'var(--text-light)', textAlign: 'center',
                 marginTop: 10, marginBottom: 0,
+                display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 4,
               }}>
+                <Lock size={11} style={{ flexShrink: 0 }} />
                 {isTe
-                  ? '🔒 మేము మీ సంఖ్యను ఎవరికీ పంచుకోము'
-                  : '🔒 We never share your number. One call, zero spam.'}
+                  ? 'మేము మీ సంఖ్యను ఎవరికీ పంచుకోము'
+                  : 'We never share your number. One call, zero spam.'}
               </p>
             </>
           )}

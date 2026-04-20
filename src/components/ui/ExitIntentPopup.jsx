@@ -30,9 +30,7 @@ import { trackEvent } from '@/utils/analytics'
  */
 
 const MIN_DWELL_MS         = 15000 // don't show in first 15s (both platforms)
-const MOBILE_INACTIVITY_MS = 30000 // mobile: 30s of no tap/key
-const MOBILE_MAX_DWELL_MS  = 35000 // mobile fallback: show after 35s
-const MIN_SCROLL_RATIO     = 0.01  // mobile: any scroll at all counts as engagement
+const MOBILE_INACTIVITY_MS = 30000 // mobile: 30s screen-idle (no tap/key) — sole mobile trigger
 
 const STORAGE_KEY = 'cbp_exit_intent_shown'
 
@@ -140,65 +138,37 @@ export default function ExitIntentPopup() {
       show('desktop_mouseleave_top', { skipDwell: true })
     }
 
-    // ── MOBILE: scroll depth tracking ────────────────────────────────────
-    // NOTE: scroll does NOT reset the idle timer. Rationale: on mobile,
-    // every finger swipe fires scroll; if scroll counted as activity the
-    // idle threshold would never trigger while the user is browsing.
-    // Only actual taps/keys reset the timer.
-    const onScroll = () => {
-      const doc = document.documentElement
-      const scrollable = Math.max(1, doc.scrollHeight - window.innerHeight)
-      const ratio = window.scrollY / scrollable
-      if (ratio > maxScrollRatioRef.current) maxScrollRatioRef.current = ratio
-    }
-    // Real activity: actual taps and keys
+    // ── MOBILE: pure 30s idle trigger ────────────────────────────────────
+    // Only user-intent events (taps / keys) count as activity — scroll
+    // events do NOT reset the timer. Rationale: on touch devices, finger
+    // swipes fire scroll constantly; if scroll counted as activity the
+    // 30s idle threshold would never trigger while the user is reading.
     const onInput = () => { lastActivityRef.current = Date.now() }
 
     const isMobile = window.matchMedia('(max-width: 768px)').matches
     let mobileTimer = null
     if (isMobile) {
-      // Poll every 2s. Three mobile triggers, whichever fires first:
-      //   A) 15s idle (no taps/keys) + >= 20% scroll      (classic exit intent)
-      //   B) 40s total dwell         + >= 20% scroll      (guaranteed fallback)
-      //   C) visibilitychange to 'visible' after leaving  (handled separately)
+      // SOLE mobile trigger: 30 seconds of screen-idle, after the 15s
+      // minimum dwell has elapsed. Max-dwell fallback + visibility-return
+      // triggers intentionally removed per owner spec ("30s idle only").
       mobileTimer = setInterval(() => {
         if (shownRef.current) return
-        const idleFor = Date.now() - lastActivityRef.current
         const dwelled = Date.now() - pageLoadedAtRef.current
         if (dwelled < MIN_DWELL_MS) return
-        if (maxScrollRatioRef.current < MIN_SCROLL_RATIO) return
+        const idleFor = Date.now() - lastActivityRef.current
         if (idleFor >= MOBILE_INACTIVITY_MS) {
-          show('mobile_idle_after_scroll')
-        } else if (dwelled >= MOBILE_MAX_DWELL_MS) {
-          show('mobile_max_dwell_after_scroll')
+          show('mobile_30s_idle')
         }
       }, 2000)
     }
 
-    // Extra trigger for BOTH platforms: fires when user hides the tab
-    // (switches apps, locks phone, changes to another tab). Shown when
-    // they come back — gives one final chance to capture before they
-    // close the tab entirely.
-    const onVisibility = () => {
-      if (document.visibilityState === 'visible' && !shownRef.current) {
-        const dwelled = Date.now() - pageLoadedAtRef.current
-        if (dwelled >= MIN_DWELL_MS && maxScrollRatioRef.current >= 0.10) {
-          show('visibility_return')
-        }
-      }
-    }
-
-    document.addEventListener('mouseout',         onMouseOut)
-    document.addEventListener('visibilitychange', onVisibility)
-    window.addEventListener('scroll',     onScroll,    { passive: true })
-    window.addEventListener('touchstart', onInput,     { passive: true })
-    window.addEventListener('click',      onInput)
-    window.addEventListener('keydown',    onInput)
+    document.addEventListener('mouseout',  onMouseOut)
+    window.addEventListener('touchstart',  onInput, { passive: true })
+    window.addEventListener('click',       onInput)
+    window.addEventListener('keydown',     onInput)
 
     return () => {
-      document.removeEventListener('mouseout',         onMouseOut)
-      document.removeEventListener('visibilitychange', onVisibility)
-      window.removeEventListener('scroll',     onScroll)
+      document.removeEventListener('mouseout', onMouseOut)
       window.removeEventListener('touchstart', onInput)
       window.removeEventListener('click',      onInput)
       window.removeEventListener('keydown',    onInput)
@@ -412,7 +382,7 @@ export default function ExitIntentPopup() {
                   <Phone size={14} style={{ marginRight: 6 }} />
                   {submitting
                     ? (isTe ? 'సబ్మిట్ చేస్తోంది…' : 'Sending…')
-                    : (isTe ? 'నాకు ధరల జాబితా పంపండి' : 'Send Me the Price List')}
+                    : (isTe ? 'తిరిగి కాల్ చేయమని అభ్యర్థించండి' : 'Request Call Back')}
                 </button>
               </form>
               <p style={{

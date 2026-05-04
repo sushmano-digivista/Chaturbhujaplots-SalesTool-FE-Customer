@@ -36,8 +36,8 @@ export default function PricingBanner() {
         ventureKey: VENTURE_KEY[p.id] || p.id,
         name: isTe ? (NAME_TE[p.name] || p.name) : p.name,
         loc: isTe ? (LOC_TE[loc] || loc) : loc,
-        east: p.pricing.east.base,
-        west: p.pricing.west.base,
+        east: p.pricing.east.base + (p.pricing.east.dev || 0),
+        west: p.pricing.west.base + (p.pricing.west.dev || 0),
       }
     })
 

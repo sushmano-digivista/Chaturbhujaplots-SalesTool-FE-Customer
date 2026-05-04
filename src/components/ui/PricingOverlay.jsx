@@ -36,8 +36,8 @@ export default function PricingOverlay() {
 
   const ventures = ACTIVE_PROJECTS.filter(p => p.pricing).map(p => ({
     name: isTe ? (NAME_TE[p.name] || p.name) : p.name,
-    east: p.pricing.east.base,
-    west: p.pricing.west.base,
+    east: p.pricing.east.base + (p.pricing.east.dev || 0),
+    west: p.pricing.west.base + (p.pricing.west.dev || 0),
   }))
 
   const minPrice = Math.min(...ventures.map(v => Math.min(v.east, v.west)))

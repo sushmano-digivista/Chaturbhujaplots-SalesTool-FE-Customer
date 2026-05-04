@@ -26,6 +26,8 @@ const SOCIAL_LINKS = [
   { icon: 'f',  label: 'Facebook',  url: 'https://www.facebook.com/profile.php?id=61575447640354', color: '#1877F2' },
   { icon: 'yt', label: 'YouTube',   url: 'https://www.youtube.com/@Chaturbhujaplots',              color: '#FF0000' },
   { icon: 'in', label: 'Instagram', url: 'https://www.instagram.com/chaturbhujaplots/',            color: '#E1306C' },
+  { icon: 'sc', label: 'Snapchat',  url: 'https://www.snapchat.com/@cbplots',                      color: '#FFFC00' },
+  { icon: 'li', label: 'LinkedIn',  url: 'https://www.linkedin.com/in/chaturbhuja-plots-983087407/', color: '#0A66C2' },
 ]
 
 // Scroll to section with offset for sticky header
@@ -105,6 +107,18 @@ export default function Footer({ content }) {
                       <rect x='2' y='2' width='20' height='20' rx='5' ry='5'/>
                       <path d='M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z'/>
                       <line x1='17.5' y1='6.5' x2='17.51' y2='6.5'/>
+                    </svg>
+                  )}
+                  {s.icon === 'sc' && (
+                    <svg width='20' height='20' viewBox='0 0 24 24' fill='white'>
+                      <path d='M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.93 13.67c-.07.17-.21.27-.38.27-.08 0-.16-.02-.24-.06-.54-.27-1.04-.41-1.53-.41-.34 0-.65.06-.97.18-.5.19-.94.53-1.44.53s-.95-.34-1.44-.53c-.32-.12-.63-.18-.97-.18-.49 0-.99.14-1.53.41-.08.04-.16.06-.24.06-.17 0-.31-.1-.38-.27-.09-.21-.01-.44.19-.56.04-.02 1.05-.6 1.14-1.83.01-.1.01-.2.01-.29 0-.35-.07-.67-.19-.95a2.6 2.6 0 0 0-.52-.78c-.3-.3-.48-.72-.48-1.16 0-.88.72-1.6 1.6-1.6.44 0 .86.18 1.16.48.3.3.72.48 1.16.48s.86-.18 1.16-.48c.3-.3.72-.48 1.16-.48.88 0 1.6.72 1.6 1.6 0 .44-.18.86-.48 1.16-.3.3-.52.65-.52.78-.12.28-.19.6-.19.95 0 .09 0 .19.01.29.09 1.23 1.1 1.81 1.14 1.83.2.12.28.35.19.56z'/>
+                    </svg>
+                  )}
+                  {s.icon === 'li' && (
+                    <svg width='20' height='20' viewBox='0 0 24 24' fill='white'>
+                      <path d='M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z'/>
+                      <rect x='2' y='9' width='4' height='12'/>
+                      <circle cx='4' cy='4' r='2'/>
                     </svg>
                   )}
                 </a>

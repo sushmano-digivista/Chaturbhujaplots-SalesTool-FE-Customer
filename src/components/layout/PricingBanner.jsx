@@ -85,7 +85,7 @@ export default function PricingBanner() {
           <span className={styles.price}>
             ₹{minBasePrice.toLocaleString('en-IN')}/{isTe ? 'చ.గ.' : 'sq.yd'}
             {minDev > 0 && (
-              <span style={{ fontSize: 11, opacity: 0.75, marginLeft: 6, fontWeight: 400 }}>
+              <span style={{ fontSize: 13, color: '#C9A84C', marginLeft: 8, fontWeight: 600, letterSpacing: 0.2 }}>
                 + ₹{minDev.toLocaleString('en-IN')} {isTe ? 'డెవ్. చార్జీలు' : 'Dev. Charges'}
               </span>
             )}

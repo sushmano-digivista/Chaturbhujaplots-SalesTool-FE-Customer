@@ -41,32 +41,19 @@ export default function PricingBanner() {
       }
     })
 
-  const minPrice = Math.min(...ventures.map(v => Math.min(v.eastBase + v.eastDev, v.westBase + v.westDev)))
+  const minBasePrice = Math.min(...ventures.map(v => Math.min(v.eastBase, v.westBase)))
+  const minDev = ventures.find(v => Math.min(v.eastBase, v.westBase) === minBasePrice)?.eastDev || 0
 
   const scrollToPlots = (e, ventureKey = null) => {
     e.stopPropagation()
     setExpanded(false)
-    // If a specific venture card was clicked, tell PlotGrid to switch to it.
     if (ventureKey) {
       window.dispatchEvent(new CustomEvent('cbp:selectVenture', { detail: { ventureKey } }))
     }
 
-    // Robust scroll that handles:
-    //  1. Banner collapse animation (height change during scroll)
-    //  2. Lazy-loaded images above #plots that shift layout
-    //  3. Sticky pricing banner height changes
-    //
-    // Strategy:
-    //   a) Wait 2 animation frames for the `setExpanded(false)` collapse
-    //      + React re-render to settle.
-    //   b) First smooth scroll with scrollIntoView (animates).
-    //   c) After the smooth scroll would complete (~600ms), re-measure
-    //      and do a final precise window.scrollTo if we landed off target.
-    //      Uses 'auto' behavior so the correction is instant.
     const scrollTarget = () => {
       const el = document.getElementById('plots')
       if (!el) return
-      // getBoundingClientRect re-reads position at THIS moment
       const navH = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--nav-h')) || 72
       const margin = 50
       const absTop = el.getBoundingClientRect().top + window.scrollY
@@ -77,12 +64,7 @@ export default function PricingBanner() {
       requestAnimationFrame(() => {
         const el = document.getElementById('plots')
         if (!el) return
-        // Phase 1: smooth scroll (animates, ~300–500ms)
         el.scrollIntoView({ behavior: 'smooth', block: 'start' })
-        // Phase 2: after smooth scroll should be done, verify + correct.
-        // If images/banner shifted layout mid-scroll, we recompute and
-        // snap to the right pixel precisely (no visible jump if we
-        // already landed correctly).
         setTimeout(() => {
           const target = scrollTarget()
           if (target == null) return
@@ -100,7 +82,14 @@ export default function PricingBanner() {
         {/* Header bar — always visible */}
         <div className={styles.bar} onClick={() => setExpanded(e => !e)}>
           <span className={styles.label}>{isTe ? 'ప్లాట్లు ప్రారంభ ధర' : 'PLOTS STARTING FROM'}</span>
-          <span className={styles.price}>₹{Math.min(...ventures.map(v => Math.min(v.eastBase, v.westBase))).toLocaleString('en-IN')}/{isTe ? 'చ.గ.' : 'sq.yd'}</span>
+          <span className={styles.price}>
+            ₹{minBasePrice.toLocaleString('en-IN')}/{isTe ? 'చ.గ.' : 'sq.yd'}
+            {minDev > 0 && (
+              <span style={{ fontSize: 11, opacity: 0.75, marginLeft: 6, fontWeight: 400 }}>
+                + ₹{minDev.toLocaleString('en-IN')} {isTe ? 'డెవ్. చార్జీలు' : 'Dev. Charges'}
+              </span>
+            )}
+          </span>
           <button className={styles.cta} onClick={scrollToPlots}>
             {isTe ? 'అన్ని ప్రాజెక్టులు చూడండి' : 'View All Projects'}
           </button>
@@ -130,5 +119,4 @@ export default function PricingBanner() {
     </>
   )
 }
-
 

@@ -36,11 +36,11 @@ export default function PricingOverlay() {
 
   const ventures = ACTIVE_PROJECTS.filter(p => p.pricing).map(p => ({
     name: isTe ? (NAME_TE[p.name] || p.name) : p.name,
-    east: p.pricing.east.base + (p.pricing.east.dev || 0),
-    west: p.pricing.west.base + (p.pricing.west.dev || 0),
+    eastBase: p.pricing.east.base, eastDev: p.pricing.east.dev || 0,
+    westBase: p.pricing.west.base, westDev: p.pricing.west.dev || 0,
   }))
 
-  const minPrice = Math.min(...ventures.map(v => Math.min(v.east, v.west)))
+  const minPrice = Math.min(...ventures.map(v => Math.min(v.eastBase, v.westBase)))
   const isShrink = phase === 'shrink'
 
   return (
@@ -100,8 +100,8 @@ export default function PricingOverlay() {
             }}>
               <div style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 16, fontWeight: 700, color: '#fff', marginBottom: 4 }}>{v.name}</div>
               <div style={{ display: 'flex', justifyContent: 'center', gap: 12, fontSize: 12, color: 'rgba(255,255,255,0.6)' }}>
-                <span>☀ <strong style={{ color: '#C9A84C', fontSize: 15, fontFamily: "'Cormorant Garamond', serif" }}>₹{v.east.toLocaleString('en-IN')}</strong></span>
-                <span>🌙 <strong style={{ color: '#C9A84C', fontSize: 15, fontFamily: "'Cormorant Garamond', serif" }}>₹{v.west.toLocaleString('en-IN')}</strong></span>
+                <span>☀ <strong style={{ color: '#C9A84C', fontSize: 15, fontFamily: "'Cormorant Garamond', serif" }}>₹{v.eastBase.toLocaleString('en-IN')}</strong>{v.eastDev > 0 && <span style={{fontSize:10,color:'rgba(255,255,255,0.5)'}}> +₹{v.eastDev.toLocaleString('en-IN')} Dev.</span>}</span>
+                <span>🌙 <strong style={{ color: '#C9A84C', fontSize: 15, fontFamily: "'Cormorant Garamond', serif" }}>₹{v.westBase.toLocaleString('en-IN')}</strong>{v.westDev > 0 && <span style={{fontSize:10,color:'rgba(255,255,255,0.5)'}}> +₹{v.westDev.toLocaleString('en-IN')} Dev.</span>}</span>
               </div>
             </div>
           ))}
@@ -115,3 +115,4 @@ export default function PricingOverlay() {
     </div>
   )
 }
+

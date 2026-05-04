@@ -36,12 +36,12 @@ export default function PricingBanner() {
         ventureKey: VENTURE_KEY[p.id] || p.id,
         name: isTe ? (NAME_TE[p.name] || p.name) : p.name,
         loc: isTe ? (LOC_TE[loc] || loc) : loc,
-        east: p.pricing.east.base + (p.pricing.east.dev || 0),
-        west: p.pricing.west.base + (p.pricing.west.dev || 0),
+        eastBase: p.pricing.east.base, eastDev: p.pricing.east.dev || 0,
+        westBase: p.pricing.west.base, westDev: p.pricing.west.dev || 0,
       }
     })
 
-  const minPrice = Math.min(...ventures.map(v => Math.min(v.east, v.west)))
+  const minPrice = Math.min(...ventures.map(v => Math.min(v.eastBase + v.eastDev, v.westBase + v.westDev)))
 
   const scrollToPlots = (e, ventureKey = null) => {
     e.stopPropagation()
@@ -115,8 +115,8 @@ export default function PricingBanner() {
                 <div className={styles.cardName}>{v.name}</div>
                 <div className={styles.cardLoc}>📍 {v.loc}</div>
                 <div className={styles.cardPrices}>
-                  <span>☀ {isTe ? 'తూర్పు' : 'East'}: <strong>₹{v.east.toLocaleString('en-IN')}</strong></span>
-                  <span>🌙 {isTe ? 'పడమర' : 'West'}: <strong>₹{v.west.toLocaleString('en-IN')}</strong></span>
+                  <span>☀ {isTe ? 'తూర్పు' : 'East'}: <strong>₹{v.eastBase.toLocaleString('en-IN')}</strong>{v.eastDev > 0 && <span style={{fontSize:10,opacity:0.7}}> + ₹{v.eastDev.toLocaleString('en-IN')} Dev.</span>}</span>
+                  <span>🌙 {isTe ? 'పడమర' : 'West'}: <strong>₹{v.westBase.toLocaleString('en-IN')}</strong>{v.westDev > 0 && <span style={{fontSize:10,opacity:0.7}}> + ₹{v.westDev.toLocaleString('en-IN')} Dev.</span>}</span>
                 </div>
                 <div className={styles.unit}>/{isTe ? 'చ.గ.' : 'sq.yd'}</div>
               </div>
@@ -130,3 +130,4 @@ export default function PricingBanner() {
     </>
   )
 }
+

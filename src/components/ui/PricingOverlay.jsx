@@ -42,6 +42,8 @@ export default function PricingOverlay() {
 
   const minPrice = Math.min(...ventures.map(v => Math.min(v.eastBase, v.westBase)))
   const isShrink = phase === 'shrink'
+  const devLabel = isTe ? 'డెవ్. చార్జీలు' : 'Dev. Charges'
+  const devLabelShort = isTe ? 'డెవ్.' : 'Dev.'
 
   return (
     <div onClick={() => setPhase('shrink')} style={{
@@ -85,6 +87,9 @@ export default function PricingOverlay() {
         }}>
           ₹{minPrice.toLocaleString('en-IN')}
           <span style={{ fontSize: 22, color: 'rgba(255,255,255,0.5)' }}>/{isTe ? 'చ.గ.' : 'sq.yd'}</span>
+          <div style={{ fontSize: 16, color: 'rgba(201,168,76,0.7)', fontFamily: 'DM Sans, sans-serif', fontWeight: 500, marginTop: 6 }}>
+            + ₹1,000 {devLabel}
+          </div>
         </h1>
 
         <p style={{ fontSize: 14, color: 'rgba(255,255,255,0.5)', marginBottom: 28 }}>
@@ -100,8 +105,8 @@ export default function PricingOverlay() {
             }}>
               <div style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 16, fontWeight: 700, color: '#fff', marginBottom: 4 }}>{v.name}</div>
               <div style={{ display: 'flex', justifyContent: 'center', gap: 12, fontSize: 12, color: 'rgba(255,255,255,0.6)' }}>
-                <span>☀ <strong style={{ color: '#C9A84C', fontSize: 15, fontFamily: "'Cormorant Garamond', serif" }}>₹{v.eastBase.toLocaleString('en-IN')}</strong>{v.eastDev > 0 && <span style={{fontSize:10,color:'rgba(255,255,255,0.5)'}}> +₹{v.eastDev.toLocaleString('en-IN')} Dev.</span>}</span>
-                <span>🌙 <strong style={{ color: '#C9A84C', fontSize: 15, fontFamily: "'Cormorant Garamond', serif" }}>₹{v.westBase.toLocaleString('en-IN')}</strong>{v.westDev > 0 && <span style={{fontSize:10,color:'rgba(255,255,255,0.5)'}}> +₹{v.westDev.toLocaleString('en-IN')} Dev.</span>}</span>
+                <span>☀ <strong style={{ color: '#C9A84C', fontSize: 15, fontFamily: "'Cormorant Garamond', serif" }}>₹{v.eastBase.toLocaleString('en-IN')}</strong>{v.eastDev > 0 && <span style={{fontSize:10,color:'rgba(255,255,255,0.5)'}}> +₹{v.eastDev.toLocaleString('en-IN')} {devLabelShort}</span>}</span>
+                <span>🌙 <strong style={{ color: '#C9A84C', fontSize: 15, fontFamily: "'Cormorant Garamond', serif" }}>₹{v.westBase.toLocaleString('en-IN')}</strong>{v.westDev > 0 && <span style={{fontSize:10,color:'rgba(255,255,255,0.5)'}}> +₹{v.westDev.toLocaleString('en-IN')} {devLabelShort}</span>}</span>
               </div>
             </div>
           ))}

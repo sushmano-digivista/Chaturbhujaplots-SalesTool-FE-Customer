@@ -100,7 +100,7 @@ export default function PricingBanner() {
         {/* Header bar — always visible */}
         <div className={styles.bar} onClick={() => setExpanded(e => !e)}>
           <span className={styles.label}>{isTe ? 'ప్లాట్లు ప్రారంభ ధర' : 'PLOTS STARTING FROM'}</span>
-          <span className={styles.price}>₹{minPrice.toLocaleString('en-IN')}/{isTe ? 'చ.గ.' : 'sq.yd'}</span>
+          <span className={styles.price}>₹{Math.min(...ventures.map(v => Math.min(v.eastBase, v.westBase))).toLocaleString('en-IN')}/{isTe ? 'చ.గ.' : 'sq.yd'}</span>
           <button className={styles.cta} onClick={scrollToPlots}>
             {isTe ? 'అన్ని ప్రాజెక్టులు చూడండి' : 'View All Projects'}
           </button>
@@ -115,8 +115,8 @@ export default function PricingBanner() {
                 <div className={styles.cardName}>{v.name}</div>
                 <div className={styles.cardLoc}>📍 {v.loc}</div>
                 <div className={styles.cardPrices}>
-                  <span>☀ {isTe ? 'తూర్పు' : 'East'}: <strong>₹{v.eastBase.toLocaleString('en-IN')}</strong>{v.eastDev > 0 && <span style={{fontSize:10,opacity:0.7}}> + ₹{v.eastDev.toLocaleString('en-IN')} Dev.</span>}</span>
-                  <span>🌙 {isTe ? 'పడమర' : 'West'}: <strong>₹{v.westBase.toLocaleString('en-IN')}</strong>{v.westDev > 0 && <span style={{fontSize:10,opacity:0.7}}> + ₹{v.westDev.toLocaleString('en-IN')} Dev.</span>}</span>
+                  <span>☀ {isTe ? 'తూర్పు' : 'East'}: <strong>₹{v.eastBase.toLocaleString('en-IN')}</strong>{v.eastDev > 0 && <span style={{ fontSize: 11, opacity: 0.75, marginLeft: 6 }}>+ ₹1,000 {isTe ? 'డెవ్. చార్జీలు' : 'Dev. Charges'}</span>}</span>
+                  <span>🌙 {isTe ? 'పడమర' : 'West'}: <strong>₹{v.westBase.toLocaleString('en-IN')}</strong>{v.westDev > 0 && <span style={{ fontSize: 11, opacity: 0.75, marginLeft: 6 }}>+ ₹1,000 {isTe ? 'డెవ్. చార్జీలు' : 'Dev. Charges'}</span>}</span>
                 </div>
                 <div className={styles.unit}>/{isTe ? 'చ.గ.' : 'sq.yd'}</div>
               </div>
@@ -130,4 +130,5 @@ export default function PricingBanner() {
     </>
   )
 }
+
 

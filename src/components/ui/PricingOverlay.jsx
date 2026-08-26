@@ -40,7 +40,7 @@ export default function PricingOverlay() {
     westBase: p.pricing.west.base, westDev: p.pricing.west.dev || 0,
   }))
 
-  const minPrice = Math.min(...ventures.map(v => Math.min(v.eastBase, v.westBase)))
+  const minPrice = Math.min(...ventures.map(v => v.eastBase))
   const isShrink = phase === 'shrink'
   const devLabel = isTe ? 'డెవ్. చార్జీలు' : 'Dev. Charges'
   const devLabelShort = isTe ? 'డెవ్.' : 'Dev.'

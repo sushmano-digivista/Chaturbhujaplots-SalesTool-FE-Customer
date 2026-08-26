@@ -161,7 +161,7 @@ export const ACTIVE_PROJECTS = [
     starting:    'Rs.26L',
     pricing: {
       east:    { base: 11999, dev: 1000, label: 'Rs.11,999 + Rs.1,000 Dev. Charges' },
-      west:    { base: 11499, dev: 1000, label: 'Rs.11,499 + Rs.1,000 Dev. Charges' },
+      west:    { base: 11999, dev: 1000, label: 'Rs.11,999 + Rs.1,000 Dev. Charges' },
       corners: [
         { type: 'North-East Corner', extra: 999, label: 'Rs.999/sq.yd extra' },
         { type: 'Other Corners',     extra: 499, label: 'Rs.499/sq.yd extra' },

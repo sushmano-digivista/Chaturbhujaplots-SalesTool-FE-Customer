@@ -41,8 +41,8 @@ export default function PricingBanner() {
       }
     })
 
-  const minBasePrice = Math.min(...ventures.map(v => Math.min(v.eastBase, v.westBase)))
-  const minDev = ventures.find(v => Math.min(v.eastBase, v.westBase) === minBasePrice)?.eastDev || 0
+  const minBasePrice = Math.min(...ventures.map(v => v.eastBase))
+  const minDev = ventures.find(v => v.eastBase === minBasePrice)?.eastDev || 0
 
   const scrollToPlots = (e, ventureKey = null) => {
     e.stopPropagation()

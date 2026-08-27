@@ -17,7 +17,7 @@ const LOC_TE = {
   'Pamarru': 'పామర్రు',
 }
 
-export default function PricingBanner() {
+export default function PricingBanner({ pricingMap }) {
   const { language } = useLanguage()
   const [expanded, setExpanded] = useState(false)
   const isTe = language === 'te'
@@ -31,13 +31,16 @@ export default function PricingBanner() {
     .sort((a, b) => ORDER.indexOf(a.id) - ORDER.indexOf(b.id))
     .map(p => {
       const loc = p.loc?.split(',')[0]?.trim()
+      // Live DB pricing (updated via MongoDB, no redeploy needed) overrides
+      // the static fallback file when available.
+      const pricing = pricingMap?.[p.id] || p.pricing
       return {
         id: p.id,
         ventureKey: VENTURE_KEY[p.id] || p.id,
         name: isTe ? (NAME_TE[p.name] || p.name) : p.name,
         loc: isTe ? (LOC_TE[loc] || loc) : loc,
-        eastBase: p.pricing.east.base, eastDev: p.pricing.east.dev || 0,
-        westBase: p.pricing.west.base, westDev: p.pricing.west.dev || 0,
+        eastBase: pricing.east.base, eastDev: pricing.east.dev || 0,
+        westBase: pricing.west.base, westDev: pricing.west.dev || 0,
       }
     })
 

@@ -10,7 +10,7 @@ const NAME_TE = {
   'Aparna Legacy': 'అపర్ణ లెగసీ', 'Varaha Virtue': 'వరాహ వర్చ్యూ',
 }
 
-export default function PricingOverlay() {
+export default function PricingOverlay({ pricingMap }) {
   const { language } = useLanguage()
   const isTe = language === 'te'
   const [phase, setPhase] = useState(() => wasShown() ? 'done' : 'boom')
@@ -34,11 +34,16 @@ export default function PricingOverlay() {
 
   if (phase === 'done') return null
 
-  const ventures = ACTIVE_PROJECTS.filter(p => p.pricing).map(p => ({
-    name: isTe ? (NAME_TE[p.name] || p.name) : p.name,
-    eastBase: p.pricing.east.base, eastDev: p.pricing.east.dev || 0,
-    westBase: p.pricing.west.base, westDev: p.pricing.west.dev || 0,
-  }))
+  const ventures = ACTIVE_PROJECTS.filter(p => p.pricing).map(p => {
+    // Live DB pricing (updated via MongoDB, no redeploy needed) overrides
+    // the static fallback file when available.
+    const pricing = pricingMap?.[p.id] || p.pricing
+    return {
+      name: isTe ? (NAME_TE[p.name] || p.name) : p.name,
+      eastBase: pricing.east.base, eastDev: pricing.east.dev || 0,
+      westBase: pricing.west.base, westDev: pricing.west.dev || 0,
+    }
+  })
 
   const minPrice = Math.min(...ventures.map(v => v.eastBase))
   const isShrink = phase === 'shrink'

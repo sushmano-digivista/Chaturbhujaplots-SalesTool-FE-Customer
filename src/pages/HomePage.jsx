@@ -70,11 +70,11 @@ export default function HomePage() {
 
   return (
     <div style={{ paddingTop: 'calc(var(--nav-h) + 32px)' }}>
-      <PricingOverlay />
+      <PricingOverlay pricingMap={pricingMap} />
       <LaunchOverlay />
       <LaunchBanner />
       <Navbar contact={contact} onEnquire={openEnquiry} />
-      <PricingBanner />
+      <PricingBanner pricingMap={pricingMap} />
       <main>
         <Hero              content={activeContent} onEnquire={openEnquiry} />
         <PortfolioSection pricingMap={pricingMap}  content={activeContent} onEnquire={openEnquiry} />
